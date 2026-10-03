@@ -17,6 +17,8 @@ export async function GET() {
         name: true,
         email: true,
         role: true,
+        faculty: true,
+        department: true,
         createdAt: true,
         _count: {
           select: {
@@ -35,7 +37,7 @@ export async function GET() {
   }
 }
 
-// PATCH: Update user role or reset password
+// PATCH: Update user role, faculty, department, or reset password
 export async function PATCH(req: Request) {
   try {
     const currentUser = await getCurrentUser();
@@ -43,7 +45,7 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "Admin access required." }, { status: 403 });
     }
 
-    const { userId, role, newPassword } = await req.json();
+    const { userId, role, newPassword, faculty, department } = await req.json();
 
     if (!userId) {
       return NextResponse.json({ error: "User ID is required." }, { status: 400 });
@@ -66,6 +68,14 @@ export async function PATCH(req: Request) {
       updateData.role = role;
     }
 
+    if (faculty !== undefined) {
+      updateData.faculty = faculty ? faculty.trim() : null;
+    }
+
+    if (department !== undefined) {
+      updateData.department = department ? department.trim() : null;
+    }
+
     if (newPassword) {
       if (newPassword.length < 6) {
         return NextResponse.json(
@@ -79,7 +89,7 @@ export async function PATCH(req: Request) {
     const updated = await prisma.user.update({
       where: { id: userId },
       data: updateData,
-      select: { id: true, name: true, email: true, role: true },
+      select: { id: true, name: true, email: true, role: true, faculty: true, department: true },
     });
 
     return NextResponse.json({ success: true, user: updated });

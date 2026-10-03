@@ -531,10 +531,17 @@ export function InstructorClient({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {tutorCourses.map((c) => (
                     <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3">
-                      <div className="flex items-start justify-between">
-                        <span className="text-[10px] font-bold text-[#784D28] uppercase">
-                          {c.department ? `${c.department} · ` : ""}{c.level}
-                        </span>
+                      <div className="flex items-start justify-between flex-wrap gap-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {c.department && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                              {c.department}
+                            </span>
+                          )}
+                          <span className="text-[10px] font-bold text-[#784D28] uppercase">
+                            {c.faculty || c.category} · {c.level}
+                          </span>
+                        </div>
                         <span className="font-bold text-sm text-black">${c.price.toFixed(2)}</span>
                       </div>
                       <h4 className="font-bold text-base text-black">{c.title}</h4>
@@ -574,6 +581,7 @@ export function InstructorClient({
                     <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
                       <th className="p-3">Student Name</th>
                       <th className="p-3">Email</th>
+                      <th className="p-3">Department</th>
                       <th className="p-3">Class</th>
                       <th className="p-3">Status</th>
                     </tr>
@@ -584,6 +592,11 @@ export function InstructorClient({
                         <tr key={e.id} className="hover:bg-neutral-50">
                           <td className="p-3 font-bold text-black">{e.student.name}</td>
                           <td className="p-3 text-neutral-600">{e.student.email}</td>
+                          <td className="p-3">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200">
+                              {e.student.department || "General"}
+                            </span>
+                          </td>
                           <td className="p-3 text-[#784D28] font-bold">{c.title}</td>
                           <td className="p-3">
                             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
@@ -634,10 +647,15 @@ export function InstructorClient({
                     <div>
                       <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
                       <p className="text-xs text-neutral-500">{currentUser.email}</p>
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200 text-[#784D28]">
                           {currentUser.role === "ADMIN" ? "Administrator & Faculty" : "Faculty Instructor"}
                         </span>
+                        {currentUser.department && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-black text-white">
+                            {currentUser.department}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -29,6 +29,8 @@ export default async function AdminPage() {
         name: true,
         email: true,
         role: true,
+        faculty: true,
+        department: true,
         createdAt: true,
         _count: {
           select: {
@@ -65,10 +67,10 @@ export default async function AdminPage() {
     prisma.enrollment.findMany({
       include: {
         student: {
-          select: { id: true, name: true, email: true },
+          select: { id: true, name: true, email: true, faculty: true, department: true },
         },
         course: {
-          select: { id: true, title: true, price: true, category: true },
+          select: { id: true, title: true, price: true, category: true, faculty: true, department: true },
         },
       },
       orderBy: { enrolledAt: "desc" },

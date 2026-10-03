@@ -12,14 +12,18 @@ import {
   FiCompass,
 } from "react-icons/fi";
 
+import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+
 /* ─── Types ─────────────────────────────────────────────────── */
 interface UserItem {
   id: string; name: string; email: string; role: string;
+  faculty?: string | null; department?: string | null;
   createdAt: string | Date;
   _count: { enrollments: number; submissions: number; courses: number };
 }
 interface CourseItem {
   id: string; title: string; price: number; category: string;
+  faculty?: string | null; department?: string | null;
   level: string; published: boolean; createdAt: string | Date;
   description?: string;
   tutor: { id: string; name: string; email: string };
@@ -29,8 +33,8 @@ interface CourseItem {
 interface EnrollmentItem {
   id: string; status: string;
   enrolledAt: string | Date; completedAt: string | Date | null;
-  student: { id: string; name: string; email: string };
-  course: { id: string; title: string; price: number; category: string };
+  student: { id: string; name: string; email: string; faculty?: string | null; department?: string | null };
+  course: { id: string; title: string; price: number; category: string; faculty?: string | null; department?: string | null };
 }
 interface SubmissionItem {
   id: string; content: string; score: number | null;
@@ -100,16 +104,26 @@ function ConfirmModal({ title, body, onConfirm, onCancel, loading }: {
 /* ─── Edit User Modal ────────────────────────────────────────── */
 function EditUserModal({ user, currentAdminId, onSave, onClose }: {
   user: UserItem; currentAdminId: string;
-  onSave: (userId: string, role: string, newPassword: string) => Promise<void>;
+  onSave: (userId: string, role: string, newPassword: string, faculty?: string, department?: string) => Promise<void>;
   onClose: () => void;
 }) {
   const [role, setRole] = useState(user.role);
+  const [faculty, setFaculty] = useState(user.faculty || ACADEMIC_STRUCTURE[0].name);
+  const [department, setDepartment] = useState(
+    user.department || getDepartmentsForFaculty(user.faculty || ACADEMIC_STRUCTURE[0].name)[0] || ""
+  );
   const [password, setPassword] = useState("");
   const [saving, setSaving] = useState(false);
 
+  const handleFacultyChange = (newFac: string) => {
+    setFaculty(newFac);
+    const depts = getDepartmentsForFaculty(newFac);
+    setDepartment(depts[0] || "");
+  };
+
   const handleSave = async () => {
     setSaving(true);
-    await onSave(user.id, role, password);
+    await onSave(user.id, role, password, faculty, department);
     setSaving(false);
   };
 
@@ -151,6 +165,32 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
             {user.id === currentAdminId && (
               <p className="text-[10px] text-[#784D28] font-bold mt-1">You cannot change your own admin role.</p>
             )}
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">Faculty / School</label>
+            <select
+              value={faculty}
+              onChange={(e) => handleFacultyChange(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black"
+            >
+              {ACADEMIC_STRUCTURE.map((f) => (
+                <option key={f.name} value={f.name}>{f.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">Department</label>
+            <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black"
+            >
+              {getDepartmentsForFaculty(faculty).map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -288,8 +328,10 @@ export function AdminDashboardClient({
 
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState("ALL");
+  const [userDeptFilter, setUserDeptFilter] = useState("ALL");
   const [courseSearch, setCourseSearch] = useState("");
   const [coursePublishedFilter, setCoursePublishedFilter] = useState("ALL");
+  const [courseDeptFilter, setCourseDeptFilter] = useState("ALL");
 
   const [editUser, setEditUser] = useState<UserItem | null>(null);
   const [deleteUser, setDeleteUser] = useState<UserItem | null>(null);
@@ -298,10 +340,12 @@ export function AdminDashboardClient({
   const [actionLoading, setActionLoading] = useState(false);
 
   /* ─── Handlers ─────────────────────────────────────── */
-  const handleUpdateUser = async (userId: string, role: string, newPassword: string) => {
+  const handleUpdateUser = async (userId: string, role: string, newPassword: string, faculty?: string, department?: string) => {
     const payload: any = { userId };
     if (role) payload.role = role;
-    if (newPassword.trim()) payload.newPassword = newPassword.trim();
+    if (newPassword?.trim()) payload.newPassword = newPassword.trim();
+    if (faculty !== undefined) payload.faculty = faculty;
+    if (department !== undefined) payload.department = department;
     try {
       const res = await fetch("/api/admin/users", {
         method: "PATCH",
@@ -310,7 +354,7 @@ export function AdminDashboardClient({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      setUsers((p) => p.map((u) => u.id === userId ? { ...u, role: data.user.role } : u));
+      setUsers((p) => p.map((u) => u.id === userId ? { ...u, role: data.user.role, faculty: data.user.faculty, department: data.user.department } : u));
       setEditUser(null);
       success("User updated successfully.");
     } catch (e: any) {
@@ -390,24 +434,29 @@ export function AdminDashboardClient({
     return users.filter((u) => {
       const matchesSearch = !userSearch.trim() ||
         u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
-        u.email.toLowerCase().includes(userSearch.toLowerCase());
+        u.email.toLowerCase().includes(userSearch.toLowerCase()) ||
+        (u.department && u.department.toLowerCase().includes(userSearch.toLowerCase())) ||
+        (u.faculty && u.faculty.toLowerCase().includes(userSearch.toLowerCase()));
       const matchesRole = userRoleFilter === "ALL" || u.role === userRoleFilter;
-      return matchesSearch && matchesRole;
+      const matchesDept = userDeptFilter === "ALL" || u.department === userDeptFilter;
+      return matchesSearch && matchesRole && matchesDept;
     });
-  }, [users, userSearch, userRoleFilter]);
+  }, [users, userSearch, userRoleFilter, userDeptFilter]);
 
   const filteredCourses = useMemo(() => {
     return courses.filter((c) => {
       const matchesSearch = !courseSearch.trim() ||
         c.title.toLowerCase().includes(courseSearch.toLowerCase()) ||
-        c.tutor.name.toLowerCase().includes(courseSearch.toLowerCase());
+        c.tutor.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
+        (c.department && c.department.toLowerCase().includes(courseSearch.toLowerCase()));
       const matchesPub =
         coursePublishedFilter === "ALL" ||
         (coursePublishedFilter === "PUBLISHED" && c.published) ||
         (coursePublishedFilter === "DRAFT" && !c.published);
-      return matchesSearch && matchesPub;
+      const matchesDept = courseDeptFilter === "ALL" || c.department === courseDeptFilter;
+      return matchesSearch && matchesPub && matchesDept;
     });
-  }, [courses, courseSearch, coursePublishedFilter]);
+  }, [courses, courseSearch, coursePublishedFilter, courseDeptFilter]);
 
   return (
     <div className="min-h-screen bg-[#FBFBFB] text-black">
@@ -839,28 +888,43 @@ export function AdminDashboardClient({
         {/* USERS TAB */}
         {activeTab === "users" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-3xl border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-sm">
-              <div className="relative flex-1 w-full">
+            <div className="bg-white rounded-3xl border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-sm flex-wrap">
+              <div className="relative flex-1 min-w-[220px] w-full">
                 <FiSearch className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Search users by name or email..."
+                  placeholder="Search users by name, email, or department..."
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
                 />
               </div>
 
-              <select
-                value={userRoleFilter}
-                onChange={(e) => setUserRoleFilter(e.target.value)}
-                className="px-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
-              >
-                <option value="ALL">All Roles ({users.length})</option>
-                <option value="STUDENT">Students ({metrics.totalStudents})</option>
-                <option value="TUTOR">Instructors ({metrics.totalTutors})</option>
-                <option value="ADMIN">Superadmins</option>
-              </select>
+              <div className="flex items-center gap-2 flex-wrap">
+                <select
+                  value={userRoleFilter}
+                  onChange={(e) => setUserRoleFilter(e.target.value)}
+                  className="px-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
+                >
+                  <option value="ALL">All Roles ({users.length})</option>
+                  <option value="STUDENT">Students ({metrics.totalStudents})</option>
+                  <option value="TUTOR">Instructors ({metrics.totalTutors})</option>
+                  <option value="ADMIN">Superadmins</option>
+                </select>
+
+                <select
+                  value={userDeptFilter}
+                  onChange={(e) => setUserDeptFilter(e.target.value)}
+                  className="px-3.5 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
+                >
+                  <option value="ALL">All Departments</option>
+                  {ACADEMIC_STRUCTURE.flatMap((f) => f.departments).map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
@@ -869,6 +933,7 @@ export function AdminDashboardClient({
                   <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
                     <th className="p-4">User</th>
                     <th className="p-4">Role</th>
+                    <th className="p-4">Department &amp; School</th>
                     <th className="p-4">Enrollments</th>
                     <th className="p-4">Submissions</th>
                     <th className="p-4">Registered</th>
@@ -885,6 +950,20 @@ export function AdminDashboardClient({
                           <p className="text-[10px] text-neutral-500">{u.email}</p>
                         </td>
                         <td className="p-4"><RoleBadge role={u.role} /></td>
+                        <td className="p-4">
+                          {u.department ? (
+                            <div>
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200 inline-block truncate max-w-[190px]">
+                                {u.department}
+                              </span>
+                              <span className="text-[10px] text-neutral-400 block truncate max-w-[190px] mt-0.5">
+                                {u.faculty}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-neutral-400 italic text-[11px]">Unassigned</span>
+                          )}
+                        </td>
                         <td className="p-4 text-black font-bold">{u._count.enrollments}</td>
                         <td className="p-4 text-black font-bold">{u._count.submissions}</td>
                         <td className="p-4 text-neutral-500">{formatDate(u.createdAt)}</td>
@@ -920,12 +999,57 @@ export function AdminDashboardClient({
         {/* COURSES TAB */}
         {activeTab === "courses" && (
           <div className="space-y-4">
+            <div className="bg-white rounded-3xl border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-sm flex-wrap">
+              <div className="relative flex-1 min-w-[220px] w-full">
+                <FiSearch className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search courses by title, instructor, or department..."
+                  value={courseSearch}
+                  onChange={(e) => setCourseSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 flex-wrap">
+                <select
+                  value={coursePublishedFilter}
+                  onChange={(e) => setCoursePublishedFilter(e.target.value)}
+                  className="px-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
+                >
+                  <option value="ALL">All Status ({courses.length})</option>
+                  <option value="PUBLISHED">Published ({metrics.publishedCourses})</option>
+                  <option value="DRAFT">Drafts ({metrics.totalCourses - metrics.publishedCourses})</option>
+                </select>
+
+                <select
+                  value={courseDeptFilter}
+                  onChange={(e) => setCourseDeptFilter(e.target.value)}
+                  className="px-3.5 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
+                >
+                  <option value="ALL">All Departments</option>
+                  {ACADEMIC_STRUCTURE.flatMap((f) => f.departments).map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredCourses.map((c) => (
                 <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-4 flex flex-col justify-between">
                   <div className="space-y-2">
-                    <div className="flex items-start justify-between">
-                      <span className="text-[10px] font-bold text-[#784D28] uppercase">{c.category} · {c.level}</span>
+                    <div className="flex items-start justify-between flex-wrap gap-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {c.department && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                            {c.department}
+                          </span>
+                        )}
+                        <span className="text-[10px] font-bold text-[#784D28] uppercase">{c.faculty || c.category} · {c.level}</span>
+                      </div>
                       <span className="font-bold text-base text-black">${c.price.toFixed(2)}</span>
                     </div>
                     <h4 className="font-bold text-base text-black">{c.title}</h4>
@@ -971,8 +1095,14 @@ export function AdminDashboardClient({
               <tbody className="divide-y divide-neutral-100">
                 {enrollments.map((e) => (
                   <tr key={e.id} className="hover:bg-neutral-50">
-                    <td className="p-4 font-bold text-black">{e.student.name}</td>
-                    <td className="p-4 text-[#784D28] font-bold">{e.course.title}</td>
+                    <td className="p-4">
+                      <p className="font-bold text-black">{e.student.name}</p>
+                      <p className="text-[10px] text-neutral-500">{e.student.department || e.student.email}</p>
+                    </td>
+                    <td className="p-4">
+                      <p className="text-[#784D28] font-bold">{e.course.title}</p>
+                      <p className="text-[10px] text-neutral-500">{e.course.department || e.course.category}</p>
+                    </td>
                     <td className="p-4 font-bold text-black">${e.course.price.toFixed(2)}</td>
                     <td className="p-4 text-neutral-500">{formatDate(e.enrolledAt)}</td>
                     <td className="p-4">
