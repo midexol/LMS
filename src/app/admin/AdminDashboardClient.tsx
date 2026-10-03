@@ -283,6 +283,7 @@ export function AdminDashboardClient({
 
   const [users, setUsers] = useState(initialUsers);
   const [courses, setCourses] = useState(initialCourses);
+  const [enrollments, setEnrollments] = useState(initialEnrollments);
   const [submissions, setSubmissions] = useState(initialSubmissions);
 
   const [userSearch, setUserSearch] = useState("");
@@ -520,7 +521,7 @@ export function AdminDashboardClient({
             { id: "overview", label: "Dashboard & Analytics", icon: FiBarChart2 },
             { id: "users", label: "Users & Roles", count: users.length, icon: FiUsers },
             { id: "courses", label: "Courses Oversight", count: courses.length, icon: FiBookOpen },
-            { id: "enrollments", label: "Enrollment Audit", count: initialEnrollments.length, icon: FiAward },
+            { id: "enrollments", label: "Enrollment Audit", count: enrollments.length, icon: FiAward },
             { id: "submissions", label: "Submissions & Grades", count: submissions.length, icon: FiActivity },
           ].map((tab) => {
             const Icon = tab.icon;
@@ -919,7 +920,7 @@ export function AdminDashboardClient({
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-100">
-                {initialEnrollments.map((e) => (
+                {enrollments.map((e) => (
                   <tr key={e.id} className="hover:bg-neutral-50">
                     <td className="p-4 font-bold text-black">{e.student.name}</td>
                     <td className="p-4 text-[#784D28] font-bold">{e.course.title}</td>
