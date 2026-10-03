@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   FiChevronDown, FiChevronUp, FiMenu, FiX, FiCheck,
-  FiArrowRight, FiMail, FiPhone, FiCompass
+  FiArrowRight
 } from "react-icons/fi";
 
 export function BbLogo({ className = "h-8 w-auto", color = "currentColor" }: { className?: string; color?: string }) {
@@ -75,18 +75,18 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
 
   return (
     <>
-      <div ref={navRef} className="sticky top-0 z-50 transition-colors duration-300">
+      <div ref={navRef} className="sticky top-0 z-50 transition-colors duration-200">
         {/* ───────────── TOP UTILITY BAR (Students, Community & Support) ───────────── */}
         <div className={`border-b transition-colors duration-200 ${
           isDarkActive
-            ? "bg-[#0f2d23] border-[#184436] text-neutral-300"
-            : "bg-white border-neutral-100 text-neutral-600"
+            ? "bg-black border-neutral-900 text-neutral-400"
+            : "bg-white border-neutral-200 text-neutral-600"
         }`}>
           <div className="max-w-7xl mx-auto px-6 h-9 flex items-center justify-end gap-6 text-xs font-medium">
             <Link
               href={currentUser?.role === "STUDENT" ? "/my-courses" : "/login"}
               className={`hover:underline transition-colors ${
-                isDarkActive ? "text-neutral-200 hover:text-white" : "text-neutral-700 hover:text-black font-semibold"
+                isDarkActive ? "text-neutral-300 hover:text-white" : "text-neutral-700 hover:text-black font-semibold"
               }`}
             >
               Students
@@ -94,7 +94,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
             <button
               onClick={() => setContactModalOpen(true)}
               className={`hover:underline transition-colors ${
-                isDarkActive ? "text-neutral-300 hover:text-white" : "text-neutral-600 hover:text-black"
+                isDarkActive ? "text-neutral-400 hover:text-white" : "text-neutral-600 hover:text-black"
               }`}
             >
               Community &amp; Support
@@ -103,7 +103,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
               <button
                 onClick={handleLogout}
                 className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                  isDarkActive ? "text-neutral-400 hover:text-white" : "text-neutral-400 hover:text-red-600"
+                  isDarkActive ? "text-neutral-400 hover:text-white" : "text-neutral-400 hover:text-black"
                 }`}
               >
                 Sign Out
@@ -112,11 +112,11 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
           </div>
         </div>
 
-        {/* ───────────── MAIN NAVBAR HEADER ───────────── */}
+        {/* ───────────── MAIN NAVBAR HEADER (BLACK & WHITE) ───────────── */}
         <header
-          className={`transition-colors duration-300 border-b ${
+          className={`transition-colors duration-200 border-b ${
             isDarkActive
-              ? "bg-[#13382c] border-[#1a493a] text-white"
+              ? "bg-black border-neutral-800 text-white"
               : "bg-white border-neutral-200 text-neutral-900"
           }`}
         >
@@ -126,7 +126,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
               <Link href="/" className="flex items-center gap-3 group" onClick={() => setActiveMenu(null)}>
                 <BbLogo
                   className="h-9 w-auto transition-transform group-hover:scale-105 duration-200"
-                  color={isDarkActive ? "#ffffff" : "#13382c"}
+                  color={isDarkActive ? "#ffffff" : "#000000"}
                 />
               </Link>
 
@@ -137,9 +137,9 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   onClick={() => setActiveMenu(isSolutionsOpen ? null : "solutions")}
                   className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 transition-all ${
                     isSolutionsOpen
-                      ? "bg-[#1f4a3b] text-white shadow-inner"
+                      ? "bg-neutral-800 text-white shadow-inner"
                       : isDarkActive
-                      ? "text-neutral-200 hover:text-white hover:bg-white/10"
+                      ? "text-neutral-300 hover:text-white hover:bg-neutral-900"
                       : "text-neutral-800 hover:text-black hover:bg-neutral-100"
                   }`}
                   aria-expanded={isSolutionsOpen}
@@ -153,9 +153,9 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   onClick={() => setActiveMenu(isResourcesOpen ? null : "resources")}
                   className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 transition-all ${
                     isResourcesOpen
-                      ? "bg-[#1f4a3b] text-white shadow-inner"
+                      ? "bg-neutral-800 text-white shadow-inner"
                       : isDarkActive
-                      ? "text-neutral-200 hover:text-white hover:bg-white/10"
+                      ? "text-neutral-300 hover:text-white hover:bg-neutral-900"
                       : "text-neutral-800 hover:text-black hover:bg-neutral-100"
                   }`}
                   aria-expanded={isResourcesOpen}
@@ -169,9 +169,9 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   onClick={() => setActiveMenu(isCompanyOpen ? null : "company")}
                   className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 transition-all ${
                     isCompanyOpen
-                      ? "bg-[#1f4a3b] text-white shadow-inner"
+                      ? "bg-neutral-800 text-white shadow-inner"
                       : isDarkActive
-                      ? "text-neutral-200 hover:text-white hover:bg-white/10"
+                      ? "text-neutral-300 hover:text-white hover:bg-neutral-900"
                       : "text-neutral-800 hover:text-black hover:bg-neutral-100"
                   }`}
                   aria-expanded={isCompanyOpen}
@@ -188,8 +188,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                 onClick={() => setContactModalOpen(true)}
                 className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                   isDarkActive
-                    ? "border border-white/80 text-white hover:bg-white/10"
-                    : "border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white"
+                    ? "border border-white text-white hover:bg-white/10"
+                    : "border border-black text-black hover:bg-black hover:text-white"
                 }`}
               >
                 Contact Us
@@ -200,8 +200,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
                   className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                     isDarkActive
-                      ? "bg-white text-[#13382c] hover:bg-neutral-100"
-                      : "bg-[#13382c] text-white hover:bg-[#0e2a21]"
+                      ? "bg-white text-black hover:bg-neutral-200"
+                      : "bg-black text-white hover:bg-neutral-800"
                   }`}
                   onClick={() => setActiveMenu(null)}
                 >
@@ -212,8 +212,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   href="/login"
                   className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                     isDarkActive
-                      ? "bg-white text-[#13382c] hover:bg-neutral-100"
-                      : "bg-[#13382c] text-white hover:bg-[#0e2a21]"
+                      ? "bg-white text-black hover:bg-neutral-200"
+                      : "bg-black text-white hover:bg-neutral-800"
                   }`}
                   onClick={() => setActiveMenu(null)}
                 >
@@ -234,14 +234,14 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
             </button>
           </div>
 
-          {/* ───────────── SOLUTIONS MEGA MENU DROPDOWN (EXACT BLACKBOARD REPLICA) ───────────── */}
+          {/* ───────────── SOLUTIONS MEGA MENU DROPDOWN (PURE BLACK & WHITE + WARM ACCENT) ───────────── */}
           {isSolutionsOpen && (
-            <div className="bg-[#13382c] text-white border-t border-[#1a493a] shadow-2xl py-12 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="bg-black text-white border-t border-neutral-800 shadow-2xl py-12 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
                 {/* Column 1: By Industry */}
                 <div className="md:col-span-3 space-y-6">
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-300 mb-4">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-4">
                       By Industry
                     </h3>
                     <ul className="space-y-2 text-sm">
@@ -250,8 +250,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                           onClick={() => setActiveIndustry("higher-ed")}
                           className={`w-full text-left py-1.5 transition-colors ${
                             activeIndustry === "higher-ed"
-                              ? "border-l-2 border-[#2cd5a4] text-white pl-3 font-semibold"
-                              : "text-neutral-300 hover:text-white pl-3 font-normal"
+                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
+                              : "text-neutral-400 hover:text-white pl-3 font-normal"
                           }`}
                         >
                           Higher Ed
@@ -262,8 +262,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                           onClick={() => setActiveIndustry("government")}
                           className={`w-full text-left py-1.5 transition-colors ${
                             activeIndustry === "government"
-                              ? "border-l-2 border-[#2cd5a4] text-white pl-3 font-semibold"
-                              : "text-neutral-300 hover:text-white pl-3 font-normal"
+                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
+                              : "text-neutral-400 hover:text-white pl-3 font-normal"
                           }`}
                         >
                           Government
@@ -274,8 +274,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                           onClick={() => setActiveIndustry("workforce")}
                           className={`w-full text-left py-1.5 transition-colors ${
                             activeIndustry === "workforce"
-                              ? "border-l-2 border-[#2cd5a4] text-white pl-3 font-semibold"
-                              : "text-neutral-300 hover:text-white pl-3 font-normal"
+                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
+                              : "text-neutral-400 hover:text-white pl-3 font-normal"
                           }`}
                         >
                           Workforce
@@ -286,8 +286,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                           onClick={() => setActiveIndustry("k-12")}
                           className={`w-full text-left py-1.5 transition-colors ${
                             activeIndustry === "k-12"
-                              ? "border-l-2 border-[#2cd5a4] text-white pl-3 font-semibold"
-                              : "text-neutral-300 hover:text-white pl-3 font-normal"
+                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
+                              : "text-neutral-400 hover:text-white pl-3 font-normal"
                           }`}
                         >
                           K-12
@@ -296,8 +296,8 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                     </ul>
                   </div>
 
-                  <div className="pt-4 border-t border-white/10 space-y-3">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-300">
+                  <div className="pt-4 border-t border-neutral-800 space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-400">
                       Explore
                     </h4>
                     <ul className="space-y-2 text-sm">
@@ -305,7 +305,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                         <Link
                           href="/courses"
                           onClick={() => setActiveMenu(null)}
-                          className="text-neutral-200 hover:text-white transition-colors block py-1 font-medium"
+                          className="text-neutral-300 hover:text-white transition-colors block py-1 font-medium"
                         >
                           All Solutions
                         </Link>
@@ -314,7 +314,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                         <a
                           href="#how-it-works"
                           onClick={() => setActiveMenu(null)}
-                          className="text-neutral-200 hover:text-white transition-colors block py-1 font-medium"
+                          className="text-neutral-300 hover:text-white transition-colors block py-1 font-medium"
                         >
                           Services
                         </a>
@@ -328,7 +328,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   <h3 className="text-sm font-bold text-white tracking-wide">
                     Learning Solutions
                   </h3>
-                  <ul className="space-y-3 text-sm text-neutral-200">
+                  <ul className="space-y-3 text-sm text-neutral-300">
                     <li>
                       <Link
                         href="/courses"
@@ -392,7 +392,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                     <h3 className="text-sm font-bold text-white tracking-wide mb-4">
                       Accessibility Solutions
                     </h3>
-                    <ul className="space-y-3 text-sm text-neutral-200">
+                    <ul className="space-y-3 text-sm text-neutral-300">
                       <li>
                         <a
                           href="#campus-life"
@@ -409,7 +409,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                     <h3 className="text-sm font-bold text-white tracking-wide mb-4">
                       Analytics Solutions
                     </h3>
-                    <ul className="space-y-3 text-sm text-neutral-200">
+                    <ul className="space-y-3 text-sm text-neutral-300">
                       <li>
                         <a
                           href="#instructors"
@@ -428,7 +428,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                   <h3 className="text-sm font-bold text-white tracking-wide">
                     Evidence Solutions
                   </h3>
-                  <ul className="space-y-3 text-sm text-neutral-200">
+                  <ul className="space-y-3 text-sm text-neutral-300">
                     <li>
                       <a
                         href="#how-it-works"
@@ -451,7 +451,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                       <div className="font-semibold text-white">
                         Blackboard Institutional Effectiveness
                       </div>
-                      <ul className="pl-3 mt-2 space-y-2 border-l border-white/20 text-neutral-300 text-xs">
+                      <ul className="pl-3 mt-2 space-y-2 border-l border-neutral-700 text-neutral-400 text-xs">
                         <li>
                           <a
                             href="#instructors"
@@ -496,49 +496,49 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
             </div>
           )}
 
-          {/* ───────────── RESOURCES DROPDOWN ───────────── */}
+          {/* ───────────── RESOURCES DROPDOWN (BLACK & WHITE) ───────────── */}
           {isResourcesOpen && (
-            <div className="bg-[#13382c] text-white border-t border-[#1a493a] shadow-2xl py-10 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="bg-black text-white border-t border-neutral-800 shadow-2xl py-10 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Educator Resources</h3>
-                  <p className="text-xs text-neutral-300">Teaching best practices, syllabus blueprints, and AI rubric guidelines.</p>
+                  <p className="text-xs text-neutral-400">Teaching best practices, syllabus blueprints, and AI rubric guidelines.</p>
                   <Link
                     href="/instructor/login"
                     onClick={() => setActiveMenu(null)}
-                    className="text-xs text-[#2cd5a4] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
                   >
                     Instructor Studio <FiArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Student Guides</h3>
-                  <p className="text-xs text-neutral-300">How single active course enrollments and AI auto-grading work.</p>
+                  <p className="text-xs text-neutral-400">How single active course enrollments and AI auto-grading work.</p>
                   <a
                     href="#how-it-works"
                     onClick={() => setActiveMenu(null)}
-                    className="text-xs text-[#2cd5a4] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
                   >
                     View Pedagogical Model <FiArrowRight className="w-3 h-3" />
                   </a>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Curriculum Directory</h3>
-                  <p className="text-xs text-neutral-300">Browse university-grade active modules and accredited coursework.</p>
+                  <p className="text-xs text-neutral-400">Browse university-grade active modules and accredited coursework.</p>
                   <Link
                     href="/courses"
                     onClick={() => setActiveMenu(null)}
-                    className="text-xs text-[#2cd5a4] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
                   >
                     Browse Catalog <FiArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Help &amp; Documentation</h3>
-                  <p className="text-xs text-neutral-300">Need assistance? Reach our 24/7 academic support helpdesk.</p>
+                  <p className="text-xs text-neutral-400">Need assistance? Reach our 24/7 academic support helpdesk.</p>
                   <button
                     onClick={() => { setActiveMenu(null); setContactModalOpen(true); }}
-                    className="text-xs text-[#2cd5a4] hover:underline font-bold inline-flex items-center gap-1"
+                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
                   >
                     Contact Support <FiArrowRight className="w-3 h-3" />
                   </button>
@@ -547,27 +547,27 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
             </div>
           )}
 
-          {/* ───────────── COMPANY DROPDOWN ───────────── */}
+          {/* ───────────── COMPANY DROPDOWN (BLACK & WHITE) ───────────── */}
           {isCompanyOpen && (
-            <div className="bg-[#13382c] text-white border-t border-[#1a493a] shadow-2xl py-10 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="bg-black text-white border-t border-neutral-800 shadow-2xl py-10 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">About Blackboard &amp; Academia</h3>
-                  <p className="text-xs text-neutral-300">Building authentic collegiate digital environments for deep immersion and rigor.</p>
-                  <a href="#campus-life" onClick={() => setActiveMenu(null)} className="text-xs text-[#2cd5a4] hover:underline font-bold">Campus Evolution →</a>
+                  <p className="text-xs text-neutral-400">Building authentic collegiate digital environments for deep immersion and rigor.</p>
+                  <a href="#campus-life" onClick={() => setActiveMenu(null)} className="text-xs text-white hover:text-neutral-300 font-bold underline underline-offset-4">Campus Evolution →</a>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Academic Leadership</h3>
-                  <p className="text-xs text-neutral-300">Advisory council comprising university deans, professors, and EdTech researchers.</p>
+                  <p className="text-xs text-neutral-400">Advisory council comprising university deans, professors, and EdTech researchers.</p>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Trust &amp; Security</h3>
-                  <p className="text-xs text-neutral-300">Enterprise data privacy, FERPA compliance, and secure AI evaluation sandboxes.</p>
+                  <p className="text-xs text-neutral-400">Enterprise data privacy, FERPA compliance, and secure AI evaluation sandboxes.</p>
                 </div>
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white">Superadmin Control</h3>
-                  <p className="text-xs text-neutral-300">Institutional control panel for user permissions and enrollment throttling.</p>
-                  <Link href="/admin/login" onClick={() => setActiveMenu(null)} className="text-xs text-[#2cd5a4] hover:underline font-bold">Admin Console →</Link>
+                  <p className="text-xs text-neutral-400">Institutional control panel for user permissions and enrollment throttling.</p>
+                  <Link href="/admin/login" onClick={() => setActiveMenu(null)} className="text-xs text-white hover:text-neutral-300 font-bold underline underline-offset-4">Admin Console →</Link>
                 </div>
               </div>
             </div>
@@ -576,10 +576,10 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
 
         {/* ───────────── MOBILE ACCORDION MENU ───────────── */}
         {mobileOpen && (
-          <div className="md:hidden bg-[#13382c] text-white px-6 py-6 space-y-5 border-t border-white/10 shadow-2xl max-h-[85vh] overflow-y-auto">
+          <div className="md:hidden bg-black text-white px-6 py-6 space-y-5 border-t border-neutral-800 shadow-2xl max-h-[85vh] overflow-y-auto">
             <div>
               <p className="text-xs uppercase tracking-wider font-bold text-neutral-400 mb-2">Solutions</p>
-              <div className="space-y-2 pl-3 border-l border-white/20 text-sm">
+              <div className="space-y-2 pl-3 border-l border-neutral-700 text-sm">
                 <Link href="/courses" onClick={() => setMobileOpen(false)} className="block py-1">Blackboard LMS</Link>
                 <a href="#how-it-works" onClick={() => setMobileOpen(false)} className="block py-1">AVA &amp; Auto-Grading</a>
                 <a href="#campus-life" onClick={() => setMobileOpen(false)} className="block py-1">Blackboard Ally</a>
@@ -589,14 +589,14 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
 
             <div>
               <p className="text-xs uppercase tracking-wider font-bold text-neutral-400 mb-2">Resources</p>
-              <div className="space-y-2 pl-3 border-l border-white/20 text-sm">
+              <div className="space-y-2 pl-3 border-l border-neutral-700 text-sm">
                 <Link href="/courses" onClick={() => setMobileOpen(false)} className="block py-1">Course Catalog</Link>
                 <a href="#how-it-works" onClick={() => setMobileOpen(false)} className="block py-1">Pedagogical Standards</a>
                 <a href="#campus-life" onClick={() => setMobileOpen(false)} className="block py-1">Campus Life</a>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+            <div className="pt-4 border-t border-neutral-800 flex flex-col gap-3">
               <button
                 onClick={() => { setMobileOpen(false); setContactModalOpen(true); }}
                 className="w-full py-3 rounded-lg border border-white text-white text-xs font-bold uppercase tracking-wider text-center"
@@ -607,7 +607,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                 <Link
                   href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
                   onClick={() => setMobileOpen(false)}
-                  className="w-full py-3 rounded-lg bg-white text-[#13382c] text-xs font-bold uppercase tracking-wider text-center"
+                  className="w-full py-3 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-wider text-center"
                 >
                   Dashboard
                 </Link>
@@ -615,7 +615,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                 <Link
                   href="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full py-3 rounded-lg bg-white text-[#13382c] text-xs font-bold uppercase tracking-wider text-center"
+                  className="w-full py-3 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-wider text-center"
                 >
                   Sign In
                 </Link>
@@ -625,9 +625,9 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
         )}
       </div>
 
-      {/* ───────────── CONTACT US MODAL ───────────── */}
+      {/* ───────────── CONTACT US MODAL (BLACK & WHITE) ───────────── */}
       {contactModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-neutral-200 relative text-black space-y-6">
             <button
               onClick={() => { setContactModalOpen(false); setContactSubmitted(false); }}
@@ -639,16 +639,16 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
 
             {contactSubmitted ? (
               <div className="text-center py-8 space-y-4">
-                <div className="w-14 h-14 rounded-full bg-[#13382c] text-white flex items-center justify-center mx-auto shadow-md">
+                <div className="w-14 h-14 rounded-full bg-black text-white flex items-center justify-center mx-auto shadow-md">
                   <FiCheck className="w-7 h-7" />
                 </div>
                 <h3 className="font-heading font-bold text-2xl text-black">Inquiry Received</h3>
                 <p className="text-sm text-neutral-600 max-w-sm mx-auto leading-relaxed">
-                  Thank you for reaching out to Blackboard LMS. An academic representative will connect with your institution within 1 business day.
+                  Thank you for reaching out. An academic representative will connect with your institution within 1 business day.
                 </p>
                 <button
                   onClick={() => { setContactModalOpen(false); setContactSubmitted(false); }}
-                  className="px-8 py-3 rounded-full bg-[#13382c] text-white font-bold text-xs uppercase tracking-wider shadow-sm hover:bg-[#0e2a21]"
+                  className="px-8 py-3 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider shadow-sm hover:bg-neutral-800"
                 >
                   Close Window
                 </button>
@@ -657,11 +657,11 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
               <>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <BbLogo className="h-6 w-auto" color="#13382c" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#13382c]">Contact Academic Team</span>
+                    <BbLogo className="h-6 w-auto" color="#000000" />
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Academic Inquiries</span>
                   </div>
                   <h3 className="font-heading font-bold text-2xl text-black tracking-tight">Connect with Us</h3>
-                  <p className="text-xs text-neutral-500">Discover how Blackboard LMS transforms institutional curriculum delivery.</p>
+                  <p className="text-xs text-neutral-500">Discover how our LMS transforms institutional curriculum delivery.</p>
                 </div>
 
                 <form
@@ -677,7 +677,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                       type="text"
                       required
                       placeholder="Dr. Eleanor Vance"
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#13382c]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black"
                     />
                   </div>
 
@@ -687,7 +687,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                       type="email"
                       required
                       placeholder="e.vance@university.edu"
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#13382c]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black"
                     />
                   </div>
 
@@ -697,7 +697,7 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                       type="text"
                       required
                       placeholder="Cambridge Academic Council"
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#13382c]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black"
                     />
                   </div>
 
@@ -706,13 +706,13 @@ export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
                     <textarea
                       rows={3}
                       placeholder="Inquiring about syllabus AI benchmarks and LMS faculty deployment..."
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#13382c] resize-none"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-xl bg-[#13382c] hover:bg-[#0e2a21] text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                    className="w-full py-3.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all"
                   >
                     Submit Institutional Inquiry
                   </button>
