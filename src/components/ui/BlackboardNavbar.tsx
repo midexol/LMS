@@ -66,7 +66,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
   const navLinks = [
     { label: "Courses", href: "/courses", primary: true },
     { label: "Curriculum", href: "/#curriculum", primary: true },
-    { label: "Pedagogy", href: "/#how-it-works", primary: false },
+    { label: "How It Works", href: "/#how-it-works", primary: false },
     { label: "Campus Life", href: "/#campus-life", primary: false },
     { label: "Faculty", href: "/instructor/login", primary: true },
   ];
@@ -131,7 +131,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                   {currentUser.role}
                 </span>
                 <Link
-                  href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
+                  href={currentUser.role === "TUTOR" ? "/instructor" : "/my-courses"}
                   className="inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
                 >
                   Dashboard
@@ -210,7 +210,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
               {currentUser ? (
                 <>
                   <Link
-                    href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
+                    href={currentUser.role === "TUTOR" ? "/instructor" : "/my-courses"}
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full py-2.5 rounded-xl bg-white text-black font-semibold text-xs text-center shadow-sm"
                   >

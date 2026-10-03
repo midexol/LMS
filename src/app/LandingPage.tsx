@@ -183,7 +183,7 @@ export function LandingPage({
               Designed for serious learners. <span className="italic text-[#784D28]">Built for lasting mastery.</span>
             </h2>
             <p className="text-sm text-neutral-600 leading-relaxed">
-              Unlike generic online course marketplaces, Academia enforces pedagogical standards proven to drive retention. Students work closely with instructor-crafted rubrics, receive prompt feedback, and complete assignments that build upon one another.
+              Unlike generic online course marketplaces, Academia enforces rigorous academic standards proven to drive retention. Students work closely with instructor-crafted rubrics, receive prompt feedback, and complete assignments that build upon one another.
             </p>
 
             <div className="space-y-4 pt-2">
@@ -292,10 +292,10 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* ───────────────── 3 PILLARS PEDAGOGICAL MODEL ───────────────── */}
+      {/* ───────────────── 3 PILLARS ACADEMIC MODEL ───────────────── */}
       <section className="py-20 px-6 max-w-7xl mx-auto" id="how-it-works">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Pedagogical Architecture</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Academic Architecture</span>
           <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
             Structured learning designed for <span className="italic text-[#784D28]">true mastery.</span>
           </h2>
@@ -561,7 +561,7 @@ export function LandingPage({
             <div className="space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-widest text-white">Trust &amp; Standards</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">Pedagogical Framework</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">Curriculum Framework</a></li>
                 <li>
                   <button onClick={() => setPolicyModal("integrity")} className="hover:text-white transition-colors text-left">
                     Academic Integrity
@@ -673,7 +673,7 @@ export function LandingPage({
                 <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Scholarly Pledge</span>
                 <h3 className="font-heading font-bold text-2xl text-black">The Academia Honor Code</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 italic font-serif text-neutral-800 text-sm">
+                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 italic text-neutral-800 text-sm font-medium">
                     &ldquo;As a scholar at Academia, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
                   </div>
                   <ul className="space-y-1.5 list-disc pl-4 text-neutral-600">

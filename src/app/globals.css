@@ -2,50 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Ivyprestoheadline';
-  src: url('/fonts/IvyprestoHeadline-Regular.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Ivyprestoheadline';
-  src: url('/fonts/IvyprestoHeadline-RegularItalic.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Peridotpenormvf';
-  src: url('/fonts/PeridotPENormVF.woff2') format('woff2');
-  font-weight: 100 950;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
-  --font-family--heading: var(--font-sans), 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family--body: var(--font-sans), 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family--heading: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family--body: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --neu-bg: #ffffff;
-  --neu-text: #09090b;
+  --neu-text: #000000;
 }
 
-body {
+html, body {
   background-color: #ffffff;
-  color: #09090b;
+  color: #000000;
   font-family: var(--font-family--body);
   letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   min-height: 100vh;
 }
 
-h1, h2, h3, h4, .font-heading, .teachable-display {
+h1, h2, h3, h4, h5, h6, .font-heading, .teachable-display {
   font-family: var(--font-family--heading);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
 }
 
 /* Neumorphic white background utilities */

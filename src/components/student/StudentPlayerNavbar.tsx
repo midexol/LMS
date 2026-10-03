@@ -13,7 +13,7 @@ interface StudentPlayerNavbarProps {
 export function StudentPlayerNavbar({ courseTitle, category, studentName }: StudentPlayerNavbarProps) {
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   return (

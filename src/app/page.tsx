@@ -38,12 +38,7 @@ export default async function HomePage({ searchParams }: PageProps) {
         },
         orderBy: { createdAt: "desc" },
       }),
-      currentUser
-        ? prisma.enrollment.findFirst({
-            where: { studentId: currentUser.id, status: "ACTIVE" },
-            include: { course: true },
-          })
-        : null,
+      null,
     ]);
 
     return (

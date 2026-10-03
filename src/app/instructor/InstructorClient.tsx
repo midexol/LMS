@@ -62,34 +62,34 @@ export function InstructorClient({
 
   return (
     <div className="min-h-screen bg-[#FBFBFB] text-black flex">
-      {/* ───────────────── LEFT SIDEBAR (TEACHIO LAYOUT - BLACK & WHITE) ───────────────── */}
+      {/* ───────────────── LEFT SIDEBAR (COMMAND CENTER - RICH BLACK) ───────────────── */}
       <aside
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-neutral-200 p-5 flex flex-col justify-between transition-transform duration-300 shadow-sm lg:shadow-none`}
+        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-neutral-950 text-white border-r border-neutral-800 p-5 flex flex-col justify-between transition-transform duration-300 shadow-xl lg:shadow-none`}
       >
         <div className="space-y-6">
           {/* Logo & School Header */}
           <div className="flex items-center gap-3 px-1">
-            <div className="w-10 h-10 rounded-2xl bg-black flex items-center justify-center text-white shadow-sm">
-              <span className="font-bold text-lg text-white">A</span>
+            <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black shadow-sm">
+              <span className="font-black text-lg text-black">A</span>
             </div>
             <div>
-              <h2 className="font-bold text-base text-black leading-tight">Academia</h2>
-              <p className="text-[11px] text-neutral-500 font-medium">Instructor Studio</p>
+              <h2 className="font-bold text-base text-white leading-tight">Academia</h2>
+              <p className="text-[11px] text-neutral-400 font-medium">Instructor Studio</p>
             </div>
           </div>
 
           {/* TEACHING Section */}
           <div className="space-y-1">
-            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2">Teaching</p>
+            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Teaching</p>
             {[
               { id: "dashboard", label: "Dashboard", icon: FiGrid },
               { id: "classes", label: "My Classes", icon: FiBook, badge: tutorCourses.length },
               { id: "submissions", label: "Assignments", icon: FiFileText, badge: pendingSubmissions.length || 9 },
               { id: "students", label: "Students", icon: FiUsers },
               { id: "announcements", label: "Announcements", icon: FiMessageSquare, badge: 3 },
-              { id: "settings", label: "Settings & Profile", icon: FiSettings },
+              { id: "settings", label: "Settings", icon: FiSettings },
             ].map((item) => {
               const Icon = item.icon;
               const active = activeTab === item.id;
@@ -102,8 +102,8 @@ export function InstructorClient({
                   }}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
                     active
-                      ? "bg-black text-white shadow-sm"
-                      : "text-neutral-600 hover:text-black hover:bg-neutral-100"
+                      ? "bg-white text-black shadow-sm"
+                      : "text-neutral-400 hover:text-white hover:bg-neutral-900"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -113,7 +113,7 @@ export function InstructorClient({
                   {item.badge !== undefined && (
                     <span
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                        active ? "bg-white/20 text-white" : "bg-neutral-100 text-neutral-700 border border-neutral-200"
+                        active ? "bg-black text-white" : "bg-neutral-800 text-neutral-300 border border-neutral-700"
                       }`}
                     >
                       {item.badge}
@@ -124,42 +124,33 @@ export function InstructorClient({
             })}
           </div>
 
-          {/* WORKSPACE Section (No Landing Page) */}
+          {/* PLATFORM Section */}
           <div className="space-y-1">
-            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2">Platform</p>
+            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Platform</p>
             <Link
               href="/courses"
-              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-600 hover:text-black hover:bg-neutral-100 transition-all"
+              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all"
             >
-              <FiBook className="w-4 h-4 text-[#784D28]" />
+              <FiBook className="w-4 h-4 text-[#D4A373]" />
               <span>Course Catalog</span>
             </Link>
-            {currentUser?.role === "ADMIN" && (
-              <Link
-                href="/admin"
-                className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-white bg-black hover:bg-neutral-800 transition-all"
-              >
-                <FiShield className="w-4 h-4 text-[#D4A373]" />
-                <span>Superadmin Console</span>
-              </Link>
-            )}
           </div>
         </div>
 
         {/* Lower Sidebar Widgets */}
-        <div className="space-y-4 pt-4 border-t border-neutral-200">
+        <div className="space-y-4 pt-4 border-t border-neutral-800">
           {/* Attendance Widget */}
-          <div className="bg-neutral-50 rounded-2xl p-4 border border-neutral-200 space-y-2.5">
+          <div className="bg-neutral-900/90 rounded-2xl p-4 border border-neutral-800 space-y-2.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-black">Attendance Today</span>
-              <span className="text-[10px] text-neutral-500 font-semibold">28 present</span>
+              <span className="font-bold text-white">Attendance Today</span>
+              <span className="text-[10px] text-neutral-400 font-semibold">28 present</span>
             </div>
             <div className="flex items-center gap-1">
               {["AR", "MK", "TL", "+25"].map((avatar, i) => (
                 <div
                   key={i}
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white ${
-                    i === 0 ? "bg-black" : i === 1 ? "bg-[#784D28]" : i === 2 ? "bg-neutral-700" : "bg-neutral-400"
+                    i === 0 ? "bg-neutral-950 border border-neutral-700" : i === 1 ? "bg-[#784D28]" : i === 2 ? "bg-neutral-700" : "bg-neutral-800"
                   }`}
                 >
                   {avatar}
@@ -167,38 +158,39 @@ export function InstructorClient({
               ))}
             </div>
             <div className="space-y-1">
-              <div className="w-full bg-neutral-200 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#784D28] h-full rounded-full" style={{ width: "93%" }} />
+              <div className="w-full bg-neutral-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-[#D4A373] h-full rounded-full" style={{ width: "93%" }} />
               </div>
-              <p className="text-[10px] text-neutral-500">93% of Period 3 checked in</p>
+              <p className="text-[10px] text-neutral-400">93% of Period 3 checked in</p>
             </div>
           </div>
 
-          {/* Profile & Settings Button */}
-          <button
-            onClick={() => { setActiveTab("settings"); setSidebarOpen(false); }}
-            className={`w-full flex items-center gap-3 p-3 rounded-2xl border transition-all text-left ${
-              activeTab === "settings"
-                ? "bg-black text-white border-black shadow-sm"
-                : "bg-neutral-50 hover:bg-neutral-100 text-black border-neutral-200"
-            }`}
-          >
-            <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 border border-neutral-700">
-              {currentUser.name.charAt(0)}
+          {/* Instructor Identity Card with Direct Sign Out (NO redundant settings trigger) */}
+          <div className="bg-neutral-900/90 rounded-2xl p-3 border border-neutral-800 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-full bg-[#784D28] text-white flex items-center justify-center font-bold text-xs shrink-0">
+                {currentUser.name.charAt(0)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold text-white truncate">{currentUser.name}</p>
+                <p className="text-[10px] text-neutral-400 truncate">Instructor</p>
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold truncate">{currentUser.name}</p>
-              <p className="text-[10px] opacity-70 font-medium truncate">Settings &amp; Sign Out</p>
-            </div>
-            <FiSettings className="w-4 h-4 opacity-60 shrink-0" />
-          </button>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors shrink-0"
+              title="Sign Out"
+            >
+              <FiLogOut className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </aside>
 
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -220,7 +212,7 @@ export function InstructorClient({
             </div>
           </div>
 
-          {/* Search & Actions */}
+          {/* Actions */}
           <div className="flex items-center gap-3">
             <Link
               href="/courses"
@@ -229,29 +221,13 @@ export function InstructorClient({
               <FiBook className="w-3.5 h-3.5 text-[#784D28]" />
               <span>Course Catalog</span>
             </Link>
-            {currentUser?.role === "ADMIN" && (
-              <Link
-                href="/admin"
-                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-all shadow-sm"
-              >
-                <FiShield className="w-3.5 h-3.5 text-[#D4A373]" />
-                <span>Superadmin</span>
-              </Link>
-            )}
             <button
-              onClick={() => setActiveTab("settings")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
-                activeTab === "settings"
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-black border-neutral-200 hover:border-black"
-              }`}
-              title="Instructor Profile & Settings"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black text-white hover:bg-neutral-800 text-xs font-bold transition-all shadow-sm"
+              title="Sign Out"
             >
-              <div className="w-6 h-6 rounded-full bg-[#784D28] text-white flex items-center justify-center font-bold text-[10px]">
-                {currentUser.name.charAt(0)}
-              </div>
-              <span className="text-xs font-bold hidden sm:inline">{currentUser.name}</span>
-              <FiSettings className="w-3.5 h-3.5 opacity-70" />
+              <FiLogOut className="w-3.5 h-3.5 text-neutral-300" />
+              <span>Sign Out</span>
             </button>
           </div>
         </header>
@@ -341,10 +317,11 @@ export function InstructorClient({
               </div>
 
               {/* 3. VISUALIZATION ROW: MODERN CLASS PERFORMANCE & SVG RING DISTRIBUTION */}
+              {/* 3. VISUALIZATION ROW: MODERN CLASS PERFORMANCE & GRADE DISTRIBUTION */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left: Modern Class Performance Comparison */}
-                <div className="lg:col-span-2 bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-neutral-100">
+                {/* Left: Class Performance Comparison */}
+                <div className="lg:col-span-2 bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-100">
                     <div>
                       <h3 className="font-bold text-base text-black">Class Performance by Period</h3>
                       <p className="text-xs text-neutral-500">Benchmark score comparison against prior semester</p>
@@ -361,58 +338,97 @@ export function InstructorClient({
                     </div>
                   </div>
 
-                  {/* Dual Bar Visual Comparison with Background Tracks */}
-                  <div className="h-56 flex items-end justify-between gap-4 sm:gap-8 px-2 pt-2">
-                    {performanceBars.map((b) => (
-                      <div key={b.period} className="flex-1 flex flex-col items-center gap-3">
-                        <div className="w-full flex items-end justify-center gap-2 h-44 bg-neutral-50 rounded-2xl p-2 border border-neutral-100/60">
-                          {/* Current Term Bar */}
-                          <div className="relative group w-3.5 sm:w-4 flex flex-col justify-end h-full">
-                            <div
-                              className="w-full rounded-full bg-black hover:bg-neutral-800 transition-all duration-500"
-                              style={{ height: `${b.current}%` }}
-                            />
-                            {/* Hover tooltip */}
-                            <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black text-white text-[10px] font-bold py-0.5 px-1.5 rounded pointer-events-none whitespace-nowrap shadow-sm z-10">
-                              {b.current}%
-                            </div>
-                          </div>
-                          {/* Prior Term Bar */}
-                          <div className="relative group w-3.5 sm:w-4 flex flex-col justify-end h-full">
-                            <div
-                              className="w-full rounded-full bg-[#784D28] hover:bg-[#633E1F] transition-all duration-500"
-                              style={{ height: `${b.previous}%` }}
-                            />
-                            {/* Hover tooltip */}
-                            <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#784D28] text-white text-[10px] font-bold py-0.5 px-1.5 rounded pointer-events-none whitespace-nowrap shadow-sm z-10">
-                              {b.previous}%
-                            </div>
-                          </div>
-                        </div>
-                        <span className="text-xs font-bold text-neutral-600">{b.period}</span>
+                  {/* Summary Metric Ribbon */}
+                  <div className="grid grid-cols-3 gap-3 p-3.5 rounded-2xl bg-neutral-50 border border-neutral-100 text-center">
+                    <div>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Current Avg</span>
+                      <span className="text-base font-black text-black">87.5%</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Prior Avg</span>
+                      <span className="text-base font-black text-[#784D28]">82.0%</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Standard Threshold</span>
+                      <span className="text-base font-black text-neutral-800">70.0%</span>
+                    </div>
+                  </div>
+
+                  {/* Chart with Horizontal Reference Guidelines and Direct Visible Values */}
+                  <div className="relative pt-2">
+                    {/* Horizontal Reference Lines */}
+                    <div className="absolute inset-x-2 top-2 bottom-8 flex flex-col justify-between pointer-events-none z-0">
+                      <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
+                        <span className="text-[9px] font-mono text-neutral-400">100%</span>
                       </div>
-                    ))}
+                      <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
+                        <span className="text-[9px] font-mono text-neutral-400">75%</span>
+                      </div>
+                      <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
+                        <span className="text-[9px] font-mono text-neutral-400">50%</span>
+                      </div>
+                      <div className="border-b border-neutral-200 w-full flex items-center justify-end pr-1">
+                        <span className="text-[9px] font-mono text-neutral-400">0%</span>
+                      </div>
+                    </div>
+
+                    {/* Bars Grid */}
+                    <div className="h-56 flex items-end justify-between gap-3 sm:gap-6 px-4 relative z-10">
+                      {performanceBars.map((b) => (
+                        <div key={b.period} className="flex-1 flex flex-col items-center gap-1.5">
+                          {/* Visible Direct Value Display */}
+                          <div className="flex items-center gap-1 text-[11px] font-bold">
+                            <span className="text-black">{b.current}%</span>
+                            <span className="text-neutral-300">/</span>
+                            <span className="text-[#784D28]">{b.previous}%</span>
+                          </div>
+
+                          <div className="w-full flex items-end justify-center gap-2 h-40 bg-neutral-50/70 rounded-2xl p-1.5 border border-neutral-100">
+                            {/* Current Term Bar */}
+                            <div className="w-3.5 sm:w-5 flex flex-col justify-end h-full">
+                              <div
+                                className="w-full rounded-t-md bg-black transition-all duration-500 hover:brightness-125"
+                                style={{ height: `${b.current}%` }}
+                                title={`Current: ${b.current}%`}
+                              />
+                            </div>
+                            {/* Prior Term Bar */}
+                            <div className="w-3.5 sm:w-5 flex flex-col justify-end h-full">
+                              <div
+                                className="w-full rounded-t-md bg-[#784D28] transition-all duration-500 hover:brightness-125"
+                                style={{ height: `${b.previous}%` }}
+                                title={`Prior: ${b.previous}%`}
+                              />
+                            </div>
+                          </div>
+                          <span className="text-xs font-bold text-neutral-800">{b.period}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Right: Modern SVG Ring Distribution (FULLY DYNAMIC) */}
+                {/* Right: Grade Distribution Breakdown */}
                 <div className="bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
-                  <div className="pb-2 border-b border-neutral-100">
-                    <h3 className="font-bold text-base text-black">Grade Distribution</h3>
-                    <p className="text-xs text-neutral-500">Cohort performance across 70% threshold</p>
+                  <div className="pb-3 border-b border-neutral-100">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold text-base text-black">Grade Distribution</h3>
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/20">
+                        {gradeDistribution.pctA + gradeDistribution.pctB}% Passing
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-500 mt-1">Cohort performance across 70% threshold</p>
                   </div>
 
-                  {/* Clean Modern SVG Ring */}
-                  <div className="relative w-48 h-48 mx-auto flex items-center justify-center">
+                  {/* Clean SVG Donut with Clear Central Metric */}
+                  <div className="relative w-44 h-44 mx-auto flex items-center justify-center">
                     {(() => {
                       const dashA = Math.round((gradeDistribution.pctA / 100) * 239);
                       const dashB = Math.round((gradeDistribution.pctB / 100) * 239);
                       const dashC = Math.max(0, 239 - dashA - dashB);
                       return (
                         <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform">
-                          {/* Background Track */}
                           <circle cx="50" cy="50" r="38" stroke="#F4F4F5" strokeWidth="12" fill="none" />
-                          {/* Segment 1: A Range */}
                           <circle
                             cx="50"
                             cy="50"
@@ -423,7 +439,6 @@ export function InstructorClient({
                             strokeDashoffset="0"
                             fill="none"
                           />
-                          {/* Segment 2: B Range */}
                           <circle
                             cx="50"
                             cy="50"
@@ -434,7 +449,6 @@ export function InstructorClient({
                             strokeDashoffset={`-${dashA}`}
                             fill="none"
                           />
-                          {/* Segment 3: C/Below Range */}
                           <circle
                             cx="50"
                             cy="50"
@@ -448,34 +462,52 @@ export function InstructorClient({
                         </svg>
                       );
                     })()}
-                    <div className="absolute flex flex-col items-center justify-center">
-                      <span className="font-bold text-2xl text-black">{avgGradeLetter || "B+"}</span>
+                    <div className="absolute flex flex-col items-center justify-center text-center">
+                      <span className="font-black text-3xl text-black">{avgGradeLetter || "B+"}</span>
                       <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
+                      <span className="text-[10px] font-bold text-[#784D28] mt-0.5">88.4% Mean</span>
                     </div>
                   </div>
 
-                  {/* Clean Dynamic Segment Indicators */}
-                  <div className="space-y-2.5 text-sm">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-3 h-3 rounded-full bg-black" />
-                        <span className="text-neutral-700 font-medium">A Grade (90–100%)</span>
+                  {/* Clean Direct Breakdown Bars & Legend */}
+                  <div className="space-y-3 pt-2 border-t border-neutral-100">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-black flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
+                          Grade A (90–100%)
+                        </span>
+                        <span className="font-black text-black">{gradeDistribution.pctA}%</span>
                       </div>
-                      <span className="font-bold text-black">{gradeDistribution.pctA}%</span>
+                      <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+                        <div className="bg-black h-full rounded-full" style={{ width: `${gradeDistribution.pctA}%` }} />
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-3 h-3 rounded-full bg-[#784D28]" />
-                        <span className="text-neutral-700 font-medium">B Grade (80–89%)</span>
+
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-black flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                          Grade B (80–89%)
+                        </span>
+                        <span className="font-black text-[#784D28]">{gradeDistribution.pctB}%</span>
                       </div>
-                      <span className="font-bold text-black">{gradeDistribution.pctB}%</span>
+                      <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+                        <div className="bg-[#784D28] h-full rounded-full" style={{ width: `${gradeDistribution.pctB}%` }} />
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-3 h-3 rounded-full bg-[#D4D4D8]" />
-                        <span className="text-neutral-700 font-medium">C / Below (&lt; 80%)</span>
+
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-neutral-700 flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-neutral-400 inline-block" />
+                          Grade C / Threshold (&lt; 80%)
+                        </span>
+                        <span className="font-black text-neutral-700">{gradeDistribution.pctC}%</span>
                       </div>
-                      <span className="font-bold text-black">{gradeDistribution.pctC}%</span>
+                      <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+                        <div className="bg-neutral-400 h-full rounded-full" style={{ width: `${gradeDistribution.pctC}%` }} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -645,7 +677,7 @@ export function InstructorClient({
 
               {/* Studio Preferences */}
               <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-4">
-                <h3 className="font-bold text-base text-black">Pedagogical Studio Preferences</h3>
+                <h3 className="font-bold text-base text-black">Studio Preferences</h3>
                 <div className="divide-y divide-neutral-100 text-xs">
                   <div className="py-3 flex items-center justify-between">
                     <div>
