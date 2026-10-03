@@ -1,7 +1,7 @@
 import React from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Navbar } from "@/components/ui/Navbar";
+import { StudentPlayerNavbar } from "@/components/student/StudentPlayerNavbar";
 import { CoursePlayerClient } from "./CoursePlayerClient";
 import { notFound, redirect } from "next/navigation";
 
@@ -84,7 +84,11 @@ export default async function CoursePlayerPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white text-slate-800 pb-16">
-      <Navbar currentUser={currentUser} />
+      <StudentPlayerNavbar
+        courseTitle={course.title}
+        category={course.category}
+        studentName={currentUser.name}
+      />
       <CoursePlayerClient course={course} enrollment={enrollment} student={currentUser} />
     </div>
   );
