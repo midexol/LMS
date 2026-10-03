@@ -8,12 +8,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      String   @default("STUDENT") // "STUDENT" | "TUTOR" | "ADMIN"
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       String   @default("STUDENT") // "STUDENT" | "TUTOR" | "ADMIN"
+  faculty    String?  // School/Faculty
+  department String?  // Specific Department
+  createdAt  DateTime @default(now())
 
   enrollments       Enrollment[]
   submissions       Submission[]
@@ -28,6 +30,8 @@ model Course {
   title       String
   description String
   category    String   @default("General")
+  faculty     String?  // School/Faculty
+  department  String?  // Specific Department
   level       String   @default("Beginner") // "Beginner" | "Intermediate" | "Advanced"
   price       Float    @default(0)
   coverImage  String?

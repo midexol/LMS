@@ -532,7 +532,9 @@ export function InstructorClient({
                   {tutorCourses.map((c) => (
                     <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3">
                       <div className="flex items-start justify-between">
-                        <span className="text-[10px] font-bold text-[#784D28] uppercase">{c.category} · {c.level}</span>
+                        <span className="text-[10px] font-bold text-[#784D28] uppercase">
+                          {c.department ? `${c.department} · ` : ""}{c.level}
+                        </span>
                         <span className="font-bold text-sm text-black">${c.price.toFixed(2)}</span>
                       </div>
                       <h4 className="font-bold text-base text-black">{c.title}</h4>

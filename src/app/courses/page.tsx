@@ -8,9 +8,14 @@ export const revalidate = 0;
 export default async function CoursesCatalogPage() {
   const currentUser = await getCurrentUser();
 
+  const whereClause: any = { published: true };
+  if (currentUser?.role === "STUDENT" && currentUser.department) {
+    whereClause.department = currentUser.department;
+  }
+
   const [courses, activeEnrollment] = await Promise.all([
     prisma.course.findMany({
-      where: { published: true },
+      where: whereClause,
       include: {
         tutor: true,
         modules: { include: { lessons: true } },

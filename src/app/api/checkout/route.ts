@@ -42,6 +42,16 @@ export async function POST(req: Request) {
       );
     }
 
+    // STRICT CHECK: Department matching
+    if (currentUser.department && course.department && course.department !== currentUser.department) {
+      return NextResponse.json(
+        {
+          error: `Department Restriction: This course is only available to students in the ${course.department} department. You are enrolled under ${currentUser.department}.`,
+        },
+        { status: 403 }
+      );
+    }
+
     // Check if already enrolled (active or completed) in THIS course
     const existingEnrollment = await prisma.enrollment.findUnique({
       where: {

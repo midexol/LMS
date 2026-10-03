@@ -57,6 +57,12 @@ export default async function CoursePreviewPage({ params }: PageProps) {
       })
     : null;
 
+  const isWrongDepartment =
+    currentUser?.role === "STUDENT" &&
+    Boolean(currentUser.department) &&
+    Boolean(course.department) &&
+    course.department !== currentUser.department;
+
   return (
     <div className="min-h-screen bg-neutral-50 text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
@@ -83,8 +89,13 @@ export default async function CoursePreviewPage({ params }: PageProps) {
             )}
             <div className="relative text-white space-y-3 z-10">
               <div className="flex flex-wrap gap-2 items-center">
-                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-black shadow-sm">
-                  {course.category}
+                {course.department && (
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-black shadow-sm">
+                    {course.department}
+                  </span>
+                )}
+                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-neutral-700">
+                  {course.faculty || course.category}
                 </span>
                 <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-neutral-700">
                   {course.level}
@@ -195,6 +206,19 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                     Create Free Account
                   </Link>
                 </div>
+              ) : isWrongDepartment ? (
+                <div className="p-4 rounded-2xl bg-neutral-100 border border-neutral-200 text-black text-xs font-semibold space-y-2">
+                  <p className="font-bold">Department Restricted Course</p>
+                  <p className="text-neutral-600">
+                    This course is designated exclusively for <strong>{course.department}</strong>. You are currently registered under <strong>{currentUser.department}</strong>.
+                  </p>
+                  <Link
+                    href="/courses"
+                    className="block text-center py-2.5 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all"
+                  >
+                    View Your Department Courses
+                  </Link>
+                </div>
               ) : activeEnrollment && activeEnrollment.courseId !== course.id ? (
                 <div className="p-4 rounded-2xl bg-neutral-100 border border-neutral-200 text-black text-xs font-semibold space-y-2">
                   <p className="font-bold">Single Course Lock Active</p>
@@ -208,7 +232,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 </div>
               ) : (
                 <Link
-                  href="/"
+                  href="/courses"
                   className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
                   Enroll Now · ${course.price.toFixed(2)}

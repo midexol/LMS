@@ -6,8 +6,9 @@ import { Navbar } from "@/components/ui/Navbar";
 import Link from "next/link";
 import {
   FiUser, FiMail, FiBookOpen, FiAward, FiCheckCircle, FiArrowRight,
-  FiSave, FiLock, FiCheck, FiAlertCircle, FiEye, FiEyeOff,
+  FiSave, FiLock, FiCheck, FiAlertCircle, FiEye, FiEyeOff, FiCompass,
 } from "react-icons/fi";
+import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 
 interface ProfileClientProps {
   currentUser: any;
@@ -17,12 +18,22 @@ interface ProfileClientProps {
 
 export function ProfileClient({ currentUser, enrollments, submissions }: ProfileClientProps) {
   const [name, setName] = useState(currentUser.name || "");
+  const [faculty, setFaculty] = useState(currentUser.faculty || ACADEMIC_STRUCTURE[0].name);
+  const [department, setDepartment] = useState(
+    currentUser.department || (getDepartmentsForFaculty(currentUser.faculty || ACADEMIC_STRUCTURE[0].name)[0] ?? "")
+  );
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const handleFacultyChange = (newFac: string) => {
+    setFaculty(newFac);
+    const depts = getDepartmentsForFaculty(newFac);
+    setDepartment(depts[0] || "");
+  };
 
   const activeEnrollment = enrollments.find((e) => e.status === "ACTIVE");
   const completedEnrollments = enrollments.filter((e) => e.status === "COMPLETED");
@@ -62,7 +73,12 @@ export function ProfileClient({ currentUser, enrollments, submissions }: Profile
       const res = await fetch("/api/student/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, password: password || undefined }),
+        body: JSON.stringify({
+          name,
+          faculty,
+          department,
+          password: password || undefined,
+        }),
       });
 
       const data = await res.json();
@@ -100,6 +116,16 @@ export function ProfileClient({ currentUser, enrollments, submissions }: Profile
               <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1.5">
                 <FiMail className="w-3.5 h-3.5 text-[#784D28]" /> {currentUser.email}
               </p>
+              {currentUser.department && (
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-neutral-100 text-black text-[11px] font-bold border border-neutral-300">
+                    {currentUser.department}
+                  </span>
+                  <span className="text-[11px] text-neutral-400">
+                    ({currentUser.faculty})
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -223,6 +249,46 @@ export function ProfileClient({ currentUser, enrollments, submissions }: Profile
                 className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
               />
             </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">
+                  Faculty / School
+                </label>
+                <select
+                  value={faculty}
+                  onChange={(e) => handleFacultyChange(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black transition-all"
+                >
+                  {ACADEMIC_STRUCTURE.map((f) => (
+                    <option key={f.name} value={f.name}>
+                      {f.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">
+                  Department
+                </label>
+                <select
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black transition-all"
+                >
+                  {getDepartmentsForFaculty(faculty).map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <p className="text-[11px] text-neutral-500 italic">
+              Note: Changing your department adjusts which course curriculum catalog is accessible to you.
+            </p>
 
             <div className="pt-2 border-t border-neutral-200 space-y-3">
               <p className="text-xs font-bold text-neutral-700 flex items-center gap-1.5 uppercase tracking-wider">

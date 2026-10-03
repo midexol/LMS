@@ -10,13 +10,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized access." }, { status: 401 });
     }
 
-    const { name, password } = await req.json();
+    const { name, password, faculty, department } = await req.json();
 
     if (!name || name.trim().length === 0) {
       return NextResponse.json({ error: "Name cannot be empty." }, { status: 400 });
     }
 
     const updateData: any = { name: name.trim() };
+
+    if (faculty !== undefined) {
+      updateData.faculty = faculty ? faculty.trim() : null;
+    }
+    if (department !== undefined) {
+      updateData.department = department ? department.trim() : null;
+    }
 
     if (password && password.trim().length > 0) {
       if (password.trim().length < 6) {

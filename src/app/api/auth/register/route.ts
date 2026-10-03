@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password, role } = await req.json();
+    const { name, email, password, role, faculty, department } = await req.json();
 
     if (!name || name.trim().length === 0) {
       return NextResponse.json({ error: "Full name is required." }, { status: 400 });
@@ -46,6 +46,8 @@ export async function POST(req: Request) {
         email: email.toLowerCase().trim(),
         password: hashedPassword,
         role: role === "TUTOR" ? "TUTOR" : "STUDENT",
+        faculty: faculty?.trim() || null,
+        department: department?.trim() || null,
       },
     });
 

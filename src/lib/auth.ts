@@ -6,6 +6,8 @@ export interface SessionUser {
   name: string;
   email: string;
   role: "STUDENT" | "TUTOR" | "ADMIN";
+  faculty?: string | null;
+  department?: string | null;
 }
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
@@ -28,6 +30,8 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       name: user.name,
       email: user.email,
       role: user.role as "STUDENT" | "TUTOR" | "ADMIN",
+      faculty: user.faculty,
+      department: user.department,
     };
   } catch (error) {
     console.error("[AUTH ERROR]", error);

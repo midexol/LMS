@@ -7,6 +7,8 @@ import {
   FiAlertCircle, FiEye, FiEyeOff, FiCheck,
 } from "react-icons/fi";
 
+import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,11 +16,19 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<"STUDENT" | "TUTOR">("STUDENT");
+  const [faculty, setFaculty] = useState(ACADEMIC_STRUCTURE[0].name);
+  const [department, setDepartment] = useState(ACADEMIC_STRUCTURE[0].departments[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const pwMatch = confirmPassword.length > 0 && password === confirmPassword;
   const pwMismatch = confirmPassword.length > 0 && password !== confirmPassword;
+
+  const handleFacultyChange = (newFac: string) => {
+    setFaculty(newFac);
+    const depts = getDepartmentsForFaculty(newFac);
+    setDepartment(depts[0] || "");
+  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,13 +48,20 @@ export default function SignupPage() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          role,
+          faculty,
+          department,
+        }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed.");
 
-      window.location.href = "/my-courses";
+      window.location.href = role === "TUTOR" ? "/instructor" : "/my-courses";
     } catch (err: any) {
       setError(err.message || "Failed to create account.");
     } finally {
@@ -207,6 +224,45 @@ export default function SignupPage() {
               {pwMismatch && (
                 <p className="text-[11px] text-red-600 mt-1 font-semibold">Passwords do not match.</p>
               )}
+            </div>
+
+            {/* School / Faculty */}
+            <div className="space-y-1">
+              <label className="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider">
+                Faculty / School *
+              </label>
+              <select
+                value={faculty}
+                onChange={(e) => handleFacultyChange(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black transition-all"
+              >
+                {ACADEMIC_STRUCTURE.map((f) => (
+                  <option key={f.name} value={f.name}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Department */}
+            <div className="space-y-1">
+              <label className="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider">
+                Department *
+              </label>
+              <select
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black transition-all"
+              >
+                {getDepartmentsForFaculty(faculty).map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[10px] text-neutral-400">
+                You will exclusively see courses designated for this department.
+              </p>
             </div>
 
             <button

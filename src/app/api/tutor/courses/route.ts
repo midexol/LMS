@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Only tutors can create courses." }, { status: 403 });
     }
 
-    const { title, category, level, price, description, coverImage, modules } = await req.json();
+    const { title, category, faculty, department, level, price, description, coverImage, modules } = await req.json();
 
     if (!title?.trim() || !description?.trim()) {
       return NextResponse.json({ error: "Title and description are required." }, { status: 400 });
@@ -23,6 +23,8 @@ export async function POST(req: Request) {
       data: {
         title: title.trim(),
         category: category || "General",
+        faculty: faculty?.trim() || null,
+        department: department?.trim() || null,
         level: level || "Beginner",
         price: parseFloat(price) || 0,
         description: description.trim(),

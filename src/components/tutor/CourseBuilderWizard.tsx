@@ -7,6 +7,8 @@ import {
   FiPaperclip, FiImage, FiX, FiLoader,
 } from "react-icons/fi";
 
+import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+
 // ─────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────
@@ -28,15 +30,6 @@ interface ModuleDraft {
 // ─────────────────────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────────────────────
-const CATEGORIES = [
-  "Software Engineering",
-  "Computer Science",
-  "Data Science & AI",
-  "Design & UX",
-  "Business & Management",
-  "General",
-];
-
 const LEVELS = ["Beginner", "Intermediate", "Advanced"];
 
 const defaultLesson = (): LessonDraft => ({
@@ -131,11 +124,18 @@ export function CourseBuilderWizard() {
 
   // Step 1 — Course Info
   const [title, setTitle]           = useState("");
-  const [category, setCategory]     = useState("Software Engineering");
+  const [faculty, setFaculty]       = useState(ACADEMIC_STRUCTURE[0].name);
+  const [department, setDepartment] = useState(ACADEMIC_STRUCTURE[0].departments[0]);
   const [level, setLevel]           = useState("Beginner");
   const [price, setPrice]           = useState("0");
   const [description, setDescription] = useState("");
   const [coverImage, setCoverImage] = useState(""); // optional cover URL
+
+  const handleFacultyChange = (newFac: string) => {
+    setFaculty(newFac);
+    const depts = getDepartmentsForFaculty(newFac);
+    setDepartment(depts[0] || "");
+  };
 
   // Step 2 — Modules & Lessons
   const [modules, setModules] = useState<ModuleDraft[]>([
@@ -252,7 +252,9 @@ export function CourseBuilderWizard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          category,
+          category: faculty,
+          faculty,
+          department,
           level,
           price: parseFloat(price) || 0,
           description,
@@ -362,11 +364,35 @@ export function CourseBuilderWizard() {
               />
             </div>
 
-            {/* Category */}
+            {/* Faculty / School */}
             <div>
-              <label className={labelCls}>Category</label>
-              <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputCls}>
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              <label className={labelCls}>Faculty / School *</label>
+              <select
+                value={faculty}
+                onChange={(e) => handleFacultyChange(e.target.value)}
+                className={inputCls}
+              >
+                {ACADEMIC_STRUCTURE.map((f) => (
+                  <option key={f.name} value={f.name}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Department */}
+            <div>
+              <label className={labelCls}>Department (Unique to this department) *</label>
+              <select
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className={inputCls}
+              >
+                {getDepartmentsForFaculty(faculty).map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -532,8 +558,10 @@ export function CourseBuilderWizard() {
             )}
 
             <div>
-              <div className="flex flex-wrap gap-2 mb-2">
-                <span className="text-[11px] font-bold text-[#784D28] uppercase tracking-wider">{category}</span>
+              <div className="flex flex-wrap gap-2 mb-2 items-center">
+                <span className="text-[11px] font-bold text-[#784D28] uppercase tracking-wider">{faculty}</span>
+                <span className="text-[11px] font-bold text-neutral-400">·</span>
+                <span className="text-[11px] font-bold text-black bg-neutral-200 px-2 py-0.5 rounded-full">{department}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
                 <span className="text-[11px] font-bold text-neutral-500">{level}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>

@@ -6,8 +6,9 @@ import { MockCheckoutModal } from "@/components/ui/MockCheckoutModal";
 import Link from "next/link";
 import {
   FiBookOpen, FiLock, FiArrowRight, FiCheckCircle,
-  FiLogIn, FiUserPlus, FiSearch, FiBarChart2, FiX,
+  FiLogIn, FiUserPlus, FiSearch, FiBarChart2, FiX, FiCompass,
 } from "react-icons/fi";
+import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 
 interface CatalogClientProps {
   currentUser: any;
@@ -15,17 +16,20 @@ interface CatalogClientProps {
   activeEnrollment: any;
 }
 
-const CATEGORIES = ["All", "Software Engineering", "Computer Science", "Data Science & AI", "Design & UX", "Business & Management"];
 const LEVELS = ["All", "Beginner", "Intermediate", "Advanced"];
 
 // Category-based visual palette for course cards — no image required
 const CATEGORY_VISUALS: Record<string, { bg: string; label: string }> = {
-  "Software Engineering":  { bg: "from-neutral-950 to-neutral-800", label: "SE" },
-  "Computer Science":      { bg: "from-neutral-900 to-neutral-700", label: "CS" },
-  "Data Science & AI":     { bg: "from-neutral-950 to-[#2a1a0e]",  label: "AI" },
-  "Design & UX":           { bg: "from-[#1a0e05] to-neutral-900",  label: "UX" },
-  "Business & Management": { bg: "from-neutral-900 to-neutral-950", label: "BM" },
-  General:                 { bg: "from-neutral-800 to-neutral-950", label: "GN" },
+  "Business Studies":                            { bg: "from-neutral-900 to-neutral-950", label: "BS" },
+  "Financial Studies":                           { bg: "from-neutral-900 to-[#2a1a0e]",  label: "FS" },
+  "Industrial Engineering Technology":          { bg: "from-neutral-950 to-neutral-800", label: "IE" },
+  "Natural Resources Engineering":               { bg: "from-neutral-900 to-neutral-700", label: "NR" },
+  "Agric. & Agricultural Technology":            { bg: "from-[#1a0e05] to-neutral-900",  label: "AG" },
+  "Environmental Studies":                       { bg: "from-neutral-950 to-neutral-800", label: "ES" },
+  "Pure and Applied Sciences":                   { bg: "from-neutral-900 to-neutral-700", label: "PS" },
+  "Computing, Information and Communication Tech.": { bg: "from-neutral-950 to-[#2a1a0e]", label: "CI" },
+  "School of Communication and Information Technology": { bg: "from-neutral-900 to-neutral-950", label: "SC" },
+  General:                                       { bg: "from-neutral-800 to-neutral-950", label: "GN" },
 };
 function getCourseVisual(category: string) {
   return CATEGORY_VISUALS[category] ?? CATEGORY_VISUALS["General"];
@@ -35,20 +39,33 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [facultyFilter, setFacultyFilter] = useState("All");
+  const [deptFilter, setDeptFilter] = useState("All");
   const [levelFilter, setLevelFilter] = useState("All");
+
+  const isStudent = currentUser?.role === "STUDENT";
+  const studentDepartment = isStudent ? currentUser?.department : null;
 
   const filteredCourses = useMemo(() => {
     return courses.filter((c) => {
+      // If student has a department, courses must belong to their department
+      if (studentDepartment) {
+        if (c.department && c.department !== studentDepartment) return false;
+      } else {
+        const matchFac = facultyFilter === "All" || c.faculty === facultyFilter;
+        const matchDept = deptFilter === "All" || c.department === deptFilter;
+        if (!matchFac || !matchDept) return false;
+      }
+
       const matchSearch =
         search.trim() === "" ||
         c.title.toLowerCase().includes(search.toLowerCase()) ||
-        c.description.toLowerCase().includes(search.toLowerCase());
-      const matchCat = categoryFilter === "All" || c.category === categoryFilter;
+        c.description?.toLowerCase().includes(search.toLowerCase()) ||
+        c.department?.toLowerCase().includes(search.toLowerCase());
       const matchLvl = levelFilter === "All" || c.level === levelFilter;
-      return matchSearch && matchCat && matchLvl;
+      return matchSearch && matchLvl;
     });
-  }, [courses, search, categoryFilter, levelFilter]);
+  }, [courses, search, facultyFilter, deptFilter, levelFilter, studentDepartment]);
 
   const handleOpenCheckout = (course: any) => {
     if (!currentUser) {
@@ -59,7 +76,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
     setIsCheckoutOpen(true);
   };
 
-  const isFiltered = search || categoryFilter !== "All" || levelFilter !== "All";
+  const isFiltered = search || facultyFilter !== "All" || deptFilter !== "All" || levelFilter !== "All";
 
   return (
     <div className="min-h-screen bg-white text-black pb-20">
@@ -122,13 +139,63 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
       </div>
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+        {/* Student Department Identity Banner */}
+        {isStudent && studentDepartment && (
+          <div className="bg-black text-white p-6 rounded-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+            <div>
+              <span className="text-[10px] font-bold text-[#D4A373] uppercase tracking-widest block">
+                Exclusive Departmental Curriculum
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                {studentDepartment}
+              </h2>
+              <p className="text-xs text-neutral-400 mt-0.5">
+                Faculty / School: <strong className="text-neutral-200">{currentUser.faculty || "Academic Division"}</strong> · Only courses for your department are visible
+              </p>
+            </div>
+            <Link
+              href="/profile"
+              className="px-5 py-2.5 rounded-full bg-neutral-900 border border-neutral-700 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-500 transition-all shrink-0 shadow-sm"
+            >
+              Update Department
+            </Link>
+          </div>
+        )}
+
+        {/* Student Missing Department Warning Banner */}
+        {isStudent && !studentDepartment && (
+          <div className="bg-neutral-950 text-white p-6 rounded-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-neutral-800 shadow-sm">
+            <div>
+              <span className="text-[10px] font-bold text-[#D4A373] uppercase tracking-widest block">
+                Department Assignment Required
+              </span>
+              <h2 className="text-lg font-black text-white mt-1">
+                Select Your School &amp; Department
+              </h2>
+              <p className="text-xs text-neutral-400 mt-0.5">
+                You have not selected an academic department yet. Select your department in your profile to access your curriculum.
+              </p>
+            </div>
+            <Link
+              href="/profile"
+              className="px-5 py-2.5 rounded-full bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all shrink-0 shadow-sm"
+            >
+              Set Department in Profile
+            </Link>
+          </div>
+        )}
+
         {/* Search & Filters */}
-        <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm p-4 flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-1">
+        <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm p-4 flex flex-col sm:flex-row gap-3 flex-wrap">
+          <div className="relative flex-1 min-w-[240px]">
             <FiSearch className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="Search courses by title, topic, or instructor..."
+              placeholder={
+                studentDepartment
+                  ? `Search ${studentDepartment} courses...`
+                  : "Search courses by title, topic, or department..."
+              }
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-9 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black placeholder:text-neutral-400"
@@ -143,28 +210,64 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
             )}
           </div>
 
-          <div className="flex items-center gap-2">
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-2 text-xs rounded-full bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none"
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>
-              ))}
-            </select>
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Show Faculty and Dept filters only for non-students or students without a set department */}
+            {!studentDepartment && (
+              <>
+                <select
+                  value={facultyFilter}
+                  onChange={(e) => {
+                    setFacultyFilter(e.target.value);
+                    setDeptFilter("All");
+                  }}
+                  className="px-3.5 py-2 text-xs rounded-full bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none max-w-[190px]"
+                >
+                  <option value="All">All Schools</option>
+                  {ACADEMIC_STRUCTURE.map((f) => (
+                    <option key={f.name} value={f.name}>
+                      {f.name}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={deptFilter}
+                  onChange={(e) => setDeptFilter(e.target.value)}
+                  className="px-3.5 py-2 text-xs rounded-full bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none max-w-[200px]"
+                >
+                  <option value="All">All Departments</option>
+                  {(facultyFilter === "All"
+                    ? ACADEMIC_STRUCTURE.flatMap((f) => f.departments)
+                    : getDepartmentsForFaculty(facultyFilter)
+                  ).map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
+
             <select
               value={levelFilter}
               onChange={(e) => setLevelFilter(e.target.value)}
               className="px-4 py-2 text-xs rounded-full bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none"
             >
               {LEVELS.map((l) => (
-                <option key={l} value={l}>{l === "All" ? "All Levels" : l}</option>
+                <option key={l} value={l}>
+                  {l === "All" ? "All Levels" : l}
+                </option>
               ))}
             </select>
+
             {isFiltered && (
               <button
-                onClick={() => { setSearch(""); setCategoryFilter("All"); setLevelFilter("All"); }}
+                onClick={() => {
+                  setSearch("");
+                  setFacultyFilter("All");
+                  setDeptFilter("All");
+                  setLevelFilter("All");
+                }}
                 className="px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold text-xs transition-all"
               >
                 Reset
@@ -178,7 +281,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
           <h2 className="font-bold text-base text-black">
             {isFiltered
               ? `${filteredCourses.length} course${filteredCourses.length !== 1 ? "s" : ""} found`
-              : `${courses.length} Available Courses`}
+              : `${courses.length} Department Courses`}
           </h2>
           <div className="flex items-center gap-1.5 font-bold">
             <span className="w-2 h-2 rounded-full bg-[#784D28]" />
@@ -188,15 +291,31 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
 
         {/* Course Cards Grid */}
         {filteredCourses.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-neutral-200 py-16 text-center shadow-sm">
-            <FiSearch className="w-10 h-10 text-neutral-300 mx-auto mb-3" />
-            <p className="font-bold text-neutral-600 text-base">No courses found matching criteria.</p>
-            <button
-              onClick={() => { setSearch(""); setCategoryFilter("All"); setLevelFilter("All"); }}
-              className="mt-3 text-xs text-[#784D28] font-bold hover:underline"
-            >
-              Reset filters
-            </button>
+          <div className="bg-white rounded-3xl border border-neutral-200 py-16 text-center shadow-sm space-y-2">
+            <FiSearch className="w-10 h-10 text-neutral-300 mx-auto mb-2" />
+            <p className="font-bold text-neutral-700 text-base">
+              {studentDepartment
+                ? `No courses currently published for ${studentDepartment}.`
+                : "No courses found matching criteria."}
+            </p>
+            <p className="text-xs text-neutral-500 max-w-md mx-auto">
+              {studentDepartment
+                ? "Your faculty instructors will publish your semester modules and rubrics here."
+                : "Try resetting your search filters or browse other faculties."}
+            </p>
+            {isFiltered && (
+              <button
+                onClick={() => {
+                  setSearch("");
+                  setFacultyFilter("All");
+                  setDeptFilter("All");
+                  setLevelFilter("All");
+                }}
+                className="mt-3 text-xs text-[#784D28] font-bold hover:underline"
+              >
+                Reset filters
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -251,6 +370,11 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
                     <p className="text-xs text-neutral-500 line-clamp-3 leading-relaxed flex-1">{course.description}</p>
 
                     <div className="flex items-center gap-2 flex-wrap pt-2">
+                      {course.department && (
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                          {course.department}
+                        </span>
+                      )}
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-neutral-50 text-neutral-800 border-neutral-200">
                         {course.level}
                       </span>
