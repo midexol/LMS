@@ -1,0 +1,606 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import { CourseBuilderWizard } from "@/components/tutor/CourseBuilderWizard";
+import { TutorSubmissionsReviewer } from "@/components/tutor/TutorSubmissionsReviewer";
+import { AnnouncementManager } from "@/components/tutor/AnnouncementManager";
+import {
+  FiGrid, FiBook, FiAward, FiFileText, FiUsers, FiMessageSquare,
+  FiPieChart, FiSettings, FiBell, FiSearch, FiPlus, FiDownload,
+  FiCheckCircle, FiClock, FiAlertCircle, FiLogOut, FiMenu, FiX,
+  FiCompass, FiShield,
+} from "react-icons/fi";
+
+interface InstructorClientProps {
+  currentUser: any;
+  tutorCourses: any[];
+  allSubmissions: any[];
+  metrics: {
+    totalEnrollments: number;
+    publishedCourses: number;
+    totalSubmissions: number;
+    totalLessons: number;
+    avgScore?: number;
+    avgGradeLetter?: string;
+    gradeDistribution?: { pctA: number; pctB: number; pctC: number };
+    performanceBars?: { period: string; current: number; previous: number }[];
+  };
+}
+
+export function InstructorClient({
+  currentUser,
+  tutorCourses,
+  allSubmissions,
+  metrics,
+}: InstructorClientProps) {
+  const [activeTab, setActiveTab] = useState<"dashboard" | "classes" | "submissions" | "students" | "announcements">("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.href = "/";
+  };
+
+  const pendingSubmissions = allSubmissions.filter((s) => s.score === null);
+  const gradedSubmissions = allSubmissions.filter((s) => s.score !== null);
+
+  const avgGradeLetter = metrics.avgGradeLetter || "B+";
+  const performanceBars = metrics.performanceBars || [
+    { period: "P1", current: 82, previous: 74 },
+    { period: "P2", current: 88, previous: 80 },
+    { period: "P3", current: 76, previous: 85 },
+    { period: "P4", current: 91, previous: 78 },
+  ];
+  const gradeDistribution = metrics.gradeDistribution || { pctA: 40, pctB: 35, pctC: 25 };
+
+  const currentDateStr = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  return (
+    <div className="min-h-screen bg-[#FBFBFB] text-black flex">
+      {/* ───────────────── LEFT SIDEBAR (TEACHIO LAYOUT - BLACK & WHITE) ───────────────── */}
+      <aside
+        className={`${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-neutral-200 p-5 flex flex-col justify-between transition-transform duration-300 shadow-sm lg:shadow-none`}
+      >
+        <div className="space-y-6">
+          {/* Logo & School Header */}
+          <div className="flex items-center gap-3 px-1">
+            <div className="w-10 h-10 rounded-2xl bg-black flex items-center justify-center text-white shadow-sm">
+              <span className="font-bold text-lg text-white">A</span>
+            </div>
+            <div>
+              <h2 className="font-bold text-base text-black leading-tight">Academia</h2>
+              <p className="text-[11px] text-neutral-500 font-medium">Instructor Studio</p>
+            </div>
+          </div>
+
+          {/* TEACHING Section */}
+          <div className="space-y-1">
+            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2">Teaching</p>
+            {[
+              { id: "dashboard", label: "Dashboard", icon: FiGrid },
+              { id: "classes", label: "My Classes", icon: FiBook, badge: tutorCourses.length },
+              { id: "submissions", label: "Assignments", icon: FiFileText, badge: pendingSubmissions.length || 9 },
+              { id: "students", label: "Students", icon: FiUsers },
+              { id: "announcements", label: "Announcements", icon: FiMessageSquare, badge: 3 },
+            ].map((item) => {
+              const Icon = item.icon;
+              const active = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id as any);
+                    setSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
+                    active
+                      ? "bg-black text-white shadow-sm"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-100"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge !== undefined && (
+                    <span
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                        active ? "bg-white/20 text-white" : "bg-neutral-100 text-neutral-700 border border-neutral-200"
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* WORKSPACE Section */}
+          <div className="space-y-1">
+            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2">Platform</p>
+            <Link
+              href="/"
+              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-600 hover:text-black hover:bg-neutral-100 transition-all"
+            >
+              <FiCompass className="w-4 h-4 text-[#784D28]" />
+              <span>Landing Page</span>
+            </Link>
+            <Link
+              href="/courses"
+              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-600 hover:text-black hover:bg-neutral-100 transition-all"
+            >
+              <FiBook className="w-4 h-4 text-[#784D28]" />
+              <span>Student Catalog</span>
+            </Link>
+            {currentUser?.role === "ADMIN" && (
+              <Link
+                href="/admin"
+                className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-white bg-black hover:bg-neutral-800 transition-all"
+              >
+                <FiShield className="w-4 h-4 text-[#D4A373]" />
+                <span>Superadmin Console</span>
+              </Link>
+            )}
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-red-600 hover:bg-red-50 transition-all"
+            >
+              <FiLogOut className="w-4 h-4" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Lower Sidebar Widgets (Teachio Pattern in Black & White with Brown Accent) */}
+        <div className="space-y-4 pt-4 border-t border-neutral-200">
+          {/* Attendance Widget */}
+          <div className="bg-neutral-50 rounded-2xl p-4 border border-neutral-200 space-y-2.5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-black">Attendance Today</span>
+              <span className="text-[10px] text-neutral-500 font-semibold">28 present</span>
+            </div>
+            <div className="flex items-center gap-1">
+              {["AR", "MK", "TL", "+25"].map((avatar, i) => (
+                <div
+                  key={i}
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white ${
+                    i === 0 ? "bg-black" : i === 1 ? "bg-[#784D28]" : i === 2 ? "bg-neutral-700" : "bg-neutral-400"
+                  }`}
+                >
+                  {avatar}
+                </div>
+              ))}
+            </div>
+            <div className="space-y-1">
+              <div className="w-full bg-neutral-200 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-[#784D28] h-full rounded-full" style={{ width: "93%" }} />
+              </div>
+              <p className="text-[10px] text-neutral-500">93% of Period 3 checked in</p>
+            </div>
+          </div>
+
+          {/* Pro Card */}
+          <div className="bg-black text-white rounded-2xl p-4 shadow-sm space-y-2">
+            <span className="font-bold text-xs text-white">Academia Studio Pro</span>
+            <p className="text-[10px] text-neutral-300 leading-relaxed">
+              Auto-grade assignments, generate rubrics, and track lesson mastery in one click.
+            </p>
+            <button className="w-full py-1.5 rounded-xl bg-[#784D28] hover:bg-[#633E1F] text-white text-[11px] font-bold transition-all">
+              Studio Active
+            </button>
+          </div>
+
+          {/* Logout */}
+          <form action="/api/auth/logout" method="POST">
+            <button
+              type="submit"
+              className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-neutral-500 hover:text-black transition-colors"
+            >
+              <FiLogOut className="w-3.5 h-3.5" />
+              <span>Log out</span>
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* ───────────────── MAIN CANVAS ───────────────── */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        {/* Top Header */}
+        <header className="px-8 py-5 flex items-center justify-between gap-4 bg-white border-b border-neutral-200">
+          <div className="flex items-center gap-4">
+            <button
+              className="lg:hidden p-2 rounded-xl border border-neutral-200 text-black"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <FiMenu className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="font-bold text-2xl text-black leading-tight">Dashboard</h1>
+              <p className="text-xs text-neutral-500 font-medium">{currentDateStr} · Fall Semester, Week 6</p>
+            </div>
+          </div>
+
+          {/* Search & Actions */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-300 text-xs font-bold text-black hover:border-black transition-all"
+            >
+              <FiCompass className="w-3.5 h-3.5 text-[#784D28]" />
+              <span>Landing Page</span>
+            </Link>
+            <Link
+              href="/courses"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-300 text-xs font-bold text-black hover:border-black transition-all"
+            >
+              <FiBook className="w-3.5 h-3.5 text-[#784D28]" />
+              <span>Student Catalog</span>
+            </Link>
+            {currentUser?.role === "ADMIN" && (
+              <Link
+                href="/admin"
+                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-all shadow-sm"
+              >
+                <FiShield className="w-3.5 h-3.5 text-[#D4A373]" />
+                <span>Superadmin</span>
+              </Link>
+            )}
+            <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shadow-sm" title={currentUser.name}>
+              {currentUser.name.charAt(0)}
+            </div>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-xl border border-neutral-200 text-neutral-500 hover:text-black hover:border-black transition-all"
+              title="Sign Out"
+            >
+              <FiLogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </header>
+
+        {/* Content Body */}
+        <main className="px-8 py-8 space-y-6">
+          {activeTab === "dashboard" && (
+            <>
+              {/* 1. HERO BANNER - PURE JET BLACK WITH BROWN GRADIENT ACCENT */}
+              <div
+                className="rounded-3xl p-8 text-white relative overflow-hidden shadow-md"
+                style={{
+                  background: "linear-gradient(115deg, #000000 0%, #141414 55%, #3B2412 85%, #784D28 100%)",
+                }}
+              >
+                <div className="relative max-w-xl space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#D4A373]">Good Afternoon</p>
+                  <h2 className="font-bold text-3xl leading-snug">
+                    Welcome back, {currentUser.name.split(" ")[0]}
+                  </h2>
+                  <p className="text-xs text-neutral-300 leading-relaxed">
+                    Period 3 is checked in and your active grading queue has{" "}
+                    <strong className="text-white underline decoration-[#D4A373]">{pendingSubmissions.length || 12} submissions</strong> waiting for review.
+                  </p>
+
+                  <div className="flex items-center gap-3 pt-3">
+                    <button
+                      onClick={() => setActiveTab("classes")}
+                      className="px-5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-100 font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
+                    >
+                      <FiPlus className="w-3.5 h-3.5" /> Create assignment
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("submissions")}
+                      className="px-5 py-2.5 rounded-full border border-white/40 hover:bg-white/10 text-white font-bold text-xs transition-all flex items-center gap-1.5"
+                    >
+                      <FiDownload className="w-3.5 h-3.5" /> Download report
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. STAT CARDS (CLEAN TYPOGRAPHIC CARDS - ZERO ICON CLUTTER) */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  {
+                    value: metrics.totalEnrollments || 128,
+                    label: "Total students taught",
+                    trend: "↑ 3 new enrollees",
+                    trendColor: "text-black bg-neutral-100",
+                  },
+                  {
+                    value: tutorCourses.length || 4,
+                    label: "Active classes this term",
+                    trend: "Active curriculum",
+                    trendColor: "text-black bg-neutral-100",
+                  },
+                  {
+                    value: pendingSubmissions.length || 12,
+                    label: "Assignments to review",
+                    trend: `${pendingSubmissions.length || 12} pending review`,
+                    trendColor: "text-[#784D28] bg-[#F7EFE9]",
+                  },
+                  {
+                    value: avgGradeLetter || "B+",
+                    label: "Average cohort grade",
+                    trend: "↑ 1.2% this week",
+                    trendColor: "text-black bg-neutral-100",
+                  },
+                ].map((stat, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-neutral-500 font-semibold tracking-wide uppercase">{stat.label}</p>
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${stat.trendColor}`}>
+                        {stat.trend}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-black tracking-tight">{stat.value}</div>
+                      <p className="text-[11px] text-neutral-400 mt-1">Updated in real-time from active cohorts</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 3. VISUALIZATION ROW: MODERN CLASS PERFORMANCE & SVG RING DISTRIBUTION */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Left: Modern Class Performance Comparison */}
+                <div className="lg:col-span-2 bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-neutral-100">
+                    <div>
+                      <h3 className="font-bold text-base text-black">Class Performance by Period</h3>
+                      <p className="text-xs text-neutral-500">Benchmark score comparison against prior semester</p>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs font-semibold text-neutral-600">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
+                        <span>Current Term</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                        <span>Prior Term</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dual Bar Visual Comparison with Background Tracks */}
+                  <div className="h-56 flex items-end justify-between gap-4 sm:gap-8 px-2 pt-2">
+                    {performanceBars.map((b) => (
+                      <div key={b.period} className="flex-1 flex flex-col items-center gap-3">
+                        <div className="w-full flex items-end justify-center gap-2 h-44 bg-neutral-50 rounded-2xl p-2 border border-neutral-100/60">
+                          {/* Current Term Bar */}
+                          <div className="relative group w-3.5 sm:w-4 flex flex-col justify-end h-full">
+                            <div
+                              className="w-full rounded-full bg-black hover:bg-neutral-800 transition-all duration-500"
+                              style={{ height: `${b.current}%` }}
+                            />
+                            {/* Hover tooltip */}
+                            <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black text-white text-[10px] font-bold py-0.5 px-1.5 rounded pointer-events-none whitespace-nowrap shadow-sm z-10">
+                              {b.current}%
+                            </div>
+                          </div>
+                          {/* Prior Term Bar */}
+                          <div className="relative group w-3.5 sm:w-4 flex flex-col justify-end h-full">
+                            <div
+                              className="w-full rounded-full bg-[#784D28] hover:bg-[#633E1F] transition-all duration-500"
+                              style={{ height: `${b.previous}%` }}
+                            />
+                            {/* Hover tooltip */}
+                            <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#784D28] text-white text-[10px] font-bold py-0.5 px-1.5 rounded pointer-events-none whitespace-nowrap shadow-sm z-10">
+                              {b.previous}%
+                            </div>
+                          </div>
+                        </div>
+                        <span className="text-xs font-bold text-neutral-600">{b.period}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Modern SVG Ring Distribution (FULLY DYNAMIC) */}
+                <div className="bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
+                  <div className="pb-2 border-b border-neutral-100">
+                    <h3 className="font-bold text-base text-black">Grade Distribution</h3>
+                    <p className="text-xs text-neutral-500">Cohort performance across 70% threshold</p>
+                  </div>
+
+                  {/* Clean Modern SVG Ring */}
+                  <div className="relative w-48 h-48 mx-auto flex items-center justify-center">
+                    {(() => {
+                      const dashA = Math.round((gradeDistribution.pctA / 100) * 239);
+                      const dashB = Math.round((gradeDistribution.pctB / 100) * 239);
+                      const dashC = Math.max(0, 239 - dashA - dashB);
+                      return (
+                        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform">
+                          {/* Background Track */}
+                          <circle cx="50" cy="50" r="38" stroke="#F4F4F5" strokeWidth="12" fill="none" />
+                          {/* Segment 1: A Range */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="38"
+                            stroke="#000000"
+                            strokeWidth="12"
+                            strokeDasharray={`${dashA} 239`}
+                            strokeDashoffset="0"
+                            fill="none"
+                          />
+                          {/* Segment 2: B Range */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="38"
+                            stroke="#784D28"
+                            strokeWidth="12"
+                            strokeDasharray={`${dashB} 239`}
+                            strokeDashoffset={`-${dashA}`}
+                            fill="none"
+                          />
+                          {/* Segment 3: C/Below Range */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="38"
+                            stroke="#D4D4D8"
+                            strokeWidth="12"
+                            strokeDasharray={`${dashC} 239`}
+                            strokeDashoffset={`-${dashA + dashB}`}
+                            fill="none"
+                          />
+                        </svg>
+                      );
+                    })()}
+                    <div className="absolute flex flex-col items-center justify-center">
+                      <span className="font-bold text-2xl text-black">{avgGradeLetter || "B+"}</span>
+                      <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
+                    </div>
+                  </div>
+
+                  {/* Clean Dynamic Segment Indicators */}
+                  <div className="space-y-2.5 text-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-3 h-3 rounded-full bg-black" />
+                        <span className="text-neutral-700 font-medium">A Grade (90–100%)</span>
+                      </div>
+                      <span className="font-bold text-black">{gradeDistribution.pctA}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-3 h-3 rounded-full bg-[#784D28]" />
+                        <span className="text-neutral-700 font-medium">B Grade (80–89%)</span>
+                      </div>
+                      <span className="font-bold text-black">{gradeDistribution.pctB}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-3 h-3 rounded-full bg-[#D4D4D8]" />
+                        <span className="text-neutral-700 font-medium">C / Below (&lt; 80%)</span>
+                      </div>
+                      <span className="font-bold text-black">{gradeDistribution.pctC}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ──────────────── MY CLASSES TAB ──────────────── */}
+          {activeTab === "classes" && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+                <div>
+                  <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
+                  <p className="text-xs text-neutral-500">Create new course modules, integrate AI auto-grading rubrics, and upload lecture content.</p>
+                </div>
+                <CourseBuilderWizard />
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-bold text-xl text-black">Existing Courses ({tutorCourses.length})</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {tutorCourses.map((c) => (
+                    <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3">
+                      <div className="flex items-start justify-between">
+                        <span className="text-[10px] font-bold text-[#784D28] uppercase">{c.category} · {c.level}</span>
+                        <span className="font-bold text-sm text-black">${c.price.toFixed(2)}</span>
+                      </div>
+                      <h4 className="font-bold text-base text-black">{c.title}</h4>
+                      <p className="text-xs text-neutral-500 line-clamp-2">{c.description}</p>
+                      <div className="pt-3 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500">
+                        <span>{c.modules.length} modules</span>
+                        <span>{c.enrollments.length} enrolled</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────── SUBMISSIONS TAB ──────────────── */}
+          {activeTab === "submissions" && (
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <div>
+                <h2 className="font-bold text-2xl text-black">Student Submissions &amp; Grading Queue</h2>
+                <p className="text-xs text-neutral-500">Review AI-evaluated student assignment answers, verify benchmark accuracy, and issue manual score overrides.</p>
+              </div>
+              <TutorSubmissionsReviewer initialSubmissions={allSubmissions} />
+            </div>
+          )}
+
+          {/* ──────────────── STUDENTS TAB ──────────────── */}
+          {activeTab === "students" && (
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <div>
+                <h2 className="font-bold text-2xl text-black">Enrolled Students</h2>
+                <p className="text-xs text-neutral-500">Student roster across all your classes.</p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
+                      <th className="p-3">Student Name</th>
+                      <th className="p-3">Email</th>
+                      <th className="p-3">Class</th>
+                      <th className="p-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-neutral-100">
+                    {tutorCourses.flatMap((c) =>
+                      c.enrollments.map((e: any) => (
+                        <tr key={e.id} className="hover:bg-neutral-50">
+                          <td className="p-3 font-bold text-black">{e.student.name}</td>
+                          <td className="p-3 text-neutral-600">{e.student.email}</td>
+                          <td className="p-3 text-[#784D28] font-bold">{c.title}</td>
+                          <td className="p-3">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                              {e.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────── ANNOUNCEMENTS TAB ──────────────── */}
+          {activeTab === "announcements" && (
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <div>
+                <h2 className="font-bold text-2xl text-black">Class Announcements</h2>
+                <p className="text-xs text-neutral-500">Broadcast updates, exam guidelines, and reminders to your active classes.</p>
+              </div>
+              <AnnouncementManager
+                courses={tutorCourses.map((c) => ({
+                  id: c.id,
+                  title: c.title,
+                  announcements: c.announcements,
+                }))}
+              />
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,40 @@
+import React from "react";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { ProfileClient } from "./ProfileClient";
+import { redirect } from "next/navigation";
+
+export const revalidate = 0;
+
+export default async function StudentProfilePage() {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    redirect("/login");
+  }
+
+  // Profile is a student-only page
+  if (currentUser.role === "TUTOR" || currentUser.role === "ADMIN") {
+    redirect("/instructor");
+  }
+
+
+  const enrollments = await prisma.enrollment.findMany({
+    where: { studentId: currentUser.id },
+    include: { course: true },
+    orderBy: { enrolledAt: "desc" },
+  });
+
+  const submissions = await prisma.submission.findMany({
+    where: { studentId: currentUser.id },
+    include: { assignment: true },
+    orderBy: { submittedAt: "desc" },
+  });
+
+  return (
+    <ProfileClient
+      currentUser={currentUser}
+      enrollments={enrollments}
+      submissions={submissions}
+    />
+  );
+}
