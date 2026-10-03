@@ -30,6 +30,7 @@ model Course {
   category    String   @default("General")
   level       String   @default("Beginner") // "Beginner" | "Intermediate" | "Advanced"
   price       Float    @default(0)
+  coverImage  String?
   published   Boolean  @default(true)
   tutorId     String
   tutor       User     @relation("TutorCourses", fields: [tutorId], references: [id])

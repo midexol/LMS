@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Only tutors can create courses." }, { status: 403 });
     }
 
-    const { title, category, level, price, description, modules } = await req.json();
+    const { title, category, level, price, description, coverImage, modules } = await req.json();
 
     if (!title?.trim() || !description?.trim()) {
       return NextResponse.json({ error: "Title and description are required." }, { status: 400 });
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
         level: level || "Beginner",
         price: parseFloat(price) || 0,
         description: description.trim(),
+        coverImage: coverImage?.trim() || null,
         published: true,
         tutorId: currentUser.id,
         modules: {

@@ -18,14 +18,18 @@ interface CatalogClientProps {
 const CATEGORIES = ["All", "Software Engineering", "Computer Science", "Data Science & AI", "Design & UX", "Business & Management"];
 const LEVELS = ["All", "Beginner", "Intermediate", "Advanced"];
 
-const COURSE_COVERS = [
-  "/assets/bb-students-hero-1.webp",
-  "/assets/bb-students-collab-2.webp",
-  "/assets/teachable-student-learning.webp",
-  "/assets/bb-why-blackboard.webp",
-  "/assets/bb-campus-evolution.webp",
-  "/assets/teachable-creator-session.webp",
-];
+// Category-based visual palette for course cards — no image required
+const CATEGORY_VISUALS: Record<string, { bg: string; label: string }> = {
+  "Software Engineering":  { bg: "from-neutral-950 to-neutral-800", label: "SE" },
+  "Computer Science":      { bg: "from-neutral-900 to-neutral-700", label: "CS" },
+  "Data Science & AI":     { bg: "from-neutral-950 to-[#2a1a0e]",  label: "AI" },
+  "Design & UX":           { bg: "from-[#1a0e05] to-neutral-900",  label: "UX" },
+  "Business & Management": { bg: "from-neutral-900 to-neutral-950", label: "BM" },
+  General:                 { bg: "from-neutral-800 to-neutral-950", label: "GN" },
+};
+function getCourseVisual(category: string) {
+  return CATEGORY_VISUALS[category] ?? CATEGORY_VISUALS["General"];
+}
 
 export function CatalogClient({ currentUser, courses, activeEnrollment }: CatalogClientProps) {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
@@ -206,23 +210,41 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
                   key={course.id}
                   className="bg-white rounded-3xl border border-neutral-200 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden group"
                 >
-                  <div className="relative h-44 w-full overflow-hidden bg-neutral-100">
-                    <img
-                      src={COURSE_COVERS[idx % COURSE_COVERS.length]}
-                      alt={course.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/95 backdrop-blur-md text-black shadow-sm border border-neutral-200">
-                        {course.category}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-3 right-3">
-                      <span className="px-3 py-1 rounded-full text-xs font-black bg-black text-white shadow-md">
-                        ${course.price.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
+                  {/* Course Card Visual Header — fixed by default, or tutor custom image */}
+                  {(() => {
+                    const vis = getCourseVisual(course.category);
+                    if (course.coverImage) {
+                      return (
+                        <div className="relative h-44 w-full overflow-hidden bg-neutral-900 group">
+                          <img
+                            src={course.coverImage}
+                            alt={course.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                          <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-sm text-white border border-white/20">
+                            {course.category}
+                          </span>
+                          <span className="absolute bottom-3 right-3 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
+                            ${course.price.toFixed(2)}
+                          </span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div className={`relative h-44 w-full bg-gradient-to-br ${vis.bg} flex flex-col items-start justify-end p-5 overflow-hidden`}>
+                        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[88px] font-black text-white/5 select-none pointer-events-none leading-none">
+                          {vis.label}
+                        </span>
+                        <span className="relative px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 backdrop-blur-sm text-white border border-white/15">
+                          {course.category}
+                        </span>
+                        <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
+                          ${course.price.toFixed(2)}
+                        </span>
+                      </div>
+                    );
+                  })()}
 
                   <div className="p-6 space-y-3 flex-1 flex flex-col">
                     <h3 className="font-bold text-lg text-black leading-snug group-hover:text-[#784D28] transition-colors">{course.title}</h3>

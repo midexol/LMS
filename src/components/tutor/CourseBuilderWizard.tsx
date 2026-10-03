@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   FiPlus, FiTrash2, FiZap, FiBookOpen, FiSave, FiCheckCircle,
-  FiFileText, FiVideo, FiHelpCircle, FiLink, FiAlertCircle,
+  FiFileText, FiVideo, FiHelpCircle, FiAlertCircle, FiUpload,
+  FiPaperclip, FiImage, FiX, FiLoader,
 } from "react-icons/fi";
 
+// ─────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────
 interface LessonDraft {
   title: string;
   content: string;
@@ -21,6 +25,9 @@ interface ModuleDraft {
   lessons: LessonDraft[];
 }
 
+// ─────────────────────────────────────────────────────────────
+// Constants
+// ─────────────────────────────────────────────────────────────
 const CATEGORIES = [
   "Software Engineering",
   "Computer Science",
@@ -33,7 +40,7 @@ const CATEGORIES = [
 const LEVELS = ["Beginner", "Intermediate", "Advanced"];
 
 const defaultLesson = (): LessonDraft => ({
-  title: "Lesson 1: Key Topic Overview",
+  title: "",
   content: "",
   videoUrl: "",
   resourceName: "",
@@ -42,41 +49,117 @@ const defaultLesson = (): LessonDraft => ({
   assignmentReferenceAnswer: "",
 });
 
+// ─────────────────────────────────────────────────────────────
+// Shared file-upload hook
+// ─────────────────────────────────────────────────────────────
+function useFileUpload() {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const upload = async (file: File): Promise<{ url: string; name: string } | null> => {
+    setUploading(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/tutor/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setError(data.error || "Upload failed.");
+        return null;
+      }
+      return { url: data.url, name: data.name };
+    } catch (e: any) {
+      setError(e.message || "Upload failed.");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return { upload, uploading, error, clearError: () => setError(null) };
+}
+
+// ─────────────────────────────────────────────────────────────
+// Inline file picker button component
+// ─────────────────────────────────────────────────────────────
+function FilePickerButton({
+  accept,
+  onPicked,
+  uploading,
+  label,
+  icon,
+}: {
+  accept: string;
+  onPicked: (file: File) => void;
+  uploading: boolean;
+  label: string;
+  icon: React.ReactNode;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+  return (
+    <>
+      <input
+        ref={ref}
+        type="file"
+        accept={accept}
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) onPicked(f);
+          e.target.value = "";
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => ref.current?.click()}
+        disabled={uploading}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 border border-neutral-300 text-xs font-bold text-black hover:bg-neutral-200 disabled:opacity-60 transition-all"
+      >
+        {uploading ? <FiLoader className="w-3.5 h-3.5 animate-spin" /> : icon}
+        {uploading ? "Uploading..." : label}
+      </button>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Main Component
+// ─────────────────────────────────────────────────────────────
 export function CourseBuilderWizard() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Software Engineering");
-  const [level, setLevel] = useState("Beginner");
-  const [price, setPrice] = useState("89.99");
+
+  // Step 1 — Course Info
+  const [title, setTitle]           = useState("");
+  const [category, setCategory]     = useState("Software Engineering");
+  const [level, setLevel]           = useState("Beginner");
+  const [price, setPrice]           = useState("0");
   const [description, setDescription] = useState("");
+  const [coverImage, setCoverImage] = useState(""); // optional cover URL
+
+  // Step 2 — Modules & Lessons
   const [modules, setModules] = useState<ModuleDraft[]>([
     {
-      title: "Module 1: Foundations & Core Concepts",
-      lessons: [
-        {
-          title: "Lesson 1: Introduction and Principles",
-          content: "Overview of fundamental principles, concepts, and initial setup instructions.",
-          videoUrl: "",
-          resourceName: "",
-          resourceUrl: "",
-          assignmentPrompt: "Explain the main principles covered in this lesson.",
-          assignmentReferenceAnswer:
-            "Key principles include core architecture, state management, and component breakdown.",
-        },
-      ],
+      title: "Module 1: Foundations",
+      lessons: [defaultLesson()],
     },
   ]);
 
-  const [aiTopic, setAiTopic] = useState("");
+  // AI helpers
+  const [aiTopic, setAiTopic]               = useState("");
   const [generatingOutline, setGeneratingOutline] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Save state
+  const [saving, setSaving]         = useState(false);
+  const [saveError, setSaveError]   = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState(false);
 
-  // Validate Step 1 before proceeding
+  // Cover image uploader
+  const coverUpload = useFileUpload();
+
   const step1Valid = title.trim().length > 0 && description.trim().length > 0;
 
-  // AI Outline Generation
+  // ──── AI Outline ────
   const handleGenerateOutlineAI = async () => {
     if (!aiTopic.trim()) return;
     setGeneratingOutline(true);
@@ -88,19 +171,17 @@ export function CourseBuilderWizard() {
       });
       const data = await res.json();
       if (data.success && data.outline?.modules) {
-        const formattedModules: ModuleDraft[] = data.outline.modules.map((m: any) => ({
+        const formatted: ModuleDraft[] = data.outline.modules.map((m: any) => ({
           title: m.title,
           lessons: m.lessons.map((l: any) => ({
+            ...defaultLesson(),
             title: l.title,
-            content: l.content,
-            videoUrl: "",
-            resourceName: "",
-            resourceUrl: "",
+            content: l.content || "",
             assignmentPrompt: `Assignment: ${l.title}`,
-            assignmentReferenceAnswer: `Reference answer rubric for ${l.title}.`,
+            assignmentReferenceAnswer: `Reference rubric for ${l.title}.`,
           })),
         }));
-        setModules(formattedModules);
+        setModules(formatted);
         if (!title) setTitle(aiTopic);
       }
     } catch (e) {
@@ -110,42 +191,41 @@ export function CourseBuilderWizard() {
     }
   };
 
-  const addModule = () => {
-    setModules([
-      ...modules,
-      { title: `Module ${modules.length + 1}: New Topic`, lessons: [defaultLesson()] },
-    ]);
-  };
+  // ──── Module/Lesson helpers ────
+  const addModule = () =>
+    setModules([...modules, { title: `Module ${modules.length + 1}: New Topic`, lessons: [defaultLesson()] }]);
 
-  const removeModule = (index: number) => setModules(modules.filter((_, i) => i !== index));
+  const removeModule = (i: number) => setModules(modules.filter((_, idx) => idx !== i));
 
-  const addLesson = (moduleIndex: number) => {
+  const addLesson = (mi: number) => {
     const updated = [...modules];
     const l = defaultLesson();
-    l.title = `Lesson ${updated[moduleIndex].lessons.length + 1}: New Subtopic`;
-    updated[moduleIndex].lessons.push(l);
+    l.title = `Lesson ${updated[mi].lessons.length + 1}: New Topic`;
+    updated[mi].lessons.push(l);
     setModules(updated);
   };
 
-  const removeLesson = (moduleIndex: number, lessonIndex: number) => {
+  const removeLesson = (mi: number, li: number) => {
     const updated = [...modules];
-    updated[moduleIndex].lessons = updated[moduleIndex].lessons.filter((_, i) => i !== lessonIndex);
+    updated[mi].lessons = updated[mi].lessons.filter((_, idx) => idx !== li);
     setModules(updated);
   };
 
-  const updateLesson = (
-    moduleIndex: number,
-    lessonIndex: number,
-    field: keyof LessonDraft,
-    value: string
-  ) => {
+  const updateLesson = (mi: number, li: number, field: keyof LessonDraft, value: string) => {
     const updated = [...modules];
-    updated[moduleIndex].lessons[lessonIndex][field] = value;
+    updated[mi].lessons[li][field] = value;
     setModules(updated);
   };
 
-  const handleGenerateRubricAI = async (moduleIndex: number, lessonIndex: number) => {
-    const prompt = modules[moduleIndex].lessons[lessonIndex].assignmentPrompt;
+  const updateModuleTitle = (mi: number, val: string) => {
+    const updated = [...modules];
+    updated[mi].title = val;
+    setModules(updated);
+  };
+
+  // ──── AI Rubric ────
+  const handleGenerateRubric = async (mi: number, li: number) => {
+    const prompt = modules[mi].lessons[li].assignmentPrompt;
     if (!prompt.trim()) return;
     try {
       const res = await fetch("/api/tutor/assistant", {
@@ -155,13 +235,14 @@ export function CourseBuilderWizard() {
       });
       const data = await res.json();
       if (data.success && data.rubric?.referenceAnswer) {
-        updateLesson(moduleIndex, lessonIndex, "assignmentReferenceAnswer", data.rubric.referenceAnswer);
+        updateLesson(mi, li, "assignmentReferenceAnswer", data.rubric.referenceAnswer);
       }
     } catch (e) {
       console.error(e);
     }
   };
 
+  // ──── Save ────
   const handleSaveCourse = async () => {
     setSaving(true);
     setSaveError(null);
@@ -169,12 +250,20 @@ export function CourseBuilderWizard() {
       const res = await fetch("/api/tutor/courses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, category, level, price: parseFloat(price) || 0, description, modules }),
+        body: JSON.stringify({
+          title,
+          category,
+          level,
+          price: parseFloat(price) || 0,
+          description,
+          coverImage: coverImage || null,
+          modules,
+        }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setSuccessMsg(true);
-        setTimeout(() => { window.location.href = "/instructor"; }, 1500);
+        setTimeout(() => { window.location.href = "/instructor"; }, 1800);
       } else {
         setSaveError(data.error || "Failed to save course.");
       }
@@ -185,64 +274,63 @@ export function CourseBuilderWizard() {
     }
   };
 
-  // Shared input classes
+  // ─────────────────────────────────────────────────────────────
+  // Shared styles
+  // ─────────────────────────────────────────────────────────────
   const inputCls =
     "w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all";
   const smallInputCls =
     "w-full px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all";
+  const labelCls = "block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1.5";
 
+  // ─────────────────────────────────────────────────────────────
+  // Render
+  // ─────────────────────────────────────────────────────────────
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Step Navigation */}
-      <div className="p-4 rounded-2xl bg-white border border-neutral-200 shadow-sm flex items-center justify-around">
+
+      {/* ── Step Navigator ── */}
+      <div className="p-3 rounded-2xl bg-white border border-neutral-200 shadow-sm flex items-center justify-around">
         {([1, 2, 3] as const).map((s) => (
           <button
             key={s}
             onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-              step === s
-                ? "bg-black text-white shadow-sm"
-                : "text-neutral-600 hover:text-black"
+              step === s ? "bg-black text-white shadow-sm" : "text-neutral-500 hover:text-black"
             }`}
           >
-            <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                step === s ? "bg-white text-black" : "bg-neutral-100 text-neutral-800"
-              }`}
-            >
-              {s}
-            </span>
+            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+              step === s ? "bg-white text-black" : "bg-neutral-100 text-neutral-800"
+            }`}>{s}</span>
             {s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : "Review & Publish"}
           </button>
         ))}
       </div>
 
-      {/* STEP 1 */}
+      {/* ══════════════════════════════ STEP 1 ══════════════════════════════ */}
       {step === 1 && (
         <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               <FiBookOpen className="w-6 h-6 text-[#784D28]" />
-              Step 1: Course Overview & AI Syllabus Helper
+              Step 1: Course Overview
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
-              Enter course details or use AI to generate a full syllabus.
+              Fill in the core details. Cover image is optional — a visual placeholder is generated automatically.
             </p>
           </div>
 
-          {/* AI Syllabus Box */}
+          {/* AI Syllabus */}
           <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-bold text-black text-sm flex items-center gap-2">
-                <FiZap className="w-4 h-4 text-[#784D28]" />
-                AI Syllabus Generator
-              </h4>
-              <span className="text-xs text-[#784D28] font-bold uppercase tracking-wider">Instant Course Structure</span>
-            </div>
+            <h4 className="font-bold text-black text-sm flex items-center gap-2">
+              <FiZap className="w-4 h-4 text-[#784D28]" />
+              AI Syllabus Generator
+              <span className="ml-auto text-[10px] text-[#784D28] font-bold uppercase tracking-wider">Optional</span>
+            </h4>
             <div className="flex gap-3">
               <input
                 type="text"
-                placeholder="e.g. Master React and TypeScript for Production"
+                placeholder="Enter a topic to auto-build modules and lessons (e.g. React + TypeScript for Production)"
                 value={aiTopic}
                 onChange={(e) => setAiTopic(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleGenerateOutlineAI()}
@@ -252,16 +340,18 @@ export function CourseBuilderWizard() {
                 type="button"
                 onClick={handleGenerateOutlineAI}
                 disabled={generatingOutline || !aiTopic.trim()}
-                className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+                className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
               >
+                {generatingOutline ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiZap className="w-4 h-4" />}
                 {generatingOutline ? "Generating..." : "Generate"}
               </button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Title */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 mb-2">Course Title *</label>
+              <label className={labelCls}>Course Title *</label>
               <input
                 type="text"
                 required
@@ -272,44 +362,75 @@ export function CourseBuilderWizard() {
               />
             </div>
 
+            {/* Category */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-2">Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className={inputCls}
-              >
+              <label className={labelCls}>Category</label>
+              <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputCls}>
                 {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
 
+            {/* Level */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-2">Difficulty Level</label>
-              <select
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-                className={inputCls}
-              >
+              <label className={labelCls}>Difficulty Level</label>
+              <select value={level} onChange={(e) => setLevel(e.target.value)} className={inputCls}>
                 {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
               </select>
             </div>
 
+            {/* Price */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-2">Course Price ($)</label>
+              <label className={labelCls}>Course Price (leave 0 for free)</label>
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                placeholder="89.99"
+                placeholder="0.00"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 className={inputCls}
               />
             </div>
+
+            {/* Cover Image (optional) */}
+            <div>
+              <label className={labelCls}>Cover Image <span className="text-neutral-400 normal-case font-normal">(optional)</span></label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="url"
+                  placeholder="https://... or upload below"
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
+                  className={`${inputCls} flex-1`}
+                />
+                <FilePickerButton
+                  accept="image/jpeg,image/png,image/webp"
+                  uploading={coverUpload.uploading}
+                  label="Upload"
+                  icon={<FiImage className="w-3.5 h-3.5" />}
+                  onPicked={async (file) => {
+                    const result = await coverUpload.upload(file);
+                    if (result) setCoverImage(result.url);
+                  }}
+                />
+              </div>
+              {coverUpload.error && (
+                <p className="text-[11px] text-red-600 mt-1">{coverUpload.error}</p>
+              )}
+              {coverImage && (
+                <div className="mt-2 flex items-center gap-2">
+                  <img src={coverImage} alt="Cover preview" className="w-14 h-10 object-cover rounded-lg border border-neutral-200" />
+                  <button onClick={() => setCoverImage("")} className="text-[11px] text-neutral-500 hover:text-black flex items-center gap-1">
+                    <FiX className="w-3 h-3" /> Remove
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
+          {/* Description */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-2">Course Description *</label>
+            <label className={labelCls}>Course Description *</label>
             <textarea
               rows={4}
               required
@@ -326,23 +447,23 @@ export function CourseBuilderWizard() {
               disabled={!step1Valid}
               className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
-              Continue to Modules &amp; Lessons
+              Continue to Modules & Lessons
             </button>
           </div>
         </div>
       )}
 
-      {/* STEP 2 */}
+      {/* ══════════════════════════════ STEP 2 ══════════════════════════════ */}
       {step === 2 && (
         <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
             <div>
               <h3 className="text-xl font-bold text-black flex items-center gap-2">
                 <FiFileText className="w-6 h-6 text-[#784D28]" />
-                Step 2: Modules, Lessons & Rubrics
+                Step 2: Modules & Lessons
               </h3>
               <p className="text-sm text-neutral-500 mt-1">
-                Structure your curriculum and set reference answers for AI auto-grading.
+                Build your curriculum. Upload PDFs, slides, or videos directly to each lesson.
               </p>
             </div>
             <button
@@ -354,162 +475,19 @@ export function CourseBuilderWizard() {
           </div>
 
           <div className="space-y-6">
-            {modules.map((moduleItem, mIdx) => (
-              <div
+            {modules.map((mod, mIdx) => (
+              <LessonModuleBlock
                 key={mIdx}
-                className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <input
-                    type="text"
-                    value={moduleItem.title}
-                    onChange={(e) => {
-                      const updated = [...modules];
-                      updated[mIdx].title = e.target.value;
-                      setModules(updated);
-                    }}
-                    className="flex-1 px-4 py-2 rounded-lg bg-white border border-neutral-200 text-sm font-bold text-black outline-none focus:border-black"
-                  />
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => addLesson(mIdx)}
-                      className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-semibold text-black flex items-center gap-1 hover:border-black shadow-sm"
-                    >
-                      <FiPlus className="w-3.5 h-3.5" /> Add Lesson
-                    </button>
-                    {modules.length > 1 && (
-                      <button
-                        onClick={() => removeModule(mIdx)}
-                        className="p-2 rounded-lg bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 transition-all"
-                      >
-                        <FiTrash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-4 pl-4 border-l-2 border-neutral-200">
-                  {moduleItem.lessons.map((lesson, lIdx) => (
-                    <div
-                      key={lIdx}
-                      className="p-5 rounded-xl bg-white border border-neutral-200 space-y-4 shadow-sm"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <input
-                          type="text"
-                          placeholder="Lesson Title"
-                          value={lesson.title}
-                          onChange={(e) => updateLesson(mIdx, lIdx, "title", e.target.value)}
-                          className="flex-1 px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none focus:border-black"
-                        />
-                        {moduleItem.lessons.length > 1 && (
-                          <button
-                            onClick={() => removeLesson(mIdx, lIdx)}
-                            className="p-1.5 rounded-lg bg-red-50 border border-red-200 text-red-600"
-                          >
-                            <FiTrash2 className="w-3.5 h-3.5" />
-                          </button>
-                        )}
-                      </div>
-
-                      {/* Lesson Content */}
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
-                          <FiFileText className="w-3 h-3" /> Lesson Content / Material Notes
-                        </label>
-                        <textarea
-                          rows={2}
-                          placeholder="Lesson explanation and key reading points..."
-                          value={lesson.content}
-                          onChange={(e) => updateLesson(mIdx, lIdx, "content", e.target.value)}
-                          className={smallInputCls}
-                        />
-                      </div>
-
-                      {/* Video URL */}
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
-                          <FiVideo className="w-3 h-3" /> Video URL (YouTube Embed or MP4)
-                        </label>
-                        <input
-                          type="url"
-                          placeholder="https://www.youtube.com/embed/..."
-                          value={lesson.videoUrl}
-                          onChange={(e) => updateLesson(mIdx, lIdx, "videoUrl", e.target.value)}
-                          className={smallInputCls}
-                        />
-                      </div>
-
-                      {/* Resource Attachment */}
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
-                            <FiLink className="w-3 h-3" /> Resource File Name
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g. Lecture Notes.pdf"
-                            value={lesson.resourceName}
-                            onChange={(e) => updateLesson(mIdx, lIdx, "resourceName", e.target.value)}
-                            className={smallInputCls}
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
-                            <FiLink className="w-3 h-3" /> Resource Download URL
-                          </label>
-                          <input
-                            type="url"
-                            placeholder="https://..."
-                            value={lesson.resourceUrl}
-                            onChange={(e) => updateLesson(mIdx, lIdx, "resourceUrl", e.target.value)}
-                            className={smallInputCls}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Assignment */}
-                      <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
-                        <span className="text-[11px] font-bold text-[#784D28] flex items-center gap-1 uppercase tracking-wider">
-                          <FiHelpCircle className="w-3.5 h-3.5 text-[#784D28]" /> Lesson Assignment (Optional)
-                        </span>
-                        <input
-                          type="text"
-                          placeholder="e.g. Explain how component lifecycle works in React..."
-                          value={lesson.assignmentPrompt}
-                          onChange={(e) => updateLesson(mIdx, lIdx, "assignmentPrompt", e.target.value)}
-                          className={smallInputCls}
-                        />
-
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <label className="text-[11px] font-bold text-neutral-700 uppercase tracking-wider">
-                              Model Answer &amp; Grading Rubric
-                            </label>
-                            <button
-                              type="button"
-                              onClick={() => handleGenerateRubricAI(mIdx, lIdx)}
-                              disabled={!lesson.assignmentPrompt.trim()}
-                              className="text-[10px] px-2 py-0.5 rounded bg-black text-white font-bold flex items-center gap-1 disabled:opacity-50 shadow-sm"
-                            >
-                              <FiZap className="w-3 h-3 text-[#D4A373]" /> Auto-Generate
-                            </button>
-                          </div>
-                          <textarea
-                            rows={2}
-                            placeholder="Specify benchmark answers and criteria for AI auto-grading..."
-                            value={lesson.assignmentReferenceAnswer}
-                            onChange={(e) =>
-                              updateLesson(mIdx, lIdx, "assignmentReferenceAnswer", e.target.value)
-                            }
-                            className={smallInputCls}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                mod={mod}
+                mIdx={mIdx}
+                onModuleTitleChange={(v) => updateModuleTitle(mIdx, v)}
+                onAddLesson={() => addLesson(mIdx)}
+                onRemoveModule={modules.length > 1 ? () => removeModule(mIdx) : undefined}
+                onRemoveLesson={(li) => removeLesson(mIdx, li)}
+                onUpdateLesson={(li, field, val) => updateLesson(mIdx, li, field, val)}
+                onGenerateRubric={(li) => handleGenerateRubric(mIdx, li)}
+                smallInputCls={smallInputCls}
+              />
             ))}
           </div>
 
@@ -524,50 +502,62 @@ export function CourseBuilderWizard() {
               onClick={() => setStep(3)}
               className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
-              Review &amp; Publish
+              Review & Publish
             </button>
           </div>
         </div>
       )}
 
-      {/* STEP 3 */}
+      {/* ══════════════════════════════ STEP 3 ══════════════════════════════ */}
       {step === 3 && (
         <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               <FiCheckCircle className="w-6 h-6 text-black" />
-              Step 3: Final Review &amp; Publish
+              Step 3: Final Review & Publish
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
-              Review your course details before making it live for student enrollment.
+              Review your course before making it live.
             </p>
           </div>
 
           <div className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4">
+            {/* Cover preview if set */}
+            {coverImage && (
+              <img
+                src={coverImage}
+                alt="Cover"
+                className="w-full h-40 object-cover rounded-xl border border-neutral-200 mb-2"
+              />
+            )}
+
             <div>
               <div className="flex flex-wrap gap-2 mb-2">
                 <span className="text-[11px] font-bold text-[#784D28] uppercase tracking-wider">{category}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
                 <span className="text-[11px] font-bold text-neutral-500">{level}</span>
+                <span className="text-[11px] font-bold text-neutral-400">|</span>
+                <span className="text-[11px] font-bold text-neutral-500">
+                  {parseFloat(price) === 0 ? "Free" : `$${parseFloat(price).toFixed(2)}`}
+                </span>
               </div>
               <h2 className="text-2xl font-bold text-black">{title || "Untitled Course"}</h2>
-              <p className="text-lg font-black text-black mt-1">${price}</p>
               <p className="text-sm text-neutral-600 mt-2">{description || "No description provided."}</p>
             </div>
 
             <div className="border-t border-neutral-200 pt-4">
               <h4 className="font-bold text-black text-sm mb-3 uppercase tracking-wider">
-                Curriculum ({modules.length} modules,{" "}
-                {modules.reduce((a, m) => a + m.lessons.length, 0)} lessons)
+                Curriculum ({modules.length} modules, {modules.reduce((a, m) => a + m.lessons.length, 0)} lessons)
               </h4>
               <div className="space-y-2">
                 {modules.map((m, idx) => (
                   <div key={idx} className="p-3 rounded-lg bg-white border border-neutral-200">
-                    <h5 className="font-bold text-xs text-black">{m.title}</h5>
+                    <h5 className="font-bold text-xs text-black">{m.title || `Module ${idx + 1}`}</h5>
                     <p className="text-[11px] text-neutral-500 mt-0.5">
-                      {m.lessons.length} lessons |{" "}
-                      {m.lessons.filter((l) => l.assignmentPrompt).length} assignments |{" "}
-                      {m.lessons.filter((l) => l.videoUrl).length} with video
+                      {m.lessons.length} lessons
+                      {" · "}{m.lessons.filter((l) => l.assignmentPrompt).length} assignments
+                      {" · "}{m.lessons.filter((l) => l.videoUrl).length} with video
+                      {" · "}{m.lessons.filter((l) => l.resourceUrl).length} with files
                     </p>
                   </div>
                 ))}
@@ -585,7 +575,7 @@ export function CourseBuilderWizard() {
           {successMsg && (
             <div className="p-4 rounded-xl bg-neutral-100 text-black font-bold text-sm border border-neutral-300 flex items-center gap-2">
               <FiCheckCircle className="w-5 h-5 text-black" />
-              Course Published Successfully! Redirecting to dashboard...
+              Course published successfully. Redirecting to dashboard...
             </div>
           )}
 
@@ -602,11 +592,258 @@ export function CourseBuilderWizard() {
               className="px-8 py-3.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
             >
               <FiSave className="w-5 h-5" />
-              {saving ? "Publishing..." : "Publish Course Now"}
+              {saving ? "Publishing..." : "Publish Course"}
             </button>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// LessonModuleBlock — extracted to keep main component readable
+// ─────────────────────────────────────────────────────────────
+function LessonModuleBlock({
+  mod,
+  mIdx,
+  onModuleTitleChange,
+  onAddLesson,
+  onRemoveModule,
+  onRemoveLesson,
+  onUpdateLesson,
+  onGenerateRubric,
+  smallInputCls,
+}: {
+  mod: ModuleDraft;
+  mIdx: number;
+  onModuleTitleChange: (v: string) => void;
+  onAddLesson: () => void;
+  onRemoveModule?: () => void;
+  onRemoveLesson: (li: number) => void;
+  onUpdateLesson: (li: number, field: keyof LessonDraft, val: string) => void;
+  onGenerateRubric: (li: number) => void;
+  smallInputCls: string;
+}) {
+  return (
+    <div className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4">
+      {/* Module header */}
+      <div className="flex items-center justify-between gap-4">
+        <input
+          type="text"
+          placeholder={`Module ${mIdx + 1} title`}
+          value={mod.title}
+          onChange={(e) => onModuleTitleChange(e.target.value)}
+          className="flex-1 px-4 py-2 rounded-lg bg-white border border-neutral-200 text-sm font-bold text-black outline-none focus:border-black"
+        />
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onAddLesson}
+            className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-semibold text-black flex items-center gap-1 hover:border-black shadow-sm"
+          >
+            <FiPlus className="w-3.5 h-3.5" /> Add Lesson
+          </button>
+          {onRemoveModule && (
+            <button
+              onClick={onRemoveModule}
+              className="p-2 rounded-lg bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 transition-all"
+            >
+              <FiTrash2 className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Lessons */}
+      <div className="space-y-4 pl-4 border-l-2 border-neutral-200">
+        {mod.lessons.map((lesson, lIdx) => (
+          <LessonRow
+            key={lIdx}
+            lesson={lesson}
+            lIdx={lIdx}
+            canRemove={mod.lessons.length > 1}
+            onRemove={() => onRemoveLesson(lIdx)}
+            onUpdate={(field, val) => onUpdateLesson(lIdx, field, val)}
+            onGenerateRubric={() => onGenerateRubric(lIdx)}
+            smallInputCls={smallInputCls}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// LessonRow
+// ─────────────────────────────────────────────────────────────
+function LessonRow({
+  lesson,
+  lIdx,
+  canRemove,
+  onRemove,
+  onUpdate,
+  onGenerateRubric,
+  smallInputCls,
+}: {
+  lesson: LessonDraft;
+  lIdx: number;
+  canRemove: boolean;
+  onRemove: () => void;
+  onUpdate: (field: keyof LessonDraft, val: string) => void;
+  onGenerateRubric: () => void;
+  smallInputCls: string;
+}) {
+  const resourceUpload = useFileUpload();
+  const videoUpload    = useFileUpload();
+
+  return (
+    <div className="p-5 rounded-xl bg-white border border-neutral-200 space-y-4 shadow-sm">
+      {/* Lesson title row */}
+      <div className="flex items-center justify-between gap-3">
+        <input
+          type="text"
+          placeholder={`Lesson ${lIdx + 1} title`}
+          value={lesson.title}
+          onChange={(e) => onUpdate("title", e.target.value)}
+          className="flex-1 px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none focus:border-black"
+        />
+        {canRemove && (
+          <button
+            onClick={onRemove}
+            className="p-1.5 rounded-lg bg-red-50 border border-red-200 text-red-600"
+          >
+            <FiTrash2 className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
+
+      {/* Lesson content / notes */}
+      <div>
+        <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
+          <FiFileText className="w-3 h-3" /> Lesson Notes / Text Content
+        </label>
+        <textarea
+          rows={2}
+          placeholder="Key reading points, summary, and context..."
+          value={lesson.content}
+          onChange={(e) => onUpdate("content", e.target.value)}
+          className={smallInputCls}
+        />
+      </div>
+
+      {/* Video — URL or file upload */}
+      <div>
+        <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
+          <FiVideo className="w-3 h-3" /> Video
+          <span className="text-neutral-400 font-normal normal-case">(YouTube embed, MP4 URL, or upload)</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            type="url"
+            placeholder="https://www.youtube.com/embed/... or /uploads/..."
+            value={lesson.videoUrl}
+            onChange={(e) => onUpdate("videoUrl", e.target.value)}
+            className={`${smallInputCls} flex-1`}
+          />
+          <FilePickerButton
+            accept="video/mp4,video/webm,video/ogg"
+            uploading={videoUpload.uploading}
+            label="Upload"
+            icon={<FiUpload className="w-3 h-3" />}
+            onPicked={async (file) => {
+              const result = await videoUpload.upload(file);
+              if (result) onUpdate("videoUrl", result.url);
+            }}
+          />
+        </div>
+        {videoUpload.error && <p className="text-[11px] text-red-600 mt-1">{videoUpload.error}</p>}
+      </div>
+
+      {/* Resource / file attachment */}
+      <div>
+        <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
+          <FiPaperclip className="w-3 h-3" /> Resource File
+          <span className="text-neutral-400 font-normal normal-case">(PDF, slides, zip, etc.)</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            placeholder="File name (e.g. Lecture Notes.pdf)"
+            value={lesson.resourceName}
+            onChange={(e) => onUpdate("resourceName", e.target.value)}
+            className={`${smallInputCls} w-36 flex-none`}
+          />
+          <input
+            type="url"
+            placeholder="URL or upload"
+            value={lesson.resourceUrl}
+            onChange={(e) => onUpdate("resourceUrl", e.target.value)}
+            className={`${smallInputCls} flex-1`}
+          />
+          <FilePickerButton
+            accept="application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
+            uploading={resourceUpload.uploading}
+            label="Upload"
+            icon={<FiUpload className="w-3 h-3" />}
+            onPicked={async (file) => {
+              const result = await resourceUpload.upload(file);
+              if (result) {
+                onUpdate("resourceUrl", result.url);
+                if (!lesson.resourceName) onUpdate("resourceName", result.name);
+              }
+            }}
+          />
+        </div>
+        {resourceUpload.error && <p className="text-[11px] text-red-600 mt-1">{resourceUpload.error}</p>}
+        {/* Show existing file link */}
+        {lesson.resourceUrl && (
+          <a
+            href={lesson.resourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] text-[#784D28] font-bold hover:underline mt-1 inline-block"
+          >
+            {lesson.resourceName || lesson.resourceUrl}
+          </a>
+        )}
+      </div>
+
+      {/* Assignment (optional) */}
+      <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
+        <span className="text-[11px] font-bold text-[#784D28] flex items-center gap-1 uppercase tracking-wider">
+          <FiHelpCircle className="w-3.5 h-3.5" /> Assignment
+          <span className="text-neutral-400 font-normal normal-case ml-1">(optional)</span>
+        </span>
+        <input
+          type="text"
+          placeholder="e.g. Explain the core concepts covered in this lesson..."
+          value={lesson.assignmentPrompt}
+          onChange={(e) => onUpdate("assignmentPrompt", e.target.value)}
+          className={smallInputCls}
+        />
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[11px] font-bold text-neutral-700 uppercase tracking-wider">
+              Model Answer / Grading Rubric
+            </label>
+            <button
+              type="button"
+              onClick={onGenerateRubric}
+              disabled={!lesson.assignmentPrompt.trim()}
+              className="text-[10px] px-2 py-0.5 rounded bg-black text-white font-bold flex items-center gap-1 disabled:opacity-50 shadow-sm"
+            >
+              <FiZap className="w-3 h-3 text-[#D4A373]" /> Auto-Generate
+            </button>
+          </div>
+          <textarea
+            rows={2}
+            placeholder="Benchmark answers and grading criteria for AI auto-grading..."
+            value={lesson.assignmentReferenceAnswer}
+            onChange={(e) => onUpdate("assignmentReferenceAnswer", e.target.value)}
+            className={smallInputCls}
+          />
+        </div>
+      </div>
     </div>
   );
 }

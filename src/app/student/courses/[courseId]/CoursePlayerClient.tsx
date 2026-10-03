@@ -357,13 +357,25 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
 
                 {/* Video */}
                 {activeLesson.videoUrl && (
-                  <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-900 shadow-sm">
-                    <iframe
-                      src={activeLesson.videoUrl}
-                      className="w-full h-full"
-                      allowFullScreen
-                      title={activeLesson.title}
-                    />
+                  <div className="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-sm flex items-center justify-center">
+                    {activeLesson.videoUrl.startsWith("/uploads/") ||
+                    /\.(mp4|webm|ogg)(\?.*)?$/i.test(activeLesson.videoUrl) ? (
+                      <video
+                        controls
+                        controlsList="nodownload"
+                        src={activeLesson.videoUrl}
+                        className="w-full h-full object-contain"
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <iframe
+                        src={activeLesson.videoUrl}
+                        className="w-full h-full"
+                        allowFullScreen
+                        title={activeLesson.title}
+                      />
+                    )}
                   </div>
                 )}
 

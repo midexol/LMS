@@ -62,21 +62,31 @@ export default async function CoursePreviewPage({ params }: PageProps) {
       <Navbar currentUser={currentUser} />
 
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
-        {/* Course Header Banner with Campus Asset */}
+        {/* Course Header Banner */}
         <div className="rounded-3xl bg-white border border-neutral-200 shadow-sm overflow-hidden">
-          <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-neutral-100">
-            <img
-              src="/assets/bb-students-hero-1.webp"
-              alt="University campus and students"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
+          <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-neutral-950 flex flex-col justify-end p-6 sm:p-8">
+            {course.coverImage ? (
+              <>
+                <img
+                  src={course.coverImage}
+                  alt={course.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+              </>
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900 to-[#1e130a]">
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[140px] font-black text-white/5 select-none pointer-events-none leading-none">
+                  {course.category.slice(0, 2).toUpperCase()}
+                </span>
+              </div>
+            )}
+            <div className="relative text-white space-y-3 z-10">
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-black shadow-sm">
                   {course.category}
                 </span>
-                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-neutral-900/80 backdrop-blur-md text-white border border-neutral-700">
+                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-neutral-700">
                   {course.level}
                 </span>
               </div>
