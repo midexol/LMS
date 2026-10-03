@@ -34,12 +34,12 @@ export function InstructorClient({
   allSubmissions,
   metrics,
 }: InstructorClientProps) {
-  const [activeTab, setActiveTab] = useState<"dashboard" | "classes" | "submissions" | "students" | "announcements">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings">("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   const pendingSubmissions = allSubmissions.filter((s) => s.score === null);
@@ -89,6 +89,7 @@ export function InstructorClient({
               { id: "submissions", label: "Assignments", icon: FiFileText, badge: pendingSubmissions.length || 9 },
               { id: "students", label: "Students", icon: FiUsers },
               { id: "announcements", label: "Announcements", icon: FiMessageSquare, badge: 3 },
+              { id: "settings", label: "Settings & Profile", icon: FiSettings },
             ].map((item) => {
               const Icon = item.icon;
               const active = activeTab === item.id;
@@ -123,22 +124,15 @@ export function InstructorClient({
             })}
           </div>
 
-          {/* WORKSPACE Section */}
+          {/* WORKSPACE Section (No Landing Page) */}
           <div className="space-y-1">
             <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2">Platform</p>
-            <Link
-              href="/"
-              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-600 hover:text-black hover:bg-neutral-100 transition-all"
-            >
-              <FiCompass className="w-4 h-4 text-[#784D28]" />
-              <span>Landing Page</span>
-            </Link>
             <Link
               href="/courses"
               className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-600 hover:text-black hover:bg-neutral-100 transition-all"
             >
               <FiBook className="w-4 h-4 text-[#784D28]" />
-              <span>Student Catalog</span>
+              <span>Course Catalog</span>
             </Link>
             {currentUser?.role === "ADMIN" && (
               <Link
@@ -149,17 +143,10 @@ export function InstructorClient({
                 <span>Superadmin Console</span>
               </Link>
             )}
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-red-600 hover:bg-red-50 transition-all"
-            >
-              <FiLogOut className="w-4 h-4" />
-              <span>Sign Out</span>
-            </button>
           </div>
         </div>
 
-        {/* Lower Sidebar Widgets (Teachio Pattern in Black & White with Brown Accent) */}
+        {/* Lower Sidebar Widgets */}
         <div className="space-y-4 pt-4 border-t border-neutral-200">
           {/* Attendance Widget */}
           <div className="bg-neutral-50 rounded-2xl p-4 border border-neutral-200 space-y-2.5">
@@ -187,27 +174,24 @@ export function InstructorClient({
             </div>
           </div>
 
-          {/* Pro Card */}
-          <div className="bg-black text-white rounded-2xl p-4 shadow-sm space-y-2">
-            <span className="font-bold text-xs text-white">Academia Studio Pro</span>
-            <p className="text-[10px] text-neutral-300 leading-relaxed">
-              Auto-grade assignments, generate rubrics, and track lesson mastery in one click.
-            </p>
-            <button className="w-full py-1.5 rounded-xl bg-[#784D28] hover:bg-[#633E1F] text-white text-[11px] font-bold transition-all">
-              Studio Active
-            </button>
-          </div>
-
-          {/* Logout */}
-          <form action="/api/auth/logout" method="POST">
-            <button
-              type="submit"
-              className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-neutral-500 hover:text-black transition-colors"
-            >
-              <FiLogOut className="w-3.5 h-3.5" />
-              <span>Log out</span>
-            </button>
-          </form>
+          {/* Profile & Settings Button */}
+          <button
+            onClick={() => { setActiveTab("settings"); setSidebarOpen(false); }}
+            className={`w-full flex items-center gap-3 p-3 rounded-2xl border transition-all text-left ${
+              activeTab === "settings"
+                ? "bg-black text-white border-black shadow-sm"
+                : "bg-neutral-50 hover:bg-neutral-100 text-black border-neutral-200"
+            }`}
+          >
+            <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 border border-neutral-700">
+              {currentUser.name.charAt(0)}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold truncate">{currentUser.name}</p>
+              <p className="text-[10px] opacity-70 font-medium truncate">Settings &amp; Sign Out</p>
+            </div>
+            <FiSettings className="w-4 h-4 opacity-60 shrink-0" />
+          </button>
         </div>
       </aside>
 
@@ -239,18 +223,11 @@ export function InstructorClient({
           {/* Search & Actions */}
           <div className="flex items-center gap-3">
             <Link
-              href="/"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-300 text-xs font-bold text-black hover:border-black transition-all"
-            >
-              <FiCompass className="w-3.5 h-3.5 text-[#784D28]" />
-              <span>Landing Page</span>
-            </Link>
-            <Link
               href="/courses"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-300 text-xs font-bold text-black hover:border-black transition-all"
             >
               <FiBook className="w-3.5 h-3.5 text-[#784D28]" />
-              <span>Student Catalog</span>
+              <span>Course Catalog</span>
             </Link>
             {currentUser?.role === "ADMIN" && (
               <Link
@@ -261,15 +238,20 @@ export function InstructorClient({
                 <span>Superadmin</span>
               </Link>
             )}
-            <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shadow-sm" title={currentUser.name}>
-              {currentUser.name.charAt(0)}
-            </div>
             <button
-              onClick={handleLogout}
-              className="p-2 rounded-xl border border-neutral-200 text-neutral-500 hover:text-black hover:border-black transition-all"
-              title="Sign Out"
+              onClick={() => setActiveTab("settings")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
+                activeTab === "settings"
+                  ? "bg-black text-white border-black"
+                  : "bg-white text-black border-neutral-200 hover:border-black"
+              }`}
+              title="Instructor Profile & Settings"
             >
-              <FiLogOut className="w-4 h-4" />
+              <div className="w-6 h-6 rounded-full bg-[#784D28] text-white flex items-center justify-center font-bold text-[10px]">
+                {currentUser.name.charAt(0)}
+              </div>
+              <span className="text-xs font-bold hidden sm:inline">{currentUser.name}</span>
+              <FiSettings className="w-3.5 h-3.5 opacity-70" />
             </button>
           </div>
         </header>
@@ -597,6 +579,120 @@ export function InstructorClient({
                   announcements: c.announcements,
                 }))}
               />
+            </div>
+          )}
+
+          {/* ──────────────── SETTINGS & PROFILE TAB ──────────────── */}
+          {activeTab === "settings" && (
+            <div className="space-y-6 max-w-4xl">
+              <div>
+                <h2 className="font-bold text-2xl text-black">Instructor Profile &amp; Settings</h2>
+                <p className="text-xs text-neutral-500">Manage your faculty account, studio preferences, and session security.</p>
+              </div>
+
+              {/* Profile Card */}
+              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-neutral-100">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl font-bold shadow-md">
+                      {currentUser.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
+                      <p className="text-xs text-neutral-500">{currentUser.email}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200 text-[#784D28]">
+                          {currentUser.role === "ADMIN" ? "Administrator & Faculty" : "Faculty Instructor"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-6 text-xs text-neutral-600 bg-neutral-50 p-4 rounded-2xl border border-neutral-100">
+                    <div>
+                      <span className="block font-bold text-base text-black">{tutorCourses.length}</span>
+                      <span className="text-[11px] text-neutral-500">Active Courses</span>
+                    </div>
+                    <div className="w-[1px] h-8 bg-neutral-200" />
+                    <div>
+                      <span className="block font-bold text-base text-black">{metrics.totalEnrollments || 0}</span>
+                      <span className="text-[11px] text-neutral-500">Students Taught</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Full Legal Name</label>
+                    <input
+                      type="text"
+                      readOnly
+                      value={currentUser.name}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Institutional Email</label>
+                    <input
+                      type="email"
+                      readOnly
+                      value={currentUser.email}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Studio Preferences */}
+              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-4">
+                <h3 className="font-bold text-base text-black">Pedagogical Studio Preferences</h3>
+                <div className="divide-y divide-neutral-100 text-xs">
+                  <div className="py-3 flex items-center justify-between">
+                    <div>
+                      <p className="font-bold text-black">AI Evaluation Sensitivity</p>
+                      <p className="text-neutral-500 text-[11px]">Enforce 70% threshold with Gemini AI rubric benchmark</p>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-700 font-bold text-[10px]">Strict (70%)</span>
+                  </div>
+                  <div className="py-3 flex items-center justify-between">
+                    <div>
+                      <p className="font-bold text-black">Single Course Immersion Lock</p>
+                      <p className="text-neutral-500 text-[11px]">Restrict students to one active course at a time</p>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-black text-white font-bold text-[10px]">Enforced</span>
+                  </div>
+                  <div className="py-3 flex items-center justify-between">
+                    <div>
+                      <p className="font-bold text-black">Email Submission Alerts</p>
+                      <p className="text-neutral-500 text-[11px]">Receive digests when students submit assignments</p>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-700 font-bold text-[10px]">Enabled</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Session Management & Logout */}
+              <div className="bg-white rounded-3xl p-8 border border-red-100 shadow-sm space-y-4">
+                <div>
+                  <h3 className="font-bold text-base text-black">Session &amp; Security</h3>
+                  <p className="text-xs text-neutral-500">Sign out of your active instructor session on this device.</p>
+                </div>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="text-xs text-neutral-600">
+                    <p className="font-semibold">Active Faculty Session</p>
+                    <p className="text-[11px] text-neutral-400">Authenticated via secure session cookie</p>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm"
+                  >
+                    <FiLogOut className="w-4 h-4" />
+                    <span>Sign Out of Instructor Studio</span>
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </main>

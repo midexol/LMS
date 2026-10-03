@@ -70,6 +70,8 @@ export function LandingPage({
     ],
   };
 
+  const [policyModal, setPolicyModal] = useState<"integrity" | "privacy" | "terms" | "honor" | "accessibility" | "security" | null>(null);
+
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     window.location.href = "/";
@@ -557,12 +559,24 @@ export function LandingPage({
 
             {/* Column 4: Institutional */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Institution</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Trust &amp; Standards</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="#" className="hover:text-white transition-colors">About Academia</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pedagogical Model</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Academic Integrity</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Security &amp; SOC-2</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">Pedagogical Framework</a></li>
+                <li>
+                  <button onClick={() => setPolicyModal("integrity")} className="hover:text-white transition-colors text-left">
+                    Academic Integrity
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => setPolicyModal("honor")} className="hover:text-white transition-colors text-left">
+                    The Honor Code
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => setPolicyModal("security")} className="hover:text-white transition-colors text-left">
+                    Platform Security
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
@@ -570,15 +584,146 @@ export function LandingPage({
           {/* Subfooter */}
           <div className="pt-8 border-t border-neutral-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
             <p>&copy; {new Date().getFullYear()} Academia LMS, Inc. All rights reserved.</p>
-            <div className="flex items-center gap-6">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Cookie Preferences</a>
-              <a href="#" className="hover:text-white transition-colors">Accessibility</a>
+            <div className="flex flex-wrap items-center gap-6">
+              <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
+                Privacy Policy
+              </button>
+              <button onClick={() => setPolicyModal("terms")} className="hover:text-white transition-colors">
+                Terms of Service
+              </button>
+              <button onClick={() => setPolicyModal("honor")} className="hover:text-white transition-colors">
+                Honor Code
+              </button>
+              <button onClick={() => setPolicyModal("accessibility")} className="hover:text-white transition-colors">
+                Accessibility
+              </button>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* ───────────────── FOOTER POLICY MODAL ───────────────── */}
+      {policyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-neutral-200 relative text-black space-y-6">
+            <button
+              onClick={() => setPolicyModal(null)}
+              className="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 text-neutral-500 hover:text-black transition-colors"
+              aria-label="Close Modal"
+            >
+              <FiX className="w-5 h-5" />
+            </button>
+
+            {policyModal === "integrity" && (
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Academic Standards</span>
+                <h3 className="font-heading font-bold text-2xl text-black">Academic Integrity Policy</h3>
+                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
+                  <p>
+                    Academia LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
+                  </p>
+                  <p>
+                    All assignments undergo automated rubric benchmarking powered by Gemini AI. Work must meet or exceed a strict <strong>70% mastery standard</strong> to unlock subsequent lessons.
+                  </p>
+                  <p>
+                    Submissions must represent the student&apos;s authentic intellectual effort. Plagiarism, unauthorized automation, or evasion of rubrics will result in zero-score evaluations and formal review.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {policyModal === "privacy" && (
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Data Protection</span>
+                <h3 className="font-heading font-bold text-2xl text-black">Student Privacy Policy</h3>
+                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
+                  <p>
+                    Your student record, assignment responses, and evaluation metrics are treated with the highest degree of academic confidentiality under FERPA guidelines.
+                  </p>
+                  <p>
+                    Student submissions are processed exclusively to perform real-time rubric evaluations. Your coursework is never sold, licensed, or shared with third-party advertisers.
+                  </p>
+                  <p>
+                    Authentication sessions are secured using encrypted, httpOnly cookies with strict same-origin isolation.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {policyModal === "terms" && (
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Institutional Agreement</span>
+                <h3 className="font-heading font-bold text-2xl text-black">Terms of Service</h3>
+                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
+                  <p>
+                    By registering for Academia LMS, you commit to maintaining authentic academic conduct across all lecture coursework, discussion forums, and evaluations.
+                  </p>
+                  <p>
+                    Enrollment grants non-exclusive, personal access to instructional materials. Course materials, video assets, and rubric prompts may not be redistributed without institutional consent.
+                  </p>
+                  <p>
+                    Completion of a course requires satisfying all module assignments with verified mastery benchmarks.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {policyModal === "honor" && (
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Scholarly Pledge</span>
+                <h3 className="font-heading font-bold text-2xl text-black">The Academia Honor Code</h3>
+                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
+                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 italic font-serif text-neutral-800 text-sm">
+                    &ldquo;As a scholar at Academia, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
+                  </div>
+                  <ul className="space-y-1.5 list-disc pl-4 text-neutral-600">
+                    <li>One active course focus until verified completion.</li>
+                    <li>Constructive and respectful discourse in peer discussion forums.</li>
+                    <li>Original submission of all assignments and project deliverables.</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {policyModal === "security" && (
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Platform Security</span>
+                <h3 className="font-heading font-bold text-2xl text-black">Security Safeguards</h3>
+                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
+                  <p>
+                    Our infrastructure utilizes isolated sandbox environments for AI rubric executions, encrypted database storage, and cryptographically verified session credentials.
+                  </p>
+                  <p>
+                    Rate limiting and CSRF protection are enforced across all authentication endpoints to prevent brute-force attacks and session hijacking.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {policyModal === "accessibility" && (
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Universal Access</span>
+                <h3 className="font-heading font-bold text-2xl text-black">Accessibility Statement</h3>
+                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
+                  <p>
+                    Academia LMS is engineered to comply with WCAG 2.1 Level AA specifications. We prioritize high contrast, legible typography, keyboard accessibility, and screen reader compatibility.
+                  </p>
+                  <p>
+                    If you encounter any accessibility barrier, our academic support team is dedicated to providing tailored accommodations.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={() => setPolicyModal(null)}
+              className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+            >
+              Close Window
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
