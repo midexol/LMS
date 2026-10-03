@@ -44,7 +44,7 @@ export default function SignupPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed.");
 
-      window.location.href = role === "TUTOR" ? "/instructor" : "/";
+      window.location.href = "/my-courses";
     } catch (err: any) {
       setError(err.message || "Failed to create account.");
     } finally {
@@ -119,28 +119,6 @@ export default function SignupPage() {
           )}
 
           <form onSubmit={handleSignup} className="space-y-4">
-            {/* Role Switcher */}
-            <div>
-              <label className="block text-[11px] font-bold text-neutral-600 mb-2 uppercase tracking-wider">
-                I want to register as a
-              </label>
-              <div className="p-1 rounded-2xl bg-neutral-100 flex gap-1">
-                {(["STUDENT", "TUTOR"] as const).map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRole(r)}
-                    className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
-                      role === r
-                        ? "bg-black text-white shadow-sm"
-                        : "text-neutral-600 hover:text-black"
-                    }`}
-                  >
-                    {r === "STUDENT" ? "Student" : "Instructor"}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             {/* Name */}
             <div className="space-y-1">

@@ -23,10 +23,12 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed.");
-      if (data.user.role === "TUTOR" || data.user.role === "ADMIN") {
+      if (data.user.role === "TUTOR") {
         window.location.href = "/instructor";
+      } else if (data.user.role === "ADMIN") {
+        window.location.href = "/admin";
       } else {
-        window.location.href = "/";
+        window.location.href = "/my-courses";
       }
     } catch (err: any) {
       setError(err.message || "Invalid credentials.");
@@ -151,17 +153,11 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-neutral-200 text-center space-y-3">
+          <div className="pt-4 border-t border-neutral-200 text-center">
             <p className="text-xs text-neutral-600">
               Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-[#784D28] font-bold hover:underline">
                 Create one free
-              </Link>
-            </p>
-            <p className="text-[11px] text-neutral-400">
-              Educator portal:{" "}
-              <Link href="/instructor/login" className="text-black font-bold hover:underline">
-                Instructor Sign In
               </Link>
             </p>
           </div>

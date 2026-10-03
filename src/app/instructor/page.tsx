@@ -8,8 +8,11 @@ export const revalidate = 0;
 
 export default async function InstructorStudioPage() {
   const currentUser = await getCurrentUser();
-  if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
-    redirect("/instructor/login");
+  if (!currentUser) {
+    redirect("/login");
+  }
+  if (currentUser.role === "STUDENT") {
+    redirect("/my-courses");
   }
 
   const tutorCourses = await prisma.course.findMany({

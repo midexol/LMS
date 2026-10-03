@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BlackboardNavbar } from "@/components/ui/BlackboardNavbar";
+import { LandingNavbar } from "@/components/ui/LandingNavbar";
 import {
   FiBookOpen, FiArrowRight, FiCheck, FiUsers, FiAward,
   FiTrendingUp, FiCpu, FiStar, FiFileText, FiShield,
@@ -77,8 +77,8 @@ export function LandingPage({
 
   return (
     <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
-      {/* ───────────────── BLACKBOARD AUTHENTIC NAVIGATION ───────────────── */}
-      <BlackboardNavbar currentUser={currentUser} showSpacer={false} />
+      {/* ───────────────── UNIQUE LANDING PAGE NAVBAR ───────────────── */}
+      <LandingNavbar currentUser={currentUser} />
 
       {/* ───────────────── HERO SECTION (TEACHABLE STYLE) ───────────────── */}
       <section className="pt-28 sm:pt-36 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
@@ -101,10 +101,10 @@ export function LandingPage({
                 Join as Student
               </Link>
               <Link
-                href="/instructor/login"
+                href="/courses"
                 className="px-8 py-3.5 rounded-full bg-white hover:bg-neutral-50 border border-neutral-300 text-black font-bold text-sm transition-all text-center shadow-sm"
               >
-                Instructor Studio
+                Browse Courses
               </Link>
             </div>
 
@@ -366,10 +366,10 @@ export function LandingPage({
 
             <div className="pt-4">
               <Link
-                href="/instructor/login"
+                href="/courses"
                 className="inline-block px-8 py-3.5 rounded-full bg-white hover:bg-neutral-100 text-black font-bold text-xs uppercase tracking-wider shadow-md transition-all"
               >
-                Access Instructor Studio
+                Explore All Courses
               </Link>
             </div>
           </div>
@@ -522,25 +522,25 @@ export function LandingPage({
               </p>
             </div>
 
-            {/* Column 1: Platform */}
+            {/* Column 1: Curriculum */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Platform</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Curriculum</h4>
               <ul className="space-y-2 text-xs">
-                <li><Link href="/" className="hover:text-white transition-colors">Course Catalog</Link></li>
-                <li><Link href="/login" className="hover:text-white transition-colors">Student Portal</Link></li>
-                <li><Link href="/instructor/login" className="hover:text-white transition-colors">Instructor Studio</Link></li>
-                <li><Link href="/admin/login" className="hover:text-white transition-colors">Superadmin Console</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Course Catalog</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Software Engineering</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Data Science &amp; AI</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Design &amp; UX</Link></li>
               </ul>
             </div>
 
-            {/* Column 2: Instructors */}
+            {/* Column 2: Academics */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Instructors</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Academics</h4>
               <ul className="space-y-2 text-xs">
-                <li><Link href="/instructor/login" className="hover:text-white transition-colors">Course Builder</Link></li>
-                <li><Link href="/instructor/login" className="hover:text-white transition-colors">AI Syllabus Assistant</Link></li>
-                <li><Link href="/instructor/login" className="hover:text-white transition-colors">Grade Distribution</Link></li>
-                <li><Link href="/instructor/login" className="hover:text-white transition-colors">Assignment Queue</Link></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">Single Course Lock</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">AI Evaluation Standard</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">70% Mastery Threshold</a></li>
+                <li><a href="#campus-life" className="hover:text-white transition-colors">Peer Discussions</a></li>
               </ul>
             </div>
 
@@ -548,10 +548,10 @@ export function LandingPage({
             <div className="space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-widest text-white">Students</h4>
               <ul className="space-y-2 text-xs">
-                <li><Link href="/signup" className="hover:text-white transition-colors">Create Free Account</Link></li>
-                <li><Link href="/my-courses" className="hover:text-white transition-colors">My Enrolled Course</Link></li>
-                <li><Link href="/profile" className="hover:text-white transition-colors">Academic Transcript</Link></li>
-                <li><Link href="/" className="hover:text-white transition-colors">Course Prerequisites</Link></li>
+                <li><Link href="/signup" className="hover:text-white transition-colors">Join as Student</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Sign In</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Browse Courses</Link></li>
+                <li><Link href="/signup" className="hover:text-white transition-colors">Academic Record</Link></li>
               </ul>
             </div>
 

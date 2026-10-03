@@ -1,6 +1,7 @@
 import React from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 import { LandingPage } from "./LandingPage";
 import { CatalogClient } from "./CatalogClient";
 
@@ -12,6 +13,18 @@ interface PageProps {
 
 export default async function HomePage({ searchParams }: PageProps) {
   const currentUser = await getCurrentUser();
+
+  // When a user signs in, nothing concerns them with the landing page again
+  if (currentUser) {
+    if (currentUser.role === "TUTOR") {
+      redirect("/instructor");
+    } else if (currentUser.role === "ADMIN") {
+      redirect("/admin");
+    } else {
+      redirect("/my-courses");
+    }
+  }
+
   const view = searchParams?.view;
 
   // If user explicitly asks for catalog view (?view=catalog)
