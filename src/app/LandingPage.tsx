@@ -78,10 +78,10 @@ export function LandingPage({
   return (
     <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
       {/* ───────────────── BLACKBOARD AUTHENTIC NAVIGATION ───────────────── */}
-      <BlackboardNavbar currentUser={currentUser} />
+      <BlackboardNavbar currentUser={currentUser} showSpacer={false} />
 
       {/* ───────────────── HERO SECTION (TEACHABLE STYLE) ───────────────── */}
-      <section className="pt-16 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
+      <section className="pt-28 sm:pt-36 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Text */}
           <div className="lg:col-span-6 space-y-6">

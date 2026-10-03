@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  FiChevronDown, FiChevronUp, FiMenu, FiX, FiCheck,
-  FiArrowRight
-} from "react-icons/fi";
+import { usePathname } from "next/navigation";
+import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
+import { FiCheck, FiX } from "react-icons/fi";
 
 export function BbLogo({ className = "h-8 w-auto", color = "currentColor" }: { className?: string; color?: string }) {
   return (
@@ -41,591 +40,216 @@ interface BlackboardNavbarProps {
     email: string;
     role: "STUDENT" | "TUTOR" | "ADMIN";
   } | null;
+  showSpacer?: boolean;
 }
 
-export function BlackboardNavbar({ currentUser }: BlackboardNavbarProps) {
-  const [activeMenu, setActiveMenu] = useState<"solutions" | "resources" | "company" | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeIndustry, setActiveIndustry] = useState<"higher-ed" | "government" | "workforce" | "k-12">("higher-ed");
+export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardNavbarProps) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const pathname = usePathname();
 
-  const navRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown on click outside
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (navRef.current && !navRef.current.contains(event.target as Node)) {
-        setActiveMenu(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     window.location.href = "/";
   };
 
-  const isSolutionsOpen = activeMenu === "solutions";
-  const isResourcesOpen = activeMenu === "resources";
-  const isCompanyOpen = activeMenu === "company";
-  const isDarkActive = isSolutionsOpen || isResourcesOpen || isCompanyOpen;
+  const navLinks = [
+    { label: "Courses", href: "/courses" },
+    { label: "Curriculum", href: "/#curriculum" },
+    { label: "Pedagogy", href: "/#how-it-works" },
+    { label: "Campus Life", href: "/#campus-life" },
+    { label: "Faculty", href: "/instructor/login" },
+  ];
 
   return (
     <>
-      <div ref={navRef} className="sticky top-0 z-50 transition-colors duration-200">
-        {/* ───────────── TOP UTILITY BAR (Students, Community & Support) ───────────── */}
-        <div className={`border-b transition-colors duration-200 ${
-          isDarkActive
-            ? "bg-black border-neutral-900 text-neutral-400"
-            : "bg-white border-neutral-200 text-neutral-600"
-        }`}>
-          <div className="max-w-7xl mx-auto px-6 h-9 flex items-center justify-end gap-6 text-xs font-medium">
-            <Link
-              href={currentUser?.role === "STUDENT" ? "/my-courses" : "/login"}
-              className={`hover:underline transition-colors ${
-                isDarkActive ? "text-neutral-300 hover:text-white" : "text-neutral-700 hover:text-black font-semibold"
-              }`}
-            >
-              Students
-            </Link>
-            <button
-              onClick={() => setContactModalOpen(true)}
-              className={`hover:underline transition-colors ${
-                isDarkActive ? "text-neutral-400 hover:text-white" : "text-neutral-600 hover:text-black"
-              }`}
-            >
-              Community &amp; Support
-            </button>
-            {currentUser && (
-              <button
-                onClick={handleLogout}
-                className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                  isDarkActive ? "text-neutral-400 hover:text-white" : "text-neutral-400 hover:text-black"
-                }`}
-              >
-                Sign Out
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* ───────────── MAIN NAVBAR HEADER (BLACK & WHITE) ───────────── */}
-        <header
-          className={`transition-colors duration-200 border-b ${
-            isDarkActive
-              ? "bg-black border-neutral-800 text-white"
-              : "bg-white border-neutral-200 text-neutral-900"
+      <header
+        id="site-header"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out flex justify-center ${
+          scrolled ? "py-2 px-3 sm:px-4" : "py-3 sm:py-4 px-4 sm:px-6"
+        }`}
+      >
+        <div
+          className={`transition-all duration-300 ease-out flex items-center justify-between gap-4 py-2 px-4 sm:px-6 rounded-full relative ${
+            scrolled
+              ? "max-w-[960px] w-full bg-[#000000]/92 backdrop-blur-xl border border-white/15 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.85)]"
+              : "max-w-[1200px] w-full bg-[#000000]/80 backdrop-blur-lg border border-white/[0.08]"
           }`}
         >
-          <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
-            {/* Left: Brand Logo (Blackboard Bb Script Style) */}
-            <div className="flex items-center gap-10">
-              <Link href="/" className="flex items-center gap-3 group" onClick={() => setActiveMenu(null)}>
-                <BbLogo
-                  className="h-9 w-auto transition-transform group-hover:scale-105 duration-200"
-                  color={isDarkActive ? "#ffffff" : "#000000"}
-                />
-              </Link>
-
-              {/* Desktop Nav Links */}
-              <nav className="hidden md:flex items-center gap-2">
-                {/* 1. Solutions (With Mega Menu) */}
-                <button
-                  onClick={() => setActiveMenu(isSolutionsOpen ? null : "solutions")}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 transition-all ${
-                    isSolutionsOpen
-                      ? "bg-neutral-800 text-white shadow-inner"
-                      : isDarkActive
-                      ? "text-neutral-300 hover:text-white hover:bg-neutral-900"
-                      : "text-neutral-800 hover:text-black hover:bg-neutral-100"
-                  }`}
-                  aria-expanded={isSolutionsOpen}
-                >
-                  <span>Solutions</span>
-                  {isSolutionsOpen ? <FiChevronUp className="w-4 h-4" /> : <FiChevronDown className="w-4 h-4" />}
-                </button>
-
-                {/* 2. Resources */}
-                <button
-                  onClick={() => setActiveMenu(isResourcesOpen ? null : "resources")}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 transition-all ${
-                    isResourcesOpen
-                      ? "bg-neutral-800 text-white shadow-inner"
-                      : isDarkActive
-                      ? "text-neutral-300 hover:text-white hover:bg-neutral-900"
-                      : "text-neutral-800 hover:text-black hover:bg-neutral-100"
-                  }`}
-                  aria-expanded={isResourcesOpen}
-                >
-                  <span>Resources</span>
-                  {isResourcesOpen ? <FiChevronUp className="w-4 h-4" /> : <FiChevronDown className="w-4 h-4" />}
-                </button>
-
-                {/* 3. Company */}
-                <button
-                  onClick={() => setActiveMenu(isCompanyOpen ? null : "company")}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 transition-all ${
-                    isCompanyOpen
-                      ? "bg-neutral-800 text-white shadow-inner"
-                      : isDarkActive
-                      ? "text-neutral-300 hover:text-white hover:bg-neutral-900"
-                      : "text-neutral-800 hover:text-black hover:bg-neutral-100"
-                  }`}
-                  aria-expanded={isCompanyOpen}
-                >
-                  <span>Company</span>
-                  {isCompanyOpen ? <FiChevronUp className="w-4 h-4" /> : <FiChevronDown className="w-4 h-4" />}
-                </button>
-              </nav>
+          {/* Brand Logo & Name */}
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/20 group-hover:border-[#D4A373] transition-colors shrink-0 flex items-center justify-center bg-white/5">
+              <BbLogo className="h-4.5 w-auto" color="#ffffff" />
             </div>
+            <span className="font-heading font-bold text-lg sm:text-xl text-white tracking-tight">
+              Academia
+            </span>
+          </Link>
 
-            {/* Right: Contact Us Button & Auth */}
-            <div className="hidden md:flex items-center gap-3">
-              <button
-                onClick={() => setContactModalOpen(true)}
-                className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                  isDarkActive
-                    ? "border border-white text-white hover:bg-white/10"
-                    : "border border-black text-black hover:bg-black hover:text-white"
-                }`}
-              >
-                Contact Us
-              </button>
-
-              {currentUser ? (
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1.5" aria-label="Main Navigation">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
                 <Link
-                  href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
-                  className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                    isDarkActive
-                      ? "bg-white text-black hover:bg-neutral-200"
-                      : "bg-black text-white hover:bg-neutral-800"
+                  key={link.href}
+                  href={link.href}
+                  className={`text-[12.5px] font-sans px-3.5 py-1.5 rounded-full transition-all duration-200 ${
+                    isActive
+                      ? "text-white bg-white/15 border border-white/20 font-semibold"
+                      : "text-neutral-300 hover:text-white hover:bg-white/[0.08]"
                   }`}
-                  onClick={() => setActiveMenu(null)}
                 >
-                  Portal Dashboard
+                  {link.label}
                 </Link>
-              ) : (
-                <Link
-                  href="/login"
-                  className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                    isDarkActive
-                      ? "bg-white text-black hover:bg-neutral-200"
-                      : "bg-black text-white hover:bg-neutral-800"
-                  }`}
-                  onClick={() => setActiveMenu(null)}
-                >
-                  Sign In
-                </Link>
-              )}
-            </div>
-
-            {/* Mobile Hamburger Button */}
+              );
+            })}
             <button
-              className={`md:hidden p-2 rounded-xl transition-colors ${
-                isDarkActive ? "text-white" : "text-black"
-              }`}
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle Navigation"
+              onClick={() => setContactModalOpen(true)}
+              className="text-[12.5px] font-sans px-3.5 py-1.5 rounded-full transition-all duration-200 text-neutral-300 hover:text-white hover:bg-white/[0.08]"
             >
-              {mobileOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+              Support
             </button>
-          </div>
+          </nav>
 
-          {/* ───────────── SOLUTIONS MEGA MENU DROPDOWN (PURE BLACK & WHITE + WARM ACCENT) ───────────── */}
-          {isSolutionsOpen && (
-            <div className="bg-black text-white border-t border-neutral-800 shadow-2xl py-12 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
-                {/* Column 1: By Industry */}
-                <div className="md:col-span-3 space-y-6">
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-4">
-                      By Industry
-                    </h3>
-                    <ul className="space-y-2 text-sm">
-                      <li>
-                        <button
-                          onClick={() => setActiveIndustry("higher-ed")}
-                          className={`w-full text-left py-1.5 transition-colors ${
-                            activeIndustry === "higher-ed"
-                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
-                              : "text-neutral-400 hover:text-white pl-3 font-normal"
-                          }`}
-                        >
-                          Higher Ed
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => setActiveIndustry("government")}
-                          className={`w-full text-left py-1.5 transition-colors ${
-                            activeIndustry === "government"
-                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
-                              : "text-neutral-400 hover:text-white pl-3 font-normal"
-                          }`}
-                        >
-                          Government
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => setActiveIndustry("workforce")}
-                          className={`w-full text-left py-1.5 transition-colors ${
-                            activeIndustry === "workforce"
-                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
-                              : "text-neutral-400 hover:text-white pl-3 font-normal"
-                          }`}
-                        >
-                          Workforce
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => setActiveIndustry("k-12")}
-                          className={`w-full text-left py-1.5 transition-colors ${
-                            activeIndustry === "k-12"
-                              ? "border-l-2 border-[#784D28] text-white pl-3 font-semibold"
-                              : "text-neutral-400 hover:text-white pl-3 font-normal"
-                          }`}
-                        >
-                          K-12
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="pt-4 border-t border-neutral-800 space-y-3">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-400">
-                      Explore
-                    </h4>
-                    <ul className="space-y-2 text-sm">
-                      <li>
-                        <Link
-                          href="/courses"
-                          onClick={() => setActiveMenu(null)}
-                          className="text-neutral-300 hover:text-white transition-colors block py-1 font-medium"
-                        >
-                          All Solutions
-                        </Link>
-                      </li>
-                      <li>
-                        <a
-                          href="#how-it-works"
-                          onClick={() => setActiveMenu(null)}
-                          className="text-neutral-300 hover:text-white transition-colors block py-1 font-medium"
-                        >
-                          Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Column 2: Learning Solutions */}
-                <div className="md:col-span-3 space-y-4">
-                  <h3 className="text-sm font-bold text-white tracking-wide">
-                    Learning Solutions
-                  </h3>
-                  <ul className="space-y-3 text-sm text-neutral-300">
-                    <li>
-                      <Link
-                        href="/courses"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard LMS
-                      </Link>
-                    </li>
-                    <li>
-                      <a
-                        href="#how-it-works"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard LMS: AVA
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#campus-life"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard LMS: Adopt
-                      </a>
-                    </li>
-                    <li>
-                      <Link
-                        href="/instructor/login"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard LMS: Video Studio
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/courses"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard LMS: Catalog
-                      </Link>
-                    </li>
-                    <li>
-                      <a
-                        href="#curriculum"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard LMS: Milestone
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Column 3: Accessibility & Analytics Solutions */}
-                <div className="md:col-span-3 space-y-8">
-                  <div>
-                    <h3 className="text-sm font-bold text-white tracking-wide mb-4">
-                      Accessibility Solutions
-                    </h3>
-                    <ul className="space-y-3 text-sm text-neutral-300">
-                      <li>
-                        <a
-                          href="#campus-life"
-                          onClick={() => setActiveMenu(null)}
-                          className="hover:text-white hover:underline transition-colors block"
-                        >
-                          Blackboard Ally
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="text-sm font-bold text-white tracking-wide mb-4">
-                      Analytics Solutions
-                    </h3>
-                    <ul className="space-y-3 text-sm text-neutral-300">
-                      <li>
-                        <a
-                          href="#instructors"
-                          onClick={() => setActiveMenu(null)}
-                          className="hover:text-white hover:underline transition-colors block"
-                        >
-                          Blackboard Illuminate
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Column 4: Evidence Solutions */}
-                <div className="md:col-span-3 space-y-4">
-                  <h3 className="text-sm font-bold text-white tracking-wide">
-                    Evidence Solutions
-                  </h3>
-                  <ul className="space-y-3 text-sm text-neutral-300">
-                    <li>
-                      <a
-                        href="#how-it-works"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Cursive by Blackboard
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#instructors"
-                        onClick={() => setActiveMenu(null)}
-                        className="hover:text-white hover:underline transition-colors block"
-                      >
-                        Blackboard Evaluate
-                      </a>
-                    </li>
-                    <li>
-                      <div className="font-semibold text-white">
-                        Blackboard Institutional Effectiveness
-                      </div>
-                      <ul className="pl-3 mt-2 space-y-2 border-l border-neutral-700 text-neutral-400 text-xs">
-                        <li>
-                          <a
-                            href="#instructors"
-                            onClick={() => setActiveMenu(null)}
-                            className="hover:text-white transition-colors block py-0.5"
-                          >
-                            Blackboard Accreditation
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#instructors"
-                            onClick={() => setActiveMenu(null)}
-                            className="hover:text-white transition-colors block py-0.5"
-                          >
-                            Blackboard Program Review
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#instructors"
-                            onClick={() => setActiveMenu(null)}
-                            className="hover:text-white transition-colors block py-0.5"
-                          >
-                            Blackboard Planning
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#instructors"
-                            onClick={() => setActiveMenu(null)}
-                            className="hover:text-white transition-colors block py-0.5"
-                          >
-                            Blackboard Outcomes
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ───────────── RESOURCES DROPDOWN (BLACK & WHITE) ───────────── */}
-          {isResourcesOpen && (
-            <div className="bg-black text-white border-t border-neutral-800 shadow-2xl py-10 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Educator Resources</h3>
-                  <p className="text-xs text-neutral-400">Teaching best practices, syllabus blueprints, and AI rubric guidelines.</p>
-                  <Link
-                    href="/instructor/login"
-                    onClick={() => setActiveMenu(null)}
-                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
-                  >
-                    Instructor Studio <FiArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Student Guides</h3>
-                  <p className="text-xs text-neutral-400">How single active course enrollments and AI auto-grading work.</p>
-                  <a
-                    href="#how-it-works"
-                    onClick={() => setActiveMenu(null)}
-                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
-                  >
-                    View Pedagogical Model <FiArrowRight className="w-3 h-3" />
-                  </a>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Curriculum Directory</h3>
-                  <p className="text-xs text-neutral-400">Browse university-grade active modules and accredited coursework.</p>
-                  <Link
-                    href="/courses"
-                    onClick={() => setActiveMenu(null)}
-                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
-                  >
-                    Browse Catalog <FiArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Help &amp; Documentation</h3>
-                  <p className="text-xs text-neutral-400">Need assistance? Reach our 24/7 academic support helpdesk.</p>
-                  <button
-                    onClick={() => { setActiveMenu(null); setContactModalOpen(true); }}
-                    className="text-xs text-white hover:text-neutral-300 font-bold inline-flex items-center gap-1 underline underline-offset-4"
-                  >
-                    Contact Support <FiArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ───────────── COMPANY DROPDOWN (BLACK & WHITE) ───────────── */}
-          {isCompanyOpen && (
-            <div className="bg-black text-white border-t border-neutral-800 shadow-2xl py-10 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">About Blackboard &amp; Academia</h3>
-                  <p className="text-xs text-neutral-400">Building authentic collegiate digital environments for deep immersion and rigor.</p>
-                  <a href="#campus-life" onClick={() => setActiveMenu(null)} className="text-xs text-white hover:text-neutral-300 font-bold underline underline-offset-4">Campus Evolution →</a>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Academic Leadership</h3>
-                  <p className="text-xs text-neutral-400">Advisory council comprising university deans, professors, and EdTech researchers.</p>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Trust &amp; Security</h3>
-                  <p className="text-xs text-neutral-400">Enterprise data privacy, FERPA compliance, and secure AI evaluation sandboxes.</p>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-white">Superadmin Control</h3>
-                  <p className="text-xs text-neutral-400">Institutional control panel for user permissions and enrollment throttling.</p>
-                  <Link href="/admin/login" onClick={() => setActiveMenu(null)} className="text-xs text-white hover:text-neutral-300 font-bold underline underline-offset-4">Admin Console →</Link>
-                </div>
-              </div>
-            </div>
-          )}
-        </header>
-
-        {/* ───────────── MOBILE ACCORDION MENU ───────────── */}
-        {mobileOpen && (
-          <div className="md:hidden bg-black text-white px-6 py-6 space-y-5 border-t border-neutral-800 shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div>
-              <p className="text-xs uppercase tracking-wider font-bold text-neutral-400 mb-2">Solutions</p>
-              <div className="space-y-2 pl-3 border-l border-neutral-700 text-sm">
-                <Link href="/courses" onClick={() => setMobileOpen(false)} className="block py-1">Blackboard LMS</Link>
-                <a href="#how-it-works" onClick={() => setMobileOpen(false)} className="block py-1">AVA &amp; Auto-Grading</a>
-                <a href="#campus-life" onClick={() => setMobileOpen(false)} className="block py-1">Blackboard Ally</a>
-                <a href="#instructors" onClick={() => setMobileOpen(false)} className="block py-1">Blackboard Illuminate</a>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-xs uppercase tracking-wider font-bold text-neutral-400 mb-2">Resources</p>
-              <div className="space-y-2 pl-3 border-l border-neutral-700 text-sm">
-                <Link href="/courses" onClick={() => setMobileOpen(false)} className="block py-1">Course Catalog</Link>
-                <a href="#how-it-works" onClick={() => setMobileOpen(false)} className="block py-1">Pedagogical Standards</a>
-                <a href="#campus-life" onClick={() => setMobileOpen(false)} className="block py-1">Campus Life</a>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-neutral-800 flex flex-col gap-3">
-              <button
-                onClick={() => { setMobileOpen(false); setContactModalOpen(true); }}
-                className="w-full py-3 rounded-lg border border-white text-white text-xs font-bold uppercase tracking-wider text-center"
-              >
-                Contact Us
-              </button>
-              {currentUser ? (
+          {/* Right CTA & Mobile Hamburger */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {currentUser ? (
+              <>
+                <span className="text-[10.5px] font-mono uppercase text-[#D4A373] hidden lg:inline-block px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/10 tracking-wider">
+                  {currentUser.role}
+                </span>
                 <Link
                   href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full py-3 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-wider text-center"
+                  className="inline-flex items-center justify-center px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
                 >
                   Dashboard
                 </Link>
-              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="text-neutral-400 hover:text-white text-xs font-medium px-2 py-1 transition-colors whitespace-nowrap hidden sm:inline-block"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
                 <Link
                   href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full py-3 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-wider text-center"
+                  className="text-neutral-300 hover:text-white text-xs font-semibold px-3 py-1.5 transition-colors whitespace-nowrap hidden sm:inline-block"
                 >
                   Sign In
                 </Link>
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center justify-center px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
+                >
+                  Join as Student
+                </Link>
+              </>
+            )}
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white transition-colors"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <RiCloseLine className="w-5 h-5" /> : <RiMenu4Line className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Dropdown Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden fixed inset-x-3 top-16 z-50 bg-[#000000]/95 backdrop-blur-2xl border border-neutral-800 rounded-2xl p-4 shadow-2xl space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-3 py-2.5 rounded-xl transition-colors text-center font-medium ${
+                      isActive
+                        ? "bg-white/15 text-white font-semibold border border-white/20"
+                        : "bg-white/[0.04] hover:bg-white/[0.08] text-neutral-300 hover:text-white"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setContactModalOpen(true);
+                }}
+                className="px-3 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-neutral-300 hover:text-white transition-colors text-center font-medium"
+              >
+                Support
+              </button>
+            </div>
+
+            <div className="pt-2 border-t border-neutral-800 flex flex-col gap-2">
+              {currentUser ? (
+                <>
+                  <Link
+                    href={currentUser.role === "STUDENT" ? "/my-courses" : currentUser.role === "ADMIN" ? "/admin" : "/instructor"}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2.5 rounded-xl bg-white text-black font-semibold text-xs text-center shadow-sm"
+                  >
+                    Go to Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full py-2 rounded-xl bg-white/[0.04] text-neutral-400 hover:text-white font-medium text-xs text-center"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2.5 rounded-xl bg-white text-black font-semibold text-xs text-center shadow-sm"
+                  >
+                    Join as Student
+                  </Link>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2 rounded-xl bg-white/[0.04] text-neutral-300 hover:text-white font-semibold text-xs text-center"
+                  >
+                    Sign In
+                  </Link>
+                </>
               )}
             </div>
           </div>
         )}
-      </div>
+      </header>
 
-      {/* ───────────── CONTACT US MODAL (BLACK & WHITE) ───────────── */}
+      {/* Spacer for non-landing pages */}
+      {showSpacer && <div className="h-20 sm:h-24 w-full" aria-hidden="true" />}
+
+      {/* Contact Support Modal */}
       {contactModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-neutral-200 relative text-black space-y-6">
