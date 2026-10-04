@@ -9,6 +9,9 @@ import {
   FiLogIn, FiUserPlus, FiSearch, FiBarChart2, FiX, FiCompass,
 } from "react-icons/fi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+import { formatNgn } from "@/lib/utils";
+
+
 
 interface CatalogClientProps {
   currentUser: any;
@@ -345,7 +348,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
                             {course.category}
                           </span>
                           <span className="absolute bottom-3 right-3 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
-                            ${course.price.toFixed(2)}
+                            {course.price === 0 ? "Free" : formatNgn(course.price)}
                           </span>
                         </div>
                       );
@@ -359,7 +362,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
                           {course.category}
                         </span>
                         <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
-                          ${course.price.toFixed(2)}
+                          {course.price === 0 ? "Free" : formatNgn(course.price)}
                         </span>
                       </div>
                     );

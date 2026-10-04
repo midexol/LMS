@@ -15,6 +15,7 @@ import {
 } from "react-icons/fi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatNgn } from "@/lib/utils";
 
 interface MockCheckoutModalProps {
   isOpen: boolean;
@@ -52,14 +53,8 @@ export function MockCheckoutModal({
 
   if (!isOpen) return null;
 
-  // Rate multiplier (fallback 1500 NGN per USD)
-  const exchangeRate = 1500;
-  const amountNgn = Math.round(course.price * exchangeRate);
-  const formattedNgn = new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    maximumFractionDigits: 0,
-  }).format(amountNgn);
+  const formattedNgn = formatNgn(course.price);
+
 
   const handlePaystackCheckout = async () => {
     if (!currentUser) {
@@ -161,9 +156,6 @@ export function MockCheckoutModal({
             <div className="text-right">
               <span className="text-base font-black text-black block leading-none">
                 {formattedNgn}
-              </span>
-              <span className="text-[11px] text-neutral-500 font-medium">
-                (${course.price.toFixed(2)} USD)
               </span>
             </div>
           </div>

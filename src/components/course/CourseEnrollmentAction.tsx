@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FiArrowRight, FiLock } from "react-icons/fi";
 import { MockCheckoutModal } from "@/components/ui/MockCheckoutModal";
+import { formatNgn } from "@/lib/utils";
 
 interface CourseEnrollmentActionProps {
   currentUser: any;
@@ -27,15 +28,8 @@ export function CourseEnrollmentAction({
   activeEnrollment,
 }: CourseEnrollmentActionProps) {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const formattedNgn = formatNgn(course.price);
 
-  // Rate multiplier (fallback 1500 NGN per USD)
-  const exchangeRate = 1500;
-  const amountNgn = Math.round(course.price * exchangeRate);
-  const formattedNgn = new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    maximumFractionDigits: 0,
-  }).format(amountNgn);
 
   return (
     <>

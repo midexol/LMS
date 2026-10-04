@@ -8,6 +8,8 @@ import {
   FiBookOpen, FiUser, FiLayers, FiCheckCircle, FiLock, FiArrowRight, FiTag, FiBarChart2,
 } from "react-icons/fi";
 import { CourseEnrollmentAction } from "@/components/course/CourseEnrollmentAction";
+import { formatNgn } from "@/lib/utils";
+
 
 
 export const revalidate = 0;
@@ -198,7 +200,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
               <div className="text-center">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Tuition Fee</span>
                 <span className="font-black text-3xl text-black">
-                  ${course.price.toFixed(2)}
+                  {course.price === 0 ? "Free" : formatNgn(course.price)}
                 </span>
               </div>
 

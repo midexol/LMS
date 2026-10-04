@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatNgn } from "@/lib/utils";
 import {
   FiShield, FiUsers, FiBookOpen, FiAward, FiDollarSign,
   FiCheckCircle, FiClock, FiTrash2, FiEdit2, FiLogOut,
@@ -613,7 +613,7 @@ export function AdminDashboardClient({
                 </p>
                 <div className="pt-3 flex items-center gap-4 text-xs">
                   <span className="px-4 py-2 rounded-full bg-white text-black font-bold">
-                    Revenue: ${metrics.totalRevenue.toFixed(2)}
+                    Revenue: {formatNgn(metrics.totalRevenue)}
                   </span>
                   <span className="text-neutral-300">
                     {metrics.activeEnrollmentsCount} active student enrollments
@@ -1050,7 +1050,9 @@ export function AdminDashboardClient({
                         )}
                         <span className="text-[10px] font-bold text-[#784D28] uppercase">{c.faculty || c.category} · {c.level}</span>
                       </div>
-                      <span className="font-bold text-base text-black">${c.price.toFixed(2)}</span>
+                      <span className="font-bold text-base text-black">
+                        {c.price === 0 ? "Free" : formatNgn(c.price)}
+                      </span>
                     </div>
                     <h4 className="font-bold text-base text-black">{c.title}</h4>
                     <p className="text-xs text-neutral-500">Instructor: <strong>{c.tutor.name}</strong></p>
@@ -1103,7 +1105,9 @@ export function AdminDashboardClient({
                       <p className="text-[#784D28] font-bold">{e.course.title}</p>
                       <p className="text-[10px] text-neutral-500">{e.course.department || e.course.category}</p>
                     </td>
-                    <td className="p-4 font-bold text-black">${e.course.price.toFixed(2)}</td>
+                    <td className="p-4 font-bold text-black">
+                      {e.course.price === 0 ? "Free" : formatNgn(e.course.price)}
+                    </td>
                     <td className="p-4 text-neutral-500">{formatDate(e.enrolledAt)}</td>
                     <td className="p-4">
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">

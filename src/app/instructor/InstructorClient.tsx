@@ -11,6 +11,8 @@ import {
   FiCheckCircle, FiClock, FiAlertCircle, FiLogOut, FiMenu, FiX,
   FiCompass, FiShield,
 } from "react-icons/fi";
+import { formatNgn } from "@/lib/utils";
+
 
 interface InstructorClientProps {
   currentUser: any;
@@ -569,7 +571,9 @@ export function InstructorClient({
                               {c.faculty || c.category} · {c.level}
                             </span>
                           </div>
-                          <span className="font-bold text-sm text-black">${c.price.toFixed(2)}</span>
+                          <span className="font-bold text-sm text-black">
+                            {c.price === 0 ? "Free" : formatNgn(c.price)}
+                          </span>
                         </div>
                         <h4 className="font-bold text-base text-black">{c.title}</h4>
                         <p className="text-xs text-neutral-500 line-clamp-2">{c.description}</p>

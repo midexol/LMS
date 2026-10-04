@@ -9,6 +9,8 @@ import {
   FiTrendingUp, FiCpu, FiStar, FiFileText, FiShield,
   FiCheckCircle, FiCompass, FiMenu, FiX, FiClock, FiLock, FiBarChart2
 } from "react-icons/fi";
+import { formatNgn } from "@/lib/utils";
+
 
 // Category-based visual palette for course cards (no image required)
 const CATEGORY_VISUALS: Record<string, { bg: string; accent: string; label: string }> = {
@@ -257,7 +259,7 @@ export function LandingPage({
                               {course.category}
                             </span>
                             <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
-                              ${course.price.toFixed(2)}
+                              {course.price === 0 ? "Free" : formatNgn(course.price)}
                             </span>
                           </div>
                         );
@@ -274,7 +276,7 @@ export function LandingPage({
                           </span>
                           {/* Price pill */}
                           <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
-                            ${course.price.toFixed(2)}
+                            {course.price === 0 ? "Free" : formatNgn(course.price)}
                           </span>
                         </div>
                       );

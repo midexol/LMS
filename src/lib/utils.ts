@@ -24,3 +24,13 @@ export function formatDate(dateInput: string | Date | null | undefined): string 
 
   return `${mmm} ${dd}, ${yyyy}`;
 }
+
+export function formatNgn(amount: number | null | undefined): string {
+  if (amount == null || isNaN(amount)) return "₦0";
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+

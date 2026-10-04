@@ -6,8 +6,10 @@ import {
   FiFileText, FiVideo, FiHelpCircle, FiAlertCircle, FiUpload,
   FiPaperclip, FiImage, FiX, FiLoader,
 } from "react-icons/fi";
-
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+import { formatNgn } from "@/lib/utils";
+
+
 
 // ─────────────────────────────────────────────────────────────
 // Types
@@ -451,12 +453,12 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
             {/* Price */}
             <div>
-              <label className={labelCls}>Course Price (leave 0 for free)</label>
+              <label className={labelCls}>Course Tuition Fee (₦ NGN - leave 0 for free)</label>
               <input
                 type="number"
-                step="0.01"
+                step="100"
                 min="0"
-                placeholder="0.00"
+                placeholder="e.g. 15000"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 className={inputCls}
@@ -613,7 +615,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                 <span className="text-[11px] font-bold text-neutral-500">{level}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
                 <span className="text-[11px] font-bold text-neutral-500">
-                  {parseFloat(price) === 0 ? "Free" : `$${parseFloat(price).toFixed(2)}`}
+                  {parseFloat(price) === 0 ? "Free" : formatNgn(parseFloat(price))}
                 </span>
               </div>
               <h2 className="text-2xl font-bold text-black">{title || "Untitled Course"}</h2>

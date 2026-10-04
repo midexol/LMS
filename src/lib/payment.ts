@@ -15,8 +15,8 @@ export interface PaymentConfig {
 export function getPaymentConfig(): PaymentConfig {
   const secretKey = process.env.PAYSTACK_SECRET_KEY?.trim() || "";
   const publicKey = process.env.PAYSTACK_PUBLIC_KEY?.trim() || "";
-  const currency = process.env.PAYSTACK_CURRENCY?.trim() || "NGN";
-  const rate = parseFloat(process.env.USD_TO_NGN_RATE?.trim() || "1500");
+  const currency = "NGN";
+  const rate = 1;
   const baseUrl = "https://api.paystack.co";
   const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
   const gatewayUrl = (process.env.PAYMENT_GATEWAY_URL || "http://localhost:5000").replace(/\/$/, "");
@@ -25,12 +25,11 @@ export function getPaymentConfig(): PaymentConfig {
 }
 
 /**
- * Converts USD price into NGN (Naira) subunits (kobo) or whole amount
+ * Normalizes course price into whole NGN (Naira)
  */
-export function calculateNgnAmount(usdPrice: number): number {
-  if (usdPrice <= 0) return 0;
-  const config = getPaymentConfig();
-  return Math.round(usdPrice * config.rate);
+export function calculateNgnAmount(price: number): number {
+  if (price <= 0) return 0;
+  return Math.round(price);
 }
 
 /**
@@ -75,7 +74,7 @@ export interface InitializePaymentResult {
   success: boolean;
   reference: string;
   amountNgn: number;
-  amountUsd: number;
+  amountUsd?: number;
   authorizationUrl: string;
   accessCode?: string;
   isSimulation: boolean;
@@ -110,7 +109,6 @@ export async function initializeCoursePayment({
         courseTitle: course.title,
         studentName: student.name,
         amountNgn,
-        amountUsd: course.price,
       }),
     },
   });
@@ -161,7 +159,6 @@ export async function initializeCoursePayment({
           success: true,
           reference,
           amountNgn,
-          amountUsd: course.price,
           authorizationUrl: resData.data.authorization_url,
           accessCode: resData.data.access_code,
           isSimulation: false,
@@ -181,7 +178,6 @@ export async function initializeCoursePayment({
     success: true,
     reference,
     amountNgn,
-    amountUsd: course.price,
     authorizationUrl: simulationUrl,
     accessCode: `sim_${Date.now()}`,
     isSimulation: true,
