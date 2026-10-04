@@ -7,6 +7,8 @@ import { Navbar } from "@/components/ui/Navbar";
 import {
   FiBookOpen, FiUser, FiLayers, FiCheckCircle, FiLock, FiArrowRight, FiTag, FiBarChart2,
 } from "react-icons/fi";
+import { CourseEnrollmentAction } from "@/components/course/CourseEnrollmentAction";
+
 
 export const revalidate = 0;
 
@@ -253,12 +255,19 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                   </Link>
                 </div>
               ) : (
-                <Link
-                  href="/courses"
-                  className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
-                >
-                  Enroll Now · ${course.price.toFixed(2)}
-                </Link>
+                <CourseEnrollmentAction
+                  currentUser={currentUser}
+                  course={course}
+                  activeEnrollment={
+                    activeEnrollment
+                      ? {
+                          id: activeEnrollment.id,
+                          courseId: activeEnrollment.courseId,
+                          courseTitle: activeEnrollment.course.title,
+                        }
+                      : null
+                  }
+                />
               )}
 
               <div className="space-y-2.5 pt-3 border-t border-neutral-200 text-xs text-neutral-600 font-medium">

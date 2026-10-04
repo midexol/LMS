@@ -1,8 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { FiX, FiCreditCard, FiLock, FiAlertCircle, FiCheck, FiArrowRight, FiLogIn, FiUserPlus } from "react-icons/fi";
+import {
+  FiX,
+  FiCreditCard,
+  FiLock,
+  FiAlertCircle,
+  FiCheck,
+  FiArrowRight,
+  FiLogIn,
+  FiUserPlus,
+  FiShield,
+  FiExternalLink,
+} from "react-icons/fi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface MockCheckoutModalProps {
   isOpen: boolean;
@@ -13,6 +25,8 @@ interface MockCheckoutModalProps {
     title: string;
     price: number;
     description: string;
+    department?: string | null;
+    faculty?: string | null;
   };
   activeEnrollment: {
     id: string;
@@ -30,13 +44,24 @@ export function MockCheckoutModal({
   activeEnrollment,
   onEnrollSuccess,
 }: MockCheckoutModalProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [statusText, setStatusText] = useState<string>("Pay with Paystack");
 
   if (!isOpen) return null;
 
-  const handlePayAndEnroll = async () => {
+  // Rate multiplier (fallback 1500 NGN per USD)
+  const exchangeRate = 1500;
+  const amountNgn = Math.round(course.price * exchangeRate);
+  const formattedNgn = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    maximumFractionDigits: 0,
+  }).format(amountNgn);
+
+  const handlePaystackCheckout = async () => {
     if (!currentUser) {
       window.location.href = "/login";
       return;
@@ -44,9 +69,11 @@ export function MockCheckoutModal({
 
     setLoading(true);
     setError(null);
+    setStatusText("Connecting to Paystack...");
 
     try {
-      const res = await fetch("/api/checkout", {
+      // 1. Initialize payment via Paystack backend
+      const res = await fetch("/api/payment/initialize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courseId: course.id }),
@@ -55,23 +82,49 @@ export function MockCheckoutModal({
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Enrollment failed.");
+        throw new Error(data.error || "Payment initialization failed.");
+      }
+
+      setStatusText("Redirecting to Paystack Gateway...");
+
+      // 2. If authorizationUrl is provided, redirect to Paystack or callback
+      if (data.authorizationUrl) {
+        // Redirect to Paystack or verification callback
+        window.location.href = data.authorizationUrl;
+        return;
+      }
+
+      // 3. Fallback verification
+      setStatusText("Finalizing Course Enrollment...");
+      const verifyRes = await fetch("/api/payment/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reference: data.reference,
+          isSimulation: data.isSimulation,
+        }),
+      });
+
+      const verifyData = await verifyRes.json();
+      if (!verifyRes.ok || !verifyData.success) {
+        throw new Error(verifyData.error || "Verification failed.");
       }
 
       setSuccess(true);
       setTimeout(() => {
         onEnrollSuccess();
         onClose();
-      }, 1500);
+        router.push(`/student/courses/${course.id}`);
+      }, 1200);
     } catch (err: any) {
-      setError(err.message || "Payment failed.");
-    } finally {
+      setError(err.message || "Payment processing error.");
       setLoading(false);
+      setStatusText("Pay with Paystack");
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div className="w-full max-w-lg bg-white rounded-3xl p-7 shadow-2xl border border-neutral-200 relative">
         {/* Close Button */}
         <button
@@ -81,30 +134,51 @@ export function MockCheckoutModal({
           <FiX className="w-4 h-4" />
         </button>
 
-        <h3 className="text-xl font-bold text-black mb-1 flex items-center gap-2">
-          <FiCreditCard className="w-5 h-5 text-black" />
-          Course Registration &amp; Checkout
-        </h3>
-        <p className="text-xs text-neutral-500 mb-6">Review course details and registration status.</p>
+        {/* Modal Header */}
+        <div className="flex items-center gap-2 mb-1">
+          <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold">
+            <FiCreditCard className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-black leading-tight">
+              Course Checkout
+            </h3>
+            <p className="text-[11px] text-neutral-500">
+              Integrated with University Payment Portal &amp; Paystack
+            </p>
+          </div>
+        </div>
 
         {/* Course Card Summary */}
-        <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 mb-6 space-y-1">
+        <div className="mt-5 p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-2">
           <div className="flex justify-between items-start">
-            <h4 className="font-bold text-black text-sm">{course.title}</h4>
-            <span className="text-base font-bold text-black">${course.price.toFixed(2)}</span>
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#784D28] bg-[#784D28]/10 px-2 py-0.5 rounded-full border border-[#784D28]/20">
+                {course.department || course.faculty || "Course"}
+              </span>
+              <h4 className="font-bold text-black text-sm mt-1">{course.title}</h4>
+            </div>
+            <div className="text-right">
+              <span className="text-base font-black text-black block leading-none">
+                {formattedNgn}
+              </span>
+              <span className="text-[11px] text-neutral-500 font-medium">
+                (${course.price.toFixed(2)} USD)
+              </span>
+            </div>
           </div>
           <p className="text-xs text-neutral-500 line-clamp-2">{course.description}</p>
         </div>
 
         {/* UNAUTHENTICATED USER CHECK */}
         {!currentUser ? (
-          <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-4">
+          <div className="mt-5 p-6 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-4">
             <div className="flex items-start gap-3">
               <FiLock className="w-5 h-5 text-black shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-black text-sm">Account Required</h4>
                 <p className="text-xs text-neutral-600 leading-relaxed mt-1">
-                  You must sign in or create a student account before registering or paying for a course.
+                  You must sign in or register a student account before paying for course enrollment.
                 </p>
               </div>
             </div>
@@ -124,18 +198,18 @@ export function MockCheckoutModal({
               </Link>
             </div>
           </div>
-        ) : activeEnrollment ? (
+        ) : activeEnrollment && activeEnrollment.courseId !== course.id ? (
           /* Single Active Course Restriction */
-          <div className="p-5 rounded-2xl bg-neutral-100 border border-neutral-300 shadow-sm mb-6 space-y-3">
+          <div className="mt-5 p-5 rounded-2xl bg-neutral-100 border border-neutral-300 shadow-sm space-y-3">
             <div className="flex gap-3 items-start">
               <FiLock className="w-5 h-5 text-[#784D28] shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-black text-sm">Single Active Enrollment Constraint</h4>
                 <p className="text-xs text-neutral-700 leading-relaxed mt-1">
-                  You are currently registered in <strong>{activeEnrollment.courseTitle}</strong>. Platform policy strictly permits enrollment in only one course at a time.
+                  You are currently registered in <strong>{activeEnrollment.courseTitle}</strong>. Platform policy strictly permits enrollment in only one active course at a time.
                 </p>
                 <p className="text-xs text-neutral-600 font-medium mt-2">
-                  Complete your active course assignments before enrolling in a new course.
+                  Complete your active course assignments and final assessment before enrolling in another course.
                 </p>
                 <div className="mt-4">
                   <Link
@@ -150,59 +224,65 @@ export function MockCheckoutModal({
             </div>
           </div>
         ) : (
-          /* Authenticated Payment Form */
-          <>
-            <div className="space-y-4 mb-6">
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1">Student Account</label>
-                <input
-                  type="text"
-                  readOnly
-                  value={`${currentUser.name} (${currentUser.email})`}
-                  className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black font-bold outline-none"
-                />
+          /* Authenticated Paystack Payment Form */
+          <div className="mt-5 space-y-4">
+            <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs space-y-2">
+              <div className="flex justify-between items-center text-neutral-600">
+                <span>Payer Account:</span>
+                <span className="font-bold text-black">{currentUser.name} ({currentUser.email})</span>
               </div>
-
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1">Simulated Card Details</label>
-                <input
-                  type="text"
-                  readOnly
-                  value="4242 •••• •••• 4242"
-                  className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black font-bold outline-none"
-                />
+              {currentUser.department && (
+                <div className="flex justify-between items-center text-neutral-600">
+                  <span>Department:</span>
+                  <span className="font-semibold text-black">{currentUser.department}</span>
+                </div>
+              )}
+              <div className="flex justify-between items-center text-neutral-600 border-t border-neutral-200/60 pt-2">
+                <span>Payment Channels:</span>
+                <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px]">
+                  Mastercard, Visa, Verve &amp; Transfer
+                </span>
               </div>
             </div>
 
+            {/* Paystack Security Notice */}
+            <div className="flex items-center gap-2 px-2 text-[11px] text-neutral-500">
+              <FiShield className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
+              <span>
+                Processed securely through <strong>Paystack</strong> with 256-bit encryption.
+              </span>
+            </div>
+
             {error && (
-              <div className="p-3 mb-4 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
+              <div className="p-3 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
                 <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" />
                 <span>{error}</span>
               </div>
             )}
 
             {success ? (
-              <div className="p-4 rounded-2xl bg-neutral-100 text-black text-sm font-bold border border-neutral-300 flex items-center justify-center gap-2">
-                <FiCheck className="w-5 h-5 text-black" />
-                Registration Confirmed! Enrolling in Course...
+              <div className="p-4 rounded-2xl bg-emerald-50 text-emerald-900 text-sm font-bold border border-emerald-200 flex items-center justify-center gap-2">
+                <FiCheck className="w-5 h-5 text-emerald-600" />
+                Payment Confirmed! Enrolling in Course...
               </div>
             ) : (
               <button
-                onClick={handlePayAndEnroll}
+                onClick={handlePaystackCheckout}
                 disabled={loading}
                 className="w-full py-3.5 px-6 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-wide transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
-                  "Processing Payment..."
+                  <span className="animate-pulse">{statusText}</span>
                 ) : (
                   <>
                     <FiLock className="w-4 h-4" />
-                    Pay ${course.price.toFixed(2)} and Enroll
+                    Pay {formattedNgn} &amp; Enroll
+                    <FiExternalLink className="w-3.5 h-3.5 ml-1 opacity-70" />
                   </>
                 )}
               </button>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

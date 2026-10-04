@@ -23,6 +23,7 @@ model User {
   lessonProgress    LessonProgress[]
   discussionPosts   DiscussionPost[]
   discussionReplies DiscussionReply[]
+  payments          Payment[]
 }
 
 model Course {
@@ -43,6 +44,7 @@ model Course {
   modules       Module[]
   enrollments   Enrollment[]
   announcements Announcement[]
+  payments      Payment[]
 }
 
 model Module {
@@ -152,3 +154,22 @@ model DiscussionReply {
   content   String
   createdAt DateTime       @default(now())
 }
+
+model Payment {
+  id          String    @id @default(cuid())
+  reference   String    @unique
+  studentId   String
+  student     User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  amount      Float
+  currency    String    @default("NGN")
+  provider    String    @default("PAYSTACK") // "PAYSTACK" | "ACBU_GATEWAY"
+  status      String    @default("PENDING")  // "PENDING" | "SUCCESS" | "FAILED"
+  channel     String?
+  paidAt      DateTime?
+  paystackRef String?
+  metadata    String?
+  createdAt   DateTime  @default(now())
+}
+

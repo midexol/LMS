@@ -95,13 +95,35 @@ export async function POST(req: Request) {
       );
     }
 
-    const enrollment = await prisma.enrollment.create({
-      data: {
-        studentId: currentUser.id,
-        courseId: course.id,
-        status: "ACTIVE",
-      },
-    });
+    const reference = `PP-CRS-${Math.random().toString(36).substring(2, 7).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
+
+    const [enrollment, payment] = await prisma.$transaction([
+      prisma.enrollment.create({
+        data: {
+          studentId: currentUser.id,
+          courseId: course.id,
+          status: "ACTIVE",
+        },
+      }),
+      prisma.payment.create({
+        data: {
+          reference,
+          studentId: currentUser.id,
+          courseId: course.id,
+          amount: course.price,
+          currency: "NGN",
+          provider: "PAYSTACK",
+          status: "SUCCESS",
+          channel: "card",
+          paidAt: new Date(),
+          metadata: JSON.stringify({
+            courseTitle: course.title,
+            studentName: currentUser.name,
+            directCheckout: true,
+          }),
+        },
+      }),
+    ]);
 
     await sendEnrollmentEmail(currentUser.email, {
       studentName: currentUser.name,
