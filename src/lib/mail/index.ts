@@ -20,18 +20,23 @@ const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
 const smtpFrom = process.env.SMTP_FROM || "no-reply@lms-platform.com";
 
-const transporter =
-  smtpHost && smtpUser
-    ? nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpPort === 465,
-        auth: {
-          user: smtpUser,
-          pass: smtpPass,
-        },
-      })
-    : null;
+const isRealSmtp =
+  Boolean(smtpHost && smtpUser && smtpPass) &&
+  smtpHost !== "smtp.example.com" &&
+  smtpUser !== "user@example.com" &&
+  smtpPass !== "password";
+
+const transporter = isRealSmtp
+  ? nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    })
+  : null;
 
 export async function sendEmailNotification(toEmail: string, subject: string, htmlContent: string) {
   if (!transporter) {

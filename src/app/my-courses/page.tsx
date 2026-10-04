@@ -137,7 +137,7 @@ export default async function MyCoursesPage() {
                 <p className="text-xs text-neutral-500 mt-1">Browse our academic catalog to register for your next learning track.</p>
               </div>
               <Link
-                href="/"
+                href="/courses"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
               >
                 Browse Course Catalog <FiArrowRight className="w-3.5 h-3.5" />
@@ -181,12 +181,20 @@ export default async function MyCoursesPage() {
                       <FiCheckCircle className="w-3.5 h-3.5" /> Completed {formatDate(e.completedAt)}
                     </div>
                     <p className="text-[11px] text-neutral-500">{completed}/{total} lessons · Instructor: {e.course.tutor?.name}</p>
-                    <Link
-                      href={`/courses/${e.courseId}`}
-                      className="text-xs text-[#784D28] font-bold hover:underline inline-flex items-center gap-1"
-                    >
-                      Review Syllabus Details <FiArrowRight className="w-3 h-3" />
-                    </Link>
+                    <div className="flex items-center justify-between pt-2 border-t border-neutral-100">
+                      <Link
+                        href={`/student/courses/${e.courseId}`}
+                        className="text-xs text-black font-bold hover:underline inline-flex items-center gap-1"
+                      >
+                        <FiAward className="w-3.5 h-3.5 text-[#784D28]" /> View Course &amp; Certificate
+                      </Link>
+                      <Link
+                        href={`/courses/${e.courseId}`}
+                        className="text-xs text-[#784D28] font-bold hover:underline inline-flex items-center gap-1"
+                      >
+                        Syllabus <FiArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
                   </div>
                 );
               })}
