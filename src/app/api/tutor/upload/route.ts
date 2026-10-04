@@ -25,7 +25,7 @@ const MAX_SIZE = 100 * 1024 * 1024; // 100 MB
 export async function POST(req: NextRequest) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
+    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Unauthorized." }, { status: 403 });
     }
 
@@ -48,13 +48,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Build a safe, unique filename
-    const timestamp = Date.now();
-    const safeName = file.name
-      .replace(/[^a-zA-Z0-9._-]/g, "_")
+    // Strip client extension and build a safe, unique filename ending in verified ext
+    const parsed = path.parse(file.name);
+    const safeBase = (parsed.name || "upload")
+      .replace(/[^a-zA-Z0-9_-]/g, "_")
       .replace(/_{2,}/g, "_")
-      .slice(0, 80);
-    const filename = `${timestamp}_${safeName}`;
+      .slice(0, 50);
+
+    const timestamp = Date.now();
+    const filename = `${timestamp}_${safeBase}${ext}`;
 
     // Save to public/uploads (served statically)
     const uploadsDir = path.join(process.cwd(), "public", "uploads");

@@ -12,7 +12,7 @@ interface NavbarProps {
     id: string;
     name: string;
     email: string;
-    role: "STUDENT" | "TUTOR" | "ADMIN";
+    role: "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN" | string;
   } | null;
 }
 

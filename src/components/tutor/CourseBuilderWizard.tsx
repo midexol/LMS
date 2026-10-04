@@ -116,20 +116,27 @@ function FilePickerButton({
   );
 }
 
+interface CourseBuilderWizardProps {
+  initialCourse?: any;
+  onClose?: () => void;
+  onSuccess?: () => void;
+}
+
 // ─────────────────────────────────────────────────────────────
 // Main Component
 // ─────────────────────────────────────────────────────────────
-export function CourseBuilderWizard() {
+export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: CourseBuilderWizardProps = {}) {
+  const isEditing = Boolean(initialCourse?.id);
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   // Step 1 — Course Info
-  const [title, setTitle]           = useState("");
-  const [faculty, setFaculty]       = useState(ACADEMIC_STRUCTURE[0].name);
-  const [department, setDepartment] = useState(ACADEMIC_STRUCTURE[0].departments[0]);
-  const [level, setLevel]           = useState("Beginner");
-  const [price, setPrice]           = useState("0");
-  const [description, setDescription] = useState("");
-  const [coverImage, setCoverImage] = useState(""); // optional cover URL
+  const [title, setTitle]           = useState(initialCourse?.title || "");
+  const [faculty, setFaculty]       = useState(initialCourse?.faculty || initialCourse?.category || ACADEMIC_STRUCTURE[0].name);
+  const [department, setDepartment] = useState(initialCourse?.department || ACADEMIC_STRUCTURE[0].departments[0]);
+  const [level, setLevel]           = useState(initialCourse?.level || "Beginner");
+  const [price, setPrice]           = useState(String(initialCourse?.price ?? 0));
+  const [description, setDescription] = useState(initialCourse?.description || "");
+  const [coverImage, setCoverImage] = useState(initialCourse?.coverImage || ""); // optional cover URL
 
   const handleFacultyChange = (newFac: string) => {
     setFaculty(newFac);
@@ -138,12 +145,27 @@ export function CourseBuilderWizard() {
   };
 
   // Step 2 — Modules & Lessons
-  const [modules, setModules] = useState<ModuleDraft[]>([
-    {
-      title: "Module 1: Foundations",
-      lessons: [defaultLesson()],
-    },
-  ]);
+  const [modules, setModules] = useState<ModuleDraft[]>(
+    initialCourse?.modules && initialCourse.modules.length > 0
+      ? initialCourse.modules.map((m: any) => ({
+          title: m.title,
+          lessons: m.lessons.map((l: any) => ({
+            title: l.title,
+            content: l.content || "",
+            videoUrl: l.videoUrl || "",
+            resourceName: l.resourceName || "",
+            resourceUrl: l.resourceUrl || "",
+            assignmentPrompt: l.assignments?.[0]?.prompt || "",
+            assignmentReferenceAnswer: l.assignments?.[0]?.referenceAnswer || "",
+          })),
+        }))
+      : [
+          {
+            title: "Module 1: Foundations",
+            lessons: [defaultLesson()],
+          },
+        ]
+  );
 
   // AI helpers
   const [aiTopic, setAiTopic]               = useState("");
@@ -247,25 +269,36 @@ export function CourseBuilderWizard() {
     setSaving(true);
     setSaveError(null);
     try {
+      const payload: any = {
+        title,
+        category: faculty,
+        faculty,
+        department,
+        level,
+        price: parseFloat(price) || 0,
+        description,
+        coverImage: coverImage || null,
+        modules,
+      };
+      if (isEditing) {
+        payload.courseId = initialCourse.id;
+      }
+
       const res = await fetch("/api/tutor/courses", {
-        method: "POST",
+        method: isEditing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          category: faculty,
-          faculty,
-          department,
-          level,
-          price: parseFloat(price) || 0,
-          description,
-          coverImage: coverImage || null,
-          modules,
-        }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setSuccessMsg(true);
-        setTimeout(() => { window.location.href = "/instructor"; }, 1800);
+        setTimeout(() => {
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            window.location.href = "/instructor";
+          }
+        }, 1500);
       } else {
         setSaveError(data.error || "Failed to save course.");
       }
@@ -292,21 +325,31 @@ export function CourseBuilderWizard() {
     <div className="max-w-5xl mx-auto space-y-6">
 
       {/* ── Step Navigator ── */}
-      <div className="p-3 rounded-2xl bg-white border border-neutral-200 shadow-sm flex items-center justify-around">
-        {([1, 2, 3] as const).map((s) => (
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex-1 p-3 rounded-2xl bg-white border border-neutral-200 shadow-sm flex items-center justify-around">
+          {([1, 2, 3] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                step === s ? "bg-black text-white shadow-sm" : "text-neutral-500 hover:text-black"
+              }`}
+            >
+              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                step === s ? "bg-white text-black" : "bg-neutral-100 text-neutral-800"
+              }`}>{s}</span>
+              {s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : isEditing ? "Review & Update" : "Review & Publish"}
+            </button>
+          ))}
+        </div>
+        {onClose && (
           <button
-            key={s}
-            onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-              step === s ? "bg-black text-white shadow-sm" : "text-neutral-500 hover:text-black"
-            }`}
+            onClick={onClose}
+            className="p-3 rounded-2xl bg-white border border-neutral-200 hover:bg-neutral-100 text-black font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all"
           >
-            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-              step === s ? "bg-white text-black" : "bg-neutral-100 text-neutral-800"
-            }`}>{s}</span>
-            {s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : "Review & Publish"}
+            <FiX className="w-4 h-4" /> Cancel
           </button>
-        ))}
+        )}
       </div>
 
       {/* ══════════════════════════════ STEP 1 ══════════════════════════════ */}
@@ -315,10 +358,12 @@ export function CourseBuilderWizard() {
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               <FiBookOpen className="w-6 h-6 text-[#784D28]" />
-              Step 1: Course Overview
+              {isEditing ? `Edit Course: ${title || initialCourse.title}` : "Step 1: Course Overview"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
-              Fill in the core details. Cover image is optional — a visual placeholder is generated automatically.
+              {isEditing
+                ? "Update core course info and syllabus. Any changes to lessons will update enrolled students' curricula."
+                : "Fill in the core details. Cover image is optional — a visual placeholder is generated automatically."}
             </p>
           </div>
 
@@ -540,10 +585,12 @@ export function CourseBuilderWizard() {
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               <FiCheckCircle className="w-6 h-6 text-black" />
-              Step 3: Final Review & Publish
+              {isEditing ? "Step 3: Review & Save Updates" : "Step 3: Final Review & Publish"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
-              Review your course before making it live.
+              {isEditing
+                ? "Verify your changes. Once saved, students actively enrolled will receive an email notifying them of the updated curriculum."
+                : "Review your course before making it live."}
             </p>
           </div>
 
@@ -603,7 +650,9 @@ export function CourseBuilderWizard() {
           {successMsg && (
             <div className="p-4 rounded-xl bg-neutral-100 text-black font-bold text-sm border border-neutral-300 flex items-center gap-2">
               <FiCheckCircle className="w-5 h-5 text-black" />
-              Course published successfully. Redirecting to dashboard...
+              {isEditing
+                ? "Course updated successfully! Enrolled students have been notified via email."
+                : "Course published successfully. Redirecting..."}
             </div>
           )}
 
@@ -620,7 +669,9 @@ export function CourseBuilderWizard() {
               className="px-8 py-3.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
             >
               <FiSave className="w-5 h-5" />
-              {saving ? "Publishing..." : "Publish Course"}
+              {saving
+                ? (isEditing ? "Saving Updates..." : "Publishing...")
+                : (isEditing ? "Save Changes & Notify Students" : "Publish Course")}
             </button>
           </div>
         </div>

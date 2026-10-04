@@ -2,9 +2,15 @@ import nodemailer from "nodemailer";
 import {
   EnrollmentEmailData,
   GradeEmailData,
+  GradeOverrideEmailData,
+  AnnouncementEmailData,
+  CourseUpdateEmailData,
   CompletionEmailData,
   getEnrollmentEmailTemplate,
   getGradeEmailTemplate,
+  getGradeOverrideEmailTemplate,
+  getAnnouncementEmailTemplate,
+  getCourseUpdateEmailTemplate,
   getCompletionEmailTemplate,
 } from "./templates";
 
@@ -63,7 +69,23 @@ export async function sendGradeEmail(studentEmail: string, data: GradeEmailData)
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
+export async function sendGradeOverrideEmail(studentEmail: string, data: GradeOverrideEmailData) {
+  const { subject, html } = getGradeOverrideEmailTemplate(data);
+  return await sendEmailNotification(studentEmail, subject, html);
+}
+
+export async function sendAnnouncementEmail(studentEmail: string, data: AnnouncementEmailData) {
+  const { subject, html } = getAnnouncementEmailTemplate(data);
+  return await sendEmailNotification(studentEmail, subject, html);
+}
+
+export async function sendCourseUpdateEmail(studentEmail: string, data: CourseUpdateEmailData) {
+  const { subject, html } = getCourseUpdateEmailTemplate(data);
+  return await sendEmailNotification(studentEmail, subject, html);
+}
+
 export async function sendCompletionEmail(studentEmail: string, data: CompletionEmailData) {
   const { subject, html } = getCompletionEmailTemplate(data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
+

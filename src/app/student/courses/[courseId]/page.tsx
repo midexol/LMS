@@ -22,8 +22,8 @@ export default async function CoursePlayerPage({ params }: PageProps) {
   }
 
   // Course player is for students only
-  if (currentUser.role === "TUTOR" || currentUser.role === "ADMIN") {
-    redirect("/instructor");
+  if (currentUser.role === "TUTOR" || currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN") {
+    redirect(currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN" ? "/admin" : "/instructor");
   }
 
 

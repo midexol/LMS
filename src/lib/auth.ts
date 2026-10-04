@@ -5,7 +5,7 @@ export interface SessionUser {
   id: string;
   name: string;
   email: string;
-  role: "STUDENT" | "TUTOR" | "ADMIN";
+  role: "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN";
   faculty?: string | null;
   department?: string | null;
 }
@@ -29,7 +29,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role as "STUDENT" | "TUTOR" | "ADMIN",
+      role: user.role as "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN",
       faculty: user.faculty,
       department: user.department,
     };

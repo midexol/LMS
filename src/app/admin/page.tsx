@@ -16,8 +16,8 @@ export default async function AdminPage() {
     redirect("/admin/login");
   }
 
-  // If logged in but not an ADMIN, users cannot access or even see admin
-  if (currentUser.role !== "ADMIN") {
+  // If logged in but not an ADMIN/SUPERADMIN, users cannot access or even see admin
+  if (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN") {
     redirect("/my-courses");
   }
 

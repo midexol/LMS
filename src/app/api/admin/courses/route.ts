@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/auth";
 export async function PATCH(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== "ADMIN") {
+    if (!currentUser || (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Admin access required." }, { status: 403 });
     }
 
@@ -31,7 +31,7 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== "ADMIN") {
+    if (!currentUser || (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Admin access required." }, { status: 403 });
     }
 

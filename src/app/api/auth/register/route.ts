@@ -59,6 +59,13 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
+    cookieStore.set("lms_user_role", newUser.role, {
+      path: "/",
+      httpOnly: false,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7,
+    });
 
     // Return user without password
     const { password: _pw, ...safeUser } = newUser;

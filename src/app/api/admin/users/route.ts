@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 export async function GET() {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== "ADMIN") {
+    if (!currentUser || (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Admin access required." }, { status: 403 });
     }
 
@@ -41,7 +41,7 @@ export async function GET() {
 export async function PATCH(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== "ADMIN") {
+    if (!currentUser || (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Admin access required." }, { status: 403 });
     }
 
@@ -52,7 +52,7 @@ export async function PATCH(req: Request) {
     }
 
     // Prevent admin from demoting themselves
-    if (userId === currentUser.id && role && role !== "ADMIN") {
+    if (userId === currentUser.id && role && role !== "ADMIN" && role !== "SUPERADMIN") {
       return NextResponse.json(
         { error: "You cannot change your own admin role." },
         { status: 400 }
@@ -62,7 +62,7 @@ export async function PATCH(req: Request) {
     const updateData: any = {};
 
     if (role) {
-      if (!["STUDENT", "TUTOR", "ADMIN"].includes(role)) {
+      if (!["STUDENT", "TUTOR", "ADMIN", "SUPERADMIN"].includes(role)) {
         return NextResponse.json({ error: "Invalid role." }, { status: 400 });
       }
       updateData.role = role;
@@ -102,7 +102,7 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== "ADMIN") {
+    if (!currentUser || (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Admin access required." }, { status: 403 });
     }
 

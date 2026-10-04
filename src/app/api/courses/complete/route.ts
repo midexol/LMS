@@ -106,6 +106,7 @@ export async function POST(req: Request) {
     await sendCompletionEmail(currentUser.email, {
       studentName: currentUser.name,
       courseTitle: enrollment.course.title,
+      certificateId: `CERT-${enrollment.id.slice(-8).toUpperCase()}`,
     });
 
     return NextResponse.json({ success: true, enrollment: updated });

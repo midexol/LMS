@@ -139,33 +139,55 @@ export default async function CoursePreviewPage({ params }: PageProps) {
               Curriculum &amp; Syllabus
             </h2>
 
-            <div className="space-y-4">
-              {course.modules.map((module) => (
-                <div key={module.id} className="space-y-2">
-                  <h3 className="text-sm font-bold text-black bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-2.5">
-                    {module.title}
-                  </h3>
-                  <div className="pl-4 space-y-1.5 border-l-2 border-neutral-200">
-                    {module.lessons.map((lesson) => (
-                      <div
-                        key={lesson.id}
-                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-neutral-200 text-xs text-neutral-700"
-                      >
-                        <span className="flex items-center gap-2 font-medium">
-                          <FiLock className="w-3.5 h-3.5 text-neutral-400" />
-                          {lesson.title}
-                        </span>
-                        {lesson.assignments.length > 0 && (
-                          <span className="px-2 py-0.5 rounded-full bg-[#784D28]/10 text-[#784D28] text-[10px] font-bold border border-[#784D28]/30">
-                            Assignment
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+            {isWrongDepartment ? (
+              <div className="p-8 rounded-2xl bg-neutral-50 border border-neutral-200 text-center space-y-4 my-4">
+                <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center mx-auto shadow-sm">
+                  <FiLock className="w-6 h-6" />
                 </div>
-              ))}
-            </div>
+                <div>
+                  <h3 className="text-base font-bold text-black">Curriculum Restricted to {course.department}</h3>
+                  <p className="text-xs text-neutral-600 max-w-md mx-auto mt-1 leading-relaxed">
+                    Under institutional academic structure, syllabus contents, lesson plans, and assignments for this course are isolated exclusively to students enrolled in the <strong>{course.department}</strong> department.
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <Link
+                    href="/courses"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all shadow-sm"
+                  >
+                    Browse Courses For {currentUser.department} <FiArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {course.modules.map((module) => (
+                  <div key={module.id} className="space-y-2">
+                    <h3 className="text-sm font-bold text-black bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-2.5">
+                      {module.title}
+                    </h3>
+                    <div className="pl-4 space-y-1.5 border-l-2 border-neutral-200">
+                      {module.lessons.map((lesson) => (
+                        <div
+                          key={lesson.id}
+                          className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-neutral-200 text-xs text-neutral-700"
+                        >
+                          <span className="flex items-center gap-2 font-medium">
+                            <FiLock className="w-3.5 h-3.5 text-neutral-400" />
+                            {lesson.title}
+                          </span>
+                          {lesson.assignments.length > 0 && (
+                            <span className="px-2 py-0.5 rounded-full bg-[#784D28]/10 text-[#784D28] text-[10px] font-bold border border-[#784D28]/30">
+                              Assignment
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Enrollment Card */}

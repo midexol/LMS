@@ -15,6 +15,7 @@ export function middleware(request: NextRequest) {
   }
 
   const isAuthenticated = Boolean(userId);
+  const userRole = request.cookies.get("lms_user_role")?.value;
 
   // Protected student-only routes (must be logged in)
   const studentPaths = ["/student", "/profile", "/my-courses"];
@@ -26,17 +27,26 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Protected instructor routes (unauthenticated users must log in)
+  // Protected instructor routes
   if (pathname.startsWith("/instructor") && pathname !== "/instructor/login") {
     if (!isAuthenticated) {
       return NextResponse.redirect(new URL("/instructor/login", request.url));
     }
+    if (userRole === "STUDENT") {
+      return NextResponse.redirect(new URL("/my-courses", request.url));
+    }
   }
 
-  // Protected admin routes (unauthenticated users must log in)
+  // Protected admin routes
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
     if (!isAuthenticated) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+    if (userRole === "STUDENT") {
+      return NextResponse.redirect(new URL("/my-courses", request.url));
+    }
+    if (userRole === "TUTOR") {
+      return NextResponse.redirect(new URL("/instructor", request.url));
     }
   }
 

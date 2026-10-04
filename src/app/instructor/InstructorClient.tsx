@@ -36,6 +36,7 @@ export function InstructorClient({
 }: InstructorClientProps) {
   const [activeTab, setActiveTab] = useState<"dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings">("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<any | null>(null);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -518,37 +519,77 @@ export function InstructorClient({
           {/* ──────────────── MY CLASSES TAB ──────────────── */}
           {activeTab === "classes" && (
             <div className="space-y-6">
-              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
-                <div>
-                  <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
-                  <p className="text-xs text-neutral-500">Create new course modules, integrate AI auto-grading rubrics, and upload lecture content.</p>
+              {editingCourse ? (
+                <div className="bg-white rounded-3xl p-8 border-2 border-black shadow-md space-y-6">
+                  <div className="flex items-center justify-between pb-4 border-b border-neutral-200">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Editing Mode</span>
+                      <h2 className="font-bold text-2xl text-black">Update Course: {editingCourse.title}</h2>
+                    </div>
+                    <button
+                      onClick={() => setEditingCourse(null)}
+                      className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black text-xs font-bold transition-all"
+                    >
+                      Close Editor
+                    </button>
+                  </div>
+                  <CourseBuilderWizard
+                    initialCourse={editingCourse}
+                    onClose={() => setEditingCourse(null)}
+                    onSuccess={() => {
+                      setEditingCourse(null);
+                      window.location.reload();
+                    }}
+                  />
                 </div>
-                <CourseBuilderWizard />
-              </div>
+              ) : (
+                <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+                  <div>
+                    <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
+                    <p className="text-xs text-neutral-500">Create new course modules, integrate AI auto-grading rubrics, and upload lecture content.</p>
+                  </div>
+                  <CourseBuilderWizard />
+                </div>
+              )}
 
               <div className="space-y-4">
                 <h3 className="font-bold text-xl text-black">Existing Courses ({tutorCourses.length})</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {tutorCourses.map((c) => (
-                    <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3">
-                      <div className="flex items-start justify-between flex-wrap gap-1">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          {c.department && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
-                              {c.department}
+                    <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3 flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between flex-wrap gap-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {c.department && (
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                                {c.department}
+                              </span>
+                            )}
+                            <span className="text-[10px] font-bold text-[#784D28] uppercase">
+                              {c.faculty || c.category} · {c.level}
                             </span>
-                          )}
-                          <span className="text-[10px] font-bold text-[#784D28] uppercase">
-                            {c.faculty || c.category} · {c.level}
-                          </span>
+                          </div>
+                          <span className="font-bold text-sm text-black">${c.price.toFixed(2)}</span>
                         </div>
-                        <span className="font-bold text-sm text-black">${c.price.toFixed(2)}</span>
+                        <h4 className="font-bold text-base text-black">{c.title}</h4>
+                        <p className="text-xs text-neutral-500 line-clamp-2">{c.description}</p>
                       </div>
-                      <h4 className="font-bold text-base text-black">{c.title}</h4>
-                      <p className="text-xs text-neutral-500 line-clamp-2">{c.description}</p>
+
                       <div className="pt-3 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500">
-                        <span>{c.modules.length} modules</span>
-                        <span>{c.enrollments.length} enrolled</span>
+                        <div className="flex items-center gap-2">
+                          <span>{c.modules.length} modules</span>
+                          <span>·</span>
+                          <span>{c.enrollments.length} enrolled</span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setEditingCourse(c);
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          className="px-3 py-1.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-[11px] shadow-sm transition-all"
+                        >
+                          Edit Course
+                        </button>
                       </div>
                     </div>
                   ))}

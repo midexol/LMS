@@ -18,6 +18,8 @@ import {
   FiBell,
   FiChevronDown,
   FiChevronUp,
+  FiPrinter,
+  FiX,
 } from "react-icons/fi";
 
 interface CoursePlayerClientProps {
@@ -52,6 +54,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
   const [completingCourse, setCompletingCourse] = useState(false);
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState(enrollment.status === "COMPLETED");
+  const [showCertificate, setShowCertificate] = useState(false);
 
   // Announcements
   const [announcements, setAnnouncements] = useState<any[]>([]);
@@ -200,9 +203,18 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               {completingCourse ? "Checking Criteria..." : "Complete Course & Release Lock"}
             </button>
           ) : (
-            <div className="px-4 py-2 rounded-xl bg-neutral-100 border border-neutral-300 text-black text-xs font-bold flex items-center gap-2 shadow-sm">
-              <FiCheck className="w-4 h-4 text-black" />
-              Course Complete - Enrollment Lock Released!
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="px-4 py-2.5 rounded-xl bg-neutral-100 border border-neutral-300 text-black text-xs font-bold flex items-center gap-2 shadow-sm">
+                <FiCheck className="w-4 h-4 text-black" />
+                Course Completed
+              </div>
+              <button
+                onClick={() => setShowCertificate(true)}
+                className="px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all"
+              >
+                <FiAward className="w-4 h-4 text-[#D4A373]" />
+                Official Certificate
+              </button>
             </div>
           )}
         </div>
@@ -613,6 +625,91 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           )}
         </div>
       </div>
+
+      {/* ──────────────── OFFICIAL COMPLETION CERTIFICATE MODAL ──────────────── */}
+      {showCertificate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm print:p-0 print:bg-white">
+          <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-neutral-300 overflow-hidden print:border-none print:shadow-none print:w-full print:max-w-none">
+            {/* Modal Controls (Hidden in print) */}
+            <div className="flex items-center justify-between p-4 bg-neutral-950 text-white print:hidden">
+              <div className="flex items-center gap-2 text-xs font-bold">
+                <FiAward className="w-4 h-4 text-[#D4A373]" />
+                Official Academic Certificate of Completion
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.print()}
+                  className="px-4 py-1.5 rounded-xl bg-white text-black hover:bg-neutral-100 text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
+                >
+                  <FiPrinter className="w-3.5 h-3.5" /> Print / Save as PDF
+                </button>
+                <button
+                  onClick={() => setShowCertificate(false)}
+                  className="p-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-all"
+                >
+                  <FiX className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Certificate Canvas */}
+            <div className="p-10 sm:p-14 text-center bg-white border-8 border-double border-neutral-900 m-4 rounded-2xl relative">
+              <div className="space-y-6">
+                <div>
+                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#784D28] block mb-1">
+                    Polytechnic Academic Directorate &amp; Examination Board
+                  </span>
+                  <h2 className="font-serif text-3xl sm:text-4xl font-black text-black tracking-tight">
+                    Certificate of Completion
+                  </h2>
+                </div>
+
+                <p className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">
+                  This is officially awarded to certify that
+                </p>
+
+                <div className="py-2 border-b-2 border-black inline-block px-10">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-black text-black">
+                    {student.name}
+                  </h3>
+                </div>
+
+                <p className="text-xs text-neutral-600 max-w-lg mx-auto leading-relaxed">
+                  has successfully satisfied all prescribed academic requirements, lecture modules, and evaluated assignments with verified competence in
+                </p>
+
+                <div className="space-y-1">
+                  <h4 className="font-black text-xl sm:text-2xl text-black">
+                    {course.title}
+                  </h4>
+                  <p className="text-xs font-bold text-[#784D28] uppercase tracking-wider">
+                    {course.faculty || course.category} · {course.department || student.department || "Academic Department"}
+                  </p>
+                </div>
+
+                <div className="pt-8 border-t border-neutral-200 grid grid-cols-3 items-end text-left text-xs gap-4">
+                  <div>
+                    <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider block">Award Date</span>
+                    <span className="font-bold text-black">{formatDate(enrollment.completedAt || new Date().toISOString())}</span>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 rounded-full border-2 border-black bg-neutral-50 mx-auto flex items-center justify-center font-black text-[10px] tracking-wider text-black">
+                      SEAL
+                    </div>
+                    <span className="text-[9px] text-neutral-500 font-bold uppercase tracking-widest mt-1 block">Institutional Seal</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider block">Verification ID</span>
+                    <span className="font-mono text-xs font-bold text-neutral-800">
+                      CERT-{enrollment.id.slice(-8).toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

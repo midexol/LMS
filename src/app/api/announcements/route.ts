@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { sendAnnouncementEmail } from "@/lib/mail";
 
 // GET: Students fetch announcements for their enrolled course
 export async function GET(req: Request) {
@@ -51,7 +52,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
+    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Only instructors can post announcements." }, { status: 403 });
     }
 
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Course not found." }, { status: 404 });
     }
 
-    if (course.tutorId !== currentUser.id && currentUser.role !== "ADMIN") {
+    if (course.tutorId !== currentUser.id && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN") {
       return NextResponse.json(
         { error: "You can only post announcements to your own courses." },
         { status: 403 }
@@ -85,6 +86,27 @@ export async function POST(req: Request) {
       },
     });
 
+    // Notify all actively enrolled students via update email
+    try {
+      const activeEnrollments = await prisma.enrollment.findMany({
+        where: { courseId, status: "ACTIVE" },
+        include: { student: true },
+      });
+
+      for (const e of activeEnrollments) {
+        if (e.student?.email) {
+          sendAnnouncementEmail(e.student.email, {
+            studentName: e.student.name,
+            courseTitle: course.title,
+            announcementTitle: announcement.title,
+            content: announcement.content,
+          }).catch((err) => console.error("[ANNOUNCEMENT EMAIL FAILED]", err));
+        }
+      }
+    } catch (emailErr) {
+      console.error("[ANNOUNCEMENT DISPATCH ERROR]", emailErr);
+    }
+
     return NextResponse.json({ success: true, announcement });
   } catch (error: any) {
     console.error("[ANNOUNCEMENT POST ERROR]", error);
@@ -96,7 +118,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
+    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Only instructors can delete announcements." }, { status: 403 });
     }
 

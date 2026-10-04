@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { sendGradeOverrideEmail } from "@/lib/mail";
 
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
+    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Only instructors can override grades." }, { status: 403 });
     }
 
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
     const submission = await prisma.submission.findUnique({
       where: { id: submissionId },
       include: {
+        student: true,
         assignment: {
           include: {
             lesson: {
@@ -43,7 +45,7 @@ export async function POST(req: Request) {
 
     const course = submission.assignment.lesson.module.course;
 
-    if (course.tutorId !== currentUser.id && currentUser.role !== "ADMIN") {
+    if (course.tutorId !== currentUser.id && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN") {
       return NextResponse.json(
         { error: "Access denied: You can only override grades for your own courses." },
         { status: 403 }
@@ -68,6 +70,18 @@ export async function POST(req: Request) {
         status: "GRADED",
       },
     });
+
+    // Notify student via update email
+    if (submission.student?.email) {
+      sendGradeOverrideEmail(submission.student.email, {
+        studentName: submission.student.name,
+        courseTitle: course.title,
+        assignmentTitle: submission.assignment.title,
+        newScore: scoreValue,
+        maxScore,
+        tutorFeedback: tutorFeedback?.trim() || "",
+      }).catch((emailErr) => console.error("[GRADE OVERRIDE EMAIL ERROR]", emailErr));
+    }
 
     return NextResponse.json({ success: true, submission: updatedSubmission });
   } catch (error: any) {
