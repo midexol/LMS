@@ -3,40 +3,17 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { signSessionToken } from "@/lib/auth";
-
-
-// Simple in-memory rate limiter: max 10 attempts per IP per 15 minutes
-const loginAttempts = new Map<string, { count: number; resetAt: number }>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = loginAttempts.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    loginAttempts.set(ip, { count: 1, resetAt: now + 15 * 60 * 1000 });
-    return false;
-  }
-
-  if (entry.count >= 10) {
-    return true;
-  }
-
-  entry.count++;
-  return false;
-}
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
     // Rate limiting by IP
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.headers.get("x-real-ip") ||
-      "unknown";
-
-    if (isRateLimited(ip)) {
-      return NextResponse.json(
-        { error: "Too many login attempts. Please wait 15 minutes before trying again." },
-        { status: 429 }
+    const ip = getClientIp(req);
+    const rateLimit = checkRateLimit(`login:${ip}`, RATE_LIMIT_RULES.LOGIN);
+    if (!rateLimit.success) {
+      return rateLimitResponse(
+        rateLimit,
+        `Too many login attempts. Please wait ${rateLimit.resetInSeconds} seconds before trying again.`
       );
     }
 

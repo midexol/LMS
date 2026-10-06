@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
 import { verifyAndProcessPayment } from "@/lib/payment";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function GET(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const rateLimit = checkRateLimit(`payment_verify:${ip}`, RATE_LIMIT_RULES.PAYMENT_VERIFY);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
+    }
+
     const url = new URL(req.url);
     const reference = url.searchParams.get("reference") || url.searchParams.get("trxref");
     const mode = url.searchParams.get("mode");
@@ -30,6 +37,12 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const rateLimit = checkRateLimit(`payment_verify:${ip}`, RATE_LIMIT_RULES.PAYMENT_VERIFY);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
+    }
+
     const body = await req.json();
     const reference = body.reference || body.trxref;
     const isSimulated = Boolean(body.isSimulation);

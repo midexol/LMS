@@ -3,10 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { signSessionToken } from "@/lib/auth";
-
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const rateLimit = checkRateLimit(`register:${ip}`, RATE_LIMIT_RULES.REGISTER);
+    if (!rateLimit.success) {
+      return rateLimitResponse(
+        rateLimit,
+        `Too many registration requests from this network. Please wait ${Math.ceil(rateLimit.resetInSeconds / 60)} minutes before trying again.`
+      );
+    }
+
     const { name, email, password, role, faculty, department } = await req.json();
 
     if (!name || name.trim().length === 0) {

@@ -2,9 +2,19 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { initializeCoursePayment } from "@/lib/payment";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const rateLimit = checkRateLimit(`payment_init:${ip}`, RATE_LIMIT_RULES.PAYMENT_INIT);
+    if (!rateLimit.success) {
+      return rateLimitResponse(
+        rateLimit,
+        `Too many payment attempts. Please wait ${rateLimit.resetInSeconds} seconds before trying again.`
+      );
+    }
+
     const currentUser = await getCurrentUser();
     if (!currentUser) {
       return NextResponse.json(
