@@ -172,7 +172,13 @@ export async function initializeCoursePayment({
     }
   }
 
-  // 3. Dev / Sandbox Simulation fallback if Paystack API key is not yet set
+  // 3. Dev / Sandbox Simulation fallback ONLY allowed in development when no Paystack key is configured
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "Paystack payment gateway is not configured. Live transactions require a valid PAYSTACK_SECRET_KEY."
+    );
+  }
+
   const simulationUrl = `${baseAppUrl}/payment/verify?reference=${reference}&mode=simulated`;
   return {
     success: true,
@@ -227,9 +233,19 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
   let verified = false;
   let paystackData: any = null;
 
-  // Real Paystack verification if key is present and not simulated
+  // Real Paystack verification if key is present
   const hasLivePaystack = Boolean(config.secretKey && config.secretKey.startsWith("sk_"));
-  if (hasLivePaystack && !isSimulatedMode) {
+
+  // SECURITY ENFORCEMENT: Never allow simulation in production or when Paystack secret key is configured
+  if (isSimulatedMode) {
+    if (process.env.NODE_ENV === "production" || hasLivePaystack) {
+      throw new Error(
+        "Payment simulation is strictly disabled. Transactions must be completed and verified via Paystack."
+      );
+    }
+  }
+
+  if (hasLivePaystack) {
     try {
       const res = await fetch(`${config.baseUrl}/transaction/verify/${encodeURIComponent(reference)}`, {
         headers: {
@@ -249,16 +265,18 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
       console.error("[PAYSTACK VERIFY ERROR]", err);
       throw new Error(err.message || "Could not verify payment with Paystack.");
     }
-  } else {
-    // Sandbox / Development auto-verification
+  } else if (!hasLivePaystack && isSimulatedMode && process.env.NODE_ENV !== "production") {
+    // Only permitted in local development when no Paystack credentials exist
     verified = true;
     paystackData = {
       status: "success",
       reference,
       channel: "card_sandbox",
-      gateway_response: "Successful",
+      gateway_response: "Successful (Dev Simulation)",
       paid_at: new Date().toISOString(),
     };
+  } else {
+    throw new Error("Unable to verify payment: Paystack gateway is not configured.");
   }
 
   if (!verified) {

@@ -18,12 +18,20 @@ export async function POST(req: Request) {
 
     const { name, email, password, role, faculty, department } = await req.json();
 
-    if (!name || name.trim().length === 0) {
-      return NextResponse.json({ error: "Full name is required." }, { status: 400 });
+    const trimmedName = typeof name === "string" ? name.trim() : "";
+    const trimmedEmail = typeof email === "string" ? email.toLowerCase().trim() : "";
+
+    if (!trimmedName || trimmedName.length < 2) {
+      return NextResponse.json({ error: "Full name must be at least 2 characters." }, { status: 400 });
     }
 
-    if (!email || email.trim().length === 0) {
-      return NextResponse.json({ error: "Email address is required." }, { status: 400 });
+    if (trimmedName.length > 80) {
+      return NextResponse.json({ error: "Full name cannot exceed 80 characters." }, { status: 400 });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
     }
 
     if (!password) {
