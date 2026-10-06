@@ -61,10 +61,10 @@ export async function POST(req: Request) {
 
     const newUser = await prisma.user.create({
       data: {
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
+        name: trimmedName,
+        email: trimmedEmail,
         password: hashedPassword,
-        role: role === "TUTOR" ? "TUTOR" : "STUDENT",
+        role: "STUDENT", // Enforce STUDENT on public registration. Faculty/Tutors are provisioned via Admin
         faculty: faculty?.trim() || null,
         department: department?.trim() || null,
       },

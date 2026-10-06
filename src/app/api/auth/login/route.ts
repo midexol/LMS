@@ -44,6 +44,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
+    // Automatically migrate legacy plaintext seed password to bcrypt upon successful authentication
+    if (!user.password.startsWith("$2")) {
+      const secureHash = await bcrypt.hash(password, 12);
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { password: secureHash },
+      });
+    }
+
     const cookieStore = await cookies();
     cookieStore.set("lms_user_id", signSessionToken(user.id), {
       path: "/",

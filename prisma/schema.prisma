@@ -13,9 +13,11 @@ model User {
   email      String   @unique
   password   String
   role       String   @default("STUDENT") // "STUDENT" | "TUTOR" | "ADMIN"
-  faculty    String?  // School/Faculty
-  department String?  // Specific Department
-  createdAt  DateTime @default(now())
+  faculty          String?   // School/Faculty
+  department       String?   // Specific Department
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  createdAt        DateTime  @default(now())
 
   enrollments       Enrollment[]
   submissions       Submission[]

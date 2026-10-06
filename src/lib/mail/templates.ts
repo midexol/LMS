@@ -190,3 +190,34 @@ export function getCompletionEmailTemplate(data: CompletionEmailData): { subject
     `,
   };
 }
+
+export interface PasswordResetEmailData {
+  userName: string;
+  resetUrl: string;
+}
+
+export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): { subject: string; html: string } {
+  return {
+    subject: "Reset Your Account Password - ACADEMIA LMS",
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
+        <div style="border-bottom: 2px solid #000000; padding-bottom: 16px; margin-bottom: 20px;">
+          <h1 style="color: #000000; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
+          <p style="color: #784D28; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Security Notification</p>
+        </div>
+        <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.userName}</strong>,</p>
+        <p style="color: #333333; font-size: 15px; line-height: 1.6;">We received a request to reset your password for your ACADEMIA LMS account. Click the button below to choose a new password:</p>
+        
+        <div style="text-align: center; margin: 32px 0;">
+          <a href="${data.resetUrl}" style="background-color: #000000; color: #ffffff; padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block;">Reset My Password</a>
+        </div>
+
+        <div style="background-color: #fafafa; padding: 14px 16px; border-radius: 10px; border: 1px solid #e5e5e5; margin: 24px 0;">
+          <p style="color: #666666; font-size: 12px; margin: 0; line-height: 1.5;">This password reset link is valid for <strong>1 hour</strong>. If you did not request a password reset, you can safely ignore this email; your account remains secure.</p>
+        </div>
+
+        <p style="color: #999999; font-size: 11px; margin-top: 24px;">If button doesn't work, copy and paste this link in your browser:<br/><span style="color: #555555; word-break: break-all;">${data.resetUrl}</span></p>
+      </div>
+    `,
+  };
+}

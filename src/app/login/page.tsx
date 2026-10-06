@@ -121,7 +121,12 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider">Password</label>
+              <div className="flex items-center justify-between">
+                <label className="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider">Password</label>
+                <Link href="/forgot-password" className="text-[11px] font-semibold text-[#784D28] hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
                 <FiLock className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input

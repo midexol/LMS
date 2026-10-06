@@ -94,3 +94,9 @@ export async function sendCompletionEmail(studentEmail: string, data: Completion
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
+export async function sendPasswordResetEmail(userEmail: string, data: { userName: string; resetUrl: string }) {
+  const { getPasswordResetEmailTemplate } = await import("./templates");
+  const { subject, html } = getPasswordResetEmailTemplate(data);
+  return await sendEmailNotification(userEmail, subject, html);
+}
+
