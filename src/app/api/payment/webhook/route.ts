@@ -6,7 +6,11 @@ export async function POST(req: Request) {
     const rawBody = await req.text();
     const signature = req.headers.get("x-paystack-signature");
 
-    // Verify webhook signature if secret key is present
+    // Verify webhook signature (strictly required in production)
+    if (process.env.NODE_ENV === "production" && (!signature || !process.env.PAYSTACK_SECRET_KEY)) {
+      return NextResponse.json({ error: "Unauthorized webhook" }, { status: 401 });
+    }
+
     if (process.env.PAYSTACK_SECRET_KEY) {
       const isValid = verifyPaystackWebhookSignature(rawBody, signature);
       if (!isValid) {

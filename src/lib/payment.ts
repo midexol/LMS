@@ -360,7 +360,10 @@ export function verifyPaystackWebhookSignature(
       .createHmac("sha512", config.secretKey)
       .update(rawBody)
       .digest("hex");
-    return hash === signatureHeader;
+    const hashBuf = Buffer.from(hash, "hex");
+    const sigBuf = Buffer.from(signatureHeader, "hex");
+    if (hashBuf.length !== sigBuf.length) return false;
+    return crypto.timingSafeEqual(hashBuf, sigBuf);
   } catch (e) {
     return false;
   }
