@@ -30,11 +30,18 @@ export default async function StudentProfilePage() {
     orderBy: { submittedAt: "desc" },
   });
 
+  const payments = await prisma.payment.findMany({
+    where: { studentId: currentUser.id },
+    include: { course: true },
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
     <ProfileClient
       currentUser={currentUser}
       enrollments={enrollments}
       submissions={submissions}
+      payments={payments}
     />
   );
 }

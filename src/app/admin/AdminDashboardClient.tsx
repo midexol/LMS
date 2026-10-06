@@ -336,8 +336,10 @@ export function AdminDashboardClient({
   const [editUser, setEditUser] = useState<UserItem | null>(null);
   const [deleteUser, setDeleteUser] = useState<UserItem | null>(null);
   const [deleteCourse, setDeleteCourse] = useState<CourseItem | null>(null);
+  const [revokeEnrollment, setRevokeEnrollment] = useState<EnrollmentItem | null>(null);
   const [gradeOverrideSub, setGradeOverrideSub] = useState<SubmissionItem | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+
 
   /* ─── Handlers ─────────────────────────────────────── */
   const handleUpdateUser = async (userId: string, role: string, newPassword: string, faculty?: string, department?: string) => {
@@ -411,6 +413,24 @@ export function AdminDashboardClient({
       setDeleteCourse(null);
     }
   };
+
+  const handleRevokeEnrollment = async () => {
+    if (!revokeEnrollment) return;
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/admin/enrollments?id=${revokeEnrollment.id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to revoke enrollment.");
+      setEnrollments((p) => p.filter((item) => item.id !== revokeEnrollment.id));
+      success(`Enrollment for ${revokeEnrollment.student.name} revoked and unlocked.`);
+    } catch (e: any) {
+      error(e.message || "Failed to revoke enrollment.");
+    } finally {
+      setActionLoading(false);
+      setRevokeEnrollment(null);
+    }
+  };
+
 
   const handleGradeOverride = async (id: string, score: number, feedback: string) => {
     try {
@@ -493,6 +513,15 @@ export function AdminDashboardClient({
           body="All modules, lessons, and enrollment history for this course will be permanently erased."
           onConfirm={handleDeleteCourse}
           onCancel={() => setDeleteCourse(null)}
+          loading={actionLoading}
+        />
+      )}
+      {revokeEnrollment && (
+        <ConfirmModal
+          title={`Revoke Enrollment: ${revokeEnrollment.student.name}?`}
+          body={`This will release the active course lock on "${revokeEnrollment.course.title}" for ${revokeEnrollment.student.name}, allowing them to register for a different course.`}
+          onConfirm={handleRevokeEnrollment}
+          onCancel={() => setRevokeEnrollment(null)}
           loading={actionLoading}
         />
       )}
@@ -1092,6 +1121,7 @@ export function AdminDashboardClient({
                   <th className="p-4">Price</th>
                   <th className="p-4">Enrolled Date</th>
                   <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-100">
@@ -1113,6 +1143,17 @@ export function AdminDashboardClient({
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
                         {e.status}
                       </span>
+                    </td>
+                    <td className="p-4 text-right">
+                      {e.status === "ACTIVE" && (
+                        <button
+                          onClick={() => setRevokeEnrollment(e)}
+                          className="px-2.5 py-1 rounded-full text-[10px] font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all inline-flex items-center gap-1"
+                          title="Revoke enrollment and release course lock"
+                        >
+                          <FiTrash2 className="w-3 h-3" /> Revoke Lock
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

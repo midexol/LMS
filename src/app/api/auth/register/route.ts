@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import { signSessionToken } from "@/lib/auth";
+
 
 export async function POST(req: Request) {
   try {
@@ -52,7 +54,7 @@ export async function POST(req: Request) {
     });
 
     const cookieStore = await cookies();
-    cookieStore.set("lms_user_id", newUser.id, {
+    cookieStore.set("lms_user_id", signSessionToken(newUser.id), {
       path: "/",
       httpOnly: true,
       sameSite: "lax",

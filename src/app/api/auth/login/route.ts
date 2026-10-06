@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import { signSessionToken } from "@/lib/auth";
+
 
 // Simple in-memory rate limiter: max 10 attempts per IP per 15 minutes
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -66,7 +68,7 @@ export async function POST(req: Request) {
     }
 
     const cookieStore = await cookies();
-    cookieStore.set("lms_user_id", user.id, {
+    cookieStore.set("lms_user_id", signSessionToken(user.id), {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
