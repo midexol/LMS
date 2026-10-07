@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: "Modern LMS platform with single course restriction, AI auto-grading, and tutor studio.",
 };
 
+import { PrivyClientProvider } from "@/components/providers/PrivyClientProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={plusJakarta.variable}>
       <body className="bg-white text-zinc-950 antialiased min-h-screen selection:bg-zinc-900 selection:text-white font-sans">
-        {children}
+        <PrivyClientProvider>
+          {children}
+        </PrivyClientProvider>
       </body>
     </html>
   );

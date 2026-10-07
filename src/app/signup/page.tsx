@@ -8,6 +8,7 @@ import {
 } from "react-icons/fi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+import { PrivyAuthButton } from "@/components/auth/PrivyAuthButton";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -134,6 +135,17 @@ export default function SignupPage() {
               <p className="text-xs font-semibold text-red-700">{error}</p>
             </div>
           )}
+
+          {/* 1-Click Signup via Privy */}
+          <PrivyAuthButton label="1-Click Sign Up with Google / Web3" />
+
+          <div className="relative flex items-center justify-center my-4">
+            <div className="border-t border-neutral-200 w-full"></div>
+            <span className="bg-white px-3 text-[10px] uppercase tracking-wider font-bold text-neutral-400 shrink-0">
+              or standard registration
+            </span>
+            <div className="border-t border-neutral-200 w-full"></div>
+          </div>
 
           <form onSubmit={handleSignup} className="space-y-4">
 

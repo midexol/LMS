@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FiBookOpen, FiMail, FiLock, FiLogIn, FiAlertCircle, FiEye, FiEyeOff, FiCheck, FiArrowRight } from "react-icons/fi";
 
+import { PrivyAuthButton } from "@/components/auth/PrivyAuthButton";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -102,6 +104,17 @@ export default function LoginPage() {
               <p className="text-xs font-semibold text-red-700">{error}</p>
             </div>
           )}
+
+          {/* 1-Click Fast Login via Privy */}
+          <PrivyAuthButton label="Continue with Google, Email or Web3" />
+
+          <div className="relative flex items-center justify-center my-4">
+            <div className="border-t border-neutral-200 w-full"></div>
+            <span className="bg-white px-3 text-[10px] uppercase tracking-wider font-bold text-neutral-400 shrink-0">
+              or institutional credentials
+            </span>
+            <div className="border-t border-neutral-200 w-full"></div>
+          </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1.5">

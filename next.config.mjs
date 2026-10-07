@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.paystack.co;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.paystack.co https://auth.privy.io https://*.privy.io;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' blob: data: https:;
   font-src 'self' data: https://fonts.gstatic.com;
-  connect-src 'self' https://api.paystack.co https://checkout.paystack.com https://generativelanguage.googleapis.com https://api.openai.com;
-  frame-src 'self' https://checkout.paystack.com https://www.youtube.com https://www.youtube-nocookie.com;
+  connect-src 'self' https://api.paystack.co https://checkout.paystack.com https://generativelanguage.googleapis.com https://api.openai.com https://auth.privy.io https://*.privy.io;
+  frame-src 'self' https://checkout.paystack.com https://www.youtube.com https://www.youtube-nocookie.com https://auth.privy.io https://verify.privy.io https://*.privy.io;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
