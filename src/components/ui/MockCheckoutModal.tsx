@@ -12,6 +12,7 @@ import {
   FiUserPlus,
   FiShield,
   FiExternalLink,
+  FiLoader,
 } from "react-icons/fi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -264,7 +265,10 @@ export function MockCheckoutModal({
                 className="w-full py-3.5 px-6 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-wide transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
-                  <span className="animate-pulse">{statusText}</span>
+                  <span className="flex items-center gap-2">
+                    <FiLoader className="w-4 h-4 animate-spin" />
+                    <span>{statusText}</span>
+                  </span>
                 ) : (
                   <>
                     <FiLock className="w-4 h-4" />

@@ -547,11 +547,9 @@ export function AdminDashboardClient({
         <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <BrandLogo href="/" variant="light" size="sm" />
-            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-neutral-800">
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-[#D4A373] border border-neutral-700">
-                Superadmin
-              </span>
-              <span className="text-[11px] text-neutral-400">System Command &amp; Analytics Console</span>
+            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-neutral-800 text-[11px]">
+              <span className="font-bold text-[#D4A373]">Superadmin Console</span>
+              <span className="text-neutral-500">· System Command &amp; Analytics</span>
             </div>
           </div>
 
@@ -651,18 +649,13 @@ export function AdminDashboardClient({
             {/* 4 Stat Cards (High-Contrast Executive Black Cards) */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: "Total Accounts", value: metrics.totalUsers, sub: `${metrics.totalStudents} students · ${metrics.totalTutors} instructors`, trend: "Active directory" },
-                { label: "Published Courses", value: `${metrics.publishedCourses} / ${metrics.totalCourses}`, sub: "Live in catalog", trend: "Curriculum status" },
-                { label: "Active Enrollments", value: metrics.activeEnrollmentsCount, sub: `${metrics.completedEnrollmentsCount} completed`, trend: "1:1 active lock" },
-                { label: "Submissions Logged", value: metrics.totalSubmissions, sub: "AI & faculty reviews", trend: "AI verified" },
+                { label: "Total Accounts", value: metrics.totalUsers, sub: `${metrics.totalStudents} students · ${metrics.totalTutors} instructors` },
+                { label: "Published Courses", value: `${metrics.publishedCourses} / ${metrics.totalCourses}`, sub: "Live in catalog" },
+                { label: "Active Enrollments", value: metrics.activeEnrollmentsCount, sub: `${metrics.completedEnrollmentsCount} completed` },
+                { label: "Submissions Logged", value: metrics.totalSubmissions, sub: "Automated & faculty reviews" },
               ].map((c, i) => (
                 <div key={i} className="bg-neutral-950 text-white rounded-3xl p-6 border border-neutral-800 shadow-md flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-all">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{c.label}</p>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[#D4A373] bg-neutral-900 border border-neutral-800">
-                      {c.trend}
-                    </span>
-                  </div>
+                  <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{c.label}</p>
                   <div>
                     <div className="text-2xl font-bold text-white tracking-tight">{c.value}</div>
                     <p className="text-[11px] text-neutral-400 mt-1">{c.sub}</p>
@@ -677,21 +670,18 @@ export function AdminDashboardClient({
               <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <h3 className="font-black text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
-                    </div>
+                    <h3 className="font-black text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
                     <p className="text-xs text-neutral-500 mt-0.5">Live active cohorts vs certified course completions</p>
                   </div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-neutral-950 text-white shadow-xs">
-                      <span className="w-2 h-2 rounded-full bg-white" />
-                      Active Enrollees
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/25">
-                      <span className="w-2 h-2 rounded-full bg-[#784D28]" />
-                      Certified (70%+)
-                    </span>
+                  <div className="flex items-center gap-4 text-xs font-semibold text-neutral-600">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
+                      <span>Active Enrollees</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                      <span>Certified (70%+)</span>
+                    </div>
                   </div>
                 </div>
 

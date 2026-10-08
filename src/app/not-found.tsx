@@ -17,13 +17,9 @@ export default function NotFound() {
         <div className="flex justify-center">
           <BrandLogo href="/" size="md" />
         </div>
-        {/* Brand Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black text-white text-xs font-semibold shadow-sm">
-          <div className="w-2 h-2 rounded-full bg-[#D4A373] animate-pulse"></div>
-          <span>ACADEMIA LMS</span>
-          <span className="text-neutral-400">|</span>
-          <span className="text-neutral-300">404 Error</span>
-        </div>
+        <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest">
+          404 Error · Academic Archive
+        </p>
 
         {/* Big Glitch / Architectural Typography */}
         <div className="space-y-3">

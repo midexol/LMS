@@ -86,10 +86,10 @@ export function InstructorClient({
             <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Teaching</p>
             {[
               { id: "dashboard", label: "Dashboard", icon: FiGrid },
-              { id: "classes", label: "My Classes", icon: FiBook, badge: tutorCourses.length },
-              { id: "submissions", label: "Assignments", icon: FiFileText, badge: pendingSubmissions.length || 9 },
+              { id: "classes", label: "My Classes", icon: FiBook },
+              { id: "submissions", label: "Assignments", icon: FiFileText },
               { id: "students", label: "Students", icon: FiUsers },
-              { id: "announcements", label: "Announcements", icon: FiMessageSquare, badge: 3 },
+              { id: "announcements", label: "Announcements", icon: FiMessageSquare },
               { id: "settings", label: "Settings", icon: FiSettings },
             ].map((item) => {
               const Icon = item.icon;
@@ -101,25 +101,14 @@ export function InstructorClient({
                     setActiveTab(item.id as any);
                     setSidebarOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
                     active
                       ? "bg-white text-black shadow-sm"
                       : "text-neutral-400 hover:text-white hover:bg-neutral-900"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge !== undefined && (
-                    <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                        active ? "bg-black text-white" : "bg-neutral-800 text-neutral-300 border border-neutral-700"
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
                 </button>
               );
             })}
@@ -287,42 +276,29 @@ export function InstructorClient({
                   {
                     value: metrics.totalEnrollments,
                     label: "Students Enrolled",
-                    trend: `${tutorCourses.length} active courses`,
                     sub: "Directly under your instruction",
-                    trendColor: "text-white bg-neutral-900 border border-neutral-800",
                   },
                   {
                     value: `${metrics.publishedCourses || tutorCourses.filter((c) => c.published).length} / ${tutorCourses.length}`,
                     label: "Published Courses",
-                    trend: "Catalog active",
                     sub: "Curriculum modules live",
-                    trendColor: "text-[#D4A373] bg-neutral-900 border border-neutral-800",
                   },
                   {
                     value: pendingSubmissions.length,
                     label: "Pending Review",
-                    trend: `${gradedSubmissions.length} evaluated`,
                     sub: "Submissions awaiting feedback",
-                    trendColor: pendingSubmissions.length > 0 ? "text-[#D4A373] bg-[#784D28]/20 border border-[#784D28]/40" : "text-emerald-400 bg-emerald-950/40 border border-emerald-800/40",
                   },
                   {
                     value: `${metrics.avgScore ?? 86}% (${avgGradeLetter})`,
                     label: "Average Cohort Score",
-                    trend: `${gradeDistribution.pctA + gradeDistribution.pctB}% passing`,
                     sub: "Aggregated performance",
-                    trendColor: "text-white bg-neutral-900 border border-neutral-800",
                   },
                 ].map((stat, i) => (
                   <div
                     key={i}
                     className="bg-neutral-950 text-white rounded-3xl p-6 border border-neutral-800 shadow-md flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-all"
                   >
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{stat.label}</p>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${stat.trendColor}`}>
-                        {stat.trend}
-                      </span>
-                    </div>
+                    <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{stat.label}</p>
                     <div>
                       <div className="text-2xl font-bold text-white tracking-tight">{stat.value}</div>
                       <p className="text-[11px] text-neutral-400 mt-1">{stat.sub}</p>
@@ -337,21 +313,18 @@ export function InstructorClient({
                 <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <h3 className="font-black text-lg text-black tracking-tight">Course Enrollment &amp; Evaluation Throughput</h3>
-                      </div>
+                      <h3 className="font-black text-lg text-black tracking-tight">Course Enrollment &amp; Evaluation Throughput</h3>
                       <p className="text-xs text-neutral-500 mt-0.5">Live student enrollment vs submission volume across your courses</p>
                     </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-neutral-950 text-white">
-                        <span className="w-2 h-2 rounded-full bg-white" />
-                        Enrolled Students
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/25">
-                        <span className="w-2 h-2 rounded-full bg-[#784D28]" />
-                        Evaluations Logged
-                      </span>
+                    <div className="flex items-center gap-4 text-xs font-semibold text-neutral-600">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
+                        <span>Enrolled Students</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                        <span>Evaluations Logged</span>
+                      </div>
                     </div>
                   </div>
 
@@ -463,7 +436,7 @@ export function InstructorClient({
                   <div className="pb-3 border-b border-neutral-100">
                     <div className="flex items-center justify-between">
                       <h3 className="font-black text-lg text-black tracking-tight">Grade Distribution</h3>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/20">
+                      <span className="text-xs font-bold text-[#784D28]">
                         {gradeDistribution.pctA + gradeDistribution.pctB}% Passing
                       </span>
                     </div>

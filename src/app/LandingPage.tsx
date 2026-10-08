@@ -241,7 +241,7 @@ export function LandingPage({
                         {course.title}
                       </h3>
                       <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
-                        {course.description || "In-depth collegiate curriculum with structured lesson modules, assignments, and AI auto-grading."}
+                        {course.description || "In-depth collegiate curriculum with structured lesson modules, assignments, and automated grading."}
                       </p>
 
                       <div className="flex items-center gap-2 pt-2 text-xs text-neutral-600 font-medium">
@@ -289,19 +289,16 @@ export function LandingPage({
               step: "01",
               title: "Focused Single Enrollment",
               desc: "Students can only register for one course at a time. This deliberate constraint eliminates choice fatigue and ensures 100% curriculum focus.",
-              badge: "Discipline First",
             },
             {
               step: "02",
               title: "Automated & Faculty Evaluation",
               desc: "Every lesson assignment is evaluated against instructor model rubrics with actionable feedback returned in seconds.",
-              badge: "Instant Feedback",
             },
             {
               step: "03",
               title: "70% Minimum Threshold",
               desc: "To earn course completion and unlock further coursework, students must maintain a verified 70% average across all assignments.",
-              badge: "Rigorous Standards",
             },
           ].map((pillar) => (
             <div
@@ -309,9 +306,6 @@ export function LandingPage({
               className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3 hover:shadow-md transition-shadow relative overflow-hidden"
             >
               <div className="text-5xl font-black text-neutral-200 select-none">{pillar.step}</div>
-              <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-neutral-100 text-black">
-                {pillar.badge}
-              </span>
               <h3 className="font-bold text-xl text-black">{pillar.title}</h3>
               <p className="text-xs text-neutral-600 leading-relaxed">{pillar.desc}</p>
             </div>
@@ -328,14 +322,14 @@ export function LandingPage({
               Powerful tools built for <span className="italic text-[#D4A373]">educators who care.</span>
             </h2>
             <p className="text-sm text-neutral-300 leading-relaxed">
-              Build entire syllabi with AI-assisted outlines, create modular lesson plans with rich attachments, and monitor student comprehension through real-time telemetry.
+              Build entire syllabi with automated outline generation, create modular lesson plans with rich attachments, and monitor student comprehension through real-time telemetry.
             </p>
 
             <div className="space-y-3 pt-2">
               {[
                 "Cohort mastery trajectories with real-time rubric tracking",
                 "Dynamic grade distribution analytics across active terms",
-                "AI syllabus outline generator and automated benchmark rubrics",
+                "Automated syllabus outline generator and standardized benchmark rubrics",
                 "Full grade override desk with mentor feedback notes",
               ].map((feat, i) => (
                 <div key={i} className="flex items-center gap-3 text-xs text-neutral-300 font-medium">
@@ -361,12 +355,7 @@ export function LandingPage({
               {/* Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-800">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-base text-white">Cohort Mastery &amp; Trajectory</span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-900 border border-neutral-700 text-[#D4A373]">
-                      Live Telemetry
-                    </span>
-                  </div>
+                  <h3 className="font-bold text-base text-white">Cohort Mastery &amp; Trajectory</h3>
                   <p className="text-xs text-neutral-400 mt-0.5">Real-time benchmark tracking across active curriculum tracks</p>
                 </div>
                 <div className="flex items-center gap-1.5 self-start sm:self-auto bg-neutral-900 p-1 rounded-full border border-neutral-800 text-[11px] font-bold text-neutral-400">
@@ -388,7 +377,7 @@ export function LandingPage({
                   <p className="text-[10px] text-neutral-400 font-semibold">&gt; 70% threshold</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Avg AI Score</p>
+                  <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Avg Cohort Score</p>
                   <p className="text-2xl font-bold text-white">{stats.avgScore}<span className="text-xs text-neutral-400">/100</span></p>
                   <p className="text-[10px] text-neutral-400 font-semibold">{stats.totalSubmissions} submissions logged</p>
                 </div>
