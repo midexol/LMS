@@ -88,47 +88,110 @@ export function LandingPage({
       {/* ───────────────── UNIQUE LANDING PAGE NAVBAR ───────────────── */}
       <LandingNavbar currentUser={currentUser} />
 
-      {/* ───────────────── HERO SECTION (TEACHABLE STYLE) ───────────────── */}
-      <section className="pt-12 sm:pt-16 pb-16 px-6 max-w-7xl mx-auto overflow-hidden">
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="font-heading font-normal text-4xl sm:text-6xl text-black leading-[1.08] tracking-tight">
+      {/* ───────────────── HERO SECTION (MODERN MOBILE-OPTIMIZED ACADEMIC HERO) ───────────────── */}
+      <section className="pt-8 sm:pt-14 pb-14 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          {/* Left Text & Actions (Full width on mobile, 6 cols on desktop) */}
+          <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+            <h1 className="font-heading font-normal text-3xl sm:text-5xl lg:text-6xl text-black leading-[1.12] sm:leading-[1.08] tracking-tight">
               Where great teaching finds its <span className="italic text-[#784D28]">platform.</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-neutral-600 leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
               Academia LMS builds the university-grade teaching and learning environment your students need. Single active course lock for deep immersion, authentic collegiate curriculum, and instant automated rubrics.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            {/* Mobile Thumb-Friendly CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 pt-1">
               <Link
                 href="/signup"
-                className="px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm shadow-sm transition-all text-center"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm shadow-sm transition-all text-center flex items-center justify-center gap-2"
               >
                 Join as Student
               </Link>
               <Link
                 href="/courses"
-                className="px-8 py-3.5 rounded-full bg-white hover:bg-neutral-50 border border-neutral-300 text-black font-bold text-sm transition-all text-center shadow-sm"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white hover:bg-neutral-50 border border-neutral-300 text-black font-bold text-sm transition-all text-center shadow-sm flex items-center justify-center gap-2"
               >
                 Browse Courses
               </Link>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-6 pt-6 border-t border-neutral-200 text-xs text-neutral-600 font-semibold">
+            {/* Trust Highlights Row */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-5 pt-3 text-xs text-neutral-600 font-semibold">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-black" />
+                <span className="w-2 h-2 rounded-full bg-black shrink-0" />
                 <span>Single enrollment lock</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#784D28]" />
-                <span>Automated benchmark grading</span>
+                <span className="w-2 h-2 rounded-full bg-[#784D28] shrink-0" />
+                <span>Automated benchmark rubrics</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-black" />
+                <span className="w-2 h-2 rounded-full bg-black shrink-0" />
                 <span>70% mastery standard</span>
               </div>
             </div>
           </div>
+
+          {/* Right Hero Image Container (Mobile responsive with subtle floating depth) */}
+          <div className="lg:col-span-6 relative">
+            <div className="relative rounded-3xl overflow-hidden border border-neutral-200/90 shadow-xl bg-neutral-100 group">
+              <img
+                src="/assets/hero_library_study_option1.jpg"
+                alt="Student studying on laptop in university library lounge"
+                className="w-full h-auto aspect-[16/10] sm:aspect-[16/9] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+
+              {/* Floating Mobile/Desktop Micro-Card: 1:1 Focus */}
+              <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-xs p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                  1:1
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold text-black truncate">Single Active Enrollment</p>
+                  <p className="text-[10px] text-neutral-500 truncate">Deep immersion without multi-tab distraction</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ── Coursera/Udemy Style Mobile Discovery Chips Carousel ── */}
+        <div className="mt-10 sm:mt-14 pt-6 border-t border-neutral-200/80">
+          <div className="flex items-center justify-between gap-4 mb-3">
+            <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider">
+              Popular Academic Tracks
+            </span>
+            <Link href="/courses" className="text-xs font-bold text-[#784D28] hover:underline">
+              View All →
+            </Link>
+          </div>
+          <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+            {[
+              { label: "Computing & Tech", count: "12 courses" },
+              { label: "Business Studies", count: "8 courses" },
+              { label: "Engineering Tech", count: "6 courses" },
+              { label: "Pure & Applied Sciences", count: "9 courses" },
+              { label: "Financial Studies", count: "5 courses" },
+              { label: "Environmental Studies", count: "4 courses" },
+            ].map((cat, i) => (
+              <Link
+                key={i}
+                href="/courses"
+                className="shrink-0 px-4 py-2.5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 border border-neutral-200/80 text-black transition-all flex items-center gap-2 shadow-2xs hover:shadow-xs active:scale-95"
+              >
+                <span className="text-xs font-bold">{cat.label}</span>
+                <span className="text-[10px] text-neutral-500 font-semibold bg-white px-2 py-0.5 rounded-full border border-neutral-200">
+                  {cat.count}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
 
