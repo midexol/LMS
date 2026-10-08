@@ -4,6 +4,7 @@ import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { FiLock, FiAlertCircle, FiCheck, FiArrowRight, FiEye, FiEyeOff } from "react-icons/fi";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -175,19 +176,7 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-white flex">
       {/* Brand Sidebar */}
       <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
-        <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black font-bold text-lg">
-            A
-          </div>
-          <div>
-            <span className="font-bold text-xl tracking-tight text-white block leading-none">
-              ACADEMIA
-            </span>
-            <span className="text-[10px] font-semibold tracking-widest text-[#D4A373] uppercase">
-              LMS Platform
-            </span>
-          </div>
-        </div>
+        <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">

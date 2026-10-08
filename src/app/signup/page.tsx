@@ -9,6 +9,7 @@ import {
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { PrivyAuthButton } from "@/components/auth/PrivyAuthButton";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -74,19 +75,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-white flex">
       {/* Left panel — Solid Jet Black Brand panel */}
       <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
-        <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black font-bold text-lg">
-            A
-          </div>
-          <div>
-            <span className="font-bold text-xl tracking-tight text-white block leading-none">
-              ACADEMIA
-            </span>
-            <span className="text-[10px] font-semibold tracking-widest text-[#D4A373] uppercase">
-              LMS Platform
-            </span>
-          </div>
-        </div>
+        <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">
@@ -116,11 +105,8 @@ export default function SignupPage() {
 
       {/* Right panel — Form */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 bg-white">
-        <div className="lg:hidden flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-2xl bg-black flex items-center justify-center text-white">
-            <span className="font-bold text-xl text-white">A</span>
-          </div>
-          <span className="font-bold text-xl text-black">Academia LMS</span>
+        <div className="lg:hidden mb-8">
+          <BrandLogo href="/" variant="dark" size="md" />
         </div>
 
         <div className="w-full max-w-sm space-y-6 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm">

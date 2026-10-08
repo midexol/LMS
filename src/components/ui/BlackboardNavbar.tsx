@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
 import { FiCheck, FiX } from "react-icons/fi";
+import { BrandLogo } from "./BrandLogo";
 
 export function BbLogo({ className = "h-8 w-auto", color = "currentColor" }: { className?: string; color?: string }) {
   return (
@@ -86,14 +87,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
           }`}
         >
           {/* Brand Logo & Name */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-neutral-700 group-hover:border-[#D4A373] transition-colors shrink-0 flex items-center justify-center bg-neutral-900">
-              <BbLogo className="h-4 sm:h-4.5 w-auto" color="#ffffff" />
-            </div>
-            <span className="font-heading font-bold text-base sm:text-lg text-white tracking-tight shrink-0">
-              Academia
-            </span>
-          </Link>
+          <BrandLogo href="/" variant="light" size="sm" />
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 sm:gap-1.5 shrink" aria-label="Main Navigation">

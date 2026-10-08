@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
+import { BrandLogo } from "./BrandLogo";
 
 export function BbLogo({ className = "h-8 w-auto", color = "currentColor" }: { className?: string; color?: string }) {
   return (
@@ -67,14 +68,7 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
         }`}
       >
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-neutral-700 group-hover:border-[#D4A373] transition-colors shrink-0 flex items-center justify-center bg-neutral-900">
-            <BbLogo className="h-4.5 w-auto" color="#ffffff" />
-          </div>
-          <span className="font-heading font-bold text-lg text-white tracking-tight shrink-0">
-            Academia
-          </span>
-        </Link>
+        <BrandLogo href="/" variant="light" size="sm" />
 
         {/* Center: Just Courses */}
         <nav className="hidden sm:flex items-center" aria-label="Main Navigation">

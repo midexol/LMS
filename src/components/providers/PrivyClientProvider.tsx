@@ -18,6 +18,7 @@ export function PrivyClientProvider({ children }: PrivyClientProviderProps) {
         appearance: {
           theme: "light",
           accentColor: "#784D28",
+          logo: "/logo.svg",
           showWalletLoginFirst: false,
           walletList: ["metamask", "coinbase_wallet", "rainbow", "phantom"],
         },

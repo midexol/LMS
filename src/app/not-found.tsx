@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { FiHome, FiBookOpen, FiArrowLeft, FiCompass, FiShield, FiHelpCircle } from "react-icons/fi";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function NotFound() {
   return (
@@ -13,6 +14,9 @@ export default function NotFound() {
       </div>
 
       <div className="relative z-10 max-w-xl w-full text-center space-y-8">
+        <div className="flex justify-center">
+          <BrandLogo href="/" size="md" />
+        </div>
         {/* Brand Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black text-white text-xs font-semibold shadow-sm">
           <div className="w-2 h-2 rounded-full bg-[#D4A373] animate-pulse"></div>

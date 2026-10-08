@@ -10,6 +10,7 @@ import {
   FiTrash2, FiPrinter, FiX, FiCreditCard, FiShield, FiFileText,
 } from "react-icons/fi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+import { AcademiaLogoIcon } from "@/components/ui/BrandLogo";
 
 interface ProfileClientProps {
   currentUser: any;
@@ -241,7 +242,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiAward className="w-5 h-5 text-[#784D28]" />
-            Academic Transcript &amp; Course History
+            Academic Records &amp; Course History
           </h2>
 
           {enrollments.length === 0 ? (
@@ -289,7 +290,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         </div>
 
         {/* TUITION RECEIPTS & PAYMENT HISTORY */}
-        <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        <div id="receipts" className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
             <h2 className="font-black text-xl text-black flex items-center gap-2">
               <FiCreditCard className="w-5 h-5 text-black" />
@@ -547,6 +548,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="p-8 space-y-6 text-black" id="printable-receipt">
               {/* Institutional Header */}
               <div className="text-center border-b-2 border-black pb-5 space-y-1">
+                <div className="flex justify-center mb-2">
+                  <AcademiaLogoIcon className="w-11 h-11" />
+                </div>
                 <div className="inline-block px-3 py-0.5 rounded-full bg-black text-white text-[10px] font-black uppercase tracking-widest mb-1">
                   Official Academic Bursary
                 </div>

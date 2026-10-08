@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FiBookOpen, FiMail, FiLock, FiLogIn, FiAlertCircle, FiEye, FiEyeOff, FiCheck, FiArrowRight } from "react-icons/fi";
 
 import { PrivyAuthButton } from "@/components/auth/PrivyAuthButton";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -43,19 +44,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-white flex">
       {/* Left panel — Solid Jet Black Brand panel */}
       <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
-        <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black font-bold text-lg">
-            A
-          </div>
-          <div>
-            <span className="font-bold text-xl tracking-tight text-white block leading-none">
-              ACADEMIA
-            </span>
-            <span className="text-[10px] font-semibold tracking-widest text-[#D4A373] uppercase">
-              LMS Platform
-            </span>
-          </div>
-        </div>
+        <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">
