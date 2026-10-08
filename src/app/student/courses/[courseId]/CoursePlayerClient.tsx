@@ -18,6 +18,9 @@ import {
   FiBell,
   FiChevronDown,
   FiChevronUp,
+  FiChevronLeft,
+  FiChevronRight,
+  FiList,
   FiPrinter,
   FiX,
 } from "react-icons/fi";
@@ -55,6 +58,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState(enrollment.status === "COMPLETED");
   const [showCertificate, setShowCertificate] = useState(false);
+  const [mobileCurriculumOpen, setMobileCurriculumOpen] = useState(false);
 
   // Announcements
   const [announcements, setAnnouncements] = useState<any[]>([]);
@@ -70,6 +74,31 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
   const completionPercentage = Math.round(
     (completedLessonIds.length / Math.max(1, allLessons.length)) * 100
   );
+
+  const currentLessonIndex = allLessons.findIndex((l) => l.id === activeLesson?.id);
+  const prevLesson = currentLessonIndex > 0 ? allLessons[currentLessonIndex - 1] : null;
+  const nextLesson = currentLessonIndex < allLessons.length - 1 ? allLessons[currentLessonIndex + 1] : null;
+
+  const selectLesson = (lesson: any) => {
+    setActiveLesson(lesson);
+    setDiscussions(lesson.discussionPosts || []);
+    setIsResubmitting(false);
+    setGradeResult(null);
+    setSubmissionText("");
+    setMobileCurriculumOpen(false);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleNextLesson = async () => {
+    if (!nextLesson) return;
+    const isCurrentDone = completedLessonIds.includes(activeLesson?.id);
+    if (!isCurrentDone && activeLesson?.id) {
+      await handleToggleLessonComplete(activeLesson.id);
+    }
+    selectLesson(nextLesson);
+  };
 
   const currentAssignment = activeLesson?.assignments?.[0] || null;
   const previousSubmission = gradeResult || currentAssignment?.submissions?.[0] || null;
@@ -181,7 +210,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-6 space-y-6">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6 pb-28 lg:pb-8">
       {/* Course Top Header */}
       <div className="p-6 rounded-2xl bg-white shadow-[6px_6px_20px_#e2e8f0,-6px_-6px_20px_#ffffff] border border-slate-200 space-y-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -282,9 +311,23 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         </div>
       )}
 
+      {/* Mobile Syllabus Quick Header Bar */}
+      <div className="lg:hidden flex items-center justify-between p-3.5 rounded-xl bg-white border border-neutral-200 shadow-sm">
+        <button
+          onClick={() => setMobileCurriculumOpen(true)}
+          className="flex items-center gap-2 text-xs font-bold text-black hover:text-[#784D28] transition-colors"
+        >
+          <FiList className="w-4 h-4 text-[#784D28]" />
+          <span>Curriculum Syllabus ({completedLessonIds.length}/{allLessons.length})</span>
+        </button>
+        <span className="text-[11px] font-semibold text-neutral-500">
+          Lesson {currentLessonIndex >= 0 ? currentLessonIndex + 1 : 1} of {allLessons.length}
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Sidebar Navigator */}
-        <div className="lg:col-span-1 p-6 rounded-2xl bg-white border border-neutral-200 space-y-4 h-fit shadow-sm">
+        {/* Left Sidebar Navigator (Desktop) */}
+        <div className="hidden lg:block lg:col-span-1 p-6 rounded-2xl bg-white border border-neutral-200 space-y-4 h-fit shadow-sm sticky top-24">
           <h3 className="font-bold text-black text-base flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiBookOpen className="w-5 h-5 text-[#784D28]" />
             Curriculum Navigator
@@ -300,7 +343,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                   {moduleItem.lessons.map((lesson: any) => {
                     const isDone = completedLessonIds.includes(lesson.id);
                     const isSelected = activeLesson?.id === lesson.id;
-                    const globalIdx = allLessons.findIndex((al) => al.id === lesson.id);
+                    const globalIdx = allLessons.findIndex((al: any) => al.id === lesson.id);
                     const isLocked =
                       globalIdx > 0 && !completedLessonIds.includes(allLessons[globalIdx - 1].id);
 
@@ -308,21 +351,13 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                       <button
                         key={lesson.id}
                         disabled={isLocked}
-                        onClick={() => {
-                          if (!isLocked) {
-                            setActiveLesson(lesson);
-                            setDiscussions(lesson.discussionPosts || []);
-                            setIsResubmitting(false);
-                            setGradeResult(null);
-                            setSubmissionText("");
-                          }
-                        }}
-                        className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-between border ${
+                        onClick={() => selectLesson(lesson)}
+                        className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between border ${
                           isLocked
                             ? "opacity-50 cursor-not-allowed bg-neutral-100 border-neutral-200 text-neutral-400"
                             : isSelected
                             ? "bg-black text-white border-black shadow-sm"
-                            : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-400"
+                            : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-400 hover:bg-neutral-50"
                         }`}
                       >
                         <div className="flex items-center gap-2 truncate">
@@ -473,7 +508,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                       </div>
 
                       <div className="p-4 rounded-lg bg-white border border-neutral-200 space-y-2">
-                        <h5 className="text-xs font-bold text-[#784D28] uppercase tracking-wider">AI Tutor Feedback:</h5>
+                        <h5 className="text-xs font-bold text-[#784D28] uppercase tracking-wider">Evaluation Feedback:</h5>
                         <p className="text-xs text-neutral-700 whitespace-pre-wrap leading-relaxed">
                           {previousSubmission.aiFeedback}
                         </p>
@@ -511,7 +546,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                         >
                           <FiSend className="w-4 h-4" />
                           {submitting
-                            ? "Evaluating with AI..."
+                            ? "Evaluating Submission..."
                             : isResubmitting
                             ? "Submit Revised Answer"
                             : "Submit Assignment"}
@@ -709,7 +744,152 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             </div>
           </div>
         </div>
-      )}
+      {/* ──────────────── STICKY MOBILE BOTTOM NAVIGATION BAR ──────────────── */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-3 py-2.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <div className="max-w-md mx-auto flex items-center justify-between gap-2">
+          {/* Previous Lesson */}
+          <button
+            onClick={() => prevLesson && selectLesson(prevLesson)}
+            disabled={!prevLesson}
+            className="px-3 py-2.5 rounded-xl border border-neutral-200 bg-white text-xs font-bold text-black flex items-center gap-1.5 transition-all duration-150 active:scale-95 disabled:opacity-40 disabled:pointer-events-none hover:bg-neutral-50 shadow-xs"
+            title="Previous Lesson"
+          >
+            <FiChevronLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">Prev</span>
+          </button>
+
+          {/* Curriculum / Syllabus Drawer Toggle */}
+          <button
+            onClick={() => setMobileCurriculumOpen(true)}
+            className="flex-1 py-2.5 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 text-xs font-bold text-black flex items-center justify-center gap-2 transition-all duration-150 active:scale-95 shadow-xs"
+          >
+            <FiList className="w-4 h-4 text-[#784D28]" />
+            <span className="truncate">
+              Syllabus ({completedLessonIds.length}/{allLessons.length})
+            </span>
+          </button>
+
+          {/* Next / Complete & Next / Certificate */}
+          {nextLesson ? (
+            <button
+              onClick={handleNextLesson}
+              className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95 shadow-sm"
+              title="Next Lesson"
+            >
+              <span>{completedLessonIds.includes(activeLesson?.id) ? "Next" : "Next"}</span>
+              <FiChevronRight className="w-4 h-4" />
+            </button>
+          ) : !isCompleted ? (
+            <button
+              onClick={handleCompleteCourse}
+              disabled={completingCourse}
+              className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95 shadow-sm"
+            >
+              <FiCheckCircle className="w-4 h-4" />
+              <span>Finish</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowCertificate(true)}
+              className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95 shadow-sm"
+            >
+              <FiAward className="w-4 h-4 text-[#D4A373]" />
+              <span>Cert</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ──────────────── MOBILE CURRICULUM BOTTOM SHEET DRAWER ──────────────── */}
+      <div
+        className={`lg:hidden fixed inset-0 z-50 transition-opacity duration-300 ${
+          mobileCurriculumOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Backdrop overlay */}
+        <div
+          onClick={() => setMobileCurriculumOpen(false)}
+          className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+        />
+
+        {/* Bottom sheet dialog */}
+        <div
+          className={`absolute inset-x-0 bottom-0 max-h-[85vh] bg-white rounded-t-3xl border-t border-neutral-200 shadow-2xl flex flex-col transform transition-transform duration-300 ease-out ${
+            mobileCurriculumOpen ? "translate-y-0" : "translate-y-full"
+          }`}
+        >
+          {/* Sheet Drag Handle */}
+          <div className="pt-3 pb-1 flex justify-center">
+            <div className="w-12 h-1.5 rounded-full bg-neutral-300" />
+          </div>
+
+          {/* Sheet Header */}
+          <div className="px-6 py-3 border-b border-neutral-200 flex items-center justify-between">
+            <div>
+              <h3 className="font-bold text-base text-black flex items-center gap-2">
+                <FiBookOpen className="w-4 h-4 text-[#784D28]" />
+                Course Curriculum
+              </h3>
+              <p className="text-[11px] text-neutral-500 font-semibold mt-0.5">
+                {completedLessonIds.length} of {allLessons.length} lessons completed ({completionPercentage}%)
+              </p>
+            </div>
+            <button
+              onClick={() => setMobileCurriculumOpen(false)}
+              className="p-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-600 transition-all active:scale-95"
+              aria-label="Close Curriculum Drawer"
+            >
+              <FiX className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Sheet Body: Scrollable Modules & Lessons */}
+          <div className="p-6 overflow-y-auto space-y-5 flex-1">
+            {course.modules.map((moduleItem: any) => (
+              <div key={moduleItem.id} className="space-y-2">
+                <h4 className="text-xs font-bold text-neutral-700 uppercase tracking-wider">
+                  {moduleItem.title}
+                </h4>
+                <div className="space-y-2 pl-2 border-l-2 border-neutral-200">
+                  {moduleItem.lessons.map((lesson: any) => {
+                    const isDone = completedLessonIds.includes(lesson.id);
+                    const isSelected = activeLesson?.id === lesson.id;
+                    const globalIdx = allLessons.findIndex((al: any) => al.id === lesson.id);
+                    const isLocked =
+                      globalIdx > 0 && !completedLessonIds.includes(allLessons[globalIdx - 1].id);
+
+                    return (
+                      <button
+                        key={lesson.id}
+                        disabled={isLocked}
+                        onClick={() => selectLesson(lesson)}
+                        className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between border active:scale-98 ${
+                          isLocked
+                            ? "opacity-50 cursor-not-allowed bg-neutral-100 border-neutral-200 text-neutral-400"
+                            : isSelected
+                            ? "bg-black text-white border-black shadow-sm"
+                            : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-400 hover:bg-neutral-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          {isLocked ? (
+                            <FiLock className="w-4 h-4 text-neutral-400 shrink-0" />
+                          ) : isDone ? (
+                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-black"}`} />
+                          ) : (
+                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#784D28]"}`} />
+                          )}
+                          <span className="truncate">{lesson.title}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
