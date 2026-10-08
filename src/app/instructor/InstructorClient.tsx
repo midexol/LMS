@@ -9,7 +9,7 @@ import {
   FiGrid, FiBook, FiAward, FiFileText, FiUsers, FiMessageSquare,
   FiPieChart, FiSettings, FiBell, FiSearch, FiPlus, FiDownload,
   FiCheckCircle, FiClock, FiAlertCircle, FiLogOut, FiMenu, FiX,
-  FiCompass, FiShield,
+  FiCompass, FiShield, FiActivity,
 } from "react-icons/fi";
 import { formatNgn } from "@/lib/utils";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -140,29 +140,39 @@ export function InstructorClient({
 
         {/* Lower Sidebar Widgets */}
         <div className="space-y-4 pt-4 border-t border-neutral-800">
-          {/* Attendance Widget */}
+          {/* Cohort Health / Learning Activity Widget */}
           <div className="bg-neutral-900/90 rounded-2xl p-4 border border-neutral-800 space-y-2.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-white">Attendance Today</span>
-              <span className="text-[10px] text-neutral-400 font-semibold">28 present</span>
+              <span className="font-bold text-white">Active Learners</span>
+              <span className="text-[10px] text-[#D4A373] font-semibold">{metrics.totalEnrollments} enrolled</span>
             </div>
-            <div className="flex items-center gap-1">
-              {["AR", "MK", "TL", "+25"].map((avatar, i) => (
+            <div className="flex items-center gap-1.5">
+              {tutorCourses.flatMap((c) => c.enrollments.map((e: any) => e.student?.name || "Student")).slice(0, 3).map((name: string, i: number) => (
                 <div
                   key={i}
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white ${
-                    i === 0 ? "bg-neutral-950 border border-neutral-700" : i === 1 ? "bg-[#784D28]" : i === 2 ? "bg-neutral-700" : "bg-neutral-800"
-                  }`}
+                  className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white bg-[#784D28] border border-neutral-700"
                 >
-                  {avatar}
+                  {name.charAt(0)}
                 </div>
               ))}
+              {metrics.totalEnrollments > 3 && (
+                <div className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-neutral-300 bg-neutral-800 border border-neutral-700">
+                  +{metrics.totalEnrollments - 3}
+                </div>
+              )}
             </div>
             <div className="space-y-1">
               <div className="w-full bg-neutral-800 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#D4A373] h-full rounded-full" style={{ width: "93%" }} />
+                <div
+                  className="bg-[#D4A373] h-full rounded-full transition-all duration-500"
+                  style={{ width: `${allSubmissions.length > 0 ? Math.min(100, Math.round((gradedSubmissions.length / allSubmissions.length) * 100)) : 100}%` }}
+                />
               </div>
-              <p className="text-[10px] text-neutral-400">93% of Period 3 checked in</p>
+              <p className="text-[10px] text-neutral-400">
+                {allSubmissions.length > 0
+                  ? `${Math.round((gradedSubmissions.length / allSubmissions.length) * 100)}% submission review rate`
+                  : "All assignments up to date"}
+              </p>
             </div>
           </div>
 
@@ -271,149 +281,188 @@ export function InstructorClient({
                 </div>
               </div>
 
-              {/* 2. STAT CARDS (CLEAN TYPOGRAPHIC CARDS - ZERO ICON CLUTTER) */}
+              {/* 2. STAT CARDS (EXECUTIVE HIGH-CONTRAST METRICS) */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   {
-                    value: metrics.totalEnrollments || 128,
-                    label: "Total students taught",
-                    trend: "↑ 3 new enrollees",
-                    trendColor: "text-black bg-neutral-100",
+                    value: metrics.totalEnrollments,
+                    label: "Students Enrolled",
+                    trend: `${tutorCourses.length} active courses`,
+                    sub: "Directly under your instruction",
+                    trendColor: "text-white bg-neutral-900 border border-neutral-800",
                   },
                   {
-                    value: tutorCourses.length || 4,
-                    label: "Active classes this term",
-                    trend: "Active curriculum",
-                    trendColor: "text-black bg-neutral-100",
+                    value: `${metrics.publishedCourses || tutorCourses.filter((c) => c.published).length} / ${tutorCourses.length}`,
+                    label: "Published Courses",
+                    trend: "Catalog active",
+                    sub: "Curriculum modules live",
+                    trendColor: "text-[#D4A373] bg-neutral-900 border border-neutral-800",
                   },
                   {
-                    value: pendingSubmissions.length || 12,
-                    label: "Assignments to review",
-                    trend: `${pendingSubmissions.length || 12} pending review`,
-                    trendColor: "text-[#784D28] bg-[#F7EFE9]",
+                    value: pendingSubmissions.length,
+                    label: "Pending Review",
+                    trend: `${gradedSubmissions.length} evaluated`,
+                    sub: "Submissions awaiting feedback",
+                    trendColor: pendingSubmissions.length > 0 ? "text-[#D4A373] bg-[#784D28]/20 border border-[#784D28]/40" : "text-emerald-400 bg-emerald-950/40 border border-emerald-800/40",
                   },
                   {
-                    value: avgGradeLetter || "B+",
-                    label: "Average cohort grade",
-                    trend: "↑ 1.2% this week",
-                    trendColor: "text-black bg-neutral-100",
+                    value: `${metrics.avgScore ?? 86}% (${avgGradeLetter})`,
+                    label: "Average Cohort Score",
+                    trend: `${gradeDistribution.pctA + gradeDistribution.pctB}% passing`,
+                    sub: "Aggregated performance",
+                    trendColor: "text-white bg-neutral-900 border border-neutral-800",
                   },
                 ].map((stat, i) => (
                   <div
                     key={i}
-                    className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
+                    className="bg-neutral-950 text-white rounded-3xl p-6 border border-neutral-800 shadow-md flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-all"
                   >
                     <div className="flex items-center justify-between">
-                      <p className="text-xs text-neutral-500 font-semibold tracking-wide uppercase">{stat.label}</p>
+                      <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{stat.label}</p>
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${stat.trendColor}`}>
                         {stat.trend}
                       </span>
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-black tracking-tight">{stat.value}</div>
-                      <p className="text-[11px] text-neutral-400 mt-1">Updated in real-time from active cohorts</p>
+                      <div className="text-2xl font-bold text-white tracking-tight">{stat.value}</div>
+                      <p className="text-[11px] text-neutral-400 mt-1">{stat.sub}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* 3. VISUALIZATION ROW: MODERN CLASS PERFORMANCE & SVG RING DISTRIBUTION */}
-              {/* 3. VISUALIZATION ROW: MODERN CLASS PERFORMANCE & GRADE DISTRIBUTION */}
+              {/* 3. VISUALIZATION ROW: MODERN COURSE THROUGHPUT & GRADE DISTRIBUTION */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left: Class Performance Comparison */}
-                <div className="lg:col-span-2 bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-5">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-100">
+                {/* Left: Course Performance & Cohort Engagement */}
+                <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                     <div>
-                      <h3 className="font-bold text-base text-black">Class Performance by Period</h3>
-                      <p className="text-xs text-neutral-500">Benchmark score comparison against prior semester</p>
-                    </div>
-                    <div className="flex items-center gap-4 text-xs font-semibold text-neutral-600">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
-                        <span>Current Term</span>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <h3 className="font-black text-lg text-black tracking-tight">Course Enrollment &amp; Evaluation Throughput</h3>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
-                        <span>Prior Term</span>
+                      <p className="text-xs text-neutral-500 mt-0.5">Live student enrollment vs submission volume across your courses</p>
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-neutral-950 text-white">
+                        <span className="w-2 h-2 rounded-full bg-white" />
+                        Enrolled Students
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/25">
+                        <span className="w-2 h-2 rounded-full bg-[#784D28]" />
+                        Evaluations Logged
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 3 Executive KPI Capsules */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <FiUsers className="w-5 h-5 text-emerald-400" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Total Learners</span>
+                        <span className="text-lg font-black text-neutral-900 leading-tight">
+                          {metrics.totalEnrollments} <span className="text-xs font-semibold text-neutral-500">enrolled</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-[#784D28]/15 text-[#784D28] border border-[#784D28]/20 flex items-center justify-center shrink-0">
+                        <FiAward className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Submissions Logged</span>
+                        <span className="text-lg font-black text-[#784D28] leading-tight">
+                          {allSubmissions.length} <span className="text-xs font-semibold text-neutral-500">total</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-neutral-200 text-neutral-800 flex items-center justify-center shrink-0">
+                        <FiCheckCircle className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Cohort Mean Score</span>
+                        <span className="text-lg font-black text-neutral-900 leading-tight">
+                          {metrics.avgScore ?? 86}% <span className="text-xs font-semibold text-neutral-500">({avgGradeLetter})</span>
+                        </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Summary Metric Ribbon */}
-                  <div className="grid grid-cols-3 gap-3 p-3.5 rounded-2xl bg-neutral-50 border border-neutral-100 text-center">
-                    <div>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Current Avg</span>
-                      <span className="text-base font-black text-black">87.5%</span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Prior Avg</span>
-                      <span className="text-base font-black text-[#784D28]">82.0%</span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Standard Threshold</span>
-                      <span className="text-base font-black text-neutral-800">70.0%</span>
-                    </div>
-                  </div>
+                  {/* Course-by-Course Comparative Dual Bar Tracks */}
+                  <div className="space-y-4 pt-2">
+                    <p className="text-xs font-bold text-neutral-700 uppercase tracking-wider">Course Performance Breakdown</p>
+                    {tutorCourses.length === 0 ? (
+                      <div className="p-8 text-center bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
+                        <p className="text-xs text-neutral-500">No courses created yet. Use the Course Builder tab to publish your first course.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3.5">
+                        {tutorCourses.map((c) => {
+                          const courseSubs = allSubmissions.filter((s) => s.courseTitle === c.title);
+                          const courseGraded = courseSubs.filter((s) => s.score !== null);
+                          const cScore = courseGraded.length > 0
+                            ? Math.round(courseGraded.reduce((a, s) => a + (s.score || 0), 0) / courseGraded.length)
+                            : (metrics.avgScore ?? 86);
+                          const maxMetric = Math.max(10, ...tutorCourses.map((tc) => Math.max(tc.enrollments.length, allSubmissions.filter((s) => s.courseTitle === tc.title).length)));
+                          const enrPct = Math.min(100, Math.round((c.enrollments.length / maxMetric) * 100));
+                          const subPct = Math.min(100, Math.round((courseSubs.length / maxMetric) * 100));
 
-                  {/* Chart with Horizontal Reference Guidelines and Direct Visible Values */}
-                  <div className="relative pt-2">
-                    {/* Horizontal Reference Lines */}
-                    <div className="absolute inset-x-2 top-2 bottom-8 flex flex-col justify-between pointer-events-none z-0">
-                      <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
-                        <span className="text-[9px] font-mono text-neutral-400">100%</span>
-                      </div>
-                      <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
-                        <span className="text-[9px] font-mono text-neutral-400">75%</span>
-                      </div>
-                      <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
-                        <span className="text-[9px] font-mono text-neutral-400">50%</span>
-                      </div>
-                      <div className="border-b border-neutral-200 w-full flex items-center justify-end pr-1">
-                        <span className="text-[9px] font-mono text-neutral-400">0%</span>
-                      </div>
-                    </div>
+                          return (
+                            <div key={c.id} className="p-4 rounded-2xl bg-neutral-50/70 border border-neutral-100 space-y-2.5 hover:bg-neutral-50 transition-colors">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-bold text-neutral-900 truncate max-w-xs">{c.title}</span>
+                                  {c.department && (
+                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border border-neutral-200 text-neutral-600 font-semibold">
+                                      {c.department}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-3 text-[11px] font-bold text-neutral-500">
+                                  <span className="text-black">{c.enrollments.length} enrolled</span>
+                                  <span>·</span>
+                                  <span className="text-[#784D28]">{courseSubs.length} submissions</span>
+                                  <span>·</span>
+                                  <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 font-mono">
+                                    {cScore}% avg
+                                  </span>
+                                </div>
+                              </div>
 
-                    {/* Bars Grid */}
-                    <div className="h-56 flex items-end justify-between gap-3 sm:gap-6 px-4 relative z-10">
-                      {performanceBars.map((b) => (
-                        <div key={b.period} className="flex-1 flex flex-col items-center gap-1.5">
-                          {/* Visible Direct Value Display */}
-                          <div className="flex items-center gap-1 text-[11px] font-bold">
-                            <span className="text-black">{b.current}%</span>
-                            <span className="text-neutral-300">/</span>
-                            <span className="text-[#784D28]">{b.previous}%</span>
-                          </div>
-
-                          <div className="w-full flex items-end justify-center gap-2 h-40 bg-neutral-50/70 rounded-2xl p-1.5 border border-neutral-100">
-                            {/* Current Term Bar */}
-                            <div className="w-3.5 sm:w-5 flex flex-col justify-end h-full">
-                              <div
-                                className="w-full rounded-t-md bg-black transition-all duration-500 hover:brightness-125"
-                                style={{ height: `${b.current}%` }}
-                                title={`Current: ${b.current}%`}
-                              />
+                              {/* Dual comparative progress bar */}
+                              <div className="space-y-1">
+                                <div className="w-full bg-neutral-200/70 h-2.5 rounded-full overflow-hidden flex gap-1 p-0.5">
+                                  <div
+                                    className="bg-black h-full rounded-full transition-all duration-500"
+                                    style={{ width: `${Math.max(5, enrPct)}%` }}
+                                    title={`Enrollments: ${c.enrollments.length}`}
+                                  />
+                                  <div
+                                    className="bg-[#784D28] h-full rounded-full transition-all duration-500"
+                                    style={{ width: `${Math.max(5, subPct)}%` }}
+                                    title={`Submissions: ${courseSubs.length}`}
+                                  />
+                                </div>
+                              </div>
                             </div>
-                            {/* Prior Term Bar */}
-                            <div className="w-3.5 sm:w-5 flex flex-col justify-end h-full">
-                              <div
-                                className="w-full rounded-t-md bg-[#784D28] transition-all duration-500 hover:brightness-125"
-                                style={{ height: `${b.previous}%` }}
-                                title={`Prior: ${b.previous}%`}
-                              />
-                            </div>
-                          </div>
-                          <span className="text-xs font-bold text-neutral-800">{b.period}</span>
-                        </div>
-                      ))}
-                    </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* Right: Grade Distribution Breakdown */}
-                <div className="bg-white rounded-3xl p-7 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
+                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
                   <div className="pb-3 border-b border-neutral-100">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-base text-black">Grade Distribution</h3>
+                      <h3 className="font-black text-lg text-black tracking-tight">Grade Distribution</h3>
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/20">
                         {gradeDistribution.pctA + gradeDistribution.pctB}% Passing
                       </span>
@@ -464,9 +513,9 @@ export function InstructorClient({
                       );
                     })()}
                     <div className="absolute flex flex-col items-center justify-center text-center">
-                      <span className="font-black text-3xl text-black">{avgGradeLetter || "B+"}</span>
+                      <span className="font-black text-3xl text-black">{avgGradeLetter}</span>
                       <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
-                      <span className="text-[10px] font-bold text-[#784D28] mt-0.5">88.4% Mean</span>
+                      <span className="text-[10px] font-bold text-[#784D28] mt-0.5">{metrics.avgScore ?? 86}% Mean</span>
                     </div>
                   </div>
 
@@ -546,7 +595,7 @@ export function InstructorClient({
                 <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
                   <div>
                     <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
-                    <p className="text-xs text-neutral-500">Create new course modules, integrate AI auto-grading rubrics, and upload lecture content.</p>
+                    <p className="text-xs text-neutral-500">Create new course modules, integrate automated grading rubrics, and upload lecture content.</p>
                   </div>
                   <CourseBuilderWizard />
                 </div>
@@ -605,7 +654,7 @@ export function InstructorClient({
             <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Student Submissions &amp; Grading Queue</h2>
-                <p className="text-xs text-neutral-500">Review AI-evaluated student assignment answers, verify benchmark accuracy, and issue manual score overrides.</p>
+                <p className="text-xs text-neutral-500">Review automated rubric evaluations, verify benchmark accuracy, and issue manual score overrides.</p>
               </div>
               <TutorSubmissionsReviewer initialSubmissions={allSubmissions} />
             </div>

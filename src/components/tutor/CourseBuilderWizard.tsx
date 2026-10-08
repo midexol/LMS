@@ -468,24 +468,26 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             {/* Cover Image (optional) */}
             <div>
               <label className={labelCls}>Cover Image <span className="text-neutral-400 normal-case font-normal">(optional)</span></label>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 min-w-0">
                 <input
                   type="url"
                   placeholder="https://... or upload below"
                   value={coverImage}
                   onChange={(e) => setCoverImage(e.target.value)}
-                  className={`${inputCls} flex-1`}
+                  className="w-full min-w-0 px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all flex-1"
                 />
-                <FilePickerButton
-                  accept="image/jpeg,image/png,image/webp"
-                  uploading={coverUpload.uploading}
-                  label="Upload"
-                  icon={<FiImage className="w-3.5 h-3.5" />}
-                  onPicked={async (file) => {
-                    const result = await coverUpload.upload(file);
-                    if (result) setCoverImage(result.url);
-                  }}
-                />
+                <div className="shrink-0">
+                  <FilePickerButton
+                    accept="image/jpeg,image/png,image/webp"
+                    uploading={coverUpload.uploading}
+                    label="Upload"
+                    icon={<FiImage className="w-3.5 h-3.5" />}
+                    onPicked={async (file) => {
+                      const result = await coverUpload.upload(file);
+                      if (result) setCoverImage(result.url);
+                    }}
+                  />
+                </div>
               </div>
               {coverUpload.error && (
                 <p className="text-[11px] text-red-600 mt-1">{coverUpload.error}</p>
@@ -818,24 +820,26 @@ function LessonRow({
           <FiVideo className="w-3 h-3" /> Video
           <span className="text-neutral-400 font-normal normal-case">(YouTube embed, MP4 URL, or upload)</span>
         </label>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <input
             type="url"
             placeholder="https://www.youtube.com/embed/... or /uploads/..."
             value={lesson.videoUrl}
             onChange={(e) => onUpdate("videoUrl", e.target.value)}
-            className={`${smallInputCls} flex-1`}
+            className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
           />
-          <FilePickerButton
-            accept="video/mp4,video/webm,video/ogg"
-            uploading={videoUpload.uploading}
-            label="Upload"
-            icon={<FiUpload className="w-3 h-3" />}
-            onPicked={async (file) => {
-              const result = await videoUpload.upload(file);
-              if (result) onUpdate("videoUrl", result.url);
-            }}
-          />
+          <div className="shrink-0">
+            <FilePickerButton
+              accept="video/mp4,video/webm,video/ogg"
+              uploading={videoUpload.uploading}
+              label="Upload"
+              icon={<FiUpload className="w-3 h-3" />}
+              onPicked={async (file) => {
+                const result = await videoUpload.upload(file);
+                if (result) onUpdate("videoUrl", result.url);
+              }}
+            />
+          </div>
         </div>
         {videoUpload.error && <p className="text-[11px] text-red-600 mt-1">{videoUpload.error}</p>}
       </div>
@@ -846,34 +850,38 @@ function LessonRow({
           <FiPaperclip className="w-3 h-3" /> Resource File
           <span className="text-neutral-400 font-normal normal-case">(PDF, slides, zip, etc.)</span>
         </label>
-        <div className="flex items-center gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 min-w-0">
           <input
             type="text"
             placeholder="File name (e.g. Lecture Notes.pdf)"
             value={lesson.resourceName}
             onChange={(e) => onUpdate("resourceName", e.target.value)}
-            className={`${smallInputCls} w-36 flex-none`}
+            className="sm:col-span-4 w-full min-w-0 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
           />
-          <input
-            type="url"
-            placeholder="URL or upload"
-            value={lesson.resourceUrl}
-            onChange={(e) => onUpdate("resourceUrl", e.target.value)}
-            className={`${smallInputCls} flex-1`}
-          />
-          <FilePickerButton
-            accept="application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
-            uploading={resourceUpload.uploading}
-            label="Upload"
-            icon={<FiUpload className="w-3 h-3" />}
-            onPicked={async (file) => {
-              const result = await resourceUpload.upload(file);
-              if (result) {
-                onUpdate("resourceUrl", result.url);
-                if (!lesson.resourceName) onUpdate("resourceName", result.name);
-              }
-            }}
-          />
+          <div className="sm:col-span-8 flex items-center gap-2 min-w-0">
+            <input
+              type="url"
+              placeholder="URL or upload file"
+              value={lesson.resourceUrl}
+              onChange={(e) => onUpdate("resourceUrl", e.target.value)}
+              className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+            />
+            <div className="shrink-0">
+              <FilePickerButton
+                accept="application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
+                uploading={resourceUpload.uploading}
+                label="Upload"
+                icon={<FiUpload className="w-3 h-3" />}
+                onPicked={async (file) => {
+                  const result = await resourceUpload.upload(file);
+                  if (result) {
+                    onUpdate("resourceUrl", result.url);
+                    if (!lesson.resourceName) onUpdate("resourceName", result.name);
+                  }
+                }}
+              />
+            </div>
+          </div>
         </div>
         {resourceUpload.error && <p className="text-[11px] text-red-600 mt-1">{resourceUpload.error}</p>}
         {/* Show existing file link */}
