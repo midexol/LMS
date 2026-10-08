@@ -89,10 +89,10 @@ function PaymentVerifyContent() {
                 Browse Course Catalog
               </Link>
               <Link
-                href="/dashboard"
+                href="/my-courses"
                 className="w-full py-3 px-6 rounded-full bg-neutral-800 text-neutral-300 font-bold text-xs hover:bg-neutral-700 transition-all"
               >
-                Go to Dashboard
+                Go to My Courses
               </Link>
             </div>
           </div>

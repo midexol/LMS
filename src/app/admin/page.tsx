@@ -8,7 +8,11 @@ import { AdminDashboardClient } from "./AdminDashboardClient";
 
 export const revalidate = 0;
 
-export default async function AdminPage() {
+interface AdminPageProps {
+  searchParams?: { tab?: string };
+}
+
+export default async function AdminPage({ searchParams }: AdminPageProps) {
   const currentUser = await getCurrentUser();
 
   // If not logged in at all, redirect to admin login
@@ -20,6 +24,11 @@ export default async function AdminPage() {
   if (currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN") {
     redirect("/my-courses");
   }
+
+  const validTabs = ["overview", "users", "courses", "enrollments", "submissions", "settings"];
+  const initialTab = typeof searchParams?.tab === "string" && validTabs.includes(searchParams.tab)
+    ? (searchParams.tab as any)
+    : "overview";
 
   // Fetch comprehensive platform data for the superadmin
   const [users, courses, enrollments, submissions] = await Promise.all([
@@ -116,6 +125,7 @@ export default async function AdminPage() {
       initialCourses={courses}
       initialEnrollments={enrollments}
       initialSubmissions={submissions}
+      initialTab={initialTab}
       metrics={{
         totalUsers: users.length,
         totalStudents,

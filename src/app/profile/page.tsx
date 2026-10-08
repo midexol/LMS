@@ -12,10 +12,7 @@ export default async function StudentProfilePage() {
     redirect("/login");
   }
 
-  // Profile is a student-only page
-  if (currentUser.role === "TUTOR" || currentUser.role === "ADMIN") {
-    redirect("/instructor");
-  }
+
 
 
   const enrollments = await prisma.enrollment.findMany({

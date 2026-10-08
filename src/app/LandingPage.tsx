@@ -722,7 +722,7 @@ export function LandingPage({
                 <h3 className="font-heading font-bold text-2xl text-black">Security Safeguards</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    Our infrastructure utilizes isolated sandbox environments for AI rubric executions, encrypted database storage, and cryptographically verified session credentials.
+                    Our infrastructure utilizes isolated sandbox environments for automated rubric evaluations, encrypted database storage, and cryptographically verified session credentials.
                   </p>
                   <p>
                     Rate limiting and CSRF protection are enforced across all authentication endpoints to prevent brute-force attacks and session hijacking.

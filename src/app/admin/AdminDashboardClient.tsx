@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { formatDate, formatNgn } from "@/lib/utils";
 import {
@@ -60,6 +60,7 @@ interface Props {
   initialEnrollments: EnrollmentItem[];
   initialSubmissions: SubmissionItem[];
   metrics: Metrics;
+  initialTab?: "overview" | "users" | "courses" | "enrollments" | "submissions" | "settings";
 }
 
 /* ─── Toast Hook ─────────────────────────────────────────────── */
@@ -317,10 +318,19 @@ function RoleBadge({ role }: { role: string }) {
 
 /* ─── Main Component ─────────────────────────────────────────── */
 export function AdminDashboardClient({
-  currentUser, initialUsers, initialCourses, initialEnrollments, initialSubmissions, metrics,
+  currentUser, initialUsers, initialCourses, initialEnrollments, initialSubmissions, metrics, initialTab = "overview",
 }: Props) {
   const { toasts, success, error } = useToast();
-  const [activeTab, setActiveTab] = useState<"overview" | "users" | "courses" | "enrollments" | "submissions">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "users" | "courses" | "enrollments" | "submissions" | "settings">(initialTab);
+
+  const switchTab = (t: "overview" | "users" | "courses" | "enrollments" | "submissions" | "settings") => {
+    setActiveTab(t);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("tab", t);
+      window.history.replaceState(null, "", url.toString());
+    }
+  };
 
   const [users, setUsers] = useState(initialUsers);
   const [courses, setCourses] = useState(initialCourses);
@@ -340,6 +350,70 @@ export function AdminDashboardClient({
   const [revokeEnrollment, setRevokeEnrollment] = useState<EnrollmentItem | null>(null);
   const [gradeOverrideSub, setGradeOverrideSub] = useState<SubmissionItem | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+
+  // Settings & Security state
+  const [adminNewPassword, setAdminNewPassword] = useState("");
+  const [adminConfirmPassword, setAdminConfirmPassword] = useState("");
+  const [adminPasswordLoading, setAdminPasswordLoading] = useState(false);
+
+  // Check URL query parameters for ?tab=
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get("tab");
+      if (tabParam && ["overview", "users", "courses", "enrollments", "submissions", "settings"].includes(tabParam)) {
+        setActiveTab(tabParam as any);
+      }
+    }
+  }, []);
+
+  const downloadCSV = (filename: string, headers: string[], rows: (string | number)[][]) => {
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [
+        headers.join(","),
+        ...rows.map((r) =>
+          r.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(",")
+        ),
+      ].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    success(`Generated and exported ${filename}`);
+  };
+
+  const handleUpdateAdminPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!adminNewPassword || adminNewPassword.length < 6) {
+      error("Password must be at least 6 characters.");
+      return;
+    }
+    if (adminNewPassword !== adminConfirmPassword) {
+      error("Passwords do not match.");
+      return;
+    }
+    setAdminPasswordLoading(true);
+    try {
+      const res = await fetch("/api/student/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: currentUser.name, password: adminNewPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to update password.");
+      success("Superadmin password updated successfully.");
+      setAdminNewPassword("");
+      setAdminConfirmPassword("");
+    } catch (e: any) {
+      error(e.message || "Failed to update password.");
+    } finally {
+      setAdminPasswordLoading(false);
+    }
+  };
 
 
   /* ─── Handlers ─────────────────────────────────────── */
@@ -546,7 +620,7 @@ export function AdminDashboardClient({
       <header className="bg-neutral-950 text-white border-b border-neutral-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <BrandLogo href="/" variant="light" size="sm" />
+            <BrandLogo href="/admin" variant="light" size="sm" />
             <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-neutral-800 text-[11px]">
               <span className="font-bold text-[#D4A373]">Superadmin Console</span>
               <span className="text-neutral-500">· System Command &amp; Analytics</span>
@@ -554,6 +628,24 @@ export function AdminDashboardClient({
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => switchTab("settings")}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all ${
+                activeTab === "settings"
+                  ? "bg-white text-black border-white shadow-sm"
+                  : "border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white hover:border-neutral-700"
+              }`}
+            >
+              <FiSliders className="w-3.5 h-3.5 text-[#D4A373]" />
+              <span>Settings</span>
+            </button>
+            <Link
+              href="/profile"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+            >
+              <FiShield className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Profile</span>
+            </Link>
             <Link
               href="/courses"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
@@ -589,13 +681,14 @@ export function AdminDashboardClient({
             { id: "courses", label: "Courses Oversight", count: courses.length, icon: FiBookOpen },
             { id: "enrollments", label: "Enrollment Audit", count: enrollments.length, icon: FiAward },
             { id: "submissions", label: "Submissions & Grades", count: submissions.length, icon: FiActivity },
+            { id: "settings", label: "System Settings", icon: FiSliders },
           ].map((tab) => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => switchTab(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
                   active
                     ? "bg-white text-black shadow-sm font-bold"
@@ -1297,6 +1390,266 @@ export function AdminDashboardClient({
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* SETTINGS & SYSTEM CONTROLS TAB */}
+        {activeTab === "settings" && (
+          <div className="space-y-6 max-w-5xl">
+            <div>
+              <h2 className="font-bold text-2xl text-black">System Settings &amp; Governance</h2>
+              <p className="text-xs text-neutral-500">Configure institutional policies, superadmin credentials, and audit data export.</p>
+            </div>
+
+            {/* Superadmin Security & Profile Card */}
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neutral-100">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl font-bold shadow-md">
+                    {currentUser.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
+                    <p className="text-xs text-neutral-500">{currentUser.email}</p>
+                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black text-white">
+                      Superadministrator
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-xs text-neutral-500 bg-neutral-50 px-4 py-3 rounded-2xl border border-neutral-200">
+                  <span className="font-bold text-black block">System Authority Level: Highest</span>
+                  <span>Full access to database, user records, course publishing, and grade ledgers.</span>
+                </div>
+              </div>
+
+              {/* Password Change Form */}
+              <form onSubmit={handleUpdateAdminPassword} className="space-y-4 max-w-xl">
+                <h4 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-2">
+                  <FiSliders className="w-4 h-4 text-[#784D28]" /> Update Superadmin Password
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Minimum 6 characters"
+                      value={adminNewPassword}
+                      onChange={(e) => setAdminNewPassword(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Re-enter password"
+                      value={adminConfirmPassword}
+                      onChange={(e) => setAdminConfirmPassword(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black transition-all"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={adminPasswordLoading || !adminNewPassword}
+                  className="px-6 py-2.5 rounded-full bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs shadow-sm transition-all"
+                >
+                  {adminPasswordLoading ? "Updating..." : "Save New Password"}
+                </button>
+              </form>
+            </div>
+
+            {/* Institutional Configuration Card */}
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
+                <FiBookOpen className="w-5 h-5 text-[#784D28]" />
+                Institutional Identity &amp; Academic Configuration
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
+                    Institution Name
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value="The Federal Polytechnic, Ede"
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
+                  />
+                  <span className="text-[10px] text-neutral-400 mt-1 block">Accredited collegiate polytechnic repository.</span>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
+                    LMS Directorate Title
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value="ACADEMIA Digital Learning Directorate"
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
+                  />
+                  <span className="text-[10px] text-neutral-400 mt-1 block">Displayed on official student certificates.</span>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
+                    Current Academic Session
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value="2025/2026 Academic Session"
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
+                    Official Support Contact Email
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value="academic.board@federalpolyede.edu.ng"
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Academic Policies & Enrollment Rules */}
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
+                <FiAward className="w-5 h-5 text-[#784D28]" />
+                Academic Policies &amp; Lock Enforcement
+              </h3>
+
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-bold text-sm text-black">1:1 Single Course Active Enrollment Rule</h4>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Ensures focused student learning by locking concurrent registrations until current course is completed or dropped.
+                    </p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-black text-white">
+                    Strictly Active
+                  </span>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-bold text-sm text-black">Certificate Completion Threshold</h4>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Minimum required evaluation grade to unlock institutional seal and official certificate download.
+                    </p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#784D28] text-white">
+                    70% Pass Score
+                  </span>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-bold text-sm text-black">Automated Evaluation Engine</h4>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Instant evaluation feedback on student assignment submissions with superadmin grade override capability.
+                    </p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-black text-white">
+                    Enabled
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Audit & Data Export Center */}
+            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
+                <FiDownload className="w-5 h-5 text-[#784D28]" />
+                Institutional Ledger CSV Export Center
+              </h3>
+              <p className="text-xs text-neutral-500">
+                Download verified real-time platform ledgers in CSV format for academic accreditation, external audits, and senate reporting.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                <button
+                  onClick={() =>
+                    downloadCSV(
+                      "users-directory.csv",
+                      ["User ID", "Full Name", "Email", "Role", "Faculty", "Department", "Registered Date"],
+                      users.map((u) => [u.id, u.name, u.email, u.role, u.faculty || "", u.department || "", String(u.createdAt)])
+                    )
+                  }
+                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                >
+                  <FiUsers className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <div>
+                    <h4 className="font-bold text-xs text-black">Export Users Directory</h4>
+                    <p className="text-[10px] text-neutral-400 mt-0.5">{users.length} total registered accounts</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() =>
+                    downloadCSV(
+                      "courses-catalog.csv",
+                      ["Course ID", "Course Title", "Category", "Faculty", "Department", "Price", "Published", "Instructor"],
+                      courses.map((c) => [c.id, c.title, c.category, c.faculty || "", c.department || "", c.price, c.published ? "Yes" : "No", c.tutor.name])
+                    )
+                  }
+                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                >
+                  <FiBookOpen className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <div>
+                    <h4 className="font-bold text-xs text-black">Export Courses Catalog</h4>
+                    <p className="text-[10px] text-neutral-400 mt-0.5">{courses.length} curriculum tracks</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() =>
+                    downloadCSV(
+                      "enrollments-audit.csv",
+                      ["Enrollment ID", "Student Name", "Student Email", "Course Title", "Status", "Enrolled Date", "Completed Date"],
+                      enrollments.map((e) => [e.id, e.student.name, e.student.email, e.course.title, e.status, String(e.enrolledAt), String(e.completedAt || "")])
+                    )
+                  }
+                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                >
+                  <FiAward className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <div>
+                    <h4 className="font-bold text-xs text-black">Export Enrollments Ledger</h4>
+                    <p className="text-[10px] text-neutral-400 mt-0.5">{enrollments.length} student registrations</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() =>
+                    downloadCSV(
+                      "submissions-gradebook.csv",
+                      ["Submission ID", "Student Name", "Course Title", "Assignment Title", "Score", "Max Score", "Status", "Submitted Date"],
+                      submissions.map((s) => [s.id, s.student.name, s.assignment.lesson.module.course.title, s.assignment.title, s.score ?? "Pending", s.assignment.maxScore, s.status, String(s.submittedAt)])
+                    )
+                  }
+                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                >
+                  <FiActivity className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <div>
+                    <h4 className="font-bold text-xs text-black">Export Submissions Ledger</h4>
+                    <p className="text-[10px] text-neutral-400 mt-0.5">{submissions.length} evaluated tasks</p>
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </main>

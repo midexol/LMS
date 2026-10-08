@@ -26,7 +26,7 @@ export function AcademiaLogoIcon({ className = "w-8 h-8" }: { className?: string
       {/* Open Book Wings */}
       <path d="M16.5 28C19.8 27.2 23 27.6 24 29C25 27.6 28.2 27.2 31.5 28V34C28.2 33.2 25 33.6 24 35C23 33.6 19.8 33.2 16.5 34V28Z" fill="#FFFFFF" />
 
-      {/* Center AI Intelligence Core */}
+      {/* Center Crest Embellishment */}
       <circle cx="24" cy="30.8" r="1.5" fill="#D4A373" />
       <path d="M24 28.5V33.5M21.5 30.8H26.5" stroke="#784D28" strokeWidth="0.5" strokeLinecap="round" />
 

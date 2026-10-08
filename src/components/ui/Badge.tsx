@@ -26,7 +26,7 @@ export function Badge({ type, text }: BadgeProps) {
       return (
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-neutral-900 text-white border border-black shadow-sm">
           <FiAward className="w-3.5 h-3.5 text-white" />
-          {text || "AI Graded"}
+          {text || "Evaluated"}
         </span>
       );
     case "PENDING":

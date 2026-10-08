@@ -373,7 +373,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
             <h4 className="font-bold text-black text-sm flex items-center gap-2">
               <FiZap className="w-4 h-4 text-[#784D28]" />
-              AI Syllabus Generator
+              Curriculum Template Generator
               <span className="ml-auto text-[10px] text-[#784D28] font-bold uppercase tracking-wider">Optional</span>
             </h4>
             <div className="flex gap-3">
@@ -926,7 +926,7 @@ function LessonRow({
           </div>
           <textarea
             rows={2}
-            placeholder="Benchmark answers and grading criteria for AI auto-grading..."
+            placeholder="Benchmark answers and grading criteria for automated assessment..."
             value={lesson.assignmentReferenceAnswer}
             onChange={(e) => onUpdate("assignmentReferenceAnswer", e.target.value)}
             className={smallInputCls}

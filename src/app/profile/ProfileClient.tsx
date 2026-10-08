@@ -7,7 +7,7 @@ import Link from "next/link";
 import {
   FiUser, FiMail, FiBookOpen, FiAward, FiCheckCircle, FiArrowRight,
   FiSave, FiLock, FiCheck, FiAlertCircle, FiEye, FiEyeOff, FiCompass,
-  FiTrash2, FiPrinter, FiX, FiCreditCard, FiShield, FiFileText,
+  FiTrash2, FiPrinter, FiX, FiCreditCard, FiShield, FiFileText, FiSliders,
 } from "react-icons/fi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { AcademiaLogoIcon } from "@/components/ui/BrandLogo";
@@ -168,20 +168,56 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-semibold flex-wrap">
-            <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
-              <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Assignments Submitted</span>
-              <span className="text-xl font-black text-black">{totalSubmissions}</span>
+          {currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN" ? (
+            <div className="flex items-center gap-3 text-xs font-semibold flex-wrap">
+              <Link
+                href="/admin"
+                className="px-5 py-2.5 rounded-full bg-black text-white hover:bg-neutral-800 font-bold transition-all shadow-sm flex items-center gap-2"
+              >
+                <FiShield className="w-4 h-4 text-emerald-400" />
+                <span>Superadmin Console</span>
+              </Link>
+              <Link
+                href="/admin?tab=settings"
+                className="px-5 py-2.5 rounded-full bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all shadow-sm flex items-center gap-2"
+              >
+                <FiSliders className="w-4 h-4 text-[#784D28]" />
+                <span>System Settings</span>
+              </Link>
             </div>
-            <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
-              <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Courses Completed</span>
-              <span className="text-xl font-black text-black">{completedEnrollments.length}</span>
+          ) : currentUser.role === "TUTOR" ? (
+            <div className="flex items-center gap-3 text-xs font-semibold flex-wrap">
+              <Link
+                href="/instructor"
+                className="px-5 py-2.5 rounded-full bg-black text-white hover:bg-neutral-800 font-bold transition-all shadow-sm flex items-center gap-2"
+              >
+                <FiBookOpen className="w-4 h-4 text-[#D4A373]" />
+                <span>Instructor Studio</span>
+              </Link>
+              <Link
+                href="/instructor?tab=settings"
+                className="px-5 py-2.5 rounded-full bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all shadow-sm flex items-center gap-2"
+              >
+                <FiSliders className="w-4 h-4 text-[#784D28]" />
+                <span>Studio Settings</span>
+              </Link>
             </div>
-            <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
-              <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
-              <span className="text-xl font-black text-[#784D28]">{averagePercentage}%</span>
+          ) : (
+            <div className="flex items-center gap-4 text-xs font-semibold flex-wrap">
+              <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
+                <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Assignments Submitted</span>
+                <span className="text-xl font-black text-black">{totalSubmissions}</span>
+              </div>
+              <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
+                <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Courses Completed</span>
+                <span className="text-xl font-black text-black">{completedEnrollments.length}</span>
+              </div>
+              <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
+                <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
+                <span className="text-xl font-black text-[#784D28]">{averagePercentage}%</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* FEEDBACK NOTICE */}
@@ -238,8 +274,10 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           </div>
         )}
 
-        {/* ACADEMIC TRANSCRIPT */}
-        <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        {/* ACADEMIC TRANSCRIPT & RECEIPTS (STUDENTS ONLY) */}
+        {currentUser.role === "STUDENT" && (
+          <>
+            <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiAward className="w-5 h-5 text-[#784D28]" />
             Academic Records &amp; Course History
@@ -354,6 +392,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
           )}
         </div>
+      </>
+    )}
 
         {/* ACCOUNT SETTINGS */}
         <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6 max-w-2xl">
@@ -397,33 +437,35 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               <span className="text-[10px] text-neutral-400 mt-1 block">Institutional login email cannot be modified.</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">School / Faculty</label>
-                <select
-                  value={faculty}
-                  onChange={(e) => handleFacultyChange(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
-                >
-                  {ACADEMIC_STRUCTURE.map((fac) => (
-                    <option key={fac.name} value={fac.name}>{fac.name}</option>
-                  ))}
-                </select>
-              </div>
+            {currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">School / Faculty</label>
+                  <select
+                    value={faculty}
+                    onChange={(e) => handleFacultyChange(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                  >
+                    {ACADEMIC_STRUCTURE.map((fac) => (
+                      <option key={fac.name} value={fac.name}>{fac.name}</option>
+                    ))}
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Department</label>
-                <select
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
-                >
-                  {getDepartmentsForFaculty(faculty).map((dept) => (
-                    <option key={dept} value={dept}>{dept}</option>
-                  ))}
-                </select>
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Department</label>
+                  <select
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                  >
+                    {getDepartmentsForFaculty(faculty).map((dept) => (
+                      <option key={dept} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="pt-4 border-t border-neutral-200 space-y-4">
               <h3 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-1.5">

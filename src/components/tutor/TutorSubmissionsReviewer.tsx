@@ -67,7 +67,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
     <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
         <FiAward className="w-5 h-5 text-[#784D28]" />
-        Student Submissions &amp; AI Grade Override Reviewer
+        Student Submissions &amp; Grade Override Reviewer
       </h2>
 
       {saveError && (
@@ -151,7 +151,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                 {/* AI Feedback */}
                 {sub.aiFeedback && (
                   <div className="p-4 rounded-xl bg-white border border-neutral-200">
-                    <p className="text-[11px] font-bold text-[#784D28] mb-1 uppercase tracking-wider">AI Evaluation Feedback:</p>
+                    <p className="text-[11px] font-bold text-[#784D28] mb-1 uppercase tracking-wider">Automated Evaluation Feedback:</p>
                     <p className="text-xs text-neutral-700 whitespace-pre-wrap leading-relaxed">
                       {sub.aiFeedback}
                     </p>

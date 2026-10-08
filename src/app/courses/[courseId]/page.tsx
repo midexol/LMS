@@ -129,7 +129,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
               </span>
               <span className="flex items-center gap-1.5">
                 <FiBarChart2 className="w-4 h-4 text-[#784D28]" />
-                {totalAssignments} AI-Graded Assignments
+                {totalAssignments} Evaluated Assignments
               </span>
             </div>
           </div>
@@ -275,7 +275,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
               <div className="space-y-2.5 pt-3 border-t border-neutral-200 text-xs text-neutral-600 font-medium">
                 <div className="flex items-center gap-2">
                   <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
-                  AI auto-graded assignments with instant feedback
+                  Automated criteria evaluations with instant feedback
                 </div>
                 <div className="flex items-center gap-2">
                   <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
@@ -297,7 +297,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
             </div>
 
             <Link
-              href="/"
+              href="/courses"
               className="flex items-center gap-2 text-xs text-neutral-500 hover:text-black font-semibold transition-all px-2"
             >
               <FiTag className="w-3.5 h-3.5" /> Return to Course Catalog

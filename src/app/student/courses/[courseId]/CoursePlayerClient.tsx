@@ -455,7 +455,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 )}
               </div>
 
-              {/* Assignment & AI Auto-Grading */}
+              {/* Assignment & Automated Assessment */}
               {currentAssignment && (
                 <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
                   <div className="border-b border-neutral-200 pb-3 flex justify-between items-center">
@@ -744,6 +744,8 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             </div>
           </div>
         </div>
+      )}
+
       {/* ──────────────── STICKY MOBILE BOTTOM NAVIGATION BAR ──────────────── */}
       <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-3 py-2.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
         <div className="max-w-md mx-auto flex items-center justify-between gap-2">

@@ -78,7 +78,7 @@ export function getGradeEmailTemplate(data: GradeEmailData): { subject: string; 
           <div style="display: inline-block; padding: 4px 12px; border-radius: 999px; background-color: #000000; color: #ffffff; font-size: 13px; font-weight: 800; margin-bottom: 12px;">
             Score: ${data.score} / ${data.maxScore} (${percentage}%)
           </div>
-          <h4 style="color: #784D28; font-size: 12px; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">AI Feedback &amp; Rubric Analysis:</h4>
+          <h4 style="color: #784D28; font-size: 12px; text-transform: uppercase; margin: 12px 0 6px 0; letter-spacing: 0.5px;">Academic Review Feedback &amp; Rubric Analysis:</h4>
           <p style="color: #444444; font-size: 13px; white-space: pre-wrap; line-height: 1.6; margin: 0;">${data.feedback}</p>
         </div>
         

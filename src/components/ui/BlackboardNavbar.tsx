@@ -323,7 +323,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                     <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Message or Requirement</label>
                     <textarea
                       rows={3}
-                      placeholder="Inquiring about syllabus AI benchmarks and LMS faculty deployment..."
+                      placeholder="Inquiring about syllabus academic benchmarks and LMS faculty deployment..."
                       className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black resize-none"
                     />
                   </div>

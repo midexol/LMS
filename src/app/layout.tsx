@@ -3,8 +3,8 @@ import "./globals.css";
 import { PrivyClientProvider } from "@/components/providers/PrivyClientProvider";
 
 export const metadata: Metadata = {
-  title: "Academia LMS - AI Graded Platform",
-  description: "Modern LMS platform with single course restriction, AI auto-grading, and tutor studio.",
+  title: "Academia LMS - Polytechnic Learning Management System",
+  description: "Modern polytechnic LMS platform with single course lock, automated evaluation, and instructor studio.",
 };
 
 export default function RootLayout({

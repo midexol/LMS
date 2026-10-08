@@ -82,7 +82,7 @@ export default function SignupPage() {
             Begin your learning journey today.
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Join thousands of active students and instructors advancing their knowledge through structured coursework and AI assignment reviews.
+            Join thousands of active students and instructors advancing their knowledge through structured coursework and automated assignment evaluations.
           </p>
           <div className="space-y-3 pt-2">
             {[

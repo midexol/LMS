@@ -6,7 +6,11 @@ import { InstructorClient } from "./InstructorClient";
 
 export const revalidate = 0;
 
-export default async function InstructorStudioPage() {
+interface InstructorStudioPageProps {
+  searchParams?: { tab?: string };
+}
+
+export default async function InstructorStudioPage({ searchParams }: InstructorStudioPageProps) {
   const currentUser = await getCurrentUser();
   if (!currentUser) {
     redirect("/login");
@@ -14,6 +18,11 @@ export default async function InstructorStudioPage() {
   if (currentUser.role === "STUDENT") {
     redirect("/my-courses");
   }
+
+  const validTabs = ["dashboard", "classes", "submissions", "students", "announcements", "settings"];
+  const initialTab = typeof searchParams?.tab === "string" && validTabs.includes(searchParams.tab)
+    ? (searchParams.tab as any)
+    : "dashboard";
 
   const tutorCourses = await prisma.course.findMany({
     where: { tutorId: currentUser.id },
@@ -118,6 +127,7 @@ export default async function InstructorStudioPage() {
       currentUser={currentUser}
       tutorCourses={tutorCourses}
       allSubmissions={allSubmissions}
+      initialTab={initialTab}
       metrics={{
         totalEnrollments,
         publishedCourses,

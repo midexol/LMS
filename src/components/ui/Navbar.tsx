@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
-import { FiLogOut, FiUser, FiBookOpen, FiCreditCard, FiChevronDown, FiShield } from "react-icons/fi";
+import { FiLogOut, FiUser, FiBookOpen, FiCreditCard, FiChevronDown, FiShield, FiSliders } from "react-icons/fi";
 import { BrandLogo } from "./BrandLogo";
 
 interface NavbarProps {
@@ -38,11 +38,23 @@ export function Navbar({ currentUser }: NavbarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const brandHomeHref = currentUser
+    ? currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN"
+      ? "/admin"
+      : currentUser.role === "TUTOR"
+      ? "/instructor"
+      : "/my-courses"
+    : "/";
+
   // Primary navigation links (Clean & focused)
   const navLinks = [
     { label: "All Courses", href: "/courses" },
-    ...(currentUser
+    ...(currentUser && currentUser.role === "STUDENT"
       ? [{ label: "My Learning", href: "/my-courses" }]
+      : currentUser && (currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN")
+      ? [{ label: "Admin Console", href: "/admin" }]
+      : currentUser && currentUser.role === "TUTOR"
+      ? [{ label: "Instructor Studio", href: "/instructor" }]
       : []),
   ];
 
@@ -54,7 +66,7 @@ export function Navbar({ currentUser }: NavbarProps) {
         {/* Left: Brand & Navigation */}
         <div className="flex items-center gap-8">
           <BrandLogo
-            href={currentUser ? "/my-courses" : "/courses"}
+            href={brandHomeHref}
             size="sm"
           />
 
@@ -125,42 +137,87 @@ export function Navbar({ currentUser }: NavbarProps) {
 
                   {/* Menu Items */}
                   <div className="py-1">
-                    <Link
-                      href="/profile"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
-                    >
-                      <FiUser className="w-4 h-4 text-[#784D28]" />
-                      Profile &amp; Academic Records
-                    </Link>
-
-                    <Link
-                      href="/my-courses"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
-                    >
-                      <FiBookOpen className="w-4 h-4 text-neutral-500" />
-                      My Learning Workspace
-                    </Link>
-
-                    <Link
-                      href="/profile#receipts"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
-                    >
-                      <FiCreditCard className="w-4 h-4 text-neutral-500" />
-                      Tuition &amp; Payment Receipts
-                    </Link>
-
-                    {(currentUser.role === "TUTOR" || currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN") && (
-                      <Link
-                        href={currentUser.role === "TUTOR" ? "/instructor" : "/admin"}
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
-                      >
-                        <FiShield className="w-4 h-4 text-emerald-600" />
-                        {currentUser.role === "TUTOR" ? "Tutor Studio" : "Admin Panel"}
-                      </Link>
+                    {currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN" ? (
+                      <>
+                        <Link
+                          href="/admin"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiShield className="w-4 h-4 text-emerald-600" />
+                          Superadmin Console
+                        </Link>
+                        <Link
+                          href="/admin?tab=settings"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiSliders className="w-4 h-4 text-[#784D28]" />
+                          System Settings
+                        </Link>
+                        <Link
+                          href="/profile"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiUser className="w-4 h-4 text-neutral-500" />
+                          Account Security &amp; Profile
+                        </Link>
+                      </>
+                    ) : currentUser.role === "TUTOR" ? (
+                      <>
+                        <Link
+                          href="/instructor"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiBookOpen className="w-4 h-4 text-[#D4A373]" />
+                          Instructor Studio
+                        </Link>
+                        <Link
+                          href="/instructor?tab=settings"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiSliders className="w-4 h-4 text-[#784D28]" />
+                          Studio Settings
+                        </Link>
+                        <Link
+                          href="/profile"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiUser className="w-4 h-4 text-neutral-500" />
+                          Account Profile
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href="/profile"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiUser className="w-4 h-4 text-[#784D28]" />
+                          Profile &amp; Academic Records
+                        </Link>
+                        <Link
+                          href="/my-courses"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiBookOpen className="w-4 h-4 text-neutral-500" />
+                          My Learning Workspace
+                        </Link>
+                        <Link
+                          href="/profile#receipts"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                        >
+                          <FiCreditCard className="w-4 h-4 text-neutral-500" />
+                          Tuition &amp; Payment Receipts
+                        </Link>
+                      </>
                     )}
                   </div>
 
@@ -230,14 +287,88 @@ export function Navbar({ currentUser }: NavbarProps) {
           })}
           {currentUser && (
             <>
-              <Link
-                href="/profile"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
-              >
-                <FiUser className="w-4 h-4 text-[#784D28]" />
-                Profile &amp; Academic Records
-              </Link>
+              {currentUser.role === "ADMIN" || currentUser.role === "SUPERADMIN" ? (
+                <>
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiShield className="w-4 h-4 text-emerald-600" />
+                    Superadmin Console
+                  </Link>
+                  <Link
+                    href="/admin?tab=settings"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiSliders className="w-4 h-4 text-[#784D28]" />
+                    System Settings
+                  </Link>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiUser className="w-4 h-4 text-neutral-500" />
+                    Account Security &amp; Profile
+                  </Link>
+                </>
+              ) : currentUser.role === "TUTOR" ? (
+                <>
+                  <Link
+                    href="/instructor"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiBookOpen className="w-4 h-4 text-[#D4A373]" />
+                    Instructor Studio
+                  </Link>
+                  <Link
+                    href="/instructor?tab=settings"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiSliders className="w-4 h-4 text-[#784D28]" />
+                    Studio Settings
+                  </Link>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiUser className="w-4 h-4 text-neutral-500" />
+                    Account Profile
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiUser className="w-4 h-4 text-[#784D28]" />
+                    Profile &amp; Academic Records
+                  </Link>
+                  <Link
+                    href="/my-courses"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiBookOpen className="w-4 h-4 text-neutral-500" />
+                    My Learning Workspace
+                  </Link>
+                  <Link
+                    href="/profile#receipts"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                  >
+                    <FiCreditCard className="w-4 h-4 text-neutral-500" />
+                    Tuition &amp; Payment Receipts
+                  </Link>
+                </>
+              )}
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 text-left"

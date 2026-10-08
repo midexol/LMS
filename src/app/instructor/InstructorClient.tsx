@@ -29,6 +29,7 @@ interface InstructorClientProps {
     gradeDistribution?: { pctA: number; pctB: number; pctC: number };
     performanceBars?: { period: string; current: number; previous: number }[];
   };
+  initialTab?: "dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings";
 }
 
 export function InstructorClient({
@@ -36,10 +37,21 @@ export function InstructorClient({
   tutorCourses,
   allSubmissions,
   metrics,
+  initialTab = "dashboard",
 }: InstructorClientProps) {
-  const [activeTab, setActiveTab] = useState<"dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings">(initialTab);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<any | null>(null);
+
+  const switchTab = (tabId: typeof activeTab) => {
+    setActiveTab(tabId);
+    setSidebarOpen(false);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("tab", tabId);
+      window.history.replaceState(null, "", url.toString());
+    }
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -75,7 +87,7 @@ export function InstructorClient({
         <div className="space-y-6">
           {/* Logo & School Header */}
           <div className="px-1">
-            <BrandLogo href="/" variant="light" size="sm" />
+            <BrandLogo href="/instructor" variant="light" size="sm" />
             <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1.5 pl-9">
               Instructor Studio
             </p>
@@ -97,10 +109,7 @@ export function InstructorClient({
               return (
                 <button
                   key={item.id}
-                  onClick={() => {
-                    setActiveTab(item.id as any);
-                    setSidebarOpen(false);
-                  }}
+                  onClick={() => switchTab(item.id as any)}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
                     active
                       ? "bg-white text-black shadow-sm"
