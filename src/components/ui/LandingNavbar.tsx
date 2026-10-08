@@ -1,53 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
 import { BrandLogo } from "./BrandLogo";
-
-export function BbLogo({ className = "h-8 w-auto", color = "currentColor" }: { className?: string; color?: string }) {
-  return (
-    <svg viewBox="0 0 60 42" className={className} fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Blackboard Logo">
-      <line x1="6" y1="8" x2="22" y2="8" stroke={color} strokeWidth="3" strokeLinecap="round" />
-      <path
-        d="M 12 9 C 13 16 11 26 12 30 M 12 10 C 18 9 26 11 25 17 C 24 21 19 21.5 13 21.5 C 19 21.5 28 22 27 28 C 26 31 20 31.5 12 30"
-        stroke={color}
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M 33 28 C 30 25 31 16 34 8 C 36 5 38 6 36 12 C 34 19 32 26 33 30 C 35 31 43 31 44 24 C 45 18 39 18 34 20"
-        stroke={color}
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <line x1="6" y1="36" x2="48" y2="36" stroke={color} strokeWidth="3.2" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 interface LandingNavbarProps {
   currentUser?: {
     id: string;
     name: string;
     email: string;
-    role: "STUDENT" | "TUTOR" | "ADMIN";
+    role: "STUDENT" | "TUTOR" | "ADMIN" | string;
   } | null;
 }
 
 export function LandingNavbar({ currentUser }: LandingNavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -57,66 +25,74 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
   return (
     <header
       id="site-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out flex justify-center px-4 ${
-        scrolled ? "py-2.5" : "py-3.5 sm:py-4"
-      }`}
+      className="sticky top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200/80 transition-all duration-200"
     >
-      <div
-        style={{ backgroundColor: "rgba(10, 10, 10, 0.94)" }}
-        className={`transition-all duration-300 ease-out flex items-center justify-between gap-4 py-2 px-4 sm:px-6 rounded-full relative border border-neutral-800 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.7)] backdrop-blur-xl text-white ${
-          scrolled ? "w-full max-w-xl" : "w-full max-w-2xl"
-        }`}
-      >
-        {/* Brand Logo & Name */}
-        <BrandLogo href="/" variant="light" size="sm" />
+      <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between gap-6">
+        {/* Left: Clickable Uniform Brand Logo */}
+        <div className="flex items-center gap-8">
+          <BrandLogo href="/" variant="dark" size="sm" />
 
-        {/* Center: Just Courses */}
-        <nav className="hidden sm:flex items-center" aria-label="Main Navigation">
-          <Link
-            href="/courses"
-            className="text-[13px] font-sans px-3.5 py-1.5 rounded-full transition-all duration-200 text-neutral-300 hover:text-white hover:bg-white/[0.08]"
-          >
-            Courses
-          </Link>
-        </nav>
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1.5" aria-label="Main Navigation">
+            <Link
+              href="/courses"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors"
+            >
+              Course Catalog
+            </Link>
+            <a
+              href="#how-it-works"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors"
+            >
+              Academic Model
+            </a>
+            <a
+              href="#campus-life"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors"
+            >
+              Curriculum Rigor
+            </a>
+          </nav>
+        </div>
 
-        {/* Right: Sign In / Sign Up or Dashboard */}
-        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        {/* Right: Auth Actions */}
+        <div className="flex items-center gap-3">
           {currentUser ? (
-            <>
+            <div className="flex items-center gap-2">
               <Link
                 href="/my-courses"
-                className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
+                className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white text-xs font-semibold transition-all shadow-sm"
               >
-                Dashboard
+                My Learning
               </Link>
               <button
                 onClick={handleLogout}
-                className="text-neutral-400 hover:text-white text-xs font-medium px-2 py-1 transition-colors whitespace-nowrap hidden sm:inline-block"
+                className="text-neutral-500 hover:text-black text-xs font-semibold px-3 py-2 transition-colors hidden sm:inline-block"
               >
                 Sign Out
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-neutral-300 hover:text-white text-xs font-semibold px-3 py-1.5 transition-colors whitespace-nowrap hidden sm:inline-block"
+                className="text-xs font-semibold px-3.5 py-2 text-neutral-700 hover:text-black transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
+                className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white text-xs font-semibold transition-all shadow-sm"
               >
-                Sign Up
+                Get Started
               </Link>
-            </>
+            </div>
           )}
 
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="sm:hidden w-8 h-8 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-300 hover:text-white transition-colors"
+            className="md:hidden w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 transition-colors"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -127,31 +103,41 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div
-          style={{ backgroundColor: "rgba(10, 10, 10, 0.96)" }}
-          className="sm:hidden fixed inset-x-4 top-16 z-50 backdrop-blur-2xl border border-neutral-800 rounded-2xl p-4 shadow-2xl space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 text-white"
-        >
+        <div className="md:hidden bg-white border-b border-neutral-200 px-6 py-4 space-y-3">
           <Link
             href="/courses"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-neutral-200 hover:text-white text-center text-xs font-semibold"
+            className="block text-xs font-semibold text-neutral-700 hover:text-black py-1.5"
           >
-            Browse Courses
+            Course Catalog
           </Link>
-
-          <div className="pt-2 border-t border-neutral-800 flex flex-col gap-2">
+          <a
+            href="#how-it-works"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-semibold text-neutral-700 hover:text-black py-1.5"
+          >
+            Academic Model
+          </a>
+          <a
+            href="#campus-life"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-semibold text-neutral-700 hover:text-black py-1.5"
+          >
+            Curriculum Rigor
+          </a>
+          <div className="pt-3 border-t border-neutral-100 flex flex-col gap-2">
             {currentUser ? (
               <>
                 <Link
                   href="/my-courses"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-2.5 rounded-xl bg-white text-black font-semibold text-xs text-center shadow-sm"
+                  className="px-4 py-2 rounded-full bg-black text-white text-xs font-semibold text-center"
                 >
-                  Dashboard
+                  My Learning
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full py-2 rounded-xl bg-white/[0.04] text-neutral-400 hover:text-white font-medium text-xs text-center"
+                  className="text-xs font-semibold text-red-600 text-left py-1"
                 >
                   Sign Out
                 </button>
@@ -159,18 +145,18 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
             ) : (
               <>
                 <Link
-                  href="/signup"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-2.5 rounded-xl bg-white text-black font-semibold text-xs text-center shadow-sm"
-                >
-                  Sign Up
-                </Link>
-                <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-2 rounded-xl bg-white/[0.04] text-neutral-300 hover:text-white font-semibold text-xs text-center"
+                  className="text-xs font-semibold text-neutral-700 text-center py-2"
                 >
                   Sign In
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2 rounded-full bg-black text-white text-xs font-semibold text-center"
+                >
+                  Get Started
                 </Link>
               </>
             )}

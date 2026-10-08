@@ -51,12 +51,12 @@ export default function LoginPage() {
             Welcome back to your academic portal.
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Resume your coursework, submit AI-evaluated assignments, and review instructor feedback in real time.
+            Resume your coursework, submit evaluated coursework, and review instructor feedback in real time.
           </p>
           <div className="space-y-3 pt-2">
             {[
               "Single active enrollment to keep you focused",
-              "Instant rubric evaluation powered by Gemini AI",
+              "Instant automated rubric evaluation",
               "Verified academic transcripts and grade overrides",
             ].map((f) => (
               <div key={f} className="flex items-center gap-3 text-xs text-neutral-300">

@@ -60,7 +60,7 @@ interface BrandLogoProps {
 }
 
 export function BrandLogo({
-  href,
+  href = "/",
   variant = "dark",
   size = "md",
   showSubtitle = true,

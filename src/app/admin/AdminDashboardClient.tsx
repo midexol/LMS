@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 /* ─── Types ─────────────────────────────────────────────────── */
 interface UserItem {
@@ -544,18 +545,13 @@ export function AdminDashboardClient({
       {/* ───────────────── HEADER (RICH COMMAND CENTER BLACK) ───────────────── */}
       <header className="bg-neutral-950 text-white border-b border-neutral-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black">
-              <span className="font-black text-xl text-black">A</span>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-lg text-white">Academia</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-[#D4A373] border border-neutral-700">
-                  Superadmin
-                </span>
-              </div>
-              <p className="text-[11px] text-neutral-400">System Command &amp; Analytics Console</p>
+          <div className="flex items-center gap-4">
+            <BrandLogo href="/" variant="light" size="sm" />
+            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-neutral-800">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-[#D4A373] border border-neutral-700">
+                Superadmin
+              </span>
+              <span className="text-[11px] text-neutral-400">System Command &amp; Analytics Console</span>
             </div>
           </div>
 
@@ -574,15 +570,16 @@ export function AdminDashboardClient({
               <FiLayers className="w-3.5 h-3.5 text-[#D4A373]" />
               <span>Instructor Studio</span>
             </Link>
-            <form action="/api/auth/logout" method="POST">
-              <button
-                type="submit"
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-colors shadow-sm"
-              >
-                <FiLogOut className="w-3.5 h-3.5 text-neutral-700" />
-                <span className="hidden sm:inline">Log out</span>
-              </button>
-            </form>
+            <button
+              onClick={async () => {
+                await fetch("/api/auth/logout", { method: "POST" });
+                window.location.href = "/login";
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-colors shadow-sm"
+            >
+              <FiLogOut className="w-3.5 h-3.5 text-neutral-700" />
+              <span className="hidden sm:inline">Log out</span>
+            </button>
           </div>
         </div>
 
@@ -677,121 +674,184 @@ export function AdminDashboardClient({
             {/* Visual Analytics Row: Modern Dual Bar & SVG Ring Distribution (CLEAR & READABLE) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Category Throughput Dual Comparison */}
-              <div className="lg:col-span-2 bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-100">
+              <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                   <div>
-                    <h3 className="font-bold text-base text-black">Enrollment Throughput by Academic Track</h3>
-                    <p className="text-xs text-neutral-500">Live active enrollments vs certified completion milestones</p>
-                  </div>
-                  <div className="flex items-center gap-4 text-xs font-bold text-neutral-700">
                     <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-black inline-block" />
-                      <span>Active Students</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <h3 className="font-black text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-[#784D28] inline-block" />
-                      <span>Certified (70%+)</span>
-                    </div>
+                    <p className="text-xs text-neutral-500 mt-0.5">Live active cohorts vs certified course completions</p>
                   </div>
-                </div>
-
-                {/* Summary Throughput Ribbon */}
-                <div className="grid grid-cols-3 gap-3 p-3.5 rounded-2xl bg-neutral-50 border border-neutral-100 text-center">
-                  <div>
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Active Cohorts</span>
-                    <span className="text-base font-black text-black">{metrics.activeEnrollmentsCount} active</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Certifications</span>
-                    <span className="text-base font-black text-[#784D28]">{metrics.completedEnrollmentsCount} completed</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Track Completion</span>
-                    <span className="text-base font-black text-neutral-800">
-                      {metrics.activeEnrollmentsCount + metrics.completedEnrollmentsCount > 0
-                        ? Math.round((metrics.completedEnrollmentsCount / (metrics.activeEnrollmentsCount + metrics.completedEnrollmentsCount)) * 100)
-                        : 0}%
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-neutral-950 text-white shadow-xs">
+                      <span className="w-2 h-2 rounded-full bg-white" />
+                      Active Enrollees
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/25">
+                      <span className="w-2 h-2 rounded-full bg-[#784D28]" />
+                      Certified (70%+)
                     </span>
                   </div>
                 </div>
 
-                {/* Dynamically Computed Category Throughput with Direct Visible Numbers */}
+                {/* 3 Executive KPI Capsules */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <FiActivity className="w-5 h-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Active Cohorts</span>
+                      <span className="text-lg font-black text-neutral-900 leading-tight">
+                        {metrics.activeEnrollmentsCount} <span className="text-xs font-semibold text-neutral-500">enrolled</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-[#784D28]/15 text-[#784D28] border border-[#784D28]/20 flex items-center justify-center shrink-0">
+                      <FiAward className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Certifications</span>
+                      <span className="text-lg font-black text-[#784D28] leading-tight">
+                        {metrics.completedEnrollmentsCount} <span className="text-xs font-semibold text-neutral-500">completed</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-neutral-200 text-neutral-800 flex items-center justify-center shrink-0">
+                      <FiCheckCircle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Completion Velocity</span>
+                      <span className="text-lg font-black text-neutral-900 leading-tight">
+                        {metrics.activeEnrollmentsCount + metrics.completedEnrollmentsCount > 0
+                          ? Math.round((metrics.completedEnrollmentsCount / (metrics.activeEnrollmentsCount + metrics.completedEnrollmentsCount)) * 100)
+                          : 0}% <span className="text-xs font-semibold text-neutral-500">rate</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dynamically Computed Track Performance with Modern Comparative Bars */}
                 {(() => {
-                  const categoriesMap = new Map<string, { active: number; comp: number }>();
+                  const categoriesMap = new Map<string, { active: number; comp: number; courses: number }>();
                   courses.forEach((c) => {
                     const cat = c.category || "General";
-                    if (!categoriesMap.has(cat)) categoriesMap.set(cat, { active: 0, comp: 0 });
+                    if (!categoriesMap.has(cat)) categoriesMap.set(cat, { active: 0, comp: 0, courses: 0 });
+                    categoriesMap.get(cat)!.courses += 1;
                   });
                   enrollments.forEach((e) => {
                     const cat = e.course?.category || "General";
-                    if (!categoriesMap.has(cat)) categoriesMap.set(cat, { active: 0, comp: 0 });
+                    if (!categoriesMap.has(cat)) categoriesMap.set(cat, { active: 0, comp: 0, courses: 0 });
                     const item = categoriesMap.get(cat)!;
                     if (e.status === "ACTIVE") item.active += 1;
                     else if (e.status === "COMPLETED") item.comp += 1;
                   });
 
-                  const bars = Array.from(categoriesMap.entries()).slice(0, 6).map(([cat, data]) => {
-                    const activeH = Math.max(25, Math.min(95, data.active * 35 + 25));
-                    const compH = Math.max(20, Math.min(90, data.comp * 35 + 20));
-                    return {
-                      cat,
-                      active: activeH,
-                      comp: compH,
-                      rawActive: data.active,
-                      rawComp: data.comp,
-                    };
-                  });
+                  const tracks = Array.from(categoriesMap.entries()).map(([cat, data]) => ({
+                    cat,
+                    active: data.active,
+                    comp: data.comp,
+                    courses: data.courses,
+                    total: data.active + data.comp,
+                  }));
 
-                  const displayBars = bars.length > 0 ? bars : [
-                    { cat: "Engineering", active: 75, comp: 60, rawActive: 1, rawComp: 0 }
+                  const displayTracks = tracks.length > 0 ? tracks : [
+                    { cat: "Software Engineering", active: 1, comp: 0, courses: 2, total: 1 },
+                    { cat: "Design & UX", active: 0, comp: 0, courses: 1, total: 0 },
+                    { cat: "Data Science & AI", active: 0, comp: 0, courses: 1, total: 0 },
                   ];
 
+                  const maxTotal = Math.max(1, ...displayTracks.map((t) => Math.max(t.active, t.comp, 1)));
+
                   return (
-                    <div className="relative pt-2">
-                      {/* Horizontal Reference Lines */}
-                      <div className="absolute inset-x-2 top-2 bottom-8 flex flex-col justify-between pointer-events-none z-0">
-                        <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
-                          <span className="text-[9px] font-mono text-neutral-400">Peak</span>
-                        </div>
-                        <div className="border-b border-dashed border-neutral-200 w-full flex items-center justify-end pr-1">
-                          <span className="text-[9px] font-mono text-neutral-400">Mid</span>
-                        </div>
-                        <div className="border-b border-neutral-200 w-full flex items-center justify-end pr-1">
-                          <span className="text-[9px] font-mono text-neutral-400">Baseline</span>
-                        </div>
-                      </div>
+                    <div className="space-y-4 pt-2">
+                      <div className="space-y-3">
+                        {displayTracks.map((track) => {
+                          const activePercent = Math.min(100, Math.round((track.active / maxTotal) * 100));
+                          const compPercent = Math.min(100, Math.round((track.comp / maxTotal) * 100));
 
-                      <div className="h-56 flex items-end justify-between gap-3 sm:gap-6 px-4 relative z-10">
-                        {displayBars.map((b) => (
-                          <div key={b.cat} className="flex-1 flex flex-col items-center gap-1.5">
-                            {/* Visible Numbers Above Bars */}
-                            <div className="flex items-center gap-1 text-[11px] font-bold">
-                              <span className="text-black">{b.rawActive}</span>
-                              <span className="text-neutral-300">/</span>
-                              <span className="text-[#784D28]">{b.rawComp}</span>
-                            </div>
+                          return (
+                            <div
+                              key={track.cat}
+                              className="p-4 rounded-2xl bg-neutral-50/70 hover:bg-neutral-50 border border-neutral-100 hover:border-neutral-200 transition-all space-y-2.5 group"
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 rounded-full bg-neutral-400 group-hover:bg-[#784D28] transition-colors" />
+                                  <span className="font-bold text-xs sm:text-sm text-neutral-900">
+                                    {track.cat}
+                                  </span>
+                                  <span className="text-[10px] text-neutral-400 font-semibold">
+                                    ({track.courses} {track.courses === 1 ? "course" : "courses"})
+                                  </span>
+                                </div>
 
-                            <div className="w-full flex items-end justify-center gap-2 h-40 bg-neutral-50/70 rounded-2xl p-1.5 border border-neutral-100">
-                              {/* Active Bar */}
-                              <div className="w-3.5 sm:w-5 flex flex-col justify-end h-full">
-                                <div
-                                  className="w-full rounded-t-md bg-black transition-all duration-500 hover:brightness-125"
-                                  style={{ height: `${b.active}%` }}
-                                  title={`${b.rawActive} active`}
-                                />
+                                <div className="flex items-center gap-2 text-xs">
+                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                    track.active > 0
+                                      ? "bg-black text-white"
+                                      : "bg-neutral-200/70 text-neutral-500"
+                                  }`}>
+                                    {track.active} active
+                                  </span>
+                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                    track.comp > 0
+                                      ? "bg-[#784D28] text-white"
+                                      : "bg-neutral-200/70 text-neutral-500"
+                                  }`}>
+                                    {track.comp} certified
+                                  </span>
+                                </div>
                               </div>
-                              {/* Completed Bar */}
-                              <div className="w-3.5 sm:w-5 flex flex-col justify-end h-full">
-                                <div
-                                  className="w-full rounded-t-md bg-[#784D28] transition-all duration-500 hover:brightness-125"
-                                  style={{ height: `${b.comp}%` }}
-                                  title={`${b.rawComp} certified`}
-                                />
+
+                              {/* Dual Gradient Progress Tracks */}
+                              <div className="space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-14 shrink-0">
+                                    Enrolled
+                                  </span>
+                                  <div className="w-full h-2.5 bg-neutral-200/60 rounded-full overflow-hidden relative">
+                                    {track.active > 0 ? (
+                                      <div
+                                        className="h-full rounded-full bg-gradient-to-r from-neutral-900 to-black transition-all duration-700"
+                                        style={{ width: `${Math.max(6, activePercent)}%` }}
+                                      />
+                                    ) : (
+                                      <div className="h-full w-2 rounded-full bg-neutral-300 opacity-40" />
+                                    )}
+                                  </div>
+                                  <span className="text-[10px] font-mono font-bold text-neutral-700 w-6 text-right shrink-0">
+                                    {track.active}
+                                  </span>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-14 shrink-0">
+                                    Certified
+                                  </span>
+                                  <div className="w-full h-2.5 bg-neutral-200/60 rounded-full overflow-hidden relative">
+                                    {track.comp > 0 ? (
+                                      <div
+                                        className="h-full rounded-full bg-gradient-to-r from-[#9A6A38] to-[#784D28] transition-all duration-700"
+                                        style={{ width: `${Math.max(6, compPercent)}%` }}
+                                      />
+                                    ) : (
+                                      <div className="h-full w-2 rounded-full bg-neutral-300 opacity-40" />
+                                    )}
+                                  </div>
+                                  <span className="text-[10px] font-mono font-bold text-[#784D28] w-6 text-right shrink-0">
+                                    {track.comp}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                            <span className="text-xs font-bold text-neutral-800 truncate max-w-[100px] text-center">{b.cat}</span>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   );
@@ -799,10 +859,13 @@ export function AdminDashboardClient({
               </div>
 
               {/* Platform Composition Breakdown */}
-              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6 flex flex-col justify-between">
                 <div className="pb-3 border-b border-neutral-100">
-                  <h3 className="font-bold text-base text-black">Platform Composition</h3>
-                  <p className="text-xs text-neutral-500">Distribution across active system accounts</p>
+                  <div className="flex items-center gap-2">
+                    <FiUsers className="w-4 h-4 text-[#784D28]" />
+                    <h3 className="font-black text-lg text-black tracking-tight">Platform Composition</h3>
+                  </div>
+                  <p className="text-xs text-neutral-500 mt-0.5">Distribution across active system accounts</p>
                 </div>
 
                 {/* SVG Ring Chart (Computed from users props) */}
@@ -810,99 +873,140 @@ export function AdminDashboardClient({
                   const total = users.length || 1;
                   const sCount = users.filter((u) => u.role === "STUDENT").length;
                   const tCount = users.filter((u) => u.role === "TUTOR").length;
-                  const aCount = users.filter((u) => u.role === "ADMIN").length;
+                  const aCount = users.filter((u) => u.role === "ADMIN" || u.role === "SUPERADMIN").length;
 
                   const sPct = Math.round((sCount / total) * 100);
                   const tPct = Math.round((tCount / total) * 100);
                   const aPct = Math.max(0, 100 - sPct - tPct);
 
-                  const dashS = Math.round((sPct / 100) * 239);
-                  const dashT = Math.round((tPct / 100) * 239);
-                  const dashA = Math.max(0, 239 - dashS - dashT);
+                  const circumference = 226.2;
+                  const dashS = (sPct / 100) * circumference;
+                  const dashT = (tPct / 100) * circumference;
+                  const dashA = Math.max(0, circumference - dashS - dashT);
 
                   return (
                     <>
-                      <div className="relative w-44 h-44 mx-auto flex items-center justify-center">
-                        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform">
-                          <circle cx="50" cy="50" r="38" stroke="#F4F4F5" strokeWidth="12" fill="none" />
+                      <div className="relative w-48 h-48 mx-auto flex items-center justify-center my-2">
+                        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform drop-shadow-xs">
+                          {/* Background Track Ring */}
+                          <circle cx="50" cy="50" r="36" stroke="#F4F4F5" strokeWidth="10" fill="none" />
+
                           {/* Students segment */}
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="38"
-                            stroke="#000000"
-                            strokeWidth="12"
-                            strokeDasharray={`${dashS} 239`}
-                            strokeDashoffset="0"
-                            fill="none"
-                          />
-                          {/* Instructors segment */}
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="38"
-                            stroke="#784D28"
-                            strokeWidth="12"
-                            strokeDasharray={`${dashT} 239`}
-                            strokeDashoffset={`-${dashS}`}
-                            fill="none"
-                          />
+                          {sPct > 0 && (
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="36"
+                              stroke="#000000"
+                              strokeWidth="10"
+                              strokeDasharray={`${dashS} ${circumference}`}
+                              strokeDashoffset="0"
+                              strokeLinecap="round"
+                              fill="none"
+                            />
+                          )}
+
+                          {/* Faculty/Instructors segment */}
+                          {tPct > 0 && (
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="36"
+                              stroke="#784D28"
+                              strokeWidth="10"
+                              strokeDasharray={`${dashT} ${circumference}`}
+                              strokeDashoffset={`-${dashS}`}
+                              strokeLinecap="round"
+                              fill="none"
+                            />
+                          )}
+
                           {/* Admins segment */}
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="38"
-                            stroke="#A1A1AA"
-                            strokeWidth="12"
-                            strokeDasharray={`${dashA} 239`}
-                            strokeDashoffset={`-${dashS + dashT}`}
-                            fill="none"
-                          />
+                          {aPct > 0 && (
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="36"
+                              stroke="#A1A1AA"
+                              strokeWidth="10"
+                              strokeDasharray={`${dashA} ${circumference}`}
+                              strokeDashoffset={`-${dashS + dashT}`}
+                              strokeLinecap="round"
+                              fill="none"
+                            />
+                          )}
                         </svg>
-                        <div className="absolute flex flex-col items-center justify-center text-center">
-                          <span className="font-black text-3xl text-black">{total}</span>
-                          <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Total Accounts</span>
+
+                        {/* Center Statistics Capsule */}
+                        <div className="absolute w-28 h-28 rounded-full bg-white shadow-xs border border-neutral-100 flex flex-col items-center justify-center text-center p-2">
+                          <FiUsers className="w-4 h-4 text-[#784D28] mb-0.5" />
+                          <span className="font-black text-2xl text-black leading-none">{total}</span>
+                          <span className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Directory</span>
                         </div>
                       </div>
 
-                      {/* Direct Breakdown Bars & Legend */}
-                      <div className="space-y-3 pt-2 border-t border-neutral-100">
-                        <div className="space-y-1">
+                      {/* 3 Executive Role Breakdown Cards */}
+                      <div className="space-y-2.5 pt-2 border-t border-neutral-100">
+                        {/* Students Card */}
+                        <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="font-bold text-black flex items-center gap-2">
-                              <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
-                              Students ({sPct}%)
-                            </span>
-                            <span className="font-black text-black">{sCount}</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center text-[11px] font-bold">
+                                <FiBookOpen className="w-3.5 h-3.5" />
+                              </div>
+                              <span className="font-bold text-neutral-900">Students</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-black text-black">{sCount}</span>
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 text-neutral-800">
+                                {sPct}%
+                              </span>
+                            </div>
                           </div>
-                          <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                            <div className="bg-black h-full rounded-full" style={{ width: `${sPct}%` }} />
+                          <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
+                            <div className="bg-black h-full rounded-full transition-all duration-700" style={{ width: `${sPct}%` }} />
                           </div>
                         </div>
 
-                        <div className="space-y-1">
+                        {/* Faculty & Tutors Card */}
+                        <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="font-bold text-black flex items-center gap-2">
-                              <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
-                              Faculty &amp; Tutors ({tPct}%)
-                            </span>
-                            <span className="font-black text-[#784D28]">{tCount}</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-[#784D28]/15 text-[#784D28] border border-[#784D28]/25 flex items-center justify-center text-[11px] font-bold">
+                                <FiAward className="w-3.5 h-3.5" />
+                              </div>
+                              <span className="font-bold text-neutral-900">Faculty &amp; Tutors</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-black text-[#784D28]">{tCount}</span>
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#784D28]/10 text-[#784D28]">
+                                {tPct}%
+                              </span>
+                            </div>
                           </div>
-                          <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                            <div className="bg-[#784D28] h-full rounded-full" style={{ width: `${tPct}%` }} />
+                          <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
+                            <div className="bg-[#784D28] h-full rounded-full transition-all duration-700" style={{ width: `${tPct}%` }} />
                           </div>
                         </div>
 
-                        <div className="space-y-1">
+                        {/* Administrators Card */}
+                        <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="font-bold text-neutral-700 flex items-center gap-2">
-                              <span className="w-2.5 h-2.5 rounded-full bg-neutral-400 inline-block" />
-                              Administrators ({aPct}%)
-                            </span>
-                            <span className="font-black text-neutral-700">{aCount}</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-neutral-200 text-neutral-700 flex items-center justify-center text-[11px] font-bold">
+                                <FiShield className="w-3.5 h-3.5" />
+                              </div>
+                              <span className="font-bold text-neutral-900">Administrators</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-black text-neutral-800">{aCount}</span>
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 text-neutral-700">
+                                {aPct}%
+                              </span>
+                            </div>
                           </div>
-                          <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                            <div className="bg-neutral-400 h-full rounded-full" style={{ width: `${aPct}%` }} />
+                          <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
+                            <div className="bg-neutral-500 h-full rounded-full transition-all duration-700" style={{ width: `${aPct}%` }} />
                           </div>
                         </div>
                       </div>

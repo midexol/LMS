@@ -89,19 +89,17 @@ export function LandingPage({
       <LandingNavbar currentUser={currentUser} />
 
       {/* ───────────────── HERO SECTION (TEACHABLE STYLE) ───────────────── */}
-      <section className="pt-28 sm:pt-36 pb-20 px-6 max-w-7xl mx-auto overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Text */}
-          <div className="lg:col-span-6 space-y-6">
+      <section className="pt-12 sm:pt-16 pb-16 px-6 max-w-7xl mx-auto overflow-hidden">
+        <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="font-heading font-normal text-4xl sm:text-6xl text-black leading-[1.08] tracking-tight">
               Where great teaching finds its <span className="italic text-[#784D28]">platform.</span>
             </h1>
 
             <p className="text-base sm:text-lg text-neutral-600 leading-relaxed max-w-xl">
-              Academia LMS builds the university-grade teaching and learning environment your students need. Single active course lock for deep immersion, authentic collegiate curriculum, and instant AI-evaluated rubrics.
+              Academia LMS builds the university-grade teaching and learning environment your students need. Single active course lock for deep immersion, authentic collegiate curriculum, and instant automated rubrics.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <Link
                 href="/signup"
                 className="px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm shadow-sm transition-all text-center"
@@ -116,14 +114,14 @@ export function LandingPage({
               </Link>
             </div>
 
-            <div className="flex flex-wrap items-center gap-y-2 gap-x-6 pt-6 border-t border-neutral-200 text-xs text-neutral-600 font-semibold">
+            <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-6 pt-6 border-t border-neutral-200 text-xs text-neutral-600 font-semibold">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-black" />
                 <span>Single enrollment lock</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#784D28]" />
-                <span>AI benchmark grading</span>
+                <span>Automated benchmark grading</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-black" />
@@ -131,59 +129,14 @@ export function LandingPage({
               </div>
             </div>
           </div>
-
-          {/* Right Photographic Campus Asset with DYNAMIC Overlaid UI Elements */}
-          <div className="lg:col-span-6 relative">
-            <div className="relative rounded-3xl overflow-hidden border border-neutral-200 shadow-2xl bg-neutral-100">
-              <img
-                src="/assets/bb-students-hero-1.webp"
-                alt="University students on campus laughing with backpacks"
-                className="w-full h-[520px] object-cover"
-              />
-
-
-              {/* Dynamic High-Contrast Floating Badge 2 (Bottom Left) */}
-              <div className="absolute bottom-5 left-5 bg-black/95 backdrop-blur-md border border-neutral-800 rounded-2xl p-4 shadow-2xl text-white max-w-[260px]">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-bold text-[#D4A373] uppercase tracking-wider">AI Evaluation</span>
-                  <span className="text-[10px] font-bold text-white bg-neutral-800 px-2 py-0.5 rounded-full">
-                    {stats.latestScore >= 70 ? "Passed" : "In Progress"}
-                  </span>
-                </div>
-                <p className="text-xs font-bold text-white leading-snug">
-                  Assignment auto-graded with rubric benchmark in 1.8s
-                </p>
-                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-neutral-800 text-[11px] text-neutral-300">
-                  <span className="text-[#D4A373] font-bold">Score: {stats.latestScore}/100</span>
-                  <span>· {stats.latestScore >= 90 ? "Level 4 Mastery" : "Certified"}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
 
       {/* ───────────────── CAMPUS COLLABORATION & RIGOR ───────────────── */}
       <section className="py-20 px-6 max-w-7xl mx-auto" id="campus-life">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Secondary Photographic Campus Asset */}
-          <div className="lg:col-span-6 relative order-2 lg:order-1">
-            <div className="relative rounded-3xl overflow-hidden border border-neutral-200 shadow-xl bg-neutral-100">
-              <img
-                src="/assets/bb-students-collab-2.webp"
-                alt="University students collaborating around a whiteboard"
-                className="w-full h-[420px] object-cover"
-              />
-              <div className="absolute bottom-5 right-5 bg-white/95 backdrop-blur-md border border-neutral-200 rounded-2xl p-4 shadow-lg text-black max-w-[240px]">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#784D28]">Collaborative Studio</p>
-                <p className="text-xs font-bold text-black mt-1">Peer Q&amp;A and live discussion forum attached to each lesson.</p>
-              </div>
-            </div>
-          </div>
-
+        <div className="max-w-3xl mx-auto space-y-6">
           {/* Text Content */}
-          <div className="lg:col-span-6 space-y-6 order-1 lg:order-2">
+          <div className="space-y-6">
             <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Academic Experience</span>
             <h2 className="font-heading font-normal text-3xl sm:text-5xl text-black leading-tight tracking-tight">
               Designed for serious learners. <span className="italic text-[#784D28]">Built for lasting mastery.</span>
@@ -206,7 +159,7 @@ export function LandingPage({
               <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
                 <div className="flex items-center gap-3">
                   <span className="font-heading text-lg font-bold text-[#784D28]">02</span>
-                  <h4 className="text-sm font-bold text-black tracking-tight">Automated AI &amp; Instructor Grading</h4>
+                  <h4 className="text-sm font-bold text-black tracking-tight">Automated &amp; Faculty Grading</h4>
                 </div>
                 <p className="text-xs text-neutral-600 pl-8 leading-relaxed">
                   Submissions are evaluated against benchmark model answers. Instructors have override tools to customize grades and leave detailed mentorship notes.
@@ -340,8 +293,8 @@ export function LandingPage({
             },
             {
               step: "02",
-              title: "AI & Instructor Auto-Grading",
-              desc: "Every lesson assignment is evaluated by Gemini AI benchmarked against instructor model rubrics with actionable feedback returned in seconds.",
+              title: "Automated & Faculty Evaluation",
+              desc: "Every lesson assignment is evaluated against instructor model rubrics with actionable feedback returned in seconds.",
               badge: "Instant Feedback",
             },
             {
@@ -546,7 +499,7 @@ export function LandingPage({
                 <span className="font-black text-xl text-white tracking-tight">ACADEMIA</span>
               </div>
               <p className="text-xs leading-relaxed max-w-sm text-neutral-400">
-                The academic learning platform combining structured university curricula, Gemini AI assignment evaluation, and comprehensive instructor analytics.
+                The academic learning platform combining structured university curricula, automated assignment evaluation, and comprehensive instructor analytics.
               </p>
             </div>
 
@@ -566,7 +519,7 @@ export function LandingPage({
               <h4 className="text-xs font-bold uppercase tracking-widest text-white">Academics</h4>
               <ul className="space-y-2 text-xs">
                 <li><a href="#how-it-works" className="hover:text-white transition-colors">Single Course Lock</a></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">AI Evaluation Standard</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">Rubric Evaluation Standard</a></li>
                 <li><a href="#how-it-works" className="hover:text-white transition-colors">70% Mastery Threshold</a></li>
                 <li><a href="#campus-life" className="hover:text-white transition-colors">Peer Discussions</a></li>
               </ul>
@@ -649,7 +602,7 @@ export function LandingPage({
                     Academia LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
                   </p>
                   <p>
-                    All assignments undergo automated rubric benchmarking powered by Gemini AI. Work must meet or exceed a strict <strong>70% mastery standard</strong> to unlock subsequent lessons.
+                    All assignments undergo automated rubric benchmarking. Work must meet or exceed a strict <strong>70% mastery standard</strong> to unlock subsequent lessons.
                   </p>
                   <p>
                     Submissions must represent the student&apos;s authentic intellectual effort. Plagiarism, unauthorized automation, or evasion of rubrics will result in zero-score evaluations and formal review.

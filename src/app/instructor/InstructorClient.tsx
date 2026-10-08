@@ -12,6 +12,7 @@ import {
   FiCompass, FiShield,
 } from "react-icons/fi";
 import { formatNgn } from "@/lib/utils";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 
 interface InstructorClientProps {
@@ -73,14 +74,11 @@ export function InstructorClient({
       >
         <div className="space-y-6">
           {/* Logo & School Header */}
-          <div className="flex items-center gap-3 px-1">
-            <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black shadow-sm">
-              <span className="font-black text-lg text-black">A</span>
-            </div>
-            <div>
-              <h2 className="font-bold text-base text-white leading-tight">Academia</h2>
-              <p className="text-[11px] text-neutral-400 font-medium">Instructor Studio</p>
-            </div>
+          <div className="px-1">
+            <BrandLogo href="/" variant="light" size="sm" />
+            <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1.5 pl-9">
+              Instructor Studio
+            </p>
           </div>
 
           {/* TEACHING Section */}
@@ -746,8 +744,8 @@ export function InstructorClient({
                 <div className="divide-y divide-neutral-100 text-xs">
                   <div className="py-3 flex items-center justify-between">
                     <div>
-                      <p className="font-bold text-black">AI Evaluation Sensitivity</p>
-                      <p className="text-neutral-500 text-[11px]">Enforce 70% threshold with Gemini AI rubric benchmark</p>
+                      <p className="font-bold text-black">Rubric Evaluation Sensitivity</p>
+                      <p className="text-neutral-500 text-[11px]">Enforce 70% threshold with automated rubric benchmark</p>
                     </div>
                     <span className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-700 font-bold text-[10px]">Strict (70%)</span>
                   </div>
