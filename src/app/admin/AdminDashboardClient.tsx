@@ -9,7 +9,7 @@ import {
   FiSearch, FiAlertCircle, FiX, FiActivity,
   FiToggleLeft, FiToggleRight, FiBarChart2, FiSliders,
   FiFilter, FiLayers, FiFileText, FiPlus, FiDownload,
-  FiCompass,
+  FiCompass, FiMail, FiInbox,
 } from "react-icons/fi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
@@ -53,14 +53,25 @@ interface Metrics {
   totalEnrollments: number; activeEnrollmentsCount: number;
   completedEnrollmentsCount: number; totalSubmissions: number; totalRevenue: number;
 }
+interface ContactMessageItem {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: string;
+  createdAt: string | Date;
+}
+
 interface Props {
   currentUser: { id: string; name: string; email: string; role: string };
   initialUsers: UserItem[];
   initialCourses: CourseItem[];
   initialEnrollments: EnrollmentItem[];
   initialSubmissions: SubmissionItem[];
+  initialMessages: ContactMessageItem[];
   metrics: Metrics;
-  initialTab?: "overview" | "users" | "courses" | "enrollments" | "submissions" | "settings";
+  initialTab?: "overview" | "users" | "courses" | "enrollments" | "submissions" | "messages" | "settings";
 }
 
 /* ─── Toast Hook ─────────────────────────────────────────────── */
@@ -318,12 +329,12 @@ function RoleBadge({ role }: { role: string }) {
 
 /* ─── Main Component ─────────────────────────────────────────── */
 export function AdminDashboardClient({
-  currentUser, initialUsers, initialCourses, initialEnrollments, initialSubmissions, metrics, initialTab = "overview",
+  currentUser, initialUsers, initialCourses, initialEnrollments, initialSubmissions, initialMessages, metrics, initialTab = "overview",
 }: Props) {
   const { toasts, success, error } = useToast();
-  const [activeTab, setActiveTab] = useState<"overview" | "users" | "courses" | "enrollments" | "submissions" | "settings">(initialTab);
+  const [activeTab, setActiveTab] = useState<"overview" | "users" | "courses" | "enrollments" | "submissions" | "messages" | "settings">(initialTab);
 
-  const switchTab = (t: "overview" | "users" | "courses" | "enrollments" | "submissions" | "settings") => {
+  const switchTab = (t: "overview" | "users" | "courses" | "enrollments" | "submissions" | "messages" | "settings") => {
     setActiveTab(t);
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
@@ -336,6 +347,9 @@ export function AdminDashboardClient({
   const [courses, setCourses] = useState(initialCourses);
   const [enrollments, setEnrollments] = useState(initialEnrollments);
   const [submissions, setSubmissions] = useState(initialSubmissions);
+  const [messages, setMessages] = useState(initialMessages);
+  const [messageFilter, setMessageFilter] = useState<"ALL" | "NEW">("ALL");
+  const unreadCount = messages.filter((m) => m.status === "NEW").length;
 
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState("ALL");
@@ -352,6 +366,7 @@ export function AdminDashboardClient({
   const [actionLoading, setActionLoading] = useState(false);
 
   // Settings & Security state
+  const [adminCurrentPassword, setAdminCurrentPassword] = useState("");
   const [adminNewPassword, setAdminNewPassword] = useState("");
   const [adminConfirmPassword, setAdminConfirmPassword] = useState("");
   const [adminPasswordLoading, setAdminPasswordLoading] = useState(false);
@@ -361,7 +376,7 @@ export function AdminDashboardClient({
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tabParam = params.get("tab");
-      if (tabParam && ["overview", "users", "courses", "enrollments", "submissions", "settings"].includes(tabParam)) {
+      if (tabParam && ["overview", "users", "courses", "enrollments", "submissions", "messages", "settings"].includes(tabParam)) {
         setActiveTab(tabParam as any);
       }
     }
@@ -386,10 +401,42 @@ export function AdminDashboardClient({
     success(`Generated and exported ${filename}`);
   };
 
+  const handleToggleMessageRead = async (msg: ContactMessageItem) => {
+    const nextStatus = msg.status === "NEW" ? "READ" : "NEW";
+    try {
+      const res = await fetch("/api/admin/contact-messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: msg.id, status: nextStatus }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to update message.");
+      setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, status: nextStatus } : m)));
+    } catch (e: any) {
+      error(e.message || "Failed to update message.");
+    }
+  };
+
+  const handleDeleteMessage = async (msg: ContactMessageItem) => {
+    try {
+      const res = await fetch(`/api/admin/contact-messages?id=${encodeURIComponent(msg.id)}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to delete message.");
+      setMessages((prev) => prev.filter((m) => m.id !== msg.id));
+      success("Message deleted.");
+    } catch (e: any) {
+      error(e.message || "Failed to delete message.");
+    }
+  };
+
   const handleUpdateAdminPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!adminNewPassword || adminNewPassword.length < 6) {
       error("Password must be at least 6 characters.");
+      return;
+    }
+    if (!adminCurrentPassword) {
+      error("Enter your current password.");
       return;
     }
     if (adminNewPassword !== adminConfirmPassword) {
@@ -401,11 +448,12 @@ export function AdminDashboardClient({
       const res = await fetch("/api/student/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: currentUser.name, password: adminNewPassword }),
+        body: JSON.stringify({ name: currentUser.name, password: adminNewPassword, currentPassword: adminCurrentPassword }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update password.");
       success("Superadmin password updated successfully.");
+      setAdminCurrentPassword("");
       setAdminNewPassword("");
       setAdminConfirmPassword("");
     } catch (e: any) {
@@ -681,6 +729,7 @@ export function AdminDashboardClient({
             { id: "courses", label: "Courses Oversight", count: courses.length, icon: FiBookOpen },
             { id: "enrollments", label: "Enrollment Audit", count: enrollments.length, icon: FiAward },
             { id: "submissions", label: "Submissions & Grades", count: submissions.length, icon: FiActivity },
+            { id: "messages", label: "Inbox", count: unreadCount, icon: FiInbox },
             { id: "settings", label: "System Settings", icon: FiSliders },
           ].map((tab) => {
             const Icon = tab.icon;
@@ -1393,6 +1442,89 @@ export function AdminDashboardClient({
           </div>
         )}
 
+        {/* INBOX TAB: messages from the public contact form */}
+        {activeTab === "messages" && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              {(["ALL", "NEW"] as const).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setMessageFilter(f)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                    messageFilter === f
+                      ? "bg-[#4A1A45] text-white border-[#4A1A45]"
+                      : "bg-white text-neutral-600 border-neutral-200 hover:border-[#4A1A45]"
+                  }`}
+                >
+                  {f === "ALL" ? `All (${messages.length})` : `Unread (${unreadCount})`}
+                </button>
+              ))}
+            </div>
+
+            {messages.filter((m) => messageFilter === "ALL" || m.status === "NEW").length === 0 ? (
+              <div className="bg-white rounded-3xl p-10 border border-neutral-200 text-center space-y-2">
+                <FiInbox className="w-8 h-8 text-neutral-300 mx-auto" />
+                <p className="text-sm font-semibold text-neutral-600">
+                  {messages.length === 0 ? "No messages yet." : "No unread messages."}
+                </p>
+                <p className="text-xs text-neutral-400">Messages sent through the website contact form appear here.</p>
+              </div>
+            ) : (
+              messages
+                .filter((m) => messageFilter === "ALL" || m.status === "NEW")
+                .map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`bg-white rounded-3xl p-6 border shadow-sm space-y-3 ${
+                      msg.status === "NEW" ? "border-[#4A1A45]/40" : "border-neutral-200"
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="space-y-0.5 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {msg.status === "NEW" && (
+                            <span className="px-2 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-bold uppercase">New</span>
+                          )}
+                          <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{msg.subject}</span>
+                        </div>
+                        <h4 className="font-bold text-base text-black">{msg.name}</h4>
+                        <p className="text-xs text-neutral-500 break-all">
+                          {msg.email} · {formatDate(msg.createdAt)}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <a
+                          href={`mailto:${msg.email}?subject=${encodeURIComponent("Re: " + msg.subject)}`}
+                          onClick={() => msg.status === "NEW" && handleToggleMessageRead(msg)}
+                          className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                        >
+                          <FiMail className="w-3.5 h-3.5" />
+                          Reply
+                        </a>
+                        <button
+                          onClick={() => handleToggleMessageRead(msg)}
+                          className="px-4 py-2 rounded-full border border-neutral-200 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs transition-all"
+                        >
+                          {msg.status === "NEW" ? "Mark read" : "Mark unread"}
+                        </button>
+                        <button
+                          onClick={() => handleDeleteMessage(msg)}
+                          aria-label="Delete message"
+                          className="p-2 rounded-full border border-neutral-200 hover:border-red-400 hover:text-red-600 text-neutral-500 transition-all"
+                        >
+                          <FiTrash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                    <p className="p-4 rounded-2xl bg-neutral-100 text-xs text-neutral-800 leading-relaxed whitespace-pre-wrap break-words">
+                      {msg.message}
+                    </p>
+                  </div>
+                ))
+            )}
+          </div>
+        )}
+
         {/* SETTINGS & SYSTEM CONTROLS TAB */}
         {activeTab === "settings" && (
           <div className="space-y-6 max-w-5xl">
@@ -1428,6 +1560,19 @@ export function AdminDashboardClient({
                 <h4 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-2">
                   <FiSliders className="w-4 h-4 text-[#4A1A45]" /> Update Superadmin Password
                 </h4>
+                <div>
+                  <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="Enter your current password"
+                    value={adminCurrentPassword}
+                    onChange={(e) => setAdminCurrentPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
+                  />
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">

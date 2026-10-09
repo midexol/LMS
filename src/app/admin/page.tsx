@@ -25,13 +25,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     redirect("/my-courses");
   }
 
-  const validTabs = ["overview", "users", "courses", "enrollments", "submissions", "settings"];
+  const validTabs = ["overview", "users", "courses", "enrollments", "submissions", "messages", "settings"];
   const initialTab = typeof searchParams?.tab === "string" && validTabs.includes(searchParams.tab)
     ? (searchParams.tab as any)
     : "overview";
 
   // Fetch comprehensive platform data for the superadmin
-  const [users, courses, enrollments, submissions] = await Promise.all([
+  const [users, courses, enrollments, submissions, messages] = await Promise.all([
     prisma.user.findMany({
       select: {
         id: true,
@@ -109,6 +109,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       orderBy: { submittedAt: "desc" },
       take: 50,
     }),
+    prisma.contactMessage.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 200,
+    }),
   ]);
 
   // Aggregate metrics
@@ -125,6 +129,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       initialCourses={courses}
       initialEnrollments={enrollments}
       initialSubmissions={submissions}
+      initialMessages={messages}
       initialTab={initialTab}
       metrics={{
         totalUsers: users.length,

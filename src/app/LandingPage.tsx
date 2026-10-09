@@ -80,12 +80,37 @@ export function LandingPage({
 
   const [policyModal, setPolicyModal] = useState<"integrity" | "privacy" | "terms" | "honor" | "accessibility" | "security" | "contact" | null>(null);
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactSending, setContactSending] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
     subject: "Technical & Course Support",
     message: "",
+    website: "", // honeypot: hidden from people, filled in by bots
   });
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (contactSending) return;
+    setContactSending(true);
+    setContactError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactForm),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to send your message.");
+      setContactSubmitted(true);
+    } catch (err: any) {
+      setContactError(err.message || "Failed to send your message. Please try again.");
+    } finally {
+      setContactSending(false);
+    }
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -687,19 +712,20 @@ export function LandingPage({
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  {supportEmail && (
                   <div className="p-3 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
                     <div className="flex items-center gap-2 font-semibold text-black">
                       <FiMail className="w-4 h-4 text-[#4A1A45]" />
                       <span>Email Support</span>
                     </div>
                     <a
-                      href="mailto:support@academia.edu"
+                      href={`mailto:${supportEmail}`}
                       className="text-[#4A1A45] hover:underline block font-medium"
                     >
-                      support@academia.edu
+                      {supportEmail}
                     </a>
-                    <p className="text-[11px] text-neutral-500">Response within 24 hours</p>
-                  </div>
+                                      </div>
+                  )}
 
                   <div className="p-3 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
                     <div className="flex items-center gap-2 font-semibold text-black">
@@ -716,13 +742,13 @@ export function LandingPage({
                     <FiCheckCircle className="w-8 h-8 text-[#4A1A45] mx-auto" />
                     <h4 className="text-sm font-bold text-black">Inquiry Submitted</h4>
                     <p className="text-xs text-neutral-600 max-w-sm mx-auto">
-                      Thank you for contacting Academia Support. An academic advisor will reply to <span className="font-semibold text-black">{contactForm.email || "your email"}</span> promptly.
+                      We have received your message and will reply to <span className="font-semibold text-black">{contactForm.email || "your email"}</span>.
                     </p>
                     <button
                       type="button"
                       onClick={() => {
                         setContactSubmitted(false);
-                        setContactForm({ name: "", email: "", subject: "Technical & Course Support", message: "" });
+                        setContactForm({ name: "", email: "", subject: "Technical & Course Support", message: "", website: "" });
                       }}
                       className="text-xs text-[#4A1A45] underline font-semibold pt-1"
                     >
@@ -731,11 +757,7 @@ export function LandingPage({
                   </div>
                 ) : (
                   <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      if (!contactForm.email || !contactForm.message) return;
-                      setContactSubmitted(true);
-                    }}
+                    onSubmit={handleContactSubmit}
                     className="space-y-3"
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -789,11 +811,30 @@ export function LandingPage({
                       />
                     </div>
 
+                    {/* Honeypot field: invisible to people, bots fill it in */}
+                    <div className="hidden" aria-hidden="true">
+                      <label>
+                        Website
+                        <input
+                          type="text"
+                          tabIndex={-1}
+                          autoComplete="off"
+                          value={contactForm.website}
+                          onChange={(e) => setContactForm({ ...contactForm, website: e.target.value })}
+                        />
+                      </label>
+                    </div>
+
+                    {contactError && (
+                      <p className="text-[11px] font-semibold text-red-600">{contactError}</p>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+                      disabled={contactSending}
+                      className="w-full py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider transition-all"
                     >
-                      Submit Support Ticket
+                      {contactSending ? "Sending..." : "Send Message"}
                     </button>
                   </form>
                 )}

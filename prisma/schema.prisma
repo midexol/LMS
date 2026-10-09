@@ -24,6 +24,8 @@ model User {
   verificationTokenExpiry DateTime?
   resetToken       String?
   resetTokenExpiry DateTime?
+  // Session tokens issued before this moment are rejected (set on password change/reset)
+  sessionsValidAfter DateTime?
   createdAt        DateTime  @default(now())
 
   enrollments       Enrollment[]
@@ -182,3 +184,14 @@ model Payment {
   createdAt   DateTime  @default(now())
 }
 
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String   @default("General Question")
+  message   String
+  status    String   @default("NEW") // "NEW" | "READ"
+  createdAt DateTime @default(now())
+
+  @@index([status, createdAt])
+}
