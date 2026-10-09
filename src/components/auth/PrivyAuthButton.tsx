@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useLogin, usePrivy, User } from "@privy-io/react-auth";
+import { useLogin, usePrivy } from "@privy-io/react-auth";
 import { FiArrowRight, FiShield } from "react-icons/fi";
 
 interface PrivyAuthButtonProps {
@@ -16,31 +16,22 @@ export function PrivyAuthButton({
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { ready } = usePrivy();
+  const { ready, getAccessToken } = usePrivy();
 
   const { login } = useLogin({
-    onComplete: async (privyUser: User) => {
+    onComplete: async () => {
       setSyncing(true);
       setError(null);
       try {
-        const email =
-          privyUser.email?.address ||
-          privyUser.google?.email ||
-          privyUser.apple?.email ||
-          null;
-
-        const walletAddress = privyUser.wallet?.address || null;
-        const name = privyUser.google?.name || null;
+        // The server derives identity from this verified token, not from client-sent fields
+        const accessToken = await getAccessToken();
+        if (!accessToken) {
+          throw new Error("Could not obtain a Privy session token.");
+        }
 
         const res = await fetch("/api/auth/privy", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            privyId: privyUser.id,
-            email,
-            name,
-            walletAddress,
-          }),
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
 
         const data = await res.json();

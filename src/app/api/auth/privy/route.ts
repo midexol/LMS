@@ -3,10 +3,23 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { PrivyClient } from "@privy-io/server-auth";
 import { signSessionToken } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/rateLimit";
 
 const PRIVY_AUTH_RATE_LIMIT = { limit: 10, windowMs: 60 * 1000 };
+
+let privyClient: PrivyClient | null = null;
+
+function getPrivyClient(): PrivyClient {
+  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+  const appSecret = process.env.PRIVY_APP_SECRET;
+  if (!appId || !appSecret) {
+    throw new Error("Privy is not configured: NEXT_PUBLIC_PRIVY_APP_ID and PRIVY_APP_SECRET are required.");
+  }
+  privyClient ??= new PrivyClient(appId, appSecret);
+  return privyClient;
+}
 
 export async function POST(req: Request) {
   try {
@@ -16,10 +29,29 @@ export async function POST(req: Request) {
       return rateLimitResponse(rateLimit);
     }
 
-    const { email, name, privyId, walletAddress } = await req.json();
+    const authHeader = req.headers.get("authorization") || "";
+    const accessToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+    if (!accessToken) {
+      return NextResponse.json({ error: "Missing Privy access token." }, { status: 401 });
+    }
+
+    // SECURITY: Identity comes only from a Privy-verified token, never from the request body
+    const privy = getPrivyClient();
+    let privyUser;
+    try {
+      const claims = await privy.verifyAuthToken(accessToken);
+      privyUser = await privy.getUser(claims.userId);
+    } catch (err) {
+      console.warn("[PRIVY AUTH] Access token verification failed.", err);
+      return NextResponse.json({ error: "Invalid or expired Privy session." }, { status: 401 });
+    }
+
+    const email = privyUser.email?.address || privyUser.google?.email || privyUser.apple?.email || null;
+    const walletAddress = privyUser.wallet?.address || null;
+    const name = privyUser.google?.name || null;
 
     // Privy can authenticate with email or wallet address
-    const normalizedEmail = typeof email === "string" && email.trim() ? email.toLowerCase().trim() : null;
+    const normalizedEmail = email ? email.toLowerCase().trim() : null;
     const finalIdentifier = normalizedEmail || (walletAddress ? `${walletAddress.toLowerCase()}@wallet.privy` : null);
 
     if (!finalIdentifier) {
@@ -30,8 +62,8 @@ export async function POST(req: Request) {
     }
 
     const displayName =
-      (typeof name === "string" && name.trim()) ||
-      (normalizedEmail ? normalizedEmail.split("@")[0] : `Student ${walletAddress.slice(0, 6)}`);
+      (name && name.trim()) ||
+      (normalizedEmail ? normalizedEmail.split("@")[0] : `Student ${walletAddress!.slice(0, 6)}`);
 
     // Find existing user or create a new student account
     let user = await prisma.user.findUnique({

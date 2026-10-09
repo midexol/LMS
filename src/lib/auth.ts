@@ -11,14 +11,27 @@ export interface SessionUser {
   department?: string | null;
 }
 
-const SESSION_SECRET = process.env.SESSION_SECRET || "futa_lms_secure_session_secret_2026_fallback";
+const DEV_SESSION_SECRET = "dev_only_insecure_session_secret";
+
+/**
+ * Resolves the HMAC secret lazily so builds without runtime env vars still succeed.
+ * Production refuses to run without a real secret, since a known secret lets anyone forge sessions.
+ */
+function getSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+  if (secret) return secret;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("SESSION_SECRET must be set in production.");
+  }
+  return DEV_SESSION_SECRET;
+}
 
 /**
  * Signs a user ID with an HMAC-SHA256 signature to prevent cookie spoofing/tampering
  */
 export function signSessionToken(userId: string): string {
   const signature = crypto
-    .createHmac("sha256", SESSION_SECRET)
+    .createHmac("sha256", getSessionSecret())
     .update(userId)
     .digest("hex");
   return `${userId}.${signature}`;
@@ -30,33 +43,24 @@ export function signSessionToken(userId: string): string {
 export function verifySessionToken(token: string): string | null {
   if (!token) return null;
 
-  // Support signed tokens: userId.signature
-  if (token.includes(".")) {
-    const [userId, signature] = token.split(".");
-    if (!userId || !signature) return null;
+  // Only signed tokens (userId.signature) are accepted
+  const [userId, signature, ...rest] = token.split(".");
+  if (!userId || !signature || rest.length > 0) return null;
 
-    const expectedSig = crypto
-      .createHmac("sha256", SESSION_SECRET)
-      .update(userId)
-      .digest("hex");
+  const expectedSig = crypto
+    .createHmac("sha256", getSessionSecret())
+    .update(userId)
+    .digest("hex");
 
-    try {
-      const sigBuf = Buffer.from(signature, "hex");
-      const expBuf = Buffer.from(expectedSig, "hex");
-      if (sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf)) {
-        return userId;
-      }
-    } catch {
-      return null;
+  try {
+    const sigBuf = Buffer.from(signature, "hex");
+    const expBuf = Buffer.from(expectedSig, "hex");
+    if (sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf)) {
+      return userId;
     }
+  } catch {
     return null;
   }
-
-  // Graceful backward compatibility for existing active sessions
-  if (token.length >= 20) {
-    return token;
-  }
-
   return null;
 }
 
