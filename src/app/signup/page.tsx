@@ -89,7 +89,7 @@ export default function SignupPage() {
           <div className="space-y-3 pt-2">
             {[
               "Free account registration in seconds",
-              "Structured university-grade curriculum",
+              "Structured lessons and assignments",
               "Instant feedback on every assignment submission",
             ].map((f) => (
               <div key={f} className="flex items-center gap-3 text-xs text-neutral-200">

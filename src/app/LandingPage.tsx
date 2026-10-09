@@ -27,58 +27,21 @@ function getCourseVisual(category: string) {
   return CATEGORY_VISUALS[category] ?? CATEGORY_VISUALS["General"];
 }
 
-export interface DynamicPlatformStats {
-  totalStudents: number;
-  totalTutors: number;
-  publishedCourses: number;
-  activeEnrollments: number;
-  completedEnrollments: number;
-  totalSubmissions: number;
-  avgScore: number;
-  passVelocity: number;
-  highDistinctionPct: number;
-  standardPassPct: number;
-  interventionPct: number;
-  latestScore: number;
-  weeklyTrajectory: { week: string; score: number }[];
+export interface CategoryCount {
+  category: string;
+  count: number;
 }
 
 export function LandingPage({
   currentUser,
   featuredCourses,
-  dynamicStats,
+  categoryCounts,
 }: {
   currentUser?: any;
   featuredCourses: any[];
-  dynamicStats?: DynamicPlatformStats;
+  categoryCounts: CategoryCount[];
 }) {
-
-  const stats = dynamicStats || {
-    totalStudents: 1,
-    totalTutors: 1,
-    publishedCourses: 1,
-    activeEnrollments: 1,
-    completedEnrollments: 0,
-    totalSubmissions: 1,
-    avgScore: 88,
-    passVelocity: 94,
-    highDistinctionPct: 44,
-    standardPassPct: 50,
-    interventionPct: 6,
-    latestScore: 92,
-    weeklyTrajectory: [
-      { week: "W1", score: 62 },
-      { week: "W2", score: 68 },
-      { week: "W3", score: 74 },
-      { week: "W4", score: 80 },
-      { week: "W5", score: 84 },
-      { week: "W6", score: 88 },
-      { week: "W7", score: 92 },
-      { week: "W8", score: 96 },
-    ],
-  };
-
-  const [policyModal, setPolicyModal] = useState<"integrity" | "privacy" | "terms" | "honor" | "accessibility" | "security" | "contact" | null>(null);
+  const [policyModal, setPolicyModal] = useState<"contact" | null>(null);
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactSending, setContactSending] = useState(false);
   const [contactError, setContactError] = useState<string | null>(null);
@@ -90,6 +53,7 @@ export function LandingPage({
     website: "", // honeypot: hidden from people, filled in by bots
   });
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+  const institutionName = process.env.NEXT_PUBLIC_INSTITUTION_NAME;
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,118 +86,124 @@ export function LandingPage({
       {/* ───────────────── UNIQUE LANDING PAGE NAVBAR ───────────────── */}
       <LandingNavbar currentUser={currentUser} />
 
-      {/* ───────────────── HERO SECTION (MODERN MOBILE-OPTIMIZED ACADEMIC HERO) ───────────────── */}
+      {/* ───────────────── HERO SECTION ───────────────── */}
       <section className="pt-8 sm:pt-14 pb-14 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
-          {/* Left Text & Actions (Full width on mobile, 6 cols on desktop) */}
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             <h1 className="font-heading font-normal text-3xl sm:text-5xl lg:text-6xl text-black leading-[1.12] sm:leading-[1.08] tracking-tight">
-              Where great teaching finds its <span className="italic text-[#4A1A45]">platform.</span>
+              Learn one course at a time, and <span className="italic text-[#4A1A45]">finish it.</span>
             </h1>
-
-            <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Academia LMS delivers university-grade polytechnic instruction with structured curriculum pathways, single active enrollment focus, and automated criteria evaluation.
+            <p className="text-base text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Academia gives you structured lessons, assignments graded in seconds, and a certificate when you pass.
+              You take one course at a time, so you stay focused and actually complete it.
             </p>
 
-            {/* Mobile Thumb-Friendly CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 pt-1">
               <Link
                 href="/signup"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm shadow-md transition-all text-center flex items-center justify-center gap-2"
               >
-                Join as Student
+                Create free account
               </Link>
               <Link
                 href="/courses"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white hover:bg-neutral-50 border border-neutral-300 hover:border-[#4A1A45] text-black hover:text-[#4A1A45] font-bold text-sm transition-all text-center shadow-sm flex items-center justify-center gap-2"
               >
-                Browse Courses
+                Browse courses
               </Link>
             </div>
+
+            <ul className="flex flex-col sm:flex-row sm:flex-wrap items-center lg:items-start justify-center lg:justify-start gap-x-6 gap-y-2 text-sm text-neutral-600">
+              {["Pay in Naira with Paystack", "Feedback within seconds", "Certificate when you pass"].map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="text-sm text-neutral-500">
+              Teaching a course?{" "}
+              <Link href="/instructor/login" className="font-semibold text-[#4A1A45] hover:underline">
+                Instructor sign in &rarr;
+              </Link>
+            </p>
           </div>
 
-          {/* Right Hero Image Container (Clean, unobstructed real photography) */}
           <div className="lg:col-span-6 relative">
             <div className="relative rounded-3xl overflow-hidden border border-neutral-200/90 shadow-xl bg-neutral-100 group">
-              <img
+              <Image
                 src="/assets/hero_library_study_option1.jpg"
-                alt="Student studying on laptop in university library lounge"
+                alt="A student studying on a laptop in a library"
+                width={1200}
+                height={675}
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 className="w-full h-auto aspect-[16/10] sm:aspect-[16/9] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
             </div>
           </div>
-
         </div>
 
-        {/* ── Coursera/Udemy Style Mobile Discovery Chips Carousel ── */}
-        <div className="mt-10 sm:mt-14 pt-6 border-t border-neutral-200/80">
-          <div className="flex items-center justify-between gap-4 mb-3">
-            <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider">
-              Popular Academic Tracks
-            </span>
-            <Link href="/courses" className="text-xs font-bold text-[#4A1A45] hover:underline">
-              View All →
-            </Link>
-          </div>
-          <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {[
-              { label: "Computing & Tech", count: "12 courses" },
-              { label: "Business Studies", count: "8 courses" },
-              { label: "Engineering Tech", count: "6 courses" },
-              { label: "Pure & Applied Sciences", count: "9 courses" },
-              { label: "Financial Studies", count: "5 courses" },
-              { label: "Environmental Studies", count: "4 courses" },
-            ].map((cat, i) => (
-              <Link
-                key={i}
-                href="/courses"
-                className="shrink-0 px-4 py-2.5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 border border-neutral-200/80 text-black transition-all flex items-center gap-2 shadow-2xs hover:shadow-xs active:scale-95"
-              >
-                <span className="text-xs font-bold">{cat.label}</span>
-                <span className="text-[10px] text-neutral-500 font-semibold bg-white px-2 py-0.5 rounded-full border border-neutral-200">
-                  {cat.count}
-                </span>
+        {/* Categories with live course counts. Hidden until there is something real to show. */}
+        {categoryCounts.length > 0 && (
+          <div className="mt-10 sm:mt-14 pt-6 border-t border-neutral-200/80">
+            <div className="flex items-center justify-between gap-4 mb-3">
+              <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Browse by subject</span>
+              <Link href="/courses" className="text-sm font-bold text-[#4A1A45] hover:underline">
+                View all &rarr;
               </Link>
-            ))}
+            </div>
+            <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+              {categoryCounts.map((cat) => (
+                <Link
+                  key={cat.category}
+                  href="/courses"
+                  className="shrink-0 px-4 py-2.5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 border border-neutral-200/80 text-black transition-all flex items-center gap-2 active:scale-95"
+                >
+                  <span className="text-sm font-bold">{cat.category}</span>
+                  <span className="text-xs text-neutral-600 font-semibold bg-white px-2 py-0.5 rounded-full border border-neutral-200">
+                    {cat.count} {cat.count === 1 ? "course" : "courses"}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </section>
 
-
-      {/* ───────────────── CAMPUS COLLABORATION & RIGOR ───────────────── */}
+      {/* ───────────────── WHY ACADEMIA ───────────────── */}
       <section className="py-20 px-6 max-w-7xl mx-auto" id="campus-life">
         <div className="max-w-3xl mx-auto space-y-6">
-          {/* Text Content */}
-          <div className="space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Academic Experience</span>
-            <h2 className="font-heading font-normal text-3xl sm:text-5xl text-black leading-tight tracking-tight">
-              Designed for serious learners. <span className="italic text-[#4A1A45]">Built for lasting mastery.</span>
-            </h2>
-            <p className="text-sm text-neutral-600 leading-relaxed">
-              Unlike generic online course marketplaces, Academia enforces rigorous academic standards proven to drive retention. Students work closely with instructor-crafted rubrics, receive prompt feedback, and complete assignments that build upon one another.
-            </p>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Why Academia</span>
+          <h2 className="font-heading font-normal text-3xl sm:text-5xl text-black leading-tight tracking-tight">
+            Built to help you <span className="italic text-[#4A1A45]">finish what you start.</span>
+          </h2>
+          <p className="text-base text-neutral-600 leading-relaxed">
+            Every course has clear lessons, assignments set by the instructor, and a clear target to reach.
+            Here is what makes Academia different.
+          </p>
 
-            <div className="space-y-4 pt-2">
-              <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
-                <div className="flex items-center gap-3">
-                  <span className="font-heading text-lg font-bold text-[#4A1A45]">01</span>
-                  <h4 className="text-sm font-bold text-black tracking-tight">Single Active Enrollment Barrier</h4>
-                </div>
-                <p className="text-xs text-neutral-600 pl-8 leading-relaxed">
-                  Students can register for only one course at any time. Multi-tab distractions are eliminated until the 70% completion threshold is certified.
-                </p>
+          <div className="space-y-4 pt-2">
+            <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
+              <div className="flex items-center gap-3">
+                <span className="font-heading text-lg font-bold text-[#4A1A45]">01</span>
+                <h3 className="text-base font-bold text-black tracking-tight">One course at a time</h3>
               </div>
-
-              <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
-                <div className="flex items-center gap-3">
-                  <span className="font-heading text-lg font-bold text-[#4A1A45]">02</span>
-                  <h4 className="text-sm font-bold text-black tracking-tight">Automated &amp; Faculty Grading</h4>
-                </div>
-                <p className="text-xs text-neutral-600 pl-8 leading-relaxed">
-                  Submissions are evaluated against benchmark model answers. Instructors have override tools to customize grades and leave detailed mentorship notes.
-                </p>
+              <p className="text-sm text-neutral-600 pl-8 leading-relaxed">
+                You can have one active course at a time. Finish it, or drop it, and then enrol in the next.
+                No half-finished courses piling up.
+              </p>
+            </div>
+            <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
+              <div className="flex items-center gap-3">
+                <span className="font-heading text-lg font-bold text-[#4A1A45]">02</span>
+                <h3 className="text-base font-bold text-black tracking-tight">Fast feedback, with a human in charge</h3>
               </div>
+              <p className="text-sm text-neutral-600 pl-8 leading-relaxed">
+                Your answers are scored automatically against the instructor&apos;s own reference answer and rubric,
+                with written feedback. Instructors can review any grade, change it, and add their own notes.
+              </p>
             </div>
           </div>
         </div>
@@ -244,16 +214,16 @@ export function LandingPage({
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-neutral-200 pb-8">
             <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Curriculum Offerings</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Courses</span>
               <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
-                Explore University-Caliber <span className="italic">Courses</span>
+                Explore our <span className="italic">courses</span>
               </h2>
             </div>
             <Link
               href="/courses"
               className="px-6 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
-              Browse All Courses
+              Browse all courses
             </Link>
           </div>
 
@@ -277,7 +247,7 @@ export function LandingPage({
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-sm text-white border border-white/20">
+                            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-sm text-white border border-white/20">
                               {course.category}
                             </span>
                             <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-[#4A1A45] text-white shadow-md">
@@ -293,7 +263,7 @@ export function LandingPage({
                             {vis.label}
                           </span>
                           {/* Category badge */}
-                          <span className="relative px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 backdrop-blur-sm text-white border border-white/15">
+                          <span className="relative px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 backdrop-blur-sm text-white border border-white/15">
                             {course.category}
                           </span>
                           {/* Price pill */}
@@ -310,238 +280,199 @@ export function LandingPage({
                         {course.title}
                       </h3>
                       <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
-                        {course.description || "In-depth collegiate curriculum with structured lesson modules, assignments, and automated grading."}
+                        {course.description || "Structured lessons and assignments with instant feedback."}
                       </p>
 
                       <div className="flex items-center gap-2 pt-2 text-xs text-neutral-600 font-medium">
                         <span className="text-black font-semibold">{course.modules?.length || 0} Modules</span>
                         <span>·</span>
-                        <span>Instructor: {course.tutor?.name || "Faculty Member"}</span>
+                        <span>Instructor: {course.tutor?.name || "Academia instructor"}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-5 border-t border-neutral-100 bg-neutral-50/50">
                     <Link
-                      href="/courses"
+                      href={`/courses/${course.id}`}
                       className="w-full py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider text-center shadow-sm transition-all block"
                     >
-                      Enroll in Course
+                      View course
                     </Link>
                   </div>
                 </div>
               ))
             ) : (
               <div className="col-span-3 text-center py-12 text-neutral-500 text-sm">
-                Course catalog is loading. Sign in to browse all active courses.
+                New courses are coming soon. Create a free account and we will have them waiting for you.
               </div>
             )}
           </div>
         </div>
       </section>
 
-      {/* ───────────────── 3 PILLARS ACADEMIC MODEL ───────────────── */}
+      {/* ───────────────── HOW IT WORKS ───────────────── */}
       <section className="py-20 px-6 max-w-7xl mx-auto" id="how-it-works">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Academic Architecture</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">How it works</span>
           <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
-            Structured learning designed for <span className="italic text-[#4A1A45]">true mastery.</span>
+            From sign-up to certificate in <span className="italic text-[#4A1A45]">three steps.</span>
           </h2>
-          <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
-            Academia enforces discipline through single-enrollment focus and instant assignment benchmark verification.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
               step: "01",
-              title: "Focused Single Enrollment",
-              desc: "Students can only register for one course at a time. This deliberate constraint eliminates choice fatigue and ensures 100% curriculum focus.",
+              title: "Pick a course and pay",
+              desc: "Choose a course, pay in Naira through Paystack, and start as soon as the payment is confirmed.",
             },
             {
               step: "02",
-              title: "Automated & Faculty Evaluation",
-              desc: "Every lesson assignment is evaluated against instructor model rubrics with actionable feedback returned in seconds.",
+              title: "Learn and submit",
+              desc: "Work through the lessons and submit your assignments. Each answer is scored against the instructor's rubric, with written feedback, usually within seconds.",
             },
             {
               step: "03",
-              title: "70% Minimum Threshold",
-              desc: "To earn course completion and unlock further coursework, students must maintain a verified 70% average across all assignments.",
+              title: "Pass and get certified",
+              desc: "Reach an average of 70% or more across the course's assignments to complete it and receive your completion certificate. Then you can enrol in your next course.",
             },
           ].map((pillar) => (
             <div
               key={pillar.step}
-              className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3 hover:shadow-md transition-shadow relative overflow-hidden"
+              className="p-8 rounded-3xl border border-neutral-200 bg-white shadow-sm space-y-3"
             >
               <div className="text-5xl font-black text-neutral-200 select-none">{pillar.step}</div>
               <h3 className="font-bold text-xl text-black">{pillar.title}</h3>
-              <p className="text-xs text-neutral-600 leading-relaxed">{pillar.desc}</p>
+              <p className="text-sm text-neutral-600 leading-relaxed">{pillar.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ───────────────── INSTRUCTOR STUDIO (FEDPOLY PURPLE) ───────────────── */}
+      {/* ───────────────── FOR INSTRUCTORS ───────────────── */}
       <section className="bg-[#2D0F2A] text-white py-24 px-6 border-y border-[#3B1537]" id="instructors">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#D6BDD4]">Faculty &amp; Creator Studio</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D6BDD4]">For instructors</span>
             <h2 className="font-heading font-normal text-3xl sm:text-5xl leading-tight text-white tracking-tight">
-              Powerful tools built for <span className="italic text-[#E4D5E2]">educators who care.</span>
+              Build and run your course <span className="italic text-[#E4D5E2]">in one place.</span>
             </h2>
-            <p className="text-sm text-neutral-200 leading-relaxed">
-              Build entire syllabi with automated outline generation, create modular lesson plans with rich attachments, and monitor student comprehension through real-time telemetry.
+            <p className="text-base text-neutral-200 leading-relaxed">
+              Create modules, lessons and assignments, upload videos and files, and let Academia mark the first pass
+              while you stay in control of every grade.
             </p>
-
-            <div className="space-y-3 pt-2">
-              {[
-                "Cohort mastery trajectories with real-time rubric tracking",
-                "Dynamic grade distribution analytics across active terms",
-                "Automated syllabus outline generator and standardized benchmark rubrics",
-                "Full grade override desk with mentor feedback notes",
-              ].map((feat, i) => (
-                <div key={i} className="flex items-center gap-3 text-xs text-neutral-200 font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#896A86] shrink-0" />
-                  <span>{feat}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Link
-                href="/courses"
-                className="inline-block px-8 py-3.5 rounded-full bg-white hover:bg-neutral-100 text-[#4A1A45] font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                href="/instructor/login"
+                className="px-7 py-3 rounded-full bg-white text-[#4A1A45] hover:bg-neutral-100 font-bold text-sm text-center transition-all"
               >
-                Explore All Courses
+                Instructor sign in
               </Link>
+              <button
+                type="button"
+                onClick={() => setPolicyModal("contact")}
+                className="px-7 py-3 rounded-full border border-white/30 hover:border-white text-white font-bold text-sm text-center transition-all"
+              >
+                Ask about teaching
+              </button>
             </div>
+            <p className="text-sm text-neutral-300">Instructor accounts are set up by the Academia team.</p>
           </div>
 
-          {/* Elevated Modern Telemetry & Cohort Trajectory Chart (FULLY DYNAMIC) */}
-          <div className="lg:col-span-7">
-            <div className="bg-[#1E0A1C] text-white rounded-3xl p-7 border border-[#3B1537] shadow-2xl space-y-6">
-              {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#3B1537]">
-                <div>
-                  <h3 className="font-bold text-base text-white">Cohort Mastery &amp; Trajectory</h3>
-                  <p className="text-xs text-neutral-400 mt-0.5">Real-time benchmark tracking across active curriculum tracks</p>
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                icon: FiCpu,
+                title: "Course outline helper",
+                desc: "Turn a topic into a draft set of modules and lessons, then edit it your way.",
+              },
+              {
+                icon: FiCheckCircle,
+                title: "Grading against your rubric",
+                desc: "Write a reference answer once. Student answers are scored against it, with feedback.",
+              },
+              {
+                icon: FiAward,
+                title: "Override any grade",
+                desc: "Review submissions, change a score, and leave your own feedback for the student.",
+              },
+              {
+                icon: FiUsers,
+                title: "See your students",
+                desc: "Track who is enrolled, what they have submitted, and post announcements to the class.",
+              },
+            ].map((f) => (
+              <div key={f.title} className="p-6 rounded-3xl bg-[#1E0A1C] border border-[#3B1537] space-y-3">
+                <div className="w-10 h-10 rounded-full bg-[#4A1A45] flex items-center justify-center">
+                  <f.icon className="w-5 h-5 text-white" />
                 </div>
-                <div className="flex items-center gap-1.5 self-start sm:self-auto bg-[#2D0F2A] p-1 rounded-full border border-[#3B1537] text-[11px] font-bold text-neutral-300">
-                  <span className="px-3 py-1 rounded-full bg-white text-[#4A1A45] shadow-sm">Term 2026</span>
-                  <span className="px-3 py-1">All Cohorts</span>
-                </div>
+                <h3 className="font-bold text-base text-white">{f.title}</h3>
+                <p className="text-sm text-neutral-300 leading-relaxed">{f.desc}</p>
               </div>
-
-              {/* KPI Highlights Row (FULLY DYNAMIC DATA) */}
-              <div className="grid grid-cols-3 gap-4 pt-1">
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Active Students</p>
-                  <p className="text-2xl font-bold text-white">{stats.activeEnrollments}</p>
-                  <p className="text-[10px] text-[#D6BDD4] font-semibold">{stats.totalStudents} total registered</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Pass Velocity</p>
-                  <p className="text-2xl font-bold text-white">{stats.passVelocity}%</p>
-                  <p className="text-[10px] text-neutral-400 font-semibold">&gt; 70% threshold</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Avg Cohort Score</p>
-                  <p className="text-2xl font-bold text-white">{stats.avgScore}<span className="text-xs text-neutral-400">/100</span></p>
-                  <p className="text-[10px] text-neutral-400 font-semibold">{stats.totalSubmissions} submissions logged</p>
-                </div>
-              </div>
-
-              {/* SVG Curve Chart (FULLY DYNAMIC TRAJECTORY) */}
-              <div className="relative pt-2">
-                <div className="h-44 w-full">
-                  <svg viewBox="0 0 540 160" className="w-full h-full overflow-visible">
-                    <defs>
-                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.25" />
-                        <stop offset="85%" stopColor="#FFFFFF" stopOpacity="0.0" />
-                      </linearGradient>
-                      <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6B2764" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#4A1A45" stopOpacity="0.0" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Horizontal Gridlines */}
-                    <line x1="0" y1="20" x2="540" y2="20" stroke="#3B1537" strokeDasharray="3 3" />
-                    <line x1="0" y1="65" x2="540" y2="65" stroke="#3B1537" strokeDasharray="3 3" />
-                    <line x1="0" y1="110" x2="540" y2="110" stroke="#3B1537" strokeDasharray="3 3" />
-
-                    {/* 70% Mastery Standard Benchmark Line */}
-                    <line x1="0" y1="65" x2="540" y2="65" stroke="#896A86" strokeWidth="1.5" strokeDasharray="4 4" />
-                    <text x="535" y="58" textAnchor="end" fill="#D6BDD4" fontSize="10" fontWeight="bold">
-                      70% Mastery Threshold Standard
-                    </text>
-
-                    {/* Area under Student Mastery Curve */}
-                    <path
-                      d={`M 20 ${150 - (stats.weeklyTrajectory[0]?.score || 60) * 1.2} ${stats.weeklyTrajectory.map((p, idx) => `L ${20 + idx * 70} ${150 - (p.score / 100) * 130}`).join(" ")} L 510 150 L 20 150 Z`}
-                      fill="url(#chartGradient)"
-                    />
-
-                    {/* Student Mastery Line */}
-                    <path
-                      d={`M 20 ${150 - (stats.weeklyTrajectory[0]?.score || 60) * 1.2} ${stats.weeklyTrajectory.map((p, idx) => `L ${20 + idx * 70} ${150 - (p.score / 100) * 130}`).join(" ")}`}
-                      fill="none"
-                      stroke="#FFFFFF"
-                      strokeWidth="2.5"
-                    />
-
-                    {/* Interactive-style Node Marker at Week 6 */}
-                    <circle cx="370" cy={150 - ((stats.weeklyTrajectory[5]?.score || stats.avgScore) / 100) * 130} r="5" fill="#FFFFFF" stroke="#4A1A45" strokeWidth="2.5" />
-                    <g transform={`translate(295, ${Math.max(10, 150 - ((stats.weeklyTrajectory[5]?.score || stats.avgScore) / 100) * 130 - 35)})`}>
-                      <rect width="150" height="28" rx="6" fill="#4A1A45" stroke="#896A86" strokeWidth="1" />
-                      <text x="75" y="18" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
-                        Avg Mastery: {stats.avgScore}%
-                      </text>
-                    </g>
-                  </svg>
-                </div>
-
-                {/* X-Axis Labels */}
-                <div className="flex justify-between text-xs font-bold text-neutral-400 pt-3 border-t border-neutral-800">
-                  {stats.weeklyTrajectory.map((w, idx) => (
-                    <span key={idx} className={idx === 5 ? "text-white font-extrabold" : ""}>
-                      {w.week}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Segmented Cohort Mastery Breakdown (DYNAMIC) */}
-              <div className="space-y-2 pt-2 border-t border-neutral-800">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-neutral-400 font-medium">Cohort Grade Distribution</span>
-                  <span className="text-white font-bold">{stats.passVelocity}% Certified</span>
-                </div>
-                <div className="h-2.5 w-full bg-[#2D0F2A] rounded-full overflow-hidden flex">
-                  <div style={{ width: `${stats.highDistinctionPct}%` }} className="bg-white h-full" title={`High Distinction: ${stats.highDistinctionPct}%`} />
-                  <div style={{ width: `${stats.standardPassPct}%` }} className="bg-[#896A86] h-full" title={`Certified Pass: ${stats.standardPassPct}%`} />
-                  <div style={{ width: `${stats.interventionPct}%` }} className="bg-[#4A1A45] h-full" title={`Review Needed: ${stats.interventionPct}%`} />
-                </div>
-                <div className="flex flex-wrap items-center justify-between text-[11px] text-neutral-400 pt-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-white inline-block" />
-                    <span>High Distinction: {stats.highDistinctionPct}%</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#896A86] inline-block" />
-                    <span>Certified Pass: {stats.standardPassPct}%</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#4A1A45] inline-block" />
-                    <span>Review Needed: {stats.interventionPct}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
+      </section>
+
+      {/* ───────────────── FAQ ───────────────── */}
+      <section className="py-20 px-6 max-w-3xl mx-auto" id="faq">
+        <div className="text-center space-y-3 mb-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Questions</span>
+          <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
+            Things students <span className="italic text-[#4A1A45]">ask us.</span>
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {[
+            {
+              q: "Can I take more than one course at once?",
+              a: "No. You can have one active course at a time. Finish it, or drop it, and then you can enrol in another.",
+            },
+            {
+              q: "How do I pay?",
+              a: "Prices are in Nigerian Naira. You pay through Paystack, and your course opens as soon as the payment is confirmed. We never see or store your card details.",
+            },
+            {
+              q: "How are my assignments graded?",
+              a: "An automated system scores your answer against the instructor's reference answer and rubric and writes feedback. Instructors can review and change any grade, and you can resubmit an assignment.",
+            },
+            {
+              q: "What do I need to complete a course?",
+              a: "Submit every assignment and reach an average of at least 70%. You then receive a completion certificate.",
+            },
+            {
+              q: "Is the certificate a degree?",
+              a: "No. It confirms that you completed a course on Academia. It is not a degree or a professional licence unless the course page says so.",
+            },
+            {
+              q: "Can I get a refund?",
+              a: "If your payment goes through but you cannot be enrolled, for example because you already have an active course, contact us with your payment reference and we will arrange a refund or a transfer. Other cases are covered in our Terms.",
+            },
+            {
+              q: "Who can see my work?",
+              a: "You, your course instructor and Academia administrators. Read the Privacy Policy for the details.",
+            },
+          ].map((item) => (
+            <details key={item.q} className="group rounded-2xl border border-neutral-200 bg-white px-5 py-4 open:bg-neutral-50">
+              <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-base font-bold text-black">
+                {item.q}
+                <span className="text-[#4A1A45] text-xl leading-none transition-transform group-open:rotate-45">+</span>
+              </summary>
+              <p className="mt-3 text-sm text-neutral-600 leading-relaxed">{item.a}</p>
+            </details>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-sm text-neutral-500">
+          Still unsure? Read the{" "}
+          <Link href="/terms" className="font-semibold text-[#4A1A45] hover:underline">Terms of Service</Link>
+          {" "}or{" "}
+          <button type="button" onClick={() => setPolicyModal("contact")} className="font-semibold text-[#4A1A45] hover:underline">
+            contact us
+          </button>
+          .
+        </p>
       </section>
 
       {/* ───────────────── ELEGANT COMPACT FOOTER ───────────────── */}
@@ -551,9 +482,7 @@ export function LandingPage({
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
             <BrandLogo href="/" variant="light" size="sm" />
             <div className="hidden sm:block h-4 w-[1px] bg-[#3B1537]" />
-            <span className="text-xs text-[#D6BDD4]">
-              A product of The Federal Polytechnic, Ado-Ekiti
-            </span>
+            {institutionName && <span className="text-xs text-[#D6BDD4]">{institutionName}</span>}
           </div>
 
           {/* Important Quick Links */}
@@ -565,11 +494,9 @@ export function LandingPage({
               Sign In
             </Link>
             <Link href="/signup" className="hover:text-white transition-colors">
-              Join as Student
+              Create account
             </Link>
-            <Link href="/instructor/login" className="hover:text-white transition-colors">
-              Faculty
-            </Link>
+            <Link href="/instructor/login" className="hover:text-white transition-colors">Instructor sign in</Link>
             <button onClick={() => setPolicyModal("contact")} className="hover:text-white transition-colors">
               Contact &amp; Support
             </button>
@@ -600,78 +527,13 @@ export function LandingPage({
               <FiX className="w-5 h-5" />
             </button>
 
-            {policyModal === "integrity" && (
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Academic Standards</span>
-                <h3 className="font-heading font-bold text-2xl text-black">Academic Integrity Policy</h3>
-                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <p>
-                    Academia LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
-                  </p>
-                  <p>
-                    All assignments undergo automated rubric benchmarking. Work must meet or exceed a strict <strong>70% mastery standard</strong> to unlock subsequent lessons.
-                  </p>
-                  <p>
-                    Submissions must represent the student&apos;s authentic intellectual effort. Plagiarism, unauthorized automation, or evasion of rubrics will result in zero-score evaluations and formal review.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {policyModal === "honor" && (
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Scholarly Pledge</span>
-                <h3 className="font-heading font-bold text-2xl text-black">The Honor Code</h3>
-                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 italic text-neutral-800 text-sm font-medium">
-                    &ldquo;As a scholar on Academia LMS, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
-                  </div>
-                  <ul className="space-y-1.5 list-disc pl-4 text-neutral-600">
-                    <li>One active course focus until verified completion.</li>
-                    <li>Constructive and respectful discourse in peer discussion forums.</li>
-                    <li>Original submission of all assignments and project deliverables.</li>
-                  </ul>
-                </div>
-              </div>
-            )}
-
-            {policyModal === "security" && (
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Platform Security</span>
-                <h3 className="font-heading font-bold text-2xl text-black">Security Safeguards</h3>
-                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <p>
-                    Our infrastructure utilizes isolated sandbox environments for automated rubric evaluations, encrypted database storage, and cryptographically verified session credentials.
-                  </p>
-                  <p>
-                    Rate limiting and CSRF protection are enforced across all authentication endpoints to prevent brute-force attacks and session hijacking.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {policyModal === "accessibility" && (
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Universal Access</span>
-                <h3 className="font-heading font-bold text-2xl text-black">Accessibility Statement</h3>
-                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <p>
-                    Academia LMS is engineered to comply with WCAG 2.1 Level AA specifications. We prioritize high contrast, legible typography, keyboard accessibility, and screen reader compatibility.
-                  </p>
-                  <p>
-                    If you encounter any accessibility barrier, our academic support team is dedicated to providing tailored accommodations.
-                  </p>
-                </div>
-              </div>
-            )}
-
             {policyModal === "contact" && (
               <div className="space-y-5">
                 <div>
-                  <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Direct Assistance</span>
+                  <span className="text-xs font-bold text-[#4A1A45] uppercase tracking-wider">Direct Assistance</span>
                   <h3 className="font-heading font-bold text-2xl text-black">Contact &amp; Support</h3>
                   <p className="text-xs text-neutral-500 mt-1">
-                    Have questions regarding courses, admission, or technical inquiries? Reach out to our academic desk.
+                    Questions about courses, your account or payments? Send us a message and we will get back to you.
                   </p>
                 </div>
 
@@ -691,14 +553,6 @@ export function LandingPage({
                                       </div>
                   )}
 
-                  <div className="p-3 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
-                    <div className="flex items-center gap-2 font-semibold text-black">
-                      <FiMapPin className="w-4 h-4 text-[#4A1A45]" />
-                      <span>Campus Desk</span>
-                    </div>
-                    <p className="text-neutral-700 font-medium">The Federal Polytechnic</p>
-                    <p className="text-[11px] text-neutral-500">Ado-Ekiti, Ekiti State, Nigeria</p>
-                  </div>
                 </div>
 
                 {contactSubmitted ? (
@@ -726,7 +580,7 @@ export function LandingPage({
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Full Name</label>
+                        <label className="block text-xs font-semibold text-neutral-700 mb-1">Full Name</label>
                         <input
                           type="text"
                           required
@@ -737,7 +591,7 @@ export function LandingPage({
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Email Address</label>
+                        <label className="block text-xs font-semibold text-neutral-700 mb-1">Email Address</label>
                         <input
                           type="email"
                           required
@@ -750,7 +604,7 @@ export function LandingPage({
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Inquiry Topic</label>
+                      <label className="block text-xs font-semibold text-neutral-700 mb-1">Inquiry Topic</label>
                       <select
                         value={contactForm.subject}
                         onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
@@ -764,7 +618,7 @@ export function LandingPage({
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Message</label>
+                      <label className="block text-xs font-semibold text-neutral-700 mb-1">Message</label>
                       <textarea
                         required
                         rows={3}
@@ -790,7 +644,7 @@ export function LandingPage({
                     </div>
 
                     {contactError && (
-                      <p className="text-[11px] font-semibold text-red-600">{contactError}</p>
+                      <p className="text-xs font-semibold text-red-600">{contactError}</p>
                     )}
 
                     <button

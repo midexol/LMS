@@ -97,7 +97,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment }: Catalo
                 Course Catalog
               </h1>
               <p className="text-neutral-600 text-sm mt-1 max-w-md leading-relaxed">
-                Explore university-grade courses with automated evaluation rubrics and mentor oversight.
+                Browse courses with structured lessons, instant assignment feedback and instructor review.
               </p>
             </div>
 

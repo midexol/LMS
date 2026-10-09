@@ -57,7 +57,7 @@ export default function LoginPage() {
             {[
               "Single active enrollment to keep you focused",
               "Instant automated rubric evaluation",
-              "Verified academic transcripts and grade overrides",
+              "Instructor review and grade overrides",
             ].map((f) => (
               <div key={f} className="flex items-center gap-3 text-xs text-neutral-200">
                 <div className="w-5 h-5 rounded-full bg-[#4A1A45] border border-white/20 flex items-center justify-center shrink-0">

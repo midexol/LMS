@@ -291,7 +291,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
-                  Official academic transcript recorded
+                  Progress and grades saved to your profile
                 </div>
               </div>
             </div>

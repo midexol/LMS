@@ -3,8 +3,8 @@ import "./globals.css";
 import { PrivyClientProvider } from "@/components/providers/PrivyClientProvider";
 
 export const metadata: Metadata = {
-  title: "Academia LMS - The Premier E-Learning Platform",
-  description: "Academia is a modern polytechnic learning management system featuring single course progression, accredited curriculum, and instructor evaluation studio. A product of The Federal Polytechnic, Ado-Ekiti.",
+  title: "Academia LMS - Learn one course at a time",
+  description: "Academia LMS: structured online courses with instant assignment feedback and a completion certificate. Take one course at a time and finish it.",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
