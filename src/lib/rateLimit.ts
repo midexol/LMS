@@ -152,22 +152,24 @@ export async function checkRateLimit(
 }
 
 /**
- * Extracts the real client IP from incoming Next.js Request headers
+ * Extracts the real client IP from incoming Next.js Request headers.
+ * Header trust is platform-specific: a header the platform does not overwrite
+ * can be forged by the client to dodge rate limits.
  */
 export function getClientIp(req: Request): string {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    const firstIp = forwardedFor.split(",")[0].trim();
-    if (firstIp) return firstIp;
+  const header = (name: string) => req.headers.get(name)?.split(",")[0].trim() || null;
+
+  // Vercel overwrites x-real-ip / x-forwarded-for with the true client IP
+  if (process.env.VERCEL) {
+    return header("x-real-ip") || header("x-forwarded-for") || "127.0.0.1";
   }
 
-  const realIp = req.headers.get("x-real-ip");
-  if (realIp) return realIp.trim();
+  // Netlify sets x-nf-client-connection-ip at its edge; its x-forwarded-for may include client-supplied values
+  const netlifyIp = header("x-nf-client-connection-ip");
+  if (netlifyIp) return netlifyIp;
 
-  const cfIp = req.headers.get("cf-connecting-ip");
-  if (cfIp) return cfIp.trim();
-
-  return "127.0.0.1";
+  // Self-hosted / local: only trustworthy behind a proxy that overwrites these headers
+  return header("x-forwarded-for") || header("x-real-ip") || header("cf-connecting-ip") || "127.0.0.1";
 }
 
 /**
