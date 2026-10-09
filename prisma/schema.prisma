@@ -5,9 +5,9 @@ generator client {
 datasource db {
   provider  = "postgresql"
   // Pooled connection (Supabase transaction pooler, port 6543) used by the app at runtime
-  url       = env("POSTGRES_PRISMA_URL")
+  url       = env("DATABASE_URL")
   // Direct connection (port 5432) used by `prisma db push` / migrations
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
