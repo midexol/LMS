@@ -99,7 +99,7 @@ export function LandingPage({
             </h1>
 
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              The Federal Polytechnic, Ado-Ekiti Learning Management System delivers university-grade instruction with structured curriculum pathways, single active enrollment focus, and automated criteria evaluation.
+              Academia LMS delivers university-grade polytechnic instruction with structured curriculum pathways, single active enrollment focus, and automated criteria evaluation.
             </p>
 
             {/* Mobile Thumb-Friendly CTA Buttons */}
@@ -117,25 +117,9 @@ export function LandingPage({
                 Browse Courses
               </Link>
             </div>
-
-            {/* Trust Highlights Row */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-5 pt-3 text-xs text-neutral-600 font-semibold">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#4A1A45] shrink-0" />
-                <span>Single enrollment lock</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#896A86] shrink-0" />
-                <span>Automated benchmark rubrics</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#4A1A45] shrink-0" />
-                <span>70% mastery standard</span>
-              </div>
-            </div>
           </div>
 
-          {/* Right Hero Image Container (Mobile responsive with subtle floating depth) */}
+          {/* Right Hero Image Container (Clean, unobstructed real photography) */}
           <div className="lg:col-span-6 relative">
             <div className="relative rounded-3xl overflow-hidden border border-neutral-200/90 shadow-xl bg-neutral-100 group">
               <img
@@ -143,18 +127,6 @@ export function LandingPage({
                 alt="Student studying on laptop in university library lounge"
                 className="w-full h-auto aspect-[16/10] sm:aspect-[16/9] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2A0E27]/40 via-transparent to-transparent pointer-events-none" />
-
-              {/* Floating Mobile/Desktop Micro-Card: 1:1 Focus */}
-              <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-xs p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#4A1A45] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
-                  1:1
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs font-bold text-black truncate">Single Active Enrollment</p>
-                  <p className="text-[10px] text-neutral-500 truncate">Deep immersion without multi-tab distraction</p>
-                </div>
-              </div>
             </div>
           </div>
 
