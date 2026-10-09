@@ -47,3 +47,16 @@ export function getAppUrl(): string {
   }
   return "http://localhost:3000";
 }
+
+/**
+ * Validates an optional phone number. Accepts spaces, dashes and brackets, an optional leading +,
+ * and 7-15 digits (covers Nigerian local numbers like 0803 123 4567 and international numbers).
+ * Returns the cleaned number, `null` when empty, or `undefined` when invalid.
+ */
+export function normalizePhone(input: unknown): string | null | undefined {
+  if (input === null || input === undefined) return null;
+  if (typeof input !== "string") return undefined;
+  const cleaned = input.replace(/[\s\-()]/g, "");
+  if (cleaned === "") return null;
+  return /^\+?[0-9]{7,15}$/.test(cleaned) ? cleaned : undefined;
+}

@@ -21,6 +21,7 @@ interface ProfileClientProps {
 
 export function ProfileClient({ currentUser, enrollments, submissions, payments = [] }: ProfileClientProps) {
   const [name, setName] = useState(currentUser.name || "");
+  const [phone, setPhone] = useState(currentUser.phone || "");
   const [faculty, setFaculty] = useState(currentUser.faculty || ACADEMIC_STRUCTURE[0].name);
   const [department, setDepartment] = useState(
     currentUser.department || (getDepartmentsForFaculty(currentUser.faculty || ACADEMIC_STRUCTURE[0].name)[0] ?? "")
@@ -96,6 +97,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           name,
           faculty,
           department,
+          phone,
           password: password || undefined,
           currentPassword: password ? currentPassword : undefined,
         }),
@@ -443,6 +445,20 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 className="w-full px-4 py-2.5 rounded-xl bg-neutral-100 border border-neutral-200 text-sm text-neutral-500 cursor-not-allowed outline-none"
               />
               <span className="text-[10px] text-neutral-400 mt-1 block">Institutional login email cannot be modified.</span>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">
+                Phone Number <span className="text-neutral-400 normal-case font-normal">(optional)</span>
+              </label>
+              <input
+                type="tel"
+                autoComplete="tel"
+                placeholder="e.g. 0803 123 4567"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+              />
             </div>
 
             {currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN" && (

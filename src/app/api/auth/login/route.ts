@@ -31,27 +31,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
-    // Support both bcrypt hashes and legacy plain-text passwords
-    let passwordMatch = false;
-    if (user.password.startsWith("$2")) {
-      passwordMatch = await bcrypt.compare(password, user.password);
-    } else {
-      // Legacy plain-text comparison (dev seed data)
-      passwordMatch = user.password === password;
-    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
-    // Automatically migrate legacy plaintext seed password to bcrypt upon successful authentication
-    if (!user.password.startsWith("$2")) {
-      const secureHash = await bcrypt.hash(password, 12);
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { password: secureHash },
-      });
-    }
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
 
     const cookieStore = await cookies();
     cookieStore.set("lms_user_id", signSessionToken(user.id), {

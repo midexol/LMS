@@ -87,6 +87,11 @@ export async function POST(req: Request) {
       });
     }
 
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
+
     // Set signed LMS session cookie
     const cookieStore = await cookies();
     cookieStore.set("lms_user_id", signSessionToken(user.id), {

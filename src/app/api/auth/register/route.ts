@@ -1,4 +1,4 @@
-import { getAppUrl } from "@/lib/utils";
+import { getAppUrl, normalizePhone } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { name, email, password, role, faculty, department } = await req.json();
+    const { name, email, password, phone, faculty, department } = await req.json();
 
     const trimmedName = typeof name === "string" ? name.trim() : "";
     const trimmedEmail = typeof email === "string" ? email.toLowerCase().trim() : "";
@@ -35,6 +35,11 @@ export async function POST(req: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
       return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
+    }
+
+    const cleanPhone = normalizePhone(phone);
+    if (cleanPhone === undefined) {
+      return NextResponse.json({ error: "Please enter a valid phone number, or leave it blank." }, { status: 400 });
     }
 
     if (!password) {
@@ -74,6 +79,8 @@ export async function POST(req: Request) {
         role: "STUDENT", // Enforce STUDENT on public registration. Faculty/Tutors are provisioned via Admin
         faculty: faculty?.trim() || null,
         department: department?.trim() || null,
+        phone: cleanPhone,
+        lastLoginAt: new Date(),
         emailVerified: false,
         verificationToken,
         verificationTokenExpiry,

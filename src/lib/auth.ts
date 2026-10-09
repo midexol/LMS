@@ -9,6 +9,7 @@ export interface SessionUser {
   role: "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN";
   faculty?: string | null;
   department?: string | null;
+  phone?: string | null;
   emailVerified: boolean;
 }
 
@@ -106,6 +107,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       role: user.role as "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN",
       faculty: user.faculty,
       department: user.department,
+      phone: user.phone,
       emailVerified: user.emailVerified,
     };
   } catch (error) {

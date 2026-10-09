@@ -14,11 +14,13 @@ import {
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { SignupsChart } from "@/components/admin/SignupsChart";
 
 /* ─── Types ─────────────────────────────────────────────────── */
 interface UserItem {
   id: string; name: string; email: string; role: string;
   faculty?: string | null; department?: string | null;
+  phone?: string | null; lastLoginAt?: string | Date | null; emailVerified?: boolean;
   createdAt: string | Date;
   _count: { enrollments: number; submissions: number; courses: number };
 }
@@ -383,21 +385,24 @@ export function AdminDashboardClient({
   }, []);
 
   const downloadCSV = (filename: string, headers: string[], rows: (string | number)[][]) => {
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [
-        headers.join(","),
-        ...rows.map((r) =>
-          r.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(",")
-        ),
-      ].join("\n");
-    const encodedUri = encodeURI(csvContent);
+    // Cells starting with = + - @ are treated as formulas by Excel/Sheets; a leading apostrophe
+    // keeps user-supplied text (names, messages) from running as one.
+    const safeCell = (cell: unknown) => {
+      const text = String(cell ?? "");
+      const guarded = /^[=+\-@\t\r]/.test(text) ? `'${text}` : text;
+      return `"${guarded.replace(/"/g, '""')}"`;
+    };
+    const csvContent = [headers.join(","), ...rows.map((r) => r.map(safeCell).join(","))].join("\n");
+    // Blob download (not a data: URL, which breaks on '#'), with a BOM so Excel reads UTF-8 names correctly
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const objectUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.setAttribute("href", objectUrl);
     link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(objectUrl);
     success(`Generated and exported ${filename}`);
   };
 
@@ -806,6 +811,8 @@ export function AdminDashboardClient({
               ))}
             </div>
 
+            <SignupsChart createdAt={users.map((u) => u.createdAt)} />
+
             {/* Visual Analytics Row: Modern Dual Bar & SVG Ring Distribution (CLEAR & READABLE) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Category Throughput Dual Comparison */}
@@ -1212,7 +1219,11 @@ export function AdminDashboardClient({
                       <tr key={u.id} className="hover:bg-neutral-50">
                         <td className="p-4">
                           <p className="font-bold text-black">{u.name}</p>
-                          <p className="text-[10px] text-neutral-500">{u.email}</p>
+                          <p className="text-[10px] text-neutral-500">
+                            {u.email}
+                            {u.emailVerified === false && <span className="ml-1 text-amber-600 font-semibold">(unverified)</span>}
+                          </p>
+                          {u.phone && <p className="text-[10px] text-neutral-500">{u.phone}</p>}
                         </td>
                         <td className="p-4"><RoleBadge role={u.role} /></td>
                         <td className="p-4">
@@ -1231,9 +1242,21 @@ export function AdminDashboardClient({
                         </td>
                         <td className="p-4 text-black font-bold">{u._count.enrollments}</td>
                         <td className="p-4 text-black font-bold">{u._count.submissions}</td>
-                        <td className="p-4 text-neutral-500">{formatDate(u.createdAt)}</td>
+                        <td className="p-4 text-neutral-500">
+                          <p>{formatDate(u.createdAt)}</p>
+                          <p className="text-[10px] text-neutral-400">
+                            Last login: {u.lastLoginAt ? formatDate(u.lastLoginAt) : "never"}
+                          </p>
+                        </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
+                            <Link
+                              href={`/admin/users/${u.id}`}
+                              className="px-2.5 py-1.5 rounded-lg border border-neutral-200 text-[11px] font-bold text-black hover:bg-neutral-100"
+                              title="View full profile, payments and progress"
+                            >
+                              View
+                            </Link>
                             <button
                               onClick={() => setEditUser(u)}
                               className="p-1.5 rounded-lg border border-neutral-200 text-black hover:bg-neutral-100"
@@ -1730,8 +1753,12 @@ export function AdminDashboardClient({
                   onClick={() =>
                     downloadCSV(
                       "users-directory.csv",
-                      ["User ID", "Full Name", "Email", "Role", "Faculty", "Department", "Registered Date"],
-                      users.map((u) => [u.id, u.name, u.email, u.role, u.faculty || "", u.department || "", String(u.createdAt)])
+                      ["User ID", "Full Name", "Email", "Email Verified", "Phone", "Role", "Faculty", "Department", "Registered Date", "Last Login"],
+                      users.map((u) => [
+                        u.id, u.name, u.email, u.emailVerified ? "Yes" : "No", u.phone || "", u.role,
+                        u.faculty || "", u.department || "", String(u.createdAt),
+                        u.lastLoginAt ? String(u.lastLoginAt) : "",
+                      ])
                     )
                   }
                   className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"

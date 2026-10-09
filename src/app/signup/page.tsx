@@ -14,6 +14,7 @@ import { BrandLogo } from "@/components/ui/BrandLogo";
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +55,7 @@ export default function SignupPage() {
         body: JSON.stringify({
           name,
           email,
+          phone,
           password,
           faculty,
           department,
@@ -198,6 +200,21 @@ export default function SignupPage() {
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
+            </div>
+
+            {/* Phone (optional) */}
+            <div className="space-y-1">
+              <label className="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider">
+                Phone Number <span className="text-neutral-400 normal-case font-normal tracking-normal">(optional)</span>
+              </label>
+              <input
+                type="tel"
+                autoComplete="tel"
+                placeholder="e.g. 0803 123 4567"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
+              />
             </div>
 
             {/* Password */}

@@ -18,6 +18,8 @@ model User {
   role       String   @default("STUDENT") // "STUDENT" | "TUTOR" | "ADMIN"
   faculty          String?   // School/Faculty
   department       String?   // Specific Department
+  phone            String?   // Optional contact number
+  lastLoginAt      DateTime?
   emailVerified    Boolean   @default(false)
   emailVerifiedAt  DateTime?
   verificationToken String?  @unique

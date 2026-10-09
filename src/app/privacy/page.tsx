@@ -16,7 +16,7 @@ const sections: LegalSection[] = [
   {
     title: "What we collect",
     bullets: [
-      "Account details: your name, email address, faculty and department, and your password (stored only as a one-way hash, never in readable form).",
+      "Account details: your name, email address, faculty and department, an optional phone number, the time of your last sign-in, and your password (stored only as a one-way hash, never in readable form).",
       "Sign-in details from Privy if you use Google, email or wallet sign-in: your email address or wallet address and your name if your Google account provides it.",
       "Learning activity: your enrolments, lesson progress, assignment answers, scores, feedback, certificates, and discussion posts and replies.",
       "Payment records: the amount, currency, status, date and reference of each payment. Your card or bank details are handled by Paystack and are never stored by us.",

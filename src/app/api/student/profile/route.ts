@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser, signSessionToken, SESSION_MAX_AGE_SECONDS } from "@/lib/auth";
 import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { cookies } from "next/headers";
+import { normalizePhone } from "@/lib/utils";
 import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
@@ -17,13 +18,21 @@ export async function POST(req: Request) {
       return rateLimitResponse(rateLimit);
     }
 
-    const { name, password, currentPassword, faculty, department } = await req.json();
+    const { name, password, currentPassword, faculty, department, phone } = await req.json();
 
     if (!name || name.trim().length === 0) {
       return NextResponse.json({ error: "Name cannot be empty." }, { status: 400 });
     }
 
     const updateData: any = { name: name.trim() };
+
+    if (phone !== undefined) {
+      const cleanPhone = normalizePhone(phone);
+      if (cleanPhone === undefined) {
+        return NextResponse.json({ error: "Please enter a valid phone number, or leave it blank." }, { status: 400 });
+      }
+      updateData.phone = cleanPhone;
+    }
 
     if (faculty !== undefined) {
       updateData.faculty = faculty ? faculty.trim() : null;

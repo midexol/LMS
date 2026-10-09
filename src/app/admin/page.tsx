@@ -40,6 +40,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         role: true,
         faculty: true,
         department: true,
+        phone: true,
+        lastLoginAt: true,
+        emailVerified: true,
         createdAt: true,
         _count: {
           select: {
