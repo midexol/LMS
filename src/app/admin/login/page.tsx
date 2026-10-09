@@ -45,8 +45,8 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex p-4 rounded-2xl bg-black text-white shadow-md">
-            <FiShield className="w-9 h-9 text-[#D4A373]" />
+          <div className="inline-flex p-4 rounded-2xl bg-[#2D0F2A] text-white shadow-md border border-[#4A1A45]/40">
+            <FiShield className="w-9 h-9 text-[#D6BDD4]" />
           </div>
           <h1 className="text-2xl font-black tracking-tight text-black">Superadmin Control Panel</h1>
           <p className="text-xs text-neutral-500 font-medium">
@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
                   placeholder="admin@lms.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>
@@ -101,7 +101,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-2 shadow-sm"
+              className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-2 shadow-sm"
             >
               <FiLogIn className="w-4 h-4" />
               {loading ? "Authenticating..." : "Enter Admin Console"}
@@ -111,11 +111,11 @@ export default function AdminLoginPage() {
 
         <p className="text-center text-xs text-neutral-500">
           Not an admin?{" "}
-          <Link href="/login" className="text-black hover:underline font-bold transition-all">
+          <Link href="/login" className="text-[#4A1A45] hover:underline font-bold transition-all">
             Student Login
           </Link>
           {" · "}
-          <Link href="/instructor/login" className="text-black hover:underline font-bold transition-all">
+          <Link href="/instructor/login" className="text-[#4A1A45] hover:underline font-bold transition-all">
             Instructor Login
           </Link>
         </p>

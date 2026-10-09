@@ -66,7 +66,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
   return (
     <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <FiAward className="w-5 h-5 text-[#784D28]" />
+        <FiAward className="w-5 h-5 text-[#4A1A45]" />
         Student Submissions &amp; Grade Override Reviewer
       </h2>
 
@@ -95,7 +95,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
               >
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                   <div>
-                    <span className="text-[11px] font-bold text-[#784D28] uppercase tracking-wider">
+                    <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">
                       {sub.courseTitle}
                     </span>
                     <h3 className="font-bold text-black text-sm mt-0.5">
@@ -120,7 +120,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                     <span
                       className={`text-sm font-bold px-3 py-1 rounded-full border ${
                         scorePercent !== null && scorePercent >= 70
-                          ? "bg-black text-white border-black"
+                          ? "bg-[#4A1A45] text-white border-[#4A1A45]"
                           : scorePercent !== null
                           ? "bg-neutral-200 text-neutral-800 border-neutral-300"
                           : "bg-neutral-100 text-neutral-600 border-neutral-200"
@@ -151,7 +151,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                 {/* AI Feedback */}
                 {sub.aiFeedback && (
                   <div className="p-4 rounded-xl bg-white border border-neutral-200">
-                    <p className="text-[11px] font-bold text-[#784D28] mb-1 uppercase tracking-wider">Automated Evaluation Feedback:</p>
+                    <p className="text-[11px] font-bold text-[#4A1A45] mb-1 uppercase tracking-wider">Automated Evaluation Feedback:</p>
                     <p className="text-xs text-neutral-700 whitespace-pre-wrap leading-relaxed">
                       {sub.aiFeedback}
                     </p>
@@ -168,9 +168,9 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
 
                 {/* Override Form */}
                 {isEditing && (
-                  <div className="p-5 rounded-xl bg-white border-2 border-black space-y-3 mt-2">
+                  <div className="p-5 rounded-xl bg-white border-2 border-[#4A1A45] space-y-3 mt-2">
                     <h4 className="font-bold text-black text-xs flex items-center gap-1.5">
-                      <FiEdit2 className="w-3.5 h-3.5 text-[#784D28]" />
+                      <FiEdit2 className="w-3.5 h-3.5 text-[#4A1A45]" />
                       Tutor Grade Override
                     </h4>
                     <div className="flex gap-4 flex-wrap">
@@ -184,7 +184,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                           max={maxScore}
                           value={editScore}
                           onChange={(e) => setEditScore(Number(e.target.value))}
-                          className="px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black w-28"
+                          className="px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] w-28"
                         />
                       </div>
                       <div className="flex-1 min-w-[200px]">
@@ -196,7 +196,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                           placeholder="Explain your grade adjustment..."
                           value={editFeedback}
                           onChange={(e) => setEditFeedback(e.target.value)}
-                          className="w-full px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
+                          className="w-full px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
                         />
                       </div>
                     </div>
@@ -210,7 +210,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                       <button
                         onClick={() => handleSaveGradeOverride(sub.id)}
                         disabled={saving}
-                        className="px-4 py-1.5 rounded-lg bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm disabled:opacity-60"
+                        className="px-4 py-1.5 rounded-lg bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm disabled:opacity-60"
                       >
                         <FiSave className="w-3.5 h-3.5" />
                         {saving ? "Saving..." : "Save Override"}

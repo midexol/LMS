@@ -112,7 +112,7 @@ export function InstructorClient({
                   onClick={() => switchTab(item.id as any)}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all ${
                     active
-                      ? "bg-white text-black shadow-sm"
+                      ? "bg-white text-[#4A1A45] shadow-sm font-bold"
                       : "text-neutral-400 hover:text-white hover:bg-neutral-900"
                   }`}
                 >
@@ -130,7 +130,7 @@ export function InstructorClient({
               href="/courses"
               className="w-full flex items-center gap-3 px-3.5 py-2 rounded-2xl text-xs font-semibold text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all"
             >
-              <FiBook className="w-4 h-4 text-[#D4A373]" />
+              <FiBook className="w-4 h-4 text-[#D6BDD4]" />
               <span>Course Catalog</span>
             </Link>
           </div>
@@ -142,13 +142,13 @@ export function InstructorClient({
           <div className="bg-neutral-900/90 rounded-2xl p-4 border border-neutral-800 space-y-2.5">
             <div className="flex items-center justify-between text-xs">
               <span className="font-bold text-white">Active Learners</span>
-              <span className="text-[10px] text-[#D4A373] font-semibold">{metrics.totalEnrollments} enrolled</span>
+              <span className="text-[10px] text-[#D6BDD4] font-semibold">{metrics.totalEnrollments} enrolled</span>
             </div>
             <div className="flex items-center gap-1.5">
               {tutorCourses.flatMap((c) => c.enrollments.map((e: any) => e.student?.name || "Student")).slice(0, 3).map((name: string, i: number) => (
                 <div
                   key={i}
-                  className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white bg-[#784D28] border border-neutral-700"
+                  className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white bg-[#4A1A45] border border-neutral-700"
                 >
                   {name.charAt(0)}
                 </div>
@@ -162,7 +162,7 @@ export function InstructorClient({
             <div className="space-y-1">
               <div className="w-full bg-neutral-800 h-1.5 rounded-full overflow-hidden">
                 <div
-                  className="bg-[#D4A373] h-full rounded-full transition-all duration-500"
+                  className="bg-[#D6BDD4] h-full rounded-full transition-all duration-500"
                   style={{ width: `${allSubmissions.length > 0 ? Math.min(100, Math.round((gradedSubmissions.length / allSubmissions.length) * 100)) : 100}%` }}
                 />
               </div>
@@ -177,7 +177,7 @@ export function InstructorClient({
           {/* Instructor Identity Card with Direct Sign Out (NO redundant settings trigger) */}
           <div className="bg-neutral-900/90 rounded-2xl p-3 border border-neutral-800 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#784D28] text-white flex items-center justify-center font-bold text-xs shrink-0">
+              <div className="w-8 h-8 rounded-full bg-[#4A1A45] text-white flex items-center justify-center font-bold text-xs shrink-0">
                 {currentUser.name.charAt(0)}
               </div>
               <div className="min-w-0 flex-1">
@@ -227,12 +227,12 @@ export function InstructorClient({
               href="/courses"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-300 text-xs font-bold text-black hover:border-black transition-all"
             >
-              <FiBook className="w-3.5 h-3.5 text-[#784D28]" />
+              <FiBook className="w-3.5 h-3.5 text-[#4A1A45]" />
               <span>Course Catalog</span>
             </Link>
             <button
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black text-white hover:bg-neutral-800 text-xs font-bold transition-all shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#4A1A45] text-white hover:bg-[#3B1537] text-xs font-bold transition-all shadow-sm"
               title="Sign Out"
             >
               <FiLogOut className="w-3.5 h-3.5 text-neutral-300" />
@@ -249,23 +249,23 @@ export function InstructorClient({
               <div
                 className="rounded-3xl p-8 text-white relative overflow-hidden shadow-md"
                 style={{
-                  background: "linear-gradient(115deg, #000000 0%, #141414 55%, #3B2412 85%, #784D28 100%)",
+                  background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
                 }}
               >
                 <div className="relative max-w-xl space-y-3">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#D4A373]">Good Afternoon</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">Good Afternoon</p>
                   <h2 className="font-bold text-3xl leading-snug">
                     Welcome back, {currentUser.name.split(" ")[0]}
                   </h2>
                   <p className="text-xs text-neutral-300 leading-relaxed">
                     Period 3 is checked in and your active grading queue has{" "}
-                    <strong className="text-white underline decoration-[#D4A373]">{pendingSubmissions.length || 12} submissions</strong> waiting for review.
+                    <strong className="text-white underline decoration-[#D6BDD4]">{pendingSubmissions.length || 12} submissions</strong> waiting for review.
                   </p>
 
                   <div className="flex items-center gap-3 pt-3">
                     <button
                       onClick={() => setActiveTab("classes")}
-                      className="px-5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-100 font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
+                      className="px-5 py-2.5 rounded-full bg-white text-[#4A1A45] hover:bg-[#F7F2F6] font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
                     >
                       <FiPlus className="w-3.5 h-3.5" /> Create assignment
                     </button>
@@ -331,7 +331,7 @@ export function InstructorClient({
                         <span>Enrolled Students</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
                         <span>Evaluations Logged</span>
                       </div>
                     </div>
@@ -352,12 +352,12 @@ export function InstructorClient({
                     </div>
 
                     <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-[#784D28]/15 text-[#784D28] border border-[#784D28]/20 flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/20 flex items-center justify-center shrink-0">
                         <FiAward className="w-5 h-5" />
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Submissions Logged</span>
-                        <span className="text-lg font-black text-[#784D28] leading-tight">
+                        <span className="text-lg font-black text-[#4A1A45] leading-tight">
                           {allSubmissions.length} <span className="text-xs font-semibold text-neutral-500">total</span>
                         </span>
                       </div>
@@ -409,7 +409,7 @@ export function InstructorClient({
                                 <div className="flex items-center gap-3 text-[11px] font-bold text-neutral-500">
                                   <span className="text-black">{c.enrollments.length} enrolled</span>
                                   <span>·</span>
-                                  <span className="text-[#784D28]">{courseSubs.length} submissions</span>
+                                  <span className="text-[#4A1A45]">{courseSubs.length} submissions</span>
                                   <span>·</span>
                                   <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 font-mono">
                                     {cScore}% avg
@@ -426,7 +426,7 @@ export function InstructorClient({
                                     title={`Enrollments: ${c.enrollments.length}`}
                                   />
                                   <div
-                                    className="bg-[#784D28] h-full rounded-full transition-all duration-500"
+                                    className="bg-[#4A1A45] h-full rounded-full transition-all duration-500"
                                     style={{ width: `${Math.max(5, subPct)}%` }}
                                     title={`Submissions: ${courseSubs.length}`}
                                   />
@@ -445,7 +445,7 @@ export function InstructorClient({
                   <div className="pb-3 border-b border-neutral-100">
                     <div className="flex items-center justify-between">
                       <h3 className="font-black text-lg text-black tracking-tight">Grade Distribution</h3>
-                      <span className="text-xs font-bold text-[#784D28]">
+                      <span className="text-xs font-bold text-[#4A1A45]">
                         {gradeDistribution.pctA + gradeDistribution.pctB}% Passing
                       </span>
                     </div>
@@ -475,7 +475,7 @@ export function InstructorClient({
                             cx="50"
                             cy="50"
                             r="38"
-                            stroke="#784D28"
+                            stroke="#4A1A45"
                             strokeWidth="12"
                             strokeDasharray={`${dashB} 239`}
                             strokeDashoffset={`-${dashA}`}
@@ -497,7 +497,7 @@ export function InstructorClient({
                     <div className="absolute flex flex-col items-center justify-center text-center">
                       <span className="font-black text-3xl text-black">{avgGradeLetter}</span>
                       <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
-                      <span className="text-[10px] font-bold text-[#784D28] mt-0.5">{metrics.avgScore ?? 86}% Mean</span>
+                      <span className="text-[10px] font-bold text-[#4A1A45] mt-0.5">{metrics.avgScore ?? 86}% Mean</span>
                     </div>
                   </div>
 
@@ -519,13 +519,13 @@ export function InstructorClient({
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-black flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
                           Grade B (80–89%)
                         </span>
-                        <span className="font-black text-[#784D28]">{gradeDistribution.pctB}%</span>
+                        <span className="font-black text-[#4A1A45]">{gradeDistribution.pctB}%</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                        <div className="bg-[#784D28] h-full rounded-full" style={{ width: `${gradeDistribution.pctB}%` }} />
+                        <div className="bg-[#4A1A45] h-full rounded-full" style={{ width: `${gradeDistribution.pctB}%` }} />
                       </div>
                     </div>
 
@@ -551,10 +551,10 @@ export function InstructorClient({
           {activeTab === "classes" && (
             <div className="space-y-6">
               {editingCourse ? (
-                <div className="bg-white rounded-3xl p-8 border-2 border-black shadow-md space-y-6">
+                <div className="bg-white rounded-3xl p-8 border-2 border-[#4A1A45] shadow-md space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-neutral-200">
                     <div>
-                      <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Editing Mode</span>
+                      <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Editing Mode</span>
                       <h2 className="font-bold text-2xl text-black">Update Course: {editingCourse.title}</h2>
                     </div>
                     <button
@@ -596,7 +596,7 @@ export function InstructorClient({
                                 {c.department}
                               </span>
                             )}
-                            <span className="text-[10px] font-bold text-[#784D28] uppercase">
+                            <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
                               {c.faculty || c.category} · {c.level}
                             </span>
                           </div>
@@ -619,7 +619,7 @@ export function InstructorClient({
                             setEditingCourse(c);
                             window.scrollTo({ top: 0, behavior: "smooth" });
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-[11px] shadow-sm transition-all"
+                          className="px-3 py-1.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-[11px] shadow-sm transition-all"
                         >
                           Edit Course
                         </button>
@@ -671,9 +671,9 @@ export function InstructorClient({
                               {e.student.department || "General"}
                             </span>
                           </td>
-                          <td className="p-3 text-[#784D28] font-bold">{c.title}</td>
+                          <td className="p-3 text-[#4A1A45] font-bold">{c.title}</td>
                           <td className="p-3">
-                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#4A1A45] text-white">
                               {e.status}
                             </span>
                           </td>
@@ -715,14 +715,14 @@ export function InstructorClient({
               <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-neutral-100">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl font-bold shadow-md">
+                    <div className="w-16 h-16 rounded-2xl bg-[#4A1A45] text-white flex items-center justify-center text-2xl font-bold shadow-md">
                       {currentUser.name.charAt(0)}
                     </div>
                     <div>
                       <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
                       <p className="text-xs text-neutral-500">{currentUser.email}</p>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200 text-[#784D28]">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200 text-[#4A1A45]">
                           {currentUser.role === "ADMIN" ? "Administrator & Faculty" : "Faculty Instructor"}
                         </span>
                         {currentUser.department && (
@@ -785,7 +785,7 @@ export function InstructorClient({
                       <p className="font-bold text-black">Single Course Immersion Lock</p>
                       <p className="text-neutral-500 text-[11px]">Restrict students to one active course at a time</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-full bg-black text-white font-bold text-[10px]">Enforced</span>
+                    <span className="px-2.5 py-1 rounded-full bg-[#4A1A45] text-white font-bold text-[10px]">Enforced</span>
                   </div>
                   <div className="py-3 flex items-center justify-between">
                     <div>

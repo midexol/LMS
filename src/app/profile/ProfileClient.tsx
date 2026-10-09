@@ -142,18 +142,18 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* STUDENT HEADER */}
         <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center font-black text-2xl shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-[#4A1A45] text-white flex items-center justify-center font-black text-2xl shadow-sm">
               {currentUser.name.charAt(0).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="font-black text-2xl text-black">{currentUser.name}</h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/30 text-[10px] font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 text-[10px] font-bold uppercase tracking-wider">
                   {currentUser.role}
                 </span>
               </div>
               <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1.5">
-                <FiMail className="w-3.5 h-3.5 text-[#784D28]" /> {currentUser.email}
+                <FiMail className="w-3.5 h-3.5 text-[#4A1A45]" /> {currentUser.email}
               </p>
               {currentUser.department && (
                 <div className="flex items-center gap-2 mt-2">
@@ -172,7 +172,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="flex items-center gap-3 text-xs font-semibold flex-wrap">
               <Link
                 href="/admin"
-                className="px-5 py-2.5 rounded-full bg-black text-white hover:bg-neutral-800 font-bold transition-all shadow-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all shadow-sm flex items-center gap-2"
               >
                 <FiShield className="w-4 h-4 text-emerald-400" />
                 <span>Superadmin Console</span>
@@ -181,7 +181,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 href="/admin?tab=settings"
                 className="px-5 py-2.5 rounded-full bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all shadow-sm flex items-center gap-2"
               >
-                <FiSliders className="w-4 h-4 text-[#784D28]" />
+                <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                 <span>System Settings</span>
               </Link>
             </div>
@@ -189,16 +189,16 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="flex items-center gap-3 text-xs font-semibold flex-wrap">
               <Link
                 href="/instructor"
-                className="px-5 py-2.5 rounded-full bg-black text-white hover:bg-neutral-800 font-bold transition-all shadow-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all shadow-sm flex items-center gap-2"
               >
-                <FiBookOpen className="w-4 h-4 text-[#D4A373]" />
+                <FiBookOpen className="w-4 h-4 text-[#D6BDD4]" />
                 <span>Instructor Studio</span>
               </Link>
               <Link
                 href="/instructor?tab=settings"
                 className="px-5 py-2.5 rounded-full bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all shadow-sm flex items-center gap-2"
               >
-                <FiSliders className="w-4 h-4 text-[#784D28]" />
+                <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                 <span>Studio Settings</span>
               </Link>
             </div>
@@ -214,7 +214,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
               <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
-                <span className="text-xl font-black text-[#784D28]">{averagePercentage}%</span>
+                <span className="text-xl font-black text-[#4A1A45]">{averagePercentage}%</span>
               </div>
             </div>
           )}
@@ -244,7 +244,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/30 uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 uppercase tracking-wider">
                     Current Active Track
                   </span>
                   <span className="text-xs text-neutral-500">{activeEnrollment.course.category}</span>
@@ -265,7 +265,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 </button>
                 <Link
                   href={`/student/courses/${activeEnrollment.course.id}`}
-                  className="px-6 py-2.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+                  className="px-6 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
                 >
                   Go to Course <FiArrowRight className="w-4 h-4" />
                 </Link>
@@ -279,7 +279,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           <>
             <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-            <FiAward className="w-5 h-5 text-[#784D28]" />
+            <FiAward className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
           </h2>
 
@@ -287,7 +287,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="text-center py-8 space-y-3">
               <FiBookOpen className="w-10 h-10 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No course enrollments registered yet.</p>
-              <Link href="/courses" className="text-xs text-[#784D28] font-bold hover:underline">
+              <Link href="/courses" className="text-xs text-[#4A1A45] font-bold hover:underline">
                 Browse course catalog
               </Link>
             </div>
@@ -307,12 +307,12 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   {enrollments.map((e) => (
                     <tr key={e.id} className="hover:bg-neutral-50/80 transition-colors">
                       <td className="p-3.5 font-bold text-black">{e.course.title}</td>
-                      <td className="p-3.5 font-semibold text-[#784D28]">{e.course.category}</td>
+                      <td className="p-3.5 font-semibold text-[#4A1A45]">{e.course.category}</td>
                       <td className="p-3.5">
                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                           e.status === "ACTIVE"
-                            ? "bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/30"
-                            : "bg-black text-white"
+                            ? "bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30"
+                            : "bg-[#4A1A45] text-white"
                         }`}>
                           {e.status}
                         </span>
@@ -380,7 +380,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       <td className="p-3.5 text-right">
                         <button
                           onClick={() => setSelectedReceipt(p)}
-                          className="px-3 py-1 rounded-full text-[11px] font-bold bg-neutral-100 hover:bg-black hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-full text-[11px] font-bold bg-neutral-100 hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
                         >
                           <FiPrinter className="w-3 h-3" /> View Receipt
                         </button>
@@ -422,7 +422,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
               />
             </div>
 
@@ -444,7 +444,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   <select
                     value={faculty}
                     onChange={(e) => handleFacultyChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   >
                     {ACADEMIC_STRUCTURE.map((fac) => (
                       <option key={fac.name} value={fac.name}>{fac.name}</option>
@@ -457,7 +457,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   <select
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   >
                     {getDepartmentsForFaculty(faculty).map((dept) => (
                       <option key={dept} value={dept}>{dept}</option>
@@ -469,7 +469,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
             <div className="pt-4 border-t border-neutral-200 space-y-4">
               <h3 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-1.5">
-                <FiLock className="w-4 h-4 text-[#784D28]" /> Security &amp; Password
+                <FiLock className="w-4 h-4 text-[#4A1A45]" /> Security &amp; Password
               </h3>
 
               <div>
@@ -481,7 +481,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     minLength={6}
-                    className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                    className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   />
                   <button
                     type="button"
@@ -505,8 +505,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       confirmPassword && confirmPassword !== password
                         ? "border-red-400 focus:border-red-500"
                         : confirmPassword && confirmPassword === password
-                        ? "border-black focus:border-black"
-                        : "border-neutral-200 focus:border-black"
+                        ? "border-black focus:border-[#4A1A45]"
+                        : "border-neutral-200 focus:border-[#4A1A45]"
                     }`}
                   />
                   {confirmPassword && confirmPassword !== password && (
@@ -519,7 +519,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <button
               type="submit"
               disabled={saving || (password.length > 0 && password !== confirmPassword)}
-              className="px-6 py-3 rounded-full bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+              className="px-6 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
             >
               <FiSave className="w-4 h-4" />
               {saving ? "Saving..." : "Save Profile Updates"}
@@ -573,7 +573,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-neutral-300 overflow-hidden relative print:border-none print:shadow-none print:w-full print:max-w-none">
             {/* Modal Header */}
-            <div className="bg-neutral-900 text-white px-7 py-5 flex justify-between items-center print:hidden">
+            <div className="bg-[#2D0F2A] text-white px-7 py-5 flex justify-between items-center border-b border-[#3B1537] print:hidden">
               <div className="flex items-center gap-2">
                 <FiFileText className="w-5 h-5" />
                 <span className="font-bold text-sm tracking-wide">Official Institutional E-Receipt</span>
@@ -589,15 +589,15 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             {/* Receipt Printable Canvas */}
             <div className="p-8 space-y-6 text-black" id="printable-receipt">
               {/* Institutional Header */}
-              <div className="text-center border-b-2 border-black pb-5 space-y-1">
+              <div className="text-center border-b-2 border-[#4A1A45] pb-5 space-y-1">
                 <div className="flex justify-center mb-2">
                   <AcademiaLogoIcon className="w-11 h-11" />
                 </div>
-                <div className="inline-block px-3 py-0.5 rounded-full bg-black text-white text-[10px] font-black uppercase tracking-widest mb-1">
+                <div className="inline-block px-3 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-black uppercase tracking-widest mb-1">
                   Official Academic Bursary
                 </div>
                 <h2 className="text-xl font-black uppercase tracking-tight">
-                  University Learning Management System
+                  Federal Polytechnic Ado-Ekiti LMS
                 </h2>
                 <p className="text-[11px] text-neutral-600 font-medium">
                   Electronic Course Tuition &amp; Registration Payment Receipt
@@ -651,7 +651,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       </td>
                     </tr>
                   </tbody>
-                  <tfoot className="border-t-2 border-black bg-neutral-50 font-black">
+                  <tfoot className="border-t-2 border-[#4A1A45] bg-[#F7F2F6] font-black">
                     <tr>
                       <td colSpan={2} className="p-3.5 uppercase tracking-wider text-xs">Total Remittance (NGN):</td>
                       <td className="p-3.5 text-right text-base text-black">{formatNgn(selectedReceipt.amount)}</td>
@@ -688,7 +688,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-6 py-2.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md"
+                className="px-6 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md"
               >
                 <FiPrinter className="w-4 h-4" /> Print / Save PDF
               </button>

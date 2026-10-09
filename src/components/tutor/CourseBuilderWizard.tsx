@@ -315,9 +315,9 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
   // Shared styles
   // ─────────────────────────────────────────────────────────────
   const inputCls =
-    "w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all";
+    "w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all";
   const smallInputCls =
-    "w-full px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all";
+    "w-full px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all";
   const labelCls = "block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1.5";
 
   // ─────────────────────────────────────────────────────────────
@@ -334,11 +334,11 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               key={s}
               onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                step === s ? "bg-black text-white shadow-sm" : "text-neutral-500 hover:text-black"
+                step === s ? "bg-[#4A1A45] text-white shadow-sm" : "text-neutral-500 hover:text-[#4A1A45]"
               }`}
             >
               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                step === s ? "bg-white text-black" : "bg-neutral-100 text-neutral-800"
+                step === s ? "bg-white text-[#4A1A45]" : "bg-neutral-100 text-neutral-800"
               }`}>{s}</span>
               {s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : isEditing ? "Review & Update" : "Review & Publish"}
             </button>
@@ -359,7 +359,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
         <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
-              <FiBookOpen className="w-6 h-6 text-[#784D28]" />
+              <FiBookOpen className="w-6 h-6 text-[#4A1A45]" />
               {isEditing ? `Edit Course: ${title || initialCourse.title}` : "Step 1: Course Overview"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
@@ -372,9 +372,9 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           {/* AI Syllabus */}
           <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
             <h4 className="font-bold text-black text-sm flex items-center gap-2">
-              <FiZap className="w-4 h-4 text-[#784D28]" />
+              <FiZap className="w-4 h-4 text-[#4A1A45]" />
               Curriculum Template Generator
-              <span className="ml-auto text-[10px] text-[#784D28] font-bold uppercase tracking-wider">Optional</span>
+              <span className="ml-auto text-[10px] text-[#4A1A45] font-bold uppercase tracking-wider">Optional</span>
             </h4>
             <div className="flex gap-3">
               <input
@@ -383,13 +383,13 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                 value={aiTopic}
                 onChange={(e) => setAiTopic(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleGenerateOutlineAI()}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
               />
               <button
                 type="button"
                 onClick={handleGenerateOutlineAI}
                 disabled={generatingOutline || !aiTopic.trim()}
-                className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+                className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
               >
                 {generatingOutline ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiZap className="w-4 h-4" />}
                 {generatingOutline ? "Generating..." : "Generate"}
@@ -474,7 +474,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                   placeholder="https://... or upload below"
                   value={coverImage}
                   onChange={(e) => setCoverImage(e.target.value)}
-                  className="w-full min-w-0 px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all flex-1"
+                  className="w-full min-w-0 px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all flex-1"
                 />
                 <div className="shrink-0">
                   <FilePickerButton
@@ -520,7 +520,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             <button
               onClick={() => step1Valid && setStep(2)}
               disabled={!step1Valid}
-              className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
               Continue to Modules & Lessons
             </button>
@@ -534,7 +534,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
             <div>
               <h3 className="text-xl font-bold text-black flex items-center gap-2">
-                <FiFileText className="w-6 h-6 text-[#784D28]" />
+                <FiFileText className="w-6 h-6 text-[#4A1A45]" />
                 Step 2: Modules & Lessons
               </h3>
               <p className="text-sm text-neutral-500 mt-1">
@@ -543,7 +543,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </div>
             <button
               onClick={addModule}
-              className="px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+              className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
             >
               <FiPlus className="w-4 h-4" /> Add Module
             </button>
@@ -575,7 +575,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </button>
             <button
               onClick={() => setStep(3)}
-              className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
               Review & Publish
             </button>
@@ -610,7 +610,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
             <div>
               <div className="flex flex-wrap gap-2 mb-2 items-center">
-                <span className="text-[11px] font-bold text-[#784D28] uppercase tracking-wider">{faculty}</span>
+                <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">{faculty}</span>
                 <span className="text-[11px] font-bold text-neutral-400">·</span>
                 <span className="text-[11px] font-bold text-black bg-neutral-200 px-2 py-0.5 rounded-full">{department}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
@@ -670,7 +670,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             <button
               onClick={handleSaveCourse}
               disabled={saving || successMsg}
-              className="px-8 py-3.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+              className="px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
             >
               <FiSave className="w-5 h-5" />
               {saving
@@ -717,7 +717,7 @@ function LessonModuleBlock({
           placeholder={`Module ${mIdx + 1} title`}
           value={mod.title}
           onChange={(e) => onModuleTitleChange(e.target.value)}
-          className="flex-1 px-4 py-2 rounded-lg bg-white border border-neutral-200 text-sm font-bold text-black outline-none focus:border-black"
+          className="flex-1 px-4 py-2 rounded-lg bg-white border border-neutral-200 text-sm font-bold text-black outline-none focus:border-[#4A1A45]"
         />
         <div className="flex items-center gap-2">
           <button
@@ -788,7 +788,7 @@ function LessonRow({
           placeholder={`Lesson ${lIdx + 1} title`}
           value={lesson.title}
           onChange={(e) => onUpdate("title", e.target.value)}
-          className="flex-1 px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none focus:border-black"
+          className="flex-1 px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none focus:border-[#4A1A45]"
         />
         {canRemove && (
           <button
@@ -826,7 +826,7 @@ function LessonRow({
             placeholder="https://www.youtube.com/embed/... or /uploads/..."
             value={lesson.videoUrl}
             onChange={(e) => onUpdate("videoUrl", e.target.value)}
-            className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+            className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
           />
           <div className="shrink-0">
             <FilePickerButton
@@ -856,7 +856,7 @@ function LessonRow({
             placeholder="File name (e.g. Lecture Notes.pdf)"
             value={lesson.resourceName}
             onChange={(e) => onUpdate("resourceName", e.target.value)}
-            className="sm:col-span-4 w-full min-w-0 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+            className="sm:col-span-4 w-full min-w-0 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
           />
           <div className="sm:col-span-8 flex items-center gap-2 min-w-0">
             <input
@@ -864,7 +864,7 @@ function LessonRow({
               placeholder="URL or upload file"
               value={lesson.resourceUrl}
               onChange={(e) => onUpdate("resourceUrl", e.target.value)}
-              className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+              className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
             />
             <div className="shrink-0">
               <FilePickerButton
@@ -890,7 +890,7 @@ function LessonRow({
             href={lesson.resourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] text-[#784D28] font-bold hover:underline mt-1 inline-block"
+            className="text-[11px] text-[#4A1A45] font-bold hover:underline mt-1 inline-block"
           >
             {lesson.resourceName || lesson.resourceUrl}
           </a>
@@ -899,7 +899,7 @@ function LessonRow({
 
       {/* Assignment (optional) */}
       <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
-        <span className="text-[11px] font-bold text-[#784D28] flex items-center gap-1 uppercase tracking-wider">
+        <span className="text-[11px] font-bold text-[#4A1A45] flex items-center gap-1 uppercase tracking-wider">
           <FiHelpCircle className="w-3.5 h-3.5" /> Assignment
           <span className="text-neutral-400 font-normal normal-case ml-1">(optional)</span>
         </span>
@@ -919,9 +919,9 @@ function LessonRow({
               type="button"
               onClick={onGenerateRubric}
               disabled={!lesson.assignmentPrompt.trim()}
-              className="text-[10px] px-2 py-0.5 rounded bg-black text-white font-bold flex items-center gap-1 disabled:opacity-50 shadow-sm"
+              className="text-[10px] px-2 py-0.5 rounded bg-[#4A1A45] text-white font-bold flex items-center gap-1 disabled:opacity-50 shadow-sm"
             >
-              <FiZap className="w-3 h-3 text-[#D4A373]" /> Auto-Generate
+              <FiZap className="w-3 h-3 text-[#D6BDD4]" /> Auto-Generate
             </button>
           </div>
           <textarea

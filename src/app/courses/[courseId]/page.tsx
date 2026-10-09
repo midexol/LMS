@@ -85,7 +85,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
               </>
             ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900 to-[#1e130a]">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1E0A1C] via-[#2D0F2A] to-[#4A1A45]">
                 <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[140px] font-black text-white/5 select-none pointer-events-none leading-none">
                   {course.category.slice(0, 2).toUpperCase()}
                 </span>
@@ -116,19 +116,19 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
             <div className="flex flex-wrap gap-6 text-xs font-bold text-neutral-600 pt-4 border-t border-neutral-200">
               <span className="flex items-center gap-1.5">
-                <FiUser className="w-4 h-4 text-[#784D28]" />
+                <FiUser className="w-4 h-4 text-[#4A1A45]" />
                 Instructor: <strong className="text-black">{course.tutor?.name || "Faculty"}</strong>
               </span>
               <span className="flex items-center gap-1.5">
-                <FiLayers className="w-4 h-4 text-[#784D28]" />
+                <FiLayers className="w-4 h-4 text-[#4A1A45]" />
                 {course.modules.length} Modules
               </span>
               <span className="flex items-center gap-1.5">
-                <FiBookOpen className="w-4 h-4 text-[#784D28]" />
+                <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                 {totalLessons} Lessons
               </span>
               <span className="flex items-center gap-1.5">
-                <FiBarChart2 className="w-4 h-4 text-[#784D28]" />
+                <FiBarChart2 className="w-4 h-4 text-[#4A1A45]" />
                 {totalAssignments} Evaluated Assignments
               </span>
             </div>
@@ -139,13 +139,13 @@ export default async function CoursePreviewPage({ params }: PageProps) {
           {/* Curriculum */}
           <div className="lg:col-span-2 p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
             <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-              <FiBookOpen className="w-5 h-5 text-[#784D28]" />
+              <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
               Curriculum &amp; Syllabus
             </h2>
 
             {isWrongDepartment ? (
               <div className="p-8 rounded-2xl bg-neutral-50 border border-neutral-200 text-center space-y-4 my-4">
-                <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center mx-auto shadow-sm">
+                <div className="w-12 h-12 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto shadow-sm">
                   <FiLock className="w-6 h-6" />
                 </div>
                 <div>
@@ -157,7 +157,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="pt-2">
                   <Link
                     href="/courses"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all shadow-sm"
                   >
                     Browse Courses For {currentUser.department} <FiArrowRight className="w-4 h-4" />
                   </Link>
@@ -181,7 +181,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                             {lesson.title}
                           </span>
                           {lesson.assignments.length > 0 && (
-                            <span className="px-2 py-0.5 rounded-full bg-[#784D28]/10 text-[#784D28] text-[10px] font-bold border border-[#784D28]/30">
+                            <span className="px-2 py-0.5 rounded-full bg-[#4A1A45]/10 text-[#4A1A45] text-[10px] font-bold border border-[#4A1A45]/30">
                               Assignment
                             </span>
                           )}
@@ -208,12 +208,12 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 enrollment.status === "ACTIVE" ? (
                   <Link
                     href={`/student/courses/${course.id}`}
-                    className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
+                    className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
                   >
                     Continue Learning <FiArrowRight className="w-4 h-4" />
                   </Link>
                 ) : (
-                  <div className="w-full py-3 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                  <div className="w-full py-3 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
                     <FiCheckCircle className="w-4 h-4 text-white" /> Course Completed
                   </div>
                 )
@@ -240,7 +240,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                   </p>
                   <Link
                     href="/courses"
-                    className="block text-center py-2.5 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all"
+                    className="block text-center py-2.5 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     View Your Department Courses
                   </Link>
@@ -274,23 +274,23 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
               <div className="space-y-2.5 pt-3 border-t border-neutral-200 text-xs text-neutral-600 font-medium">
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
+                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Automated criteria evaluations with instant feedback
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
+                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Instructor grade override &amp; rubric evaluation
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
+                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Lesson Q&amp;A discussion forums
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
+                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Supplementary resource downloads
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-black shrink-0" />
+                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Official academic transcript recorded
                 </div>
               </div>

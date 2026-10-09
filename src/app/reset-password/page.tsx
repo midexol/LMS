@@ -32,7 +32,7 @@ function ResetPasswordForm() {
         </div>
         <Link
           href="/forgot-password"
-          className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+          className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
         >
           Request Reset Link
         </Link>
@@ -83,7 +83,7 @@ function ResetPasswordForm() {
           Set New Password
         </h1>
         <p className="text-neutral-500 text-xs mt-1">
-          Choose a secure password for your ACADEMIA LMS account.
+          Choose a secure password for your FedPoly Ado LMS account.
         </p>
       </div>
 
@@ -108,7 +108,7 @@ function ResetPasswordForm() {
 
           <Link
             href="/login"
-            className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+            className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
           >
             Sign In to Account <FiArrowRight className="w-4 h-4" />
           </Link>
@@ -127,7 +127,7 @@ function ResetPasswordForm() {
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
               />
               <button
                 type="button"
@@ -152,7 +152,7 @@ function ResetPasswordForm() {
                 placeholder="Re-enter password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading || !password || !confirmPassword}
-            className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50 mt-2"
+            className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50 mt-2"
           >
             <FiCheck className="w-4 h-4" />
             {loading ? "Updating Password..." : "Save New Password"}
@@ -175,20 +175,20 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-white flex">
       {/* Brand Sidebar */}
-      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#2D0F2A] border-r border-[#3B1537] text-white p-12 relative overflow-hidden">
         <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">
             Security & Credential Update.
           </h2>
-          <p className="text-neutral-400 text-sm leading-relaxed">
+          <p className="text-[#D6BDD4] text-sm leading-relaxed">
             Ensure your password is at least 6 characters and unique to your academic portal account.
           </p>
         </div>
 
-        <div className="relative text-xs text-neutral-500">
-          © {new Date().getFullYear()} ACADEMIA Learning Management System.
+        <div className="relative text-xs text-neutral-400">
+          © {new Date().getFullYear()} FedPoly Ado LMS.
         </div>
       </div>
 

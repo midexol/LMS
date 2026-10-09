@@ -73,15 +73,15 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-white flex">
-      {/* Left panel — Solid Jet Black Brand panel */}
-      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
+      {/* Left panel — Solid Purple Brand panel */}
+      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#2D0F2A] border-r border-[#3B1537] text-white p-12 relative overflow-hidden">
         <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">
             Begin your learning journey today.
           </h2>
-          <p className="text-neutral-400 text-sm leading-relaxed">
+          <p className="text-[#D6BDD4] text-sm leading-relaxed">
             Join thousands of active students and instructors advancing their knowledge through structured coursework and automated assignment evaluations.
           </p>
           <div className="space-y-3 pt-2">
@@ -90,8 +90,8 @@ export default function SignupPage() {
               "Structured university-grade curriculum",
               "Instant feedback on every assignment submission",
             ].map((f) => (
-              <div key={f} className="flex items-center gap-3 text-xs text-neutral-300">
-                <div className="w-5 h-5 rounded-full bg-[#784D28] flex items-center justify-center shrink-0">
+              <div key={f} className="flex items-center gap-3 text-xs text-neutral-200">
+                <div className="w-5 h-5 rounded-full bg-[#4A1A45] border border-white/20 flex items-center justify-center shrink-0">
                   <FiCheck className="w-3 h-3 text-white" />
                 </div>
                 <span>{f}</span>
@@ -100,7 +100,7 @@ export default function SignupPage() {
           </div>
         </div>
 
-        <p className="relative text-neutral-500 text-xs">&copy; {new Date().getFullYear()} Academia LMS. All rights reserved.</p>
+        <p className="relative text-neutral-400 text-xs">&copy; {new Date().getFullYear()} FedPoly Ado LMS. All rights reserved.</p>
       </div>
 
       {/* Right panel — Form */}
@@ -146,7 +146,7 @@ export default function SignupPage() {
                   placeholder="e.g. Alex Rivera"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>
@@ -181,7 +181,7 @@ export default function SignupPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
                 <button
                   type="button"
@@ -209,12 +209,12 @@ export default function SignupPage() {
                     pwMismatch
                       ? "border-red-400 focus:border-red-500"
                       : pwMatch
-                      ? "border-black focus:border-black"
-                      : "border-neutral-200 focus:border-black"
+                      ? "border-[#4A1A45] focus:border-[#4A1A45]"
+                      : "border-neutral-200 focus:border-[#4A1A45]"
                   }`}
                 />
                 {pwMatch && (
-                  <div className="absolute right-3.5 top-3 text-black">
+                  <div className="absolute right-3.5 top-3 text-[#4A1A45]">
                     <FiCheck className="w-4 h-4" />
                   </div>
                 )}
@@ -232,7 +232,7 @@ export default function SignupPage() {
               <select
                 value={faculty}
                 onChange={(e) => handleFacultyChange(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45] transition-all"
               >
                 {ACADEMIC_STRUCTURE.map((f) => (
                   <option key={f.name} value={f.name}>
@@ -250,7 +250,7 @@ export default function SignupPage() {
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45] transition-all"
               >
                 {getDepartmentsForFaculty(faculty).map((d) => (
                   <option key={d} value={d}>
@@ -266,7 +266,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading || (confirmPassword.length > 0 && password !== confirmPassword) || !name || !email || !password}
-              className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all mt-2"
+              className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all mt-2"
             >
               <FiUserPlus className="w-4 h-4" />
               {loading ? "Creating Account..." : "Create Account"}
@@ -276,7 +276,7 @@ export default function SignupPage() {
           <div className="pt-3 border-t border-neutral-200 text-center">
             <p className="text-xs text-neutral-600">
               Already have an account?{" "}
-              <Link href="/login" className="text-[#784D28] font-bold hover:underline">
+              <Link href="/login" className="text-[#4A1A45] font-bold hover:underline">
                 Sign in instead
               </Link>
             </p>

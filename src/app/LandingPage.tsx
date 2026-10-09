@@ -14,12 +14,12 @@ import { formatNgn } from "@/lib/utils";
 
 // Category-based visual palette for course cards (no image required)
 const CATEGORY_VISUALS: Record<string, { bg: string; accent: string; label: string }> = {
-  "Software Engineering": { bg: "from-neutral-950 to-neutral-800", accent: "#D4A373", label: "SE" },
-  "Computer Science":     { bg: "from-neutral-900 to-neutral-700", accent: "#D4A373", label: "CS" },
-  "Data Science & AI":    { bg: "from-neutral-950 to-[#2a1a0e]",   accent: "#D4A373", label: "AI" },
-  "Design & UX":          { bg: "from-[#1a0e05] to-neutral-900",   accent: "#D4A373", label: "UX" },
-  "Business & Management":{ bg: "from-neutral-900 to-neutral-950", accent: "#D4A373", label: "BM" },
-  General:                { bg: "from-neutral-800 to-neutral-950", accent: "#D4A373", label: "GN" },
+  "Software Engineering": { bg: "from-[#2A0E27] to-[#4A1A45]", accent: "#FFFFFF", label: "SE" },
+  "Computer Science":     { bg: "from-[#3B1537] to-[#4A1A45]", accent: "#FFFFFF", label: "CS" },
+  "Data Science & AI":    { bg: "from-[#1E0A1C] to-[#3B1537]", accent: "#FFFFFF", label: "AI" },
+  "Design & UX":          { bg: "from-[#4A1A45] to-[#6B2764]", accent: "#FFFFFF", label: "UX" },
+  "Business & Management":{ bg: "from-[#2A0E27] to-[#3B1537]", accent: "#FFFFFF", label: "BM" },
+  General:                { bg: "from-[#3B1537] to-[#4A1A45]", accent: "#FFFFFF", label: "GN" },
 };
 function getCourseVisual(category: string) {
   return CATEGORY_VISUALS[category] ?? CATEGORY_VISUALS["General"];
@@ -84,7 +84,7 @@ export function LandingPage({
   };
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-white text-black font-sans selection:bg-[#4A1A45] selection:text-white">
       {/* ───────────────── UNIQUE LANDING PAGE NAVBAR ───────────────── */}
       <LandingNavbar currentUser={currentUser} />
 
@@ -95,24 +95,24 @@ export function LandingPage({
           {/* Left Text & Actions (Full width on mobile, 6 cols on desktop) */}
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             <h1 className="font-heading font-normal text-3xl sm:text-5xl lg:text-6xl text-black leading-[1.12] sm:leading-[1.08] tracking-tight">
-              Where great teaching finds its <span className="italic text-[#784D28]">platform.</span>
+              Where great teaching finds its <span className="italic text-[#4A1A45]">platform.</span>
             </h1>
 
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Academia LMS builds the university-grade teaching and learning environment your students need. Single active course lock for deep immersion, authentic collegiate curriculum, and instant automated rubrics.
+              The Federal Polytechnic, Ado-Ekiti Learning Management System delivers university-grade instruction with structured curriculum pathways, single active enrollment focus, and automated criteria evaluation.
             </p>
 
             {/* Mobile Thumb-Friendly CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 pt-1">
               <Link
                 href="/signup"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm shadow-sm transition-all text-center flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm shadow-md transition-all text-center flex items-center justify-center gap-2"
               >
                 Join as Student
               </Link>
               <Link
                 href="/courses"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white hover:bg-neutral-50 border border-neutral-300 text-black font-bold text-sm transition-all text-center shadow-sm flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white hover:bg-neutral-50 border border-neutral-300 hover:border-[#4A1A45] text-black hover:text-[#4A1A45] font-bold text-sm transition-all text-center shadow-sm flex items-center justify-center gap-2"
               >
                 Browse Courses
               </Link>
@@ -121,15 +121,15 @@ export function LandingPage({
             {/* Trust Highlights Row */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-5 pt-3 text-xs text-neutral-600 font-semibold">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-black shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#4A1A45] shrink-0" />
                 <span>Single enrollment lock</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#784D28] shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#896A86] shrink-0" />
                 <span>Automated benchmark rubrics</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-black shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#4A1A45] shrink-0" />
                 <span>70% mastery standard</span>
               </div>
             </div>
@@ -143,11 +143,11 @@ export function LandingPage({
                 alt="Student studying on laptop in university library lounge"
                 className="w-full h-auto aspect-[16/10] sm:aspect-[16/9] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2A0E27]/40 via-transparent to-transparent pointer-events-none" />
 
               {/* Floating Mobile/Desktop Micro-Card: 1:1 Focus */}
               <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-xs p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                <div className="w-9 h-9 rounded-xl bg-[#4A1A45] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                   1:1
                 </div>
                 <div className="min-w-0">
@@ -166,7 +166,7 @@ export function LandingPage({
             <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider">
               Popular Academic Tracks
             </span>
-            <Link href="/courses" className="text-xs font-bold text-[#784D28] hover:underline">
+            <Link href="/courses" className="text-xs font-bold text-[#4A1A45] hover:underline">
               View All →
             </Link>
           </div>
@@ -200,9 +200,9 @@ export function LandingPage({
         <div className="max-w-3xl mx-auto space-y-6">
           {/* Text Content */}
           <div className="space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Academic Experience</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Academic Experience</span>
             <h2 className="font-heading font-normal text-3xl sm:text-5xl text-black leading-tight tracking-tight">
-              Designed for serious learners. <span className="italic text-[#784D28]">Built for lasting mastery.</span>
+              Designed for serious learners. <span className="italic text-[#4A1A45]">Built for lasting mastery.</span>
             </h2>
             <p className="text-sm text-neutral-600 leading-relaxed">
               Unlike generic online course marketplaces, Academia enforces rigorous academic standards proven to drive retention. Students work closely with instructor-crafted rubrics, receive prompt feedback, and complete assignments that build upon one another.
@@ -211,7 +211,7 @@ export function LandingPage({
             <div className="space-y-4 pt-2">
               <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
                 <div className="flex items-center gap-3">
-                  <span className="font-heading text-lg font-bold text-[#784D28]">01</span>
+                  <span className="font-heading text-lg font-bold text-[#4A1A45]">01</span>
                   <h4 className="text-sm font-bold text-black tracking-tight">Single Active Enrollment Barrier</h4>
                 </div>
                 <p className="text-xs text-neutral-600 pl-8 leading-relaxed">
@@ -221,7 +221,7 @@ export function LandingPage({
 
               <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
                 <div className="flex items-center gap-3">
-                  <span className="font-heading text-lg font-bold text-[#784D28]">02</span>
+                  <span className="font-heading text-lg font-bold text-[#4A1A45]">02</span>
                   <h4 className="text-sm font-bold text-black tracking-tight">Automated &amp; Faculty Grading</h4>
                 </div>
                 <p className="text-xs text-neutral-600 pl-8 leading-relaxed">
@@ -238,14 +238,14 @@ export function LandingPage({
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-neutral-200 pb-8">
             <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Curriculum Offerings</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Curriculum Offerings</span>
               <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
                 Explore University-Caliber <span className="italic">Courses</span>
               </h2>
             </div>
             <Link
               href="/courses"
-              className="px-6 py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              className="px-6 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
               Browse All Courses
             </Link>
@@ -274,7 +274,7 @@ export function LandingPage({
                             <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-sm text-white border border-white/20">
                               {course.category}
                             </span>
-                            <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
+                            <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-[#4A1A45] text-white shadow-md">
                               {course.price === 0 ? "Free" : formatNgn(course.price)}
                             </span>
                           </div>
@@ -291,7 +291,7 @@ export function LandingPage({
                             {course.category}
                           </span>
                           {/* Price pill */}
-                          <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-white text-black shadow-md">
+                          <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black bg-[#4A1A45] text-white shadow-md">
                             {course.price === 0 ? "Free" : formatNgn(course.price)}
                           </span>
                         </div>
@@ -300,7 +300,7 @@ export function LandingPage({
 
                     {/* Card Body */}
                     <div className="p-6 space-y-3">
-                      <h3 className="font-bold text-lg text-black line-clamp-1 leading-snug group-hover:text-[#784D28] transition-colors">
+                      <h3 className="font-bold text-lg text-black line-clamp-1 leading-snug group-hover:text-[#4A1A45] transition-colors">
                         {course.title}
                       </h3>
                       <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
@@ -318,7 +318,7 @@ export function LandingPage({
                   <div className="p-5 border-t border-neutral-100 bg-neutral-50/50">
                     <Link
                       href="/courses"
-                      className="w-full py-2.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider text-center shadow-sm transition-all block"
+                      className="w-full py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider text-center shadow-sm transition-all block"
                     >
                       Enroll in Course
                     </Link>
@@ -337,9 +337,9 @@ export function LandingPage({
       {/* ───────────────── 3 PILLARS ACADEMIC MODEL ───────────────── */}
       <section className="py-20 px-6 max-w-7xl mx-auto" id="how-it-works">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Academic Architecture</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Academic Architecture</span>
           <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
-            Structured learning designed for <span className="italic text-[#784D28]">true mastery.</span>
+            Structured learning designed for <span className="italic text-[#4A1A45]">true mastery.</span>
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
             Academia enforces discipline through single-enrollment focus and instant assignment benchmark verification.
@@ -376,15 +376,15 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* ───────────────── INSTRUCTOR STUDIO (PURE JET BLACK) ───────────────── */}
-      <section className="bg-black text-white py-24 px-6 border-y border-neutral-900" id="instructors">
+      {/* ───────────────── INSTRUCTOR STUDIO (FEDPOLY PURPLE) ───────────────── */}
+      <section className="bg-[#2D0F2A] text-white py-24 px-6 border-y border-[#3B1537]" id="instructors">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#D4A373]">Faculty &amp; Creator Studio</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D6BDD4]">Faculty &amp; Creator Studio</span>
             <h2 className="font-heading font-normal text-3xl sm:text-5xl leading-tight text-white tracking-tight">
-              Powerful tools built for <span className="italic text-[#D4A373]">educators who care.</span>
+              Powerful tools built for <span className="italic text-[#E4D5E2]">educators who care.</span>
             </h2>
-            <p className="text-sm text-neutral-300 leading-relaxed">
+            <p className="text-sm text-neutral-200 leading-relaxed">
               Build entire syllabi with automated outline generation, create modular lesson plans with rich attachments, and monitor student comprehension through real-time telemetry.
             </p>
 
@@ -395,8 +395,8 @@ export function LandingPage({
                 "Automated syllabus outline generator and standardized benchmark rubrics",
                 "Full grade override desk with mentor feedback notes",
               ].map((feat, i) => (
-                <div key={i} className="flex items-center gap-3 text-xs text-neutral-300 font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4A373] shrink-0" />
+                <div key={i} className="flex items-center gap-3 text-xs text-neutral-200 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#896A86] shrink-0" />
                   <span>{feat}</span>
                 </div>
               ))}
@@ -405,24 +405,24 @@ export function LandingPage({
             <div className="pt-4">
               <Link
                 href="/courses"
-                className="inline-block px-8 py-3.5 rounded-full bg-white hover:bg-neutral-100 text-black font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                className="inline-block px-8 py-3.5 rounded-full bg-white hover:bg-neutral-100 text-[#4A1A45] font-bold text-xs uppercase tracking-wider shadow-md transition-all"
               >
                 Explore All Courses
               </Link>
             </div>
           </div>
 
-          {/* Elevated Modern SaaS Telemetry & Cohort Trajectory Chart (FULLY DYNAMIC) */}
+          {/* Elevated Modern Telemetry & Cohort Trajectory Chart (FULLY DYNAMIC) */}
           <div className="lg:col-span-7">
-            <div className="bg-neutral-950 text-white rounded-3xl p-7 border border-neutral-800 shadow-2xl space-y-6">
+            <div className="bg-[#1E0A1C] text-white rounded-3xl p-7 border border-[#3B1537] shadow-2xl space-y-6">
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-800">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#3B1537]">
                 <div>
                   <h3 className="font-bold text-base text-white">Cohort Mastery &amp; Trajectory</h3>
                   <p className="text-xs text-neutral-400 mt-0.5">Real-time benchmark tracking across active curriculum tracks</p>
                 </div>
-                <div className="flex items-center gap-1.5 self-start sm:self-auto bg-neutral-900 p-1 rounded-full border border-neutral-800 text-[11px] font-bold text-neutral-400">
-                  <span className="px-3 py-1 rounded-full bg-white text-black shadow-sm">Term 2026</span>
+                <div className="flex items-center gap-1.5 self-start sm:self-auto bg-[#2D0F2A] p-1 rounded-full border border-[#3B1537] text-[11px] font-bold text-neutral-300">
+                  <span className="px-3 py-1 rounded-full bg-white text-[#4A1A45] shadow-sm">Term 2026</span>
                   <span className="px-3 py-1">All Cohorts</span>
                 </div>
               </div>
@@ -432,7 +432,7 @@ export function LandingPage({
                 <div className="space-y-1">
                   <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Active Students</p>
                   <p className="text-2xl font-bold text-white">{stats.activeEnrollments}</p>
-                  <p className="text-[10px] text-[#D4A373] font-semibold">{stats.totalStudents} total registered</p>
+                  <p className="text-[10px] text-[#D6BDD4] font-semibold">{stats.totalStudents} total registered</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">Pass Velocity</p>
@@ -455,20 +455,20 @@ export function LandingPage({
                         <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.25" />
                         <stop offset="85%" stopColor="#FFFFFF" stopOpacity="0.0" />
                       </linearGradient>
-                      <linearGradient id="brownGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#784D28" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#784D28" stopOpacity="0.0" />
+                      <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#6B2764" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#4A1A45" stopOpacity="0.0" />
                       </linearGradient>
                     </defs>
 
                     {/* Horizontal Gridlines */}
-                    <line x1="0" y1="20" x2="540" y2="20" stroke="#262626" strokeDasharray="3 3" />
-                    <line x1="0" y1="65" x2="540" y2="65" stroke="#262626" strokeDasharray="3 3" />
-                    <line x1="0" y1="110" x2="540" y2="110" stroke="#262626" strokeDasharray="3 3" />
+                    <line x1="0" y1="20" x2="540" y2="20" stroke="#3B1537" strokeDasharray="3 3" />
+                    <line x1="0" y1="65" x2="540" y2="65" stroke="#3B1537" strokeDasharray="3 3" />
+                    <line x1="0" y1="110" x2="540" y2="110" stroke="#3B1537" strokeDasharray="3 3" />
 
                     {/* 70% Mastery Standard Benchmark Line */}
-                    <line x1="0" y1="65" x2="540" y2="65" stroke="#784D28" strokeWidth="1.5" strokeDasharray="4 4" />
-                    <text x="535" y="58" textAnchor="end" fill="#D4A373" fontSize="10" fontWeight="bold">
+                    <line x1="0" y1="65" x2="540" y2="65" stroke="#896A86" strokeWidth="1.5" strokeDasharray="4 4" />
+                    <text x="535" y="58" textAnchor="end" fill="#D6BDD4" fontSize="10" fontWeight="bold">
                       70% Mastery Threshold Standard
                     </text>
 
@@ -487,9 +487,9 @@ export function LandingPage({
                     />
 
                     {/* Interactive-style Node Marker at Week 6 */}
-                    <circle cx="370" cy={150 - ((stats.weeklyTrajectory[5]?.score || stats.avgScore) / 100) * 130} r="5" fill="#FFFFFF" stroke="#000000" strokeWidth="2.5" />
+                    <circle cx="370" cy={150 - ((stats.weeklyTrajectory[5]?.score || stats.avgScore) / 100) * 130} r="5" fill="#FFFFFF" stroke="#4A1A45" strokeWidth="2.5" />
                     <g transform={`translate(295, ${Math.max(10, 150 - ((stats.weeklyTrajectory[5]?.score || stats.avgScore) / 100) * 130 - 35)})`}>
-                      <rect width="150" height="28" rx="6" fill="#000000" stroke="#784D28" strokeWidth="1" />
+                      <rect width="150" height="28" rx="6" fill="#4A1A45" stroke="#896A86" strokeWidth="1" />
                       <text x="75" y="18" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
                         Avg Mastery: {stats.avgScore}%
                       </text>
@@ -513,10 +513,10 @@ export function LandingPage({
                   <span className="text-neutral-400 font-medium">Cohort Grade Distribution</span>
                   <span className="text-white font-bold">{stats.passVelocity}% Certified</span>
                 </div>
-                <div className="h-2.5 w-full bg-neutral-900 rounded-full overflow-hidden flex">
+                <div className="h-2.5 w-full bg-[#2D0F2A] rounded-full overflow-hidden flex">
                   <div style={{ width: `${stats.highDistinctionPct}%` }} className="bg-white h-full" title={`High Distinction: ${stats.highDistinctionPct}%`} />
-                  <div style={{ width: `${stats.standardPassPct}%` }} className="bg-[#784D28] h-full" title={`Certified Pass: ${stats.standardPassPct}%`} />
-                  <div style={{ width: `${stats.interventionPct}%` }} className="bg-neutral-600 h-full" title={`Review Needed: ${stats.interventionPct}%`} />
+                  <div style={{ width: `${stats.standardPassPct}%` }} className="bg-[#896A86] h-full" title={`Certified Pass: ${stats.standardPassPct}%`} />
+                  <div style={{ width: `${stats.interventionPct}%` }} className="bg-[#4A1A45] h-full" title={`Review Needed: ${stats.interventionPct}%`} />
                 </div>
                 <div className="flex flex-wrap items-center justify-between text-[11px] text-neutral-400 pt-1">
                   <div className="flex items-center gap-1.5">
@@ -524,11 +524,11 @@ export function LandingPage({
                     <span>High Distinction: {stats.highDistinctionPct}%</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#784D28] inline-block" />
+                    <span className="w-2 h-2 rounded-full bg-[#896A86] inline-block" />
                     <span>Certified Pass: {stats.standardPassPct}%</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-neutral-600 inline-block" />
+                    <span className="w-2 h-2 rounded-full bg-[#4A1A45] inline-block" />
                     <span>Review Needed: {stats.interventionPct}%</span>
                   </div>
                 </div>
@@ -538,20 +538,20 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* ───────────────── TEACHABLE-STYLE FOOTER (PURE BLACK) ───────────────── */}
-      <footer className="bg-black text-neutral-400 pt-20 pb-12 px-6">
+      {/* ───────────────── TEACHABLE-STYLE FOOTER (FEDPOLY PURPLE) ───────────────── */}
+      <footer className="bg-[#1E0A1C] text-neutral-400 pt-20 pb-12 px-6 border-t border-[#3B1537]">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
             {/* Brand column */}
             <div className="col-span-2 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-2xl bg-white flex items-center justify-center text-black font-bold text-lg">
-                  A
+                <div className="w-9 h-9 rounded-2xl bg-[#4A1A45] flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                  F
                 </div>
-                <span className="font-black text-xl text-white tracking-tight">ACADEMIA</span>
+                <span className="font-black text-xl text-white tracking-tight">FEDPOLY ADO</span>
               </div>
               <p className="text-xs leading-relaxed max-w-sm text-neutral-400">
-                The academic learning platform combining structured university curricula, automated assignment evaluation, and comprehensive instructor analytics.
+                The Federal Polytechnic, Ado-Ekiti Learning Management System combining structured polytechnic curricula, automated evaluation, and comprehensive academic telemetry.
               </p>
             </div>
 
@@ -561,8 +561,8 @@ export function LandingPage({
               <ul className="space-y-2 text-xs">
                 <li><Link href="/courses" className="hover:text-white transition-colors">Course Catalog</Link></li>
                 <li><Link href="/courses" className="hover:text-white transition-colors">Software Engineering</Link></li>
-                <li><Link href="/courses" className="hover:text-white transition-colors">Data Science &amp; AI</Link></li>
-                <li><Link href="/courses" className="hover:text-white transition-colors">Design &amp; UX</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Computer Science</Link></li>
+                <li><Link href="/courses" className="hover:text-white transition-colors">Business Studies</Link></li>
               </ul>
             </div>
 
@@ -613,8 +613,8 @@ export function LandingPage({
           </div>
 
           {/* Subfooter */}
-          <div className="pt-8 border-t border-neutral-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-            <p>&copy; {new Date().getFullYear()} Academia LMS, Inc. All rights reserved.</p>
+          <div className="pt-8 border-t border-[#3B1537] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <p>&copy; {new Date().getFullYear()} The Federal Polytechnic, Ado-Ekiti. All rights reserved.</p>
             <div className="flex flex-wrap items-center gap-6">
               <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
                 Privacy Policy
@@ -647,11 +647,11 @@ export function LandingPage({
 
             {policyModal === "integrity" && (
               <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Academic Standards</span>
+                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Academic Standards</span>
                 <h3 className="font-heading font-bold text-2xl text-black">Academic Integrity Policy</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    Academia LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
+                    Federal Polytechnic Ado-Ekiti LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
                   </p>
                   <p>
                     All assignments undergo automated rubric benchmarking. Work must meet or exceed a strict <strong>70% mastery standard</strong> to unlock subsequent lessons.
@@ -665,11 +665,11 @@ export function LandingPage({
 
             {policyModal === "privacy" && (
               <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Data Protection</span>
+                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Data Protection</span>
                 <h3 className="font-heading font-bold text-2xl text-black">Student Privacy Policy</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    Your student record, assignment responses, and evaluation metrics are treated with the highest degree of academic confidentiality under FERPA guidelines.
+                    Your student record, assignment responses, and evaluation metrics are treated with the highest degree of academic confidentiality under institutional guidelines.
                   </p>
                   <p>
                     Student submissions are processed exclusively to perform real-time rubric evaluations. Your coursework is never sold, licensed, or shared with third-party advertisers.
@@ -683,11 +683,11 @@ export function LandingPage({
 
             {policyModal === "terms" && (
               <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Institutional Agreement</span>
+                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Institutional Agreement</span>
                 <h3 className="font-heading font-bold text-2xl text-black">Terms of Service</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    By registering for Academia LMS, you commit to maintaining authentic academic conduct across all lecture coursework, discussion forums, and evaluations.
+                    By registering for FedPoly Ado LMS, you commit to maintaining authentic academic conduct across all lecture coursework, discussion forums, and evaluations.
                   </p>
                   <p>
                     Enrollment grants non-exclusive, personal access to instructional materials. Course materials, video assets, and rubric prompts may not be redistributed without institutional consent.
@@ -701,11 +701,11 @@ export function LandingPage({
 
             {policyModal === "honor" && (
               <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Scholarly Pledge</span>
-                <h3 className="font-heading font-bold text-2xl text-black">The Academia Honor Code</h3>
+                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Scholarly Pledge</span>
+                <h3 className="font-heading font-bold text-2xl text-black">The Honor Code</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 italic text-neutral-800 text-sm font-medium">
-                    &ldquo;As a scholar at Academia, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
+                    &ldquo;As a scholar at Federal Polytechnic Ado-Ekiti, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
                   </div>
                   <ul className="space-y-1.5 list-disc pl-4 text-neutral-600">
                     <li>One active course focus until verified completion.</li>
@@ -718,7 +718,7 @@ export function LandingPage({
 
             {policyModal === "security" && (
               <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Platform Security</span>
+                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Platform Security</span>
                 <h3 className="font-heading font-bold text-2xl text-black">Security Safeguards</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
@@ -733,11 +733,11 @@ export function LandingPage({
 
             {policyModal === "accessibility" && (
               <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#784D28] uppercase tracking-wider">Universal Access</span>
+                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Universal Access</span>
                 <h3 className="font-heading font-bold text-2xl text-black">Accessibility Statement</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    Academia LMS is engineered to comply with WCAG 2.1 Level AA specifications. We prioritize high contrast, legible typography, keyboard accessibility, and screen reader compatibility.
+                    FedPoly Ado LMS is engineered to comply with WCAG 2.1 Level AA specifications. We prioritize high contrast, legible typography, keyboard accessibility, and screen reader compatibility.
                   </p>
                   <p>
                     If you encounter any accessibility barrier, our academic support team is dedicated to providing tailored accommodations.
@@ -748,7 +748,7 @@ export function LandingPage({
 
             <button
               onClick={() => setPolicyModal(null)}
-              className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
               Close Window
             </button>

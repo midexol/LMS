@@ -81,8 +81,8 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
         }`}
       >
         <div
-          style={{ backgroundColor: "rgba(10, 10, 10, 0.94)" }}
-          className={`transition-all duration-300 ease-out flex items-center justify-between gap-3 sm:gap-4 py-2 px-3 sm:px-5 rounded-full relative border border-neutral-800 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.7)] backdrop-blur-xl text-white ${
+          style={{ backgroundColor: "rgba(30, 10, 28, 0.95)" }}
+          className={`transition-all duration-300 ease-out flex items-center justify-between gap-3 sm:gap-4 py-2 px-3 sm:px-5 rounded-full relative border border-[#4A1A45]/40 shadow-[0_16px_40px_-10px_rgba(74,26,69,0.5)] backdrop-blur-xl text-white ${
             scrolled ? "w-full max-w-4xl" : "w-full max-w-5xl"
           }`}
         >
@@ -121,12 +121,12 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {currentUser ? (
               <>
-                <span className="text-[10px] font-mono uppercase text-[#D4A373] hidden xl:inline-block px-2 py-0.5 rounded-full bg-white/5 border border-white/10 tracking-wider">
+                <span className="text-[10px] font-mono uppercase text-[#D6BDD4] hidden xl:inline-block px-2 py-0.5 rounded-full bg-white/5 border border-white/10 tracking-wider">
                   {currentUser.role}
                 </span>
                 <Link
                   href={currentUser.role === "TUTOR" ? "/instructor" : "/my-courses"}
-                  className="inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white hover:bg-[#F7F2F6] text-[#4A1A45] shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
                 >
                   Dashboard
                 </Link>
@@ -147,7 +147,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                 </Link>
                 <Link
                   href="/signup"
-                  className="inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white hover:bg-neutral-200 text-black shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#4A1A45] hover:bg-[#3B1537] text-white border border-white/20 shadow-md hover:-translate-y-0.5 active:translate-y-0 shrink-0 whitespace-nowrap"
                 >
                   Join as Student
                 </Link>
@@ -156,7 +156,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden w-8 h-8 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-300 hover:text-white transition-colors"
+              className="md:hidden w-8 h-8 rounded-full bg-[#1E0A1C] hover:bg-[#2D0F2A] border border-[#4A1A45]/40 flex items-center justify-center text-neutral-300 hover:text-white transition-colors"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -168,8 +168,8 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
         {/* Mobile Menu Dropdown Drawer */}
         {mobileMenuOpen && (
           <div
-            style={{ backgroundColor: "rgba(10, 10, 10, 0.96)" }}
-            className="md:hidden fixed inset-x-3 top-16 z-50 backdrop-blur-2xl border border-neutral-800 rounded-2xl p-4 shadow-2xl space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 text-white"
+            style={{ backgroundColor: "rgba(30, 10, 28, 0.98)" }}
+            className="md:hidden fixed inset-x-3 top-16 z-50 backdrop-blur-2xl border border-[#4A1A45]/50 rounded-2xl p-4 shadow-2xl space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 text-white"
           >
             <div className="grid grid-cols-2 gap-2 text-xs">
               {navLinks.map((link) => {
@@ -257,7 +257,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
 
             {contactSubmitted ? (
               <div className="text-center py-8 space-y-4">
-                <div className="w-14 h-14 rounded-full bg-black text-white flex items-center justify-center mx-auto shadow-md">
+                <div className="w-14 h-14 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto shadow-md">
                   <FiCheck className="w-7 h-7" />
                 </div>
                 <h3 className="font-heading font-bold text-2xl text-black">Inquiry Received</h3>
@@ -266,7 +266,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                 </p>
                 <button
                   onClick={() => { setContactModalOpen(false); setContactSubmitted(false); }}
-                  className="px-8 py-3 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider shadow-sm hover:bg-neutral-800"
+                  className="px-8 py-3 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider shadow-sm hover:bg-[#3B1537]"
                 >
                   Close Window
                 </button>
@@ -275,8 +275,8 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
               <>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <BbLogo className="h-6 w-auto" color="#000000" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#784D28]">Academic Inquiries</span>
+                    <BbLogo className="h-6 w-auto" color="#4A1A45" />
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Academic Inquiries</span>
                   </div>
                   <h3 className="font-heading font-bold text-2xl text-black tracking-tight">Connect with Us</h3>
                   <p className="text-xs text-neutral-500">Discover how our LMS transforms institutional curriculum delivery.</p>
@@ -295,7 +295,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                       type="text"
                       required
                       placeholder="Dr. Eleanor Vance"
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#4A1A45]"
                     />
                   </div>
 
@@ -305,7 +305,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                       type="email"
                       required
                       placeholder="e.vance@university.edu"
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#4A1A45]"
                     />
                   </div>
 
@@ -315,7 +315,7 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                       type="text"
                       required
                       placeholder="Cambridge Academic Council"
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#4A1A45]"
                     />
                   </div>
 
@@ -324,13 +324,13 @@ export function BlackboardNavbar({ currentUser, showSpacer = true }: BlackboardN
                     <textarea
                       rows={3}
                       placeholder="Inquiring about syllabus academic benchmarks and LMS faculty deployment..."
-                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-black resize-none"
+                      className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-[#4A1A45] resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                    className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all"
                   >
                     Submit Institutional Inquiry
                   </button>

@@ -156,7 +156,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
                   disabled={r === "ADMIN" && user.id === currentAdminId && role === "ADMIN"}
                   className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                     role === r
-                      ? "bg-black text-white border-black"
+                      ? "bg-[#4A1A45] text-white border-[#4A1A45]"
                       : "bg-white text-neutral-600 border-neutral-300 hover:border-black"
                   }`}
                 >
@@ -165,7 +165,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
               ))}
             </div>
             {user.id === currentAdminId && (
-              <p className="text-[10px] text-[#784D28] font-bold mt-1">You cannot change your own admin role.</p>
+              <p className="text-[10px] text-[#4A1A45] font-bold mt-1">You cannot change your own admin role.</p>
             )}
           </div>
 
@@ -174,7 +174,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
             <select
               value={faculty}
               onChange={(e) => handleFacultyChange(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black"
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             >
               {ACADEMIC_STRUCTURE.map((f) => (
                 <option key={f.name} value={f.name}>{f.name}</option>
@@ -187,7 +187,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
             <select
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-black"
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             >
               {getDepartmentsForFaculty(faculty).map((d) => (
                 <option key={d} value={d}>{d}</option>
@@ -202,7 +202,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
               placeholder="Leave blank to preserve current"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
             />
             {password && password.length < 6 && (
               <p className="text-[10px] text-red-600 font-bold mt-1">Min 6 characters required.</p>
@@ -253,7 +253,7 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
           </button>
         </div>
         <div className="p-3.5 rounded-2xl bg-neutral-100 border border-neutral-200 space-y-1">
-          <p className="text-[10px] font-bold text-[#784D28] uppercase">{sub.assignment.lesson.module.course.title}</p>
+          <p className="text-[10px] font-bold text-[#4A1A45] uppercase">{sub.assignment.lesson.module.course.title}</p>
           <p className="font-bold text-black text-sm">{sub.assignment.title}</p>
           <p className="text-xs text-neutral-500">Student: {sub.student.name}</p>
         </div>
@@ -287,7 +287,7 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
               placeholder="Reason for this grade adjustment..."
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
             />
           </div>
         </div>
@@ -622,7 +622,7 @@ export function AdminDashboardClient({
           <div className="flex items-center gap-4">
             <BrandLogo href="/admin" variant="light" size="sm" />
             <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-neutral-800 text-[11px]">
-              <span className="font-bold text-[#D4A373]">Superadmin Console</span>
+              <span className="font-bold text-[#D6BDD4]">Superadmin Console</span>
               <span className="text-neutral-500">· System Command &amp; Analytics</span>
             </div>
           </div>
@@ -636,7 +636,7 @@ export function AdminDashboardClient({
                   : "border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white hover:border-neutral-700"
               }`}
             >
-              <FiSliders className="w-3.5 h-3.5 text-[#D4A373]" />
+              <FiSliders className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Settings</span>
             </button>
             <Link
@@ -650,14 +650,14 @@ export function AdminDashboardClient({
               href="/courses"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
-              <FiBookOpen className="w-3.5 h-3.5 text-[#D4A373]" />
+              <FiBookOpen className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Student Catalog</span>
             </Link>
             <Link
               href="/instructor"
               className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
-              <FiLayers className="w-3.5 h-3.5 text-[#D4A373]" />
+              <FiLayers className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Instructor Studio</span>
             </Link>
             <button
@@ -691,15 +691,15 @@ export function AdminDashboardClient({
                 onClick={() => switchTab(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
                   active
-                    ? "bg-white text-black shadow-sm font-bold"
-                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
+                    ? "bg-white text-[#4A1A45] shadow-sm font-bold"
+                    : "text-neutral-300 hover:text-white hover:bg-[#3B1537]"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-                    active ? "bg-black text-white" : "bg-neutral-800 text-neutral-300"
+                    active ? "bg-[#4A1A45] text-white" : "bg-white/10 text-neutral-300"
                   }`}>
                     {tab.count}
                   </span>
@@ -719,17 +719,17 @@ export function AdminDashboardClient({
             <div
               className="rounded-3xl p-8 text-white relative overflow-hidden shadow-md"
               style={{
-                background: "linear-gradient(115deg, #000000 0%, #141414 55%, #3B2412 85%, #784D28 100%)",
+                background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
               }}
             >
               <div className="max-w-xl space-y-2 relative">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#D4A373]">System Intelligence</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">System Intelligence</span>
                 <h2 className="font-bold text-3xl">Platform Performance Overview</h2>
                 <p className="text-xs text-neutral-300 leading-relaxed">
                   Real-time analytics covering platform enrollments, revenue, completion ratios, and assignment throughput.
                 </p>
                 <div className="pt-3 flex items-center gap-4 text-xs">
-                  <span className="px-4 py-2 rounded-full bg-white text-black font-bold">
+                  <span className="px-4 py-2 rounded-full bg-white text-[#4A1A45] font-bold">
                     Revenue: {formatNgn(metrics.totalRevenue)}
                   </span>
                   <span className="text-neutral-300">
@@ -747,7 +747,7 @@ export function AdminDashboardClient({
                 { label: "Active Enrollments", value: metrics.activeEnrollmentsCount, sub: `${metrics.completedEnrollmentsCount} completed` },
                 { label: "Submissions Logged", value: metrics.totalSubmissions, sub: "Automated & faculty reviews" },
               ].map((c, i) => (
-                <div key={i} className="bg-neutral-950 text-white rounded-3xl p-6 border border-neutral-800 shadow-md flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-all">
+                <div key={i} className="bg-[#2D0F2A] text-white rounded-3xl p-6 border border-[#3B1537] shadow-md flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
                   <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{c.label}</p>
                   <div>
                     <div className="text-2xl font-bold text-white tracking-tight">{c.value}</div>
@@ -772,7 +772,7 @@ export function AdminDashboardClient({
                       <span>Active Enrollees</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#784D28] inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
                       <span>Certified (70%+)</span>
                     </div>
                   </div>
@@ -793,12 +793,12 @@ export function AdminDashboardClient({
                   </div>
 
                   <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-[#784D28]/15 text-[#784D28] border border-[#784D28]/20 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/20 flex items-center justify-center shrink-0">
                       <FiAward className="w-5 h-5" />
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Certifications</span>
-                      <span className="text-lg font-black text-[#784D28] leading-tight">
+                      <span className="text-lg font-black text-[#4A1A45] leading-tight">
                         {metrics.completedEnrollmentsCount} <span className="text-xs font-semibold text-neutral-500">completed</span>
                       </span>
                     </div>
@@ -865,7 +865,7 @@ export function AdminDashboardClient({
                             >
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                                 <div className="flex items-center gap-2">
-                                  <div className="w-2 h-2 rounded-full bg-neutral-400 group-hover:bg-[#784D28] transition-colors" />
+                                  <div className="w-2 h-2 rounded-full bg-neutral-400 group-hover:bg-[#4A1A45] transition-colors" />
                                   <span className="font-bold text-xs sm:text-sm text-neutral-900">
                                     {track.cat}
                                   </span>
@@ -884,7 +884,7 @@ export function AdminDashboardClient({
                                   </span>
                                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                     track.comp > 0
-                                      ? "bg-[#784D28] text-white"
+                                      ? "bg-[#4A1A45] text-white"
                                       : "bg-neutral-200/70 text-neutral-500"
                                   }`}>
                                     {track.comp} certified
@@ -920,14 +920,14 @@ export function AdminDashboardClient({
                                   <div className="w-full h-2.5 bg-neutral-200/60 rounded-full overflow-hidden relative">
                                     {track.comp > 0 ? (
                                       <div
-                                        className="h-full rounded-full bg-gradient-to-r from-[#9A6A38] to-[#784D28] transition-all duration-700"
+                                        className="h-full rounded-full bg-gradient-to-r from-[#6B2764] to-[#4A1A45] transition-all duration-700"
                                         style={{ width: `${Math.max(6, compPercent)}%` }}
                                       />
                                     ) : (
                                       <div className="h-full w-2 rounded-full bg-neutral-300 opacity-40" />
                                     )}
                                   </div>
-                                  <span className="text-[10px] font-mono font-bold text-[#784D28] w-6 text-right shrink-0">
+                                  <span className="text-[10px] font-mono font-bold text-[#4A1A45] w-6 text-right shrink-0">
                                     {track.comp}
                                   </span>
                                 </div>
@@ -945,7 +945,7 @@ export function AdminDashboardClient({
               <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6 flex flex-col justify-between">
                 <div className="pb-3 border-b border-neutral-100">
                   <div className="flex items-center gap-2">
-                    <FiUsers className="w-4 h-4 text-[#784D28]" />
+                    <FiUsers className="w-4 h-4 text-[#4A1A45]" />
                     <h3 className="font-black text-lg text-black tracking-tight">Platform Composition</h3>
                   </div>
                   <p className="text-xs text-neutral-500 mt-0.5">Distribution across active system accounts</p>
@@ -995,7 +995,7 @@ export function AdminDashboardClient({
                               cx="50"
                               cy="50"
                               r="36"
-                              stroke="#784D28"
+                              stroke="#4A1A45"
                               strokeWidth="10"
                               strokeDasharray={`${dashT} ${circumference}`}
                               strokeDashoffset={`-${dashS}`}
@@ -1022,7 +1022,7 @@ export function AdminDashboardClient({
 
                         {/* Center Statistics Capsule */}
                         <div className="absolute w-28 h-28 rounded-full bg-white shadow-xs border border-neutral-100 flex flex-col items-center justify-center text-center p-2">
-                          <FiUsers className="w-4 h-4 text-[#784D28] mb-0.5" />
+                          <FiUsers className="w-4 h-4 text-[#4A1A45] mb-0.5" />
                           <span className="font-black text-2xl text-black leading-none">{total}</span>
                           <span className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Directory</span>
                         </div>
@@ -1055,20 +1055,20 @@ export function AdminDashboardClient({
                         <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-lg bg-[#784D28]/15 text-[#784D28] border border-[#784D28]/25 flex items-center justify-center text-[11px] font-bold">
+                              <div className="w-6 h-6 rounded-lg bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/25 flex items-center justify-center text-[11px] font-bold">
                                 <FiAward className="w-3.5 h-3.5" />
                               </div>
                               <span className="font-bold text-neutral-900">Faculty &amp; Tutors</span>
                             </div>
                             <div className="flex items-center gap-1.5">
-                              <span className="text-xs font-black text-[#784D28]">{tCount}</span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#784D28]/10 text-[#784D28]">
+                              <span className="text-xs font-black text-[#4A1A45]">{tCount}</span>
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45]">
                                 {tPct}%
                               </span>
                             </div>
                           </div>
                           <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-[#784D28] h-full rounded-full transition-all duration-700" style={{ width: `${tPct}%` }} />
+                            <div className="bg-[#4A1A45] h-full rounded-full transition-all duration-700" style={{ width: `${tPct}%` }} />
                           </div>
                         </div>
 
@@ -1112,7 +1112,7 @@ export function AdminDashboardClient({
                   placeholder="Search users by name, email, or department..."
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
+                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
                 />
               </div>
 
@@ -1223,7 +1223,7 @@ export function AdminDashboardClient({
                   placeholder="Search courses by title, instructor, or department..."
                   value={courseSearch}
                   onChange={(e) => setCourseSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black"
+                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
                 />
               </div>
 
@@ -1264,7 +1264,7 @@ export function AdminDashboardClient({
                             {c.department}
                           </span>
                         )}
-                        <span className="text-[10px] font-bold text-[#784D28] uppercase">{c.faculty || c.category} · {c.level}</span>
+                        <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{c.faculty || c.category} · {c.level}</span>
                       </div>
                       <span className="font-bold text-base text-black">
                         {c.price === 0 ? "Free" : formatNgn(c.price)}
@@ -1319,7 +1319,7 @@ export function AdminDashboardClient({
                       <p className="text-[10px] text-neutral-500">{e.student.department || e.student.email}</p>
                     </td>
                     <td className="p-4">
-                      <p className="text-[#784D28] font-bold">{e.course.title}</p>
+                      <p className="text-[#4A1A45] font-bold">{e.course.title}</p>
                       <p className="text-[10px] text-neutral-500">{e.course.department || e.course.category}</p>
                     </td>
                     <td className="p-4 font-bold text-black">
@@ -1359,7 +1359,7 @@ export function AdminDashboardClient({
                 <div key={sub.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
-                      <span className="text-[10px] font-bold text-[#784D28] uppercase">
+                      <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
                         {sub.assignment.lesson.module.course.title}
                       </span>
                       <h4 className="font-bold text-base text-black">{sub.assignment.title}</h4>
@@ -1369,13 +1369,13 @@ export function AdminDashboardClient({
                     <div className="flex items-center gap-3">
                       <div className="text-right">
                         <span className="text-[10px] font-bold text-neutral-400 uppercase block">Grade</span>
-                        <span className={`font-bold text-xl ${isPass ? "text-black" : "text-[#784D28]"}`}>
+                        <span className={`font-bold text-xl ${isPass ? "text-black" : "text-[#4A1A45]"}`}>
                           {sub.score !== null ? `${sub.score} / ${max}` : "Pending"}
                         </span>
                       </div>
                       <button
                         onClick={() => setGradeOverrideSub(sub)}
-                        className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                        className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm"
                       >
                         <FiSliders className="w-3.5 h-3.5" />
                         Override
@@ -1426,7 +1426,7 @@ export function AdminDashboardClient({
               {/* Password Change Form */}
               <form onSubmit={handleUpdateAdminPassword} className="space-y-4 max-w-xl">
                 <h4 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-2">
-                  <FiSliders className="w-4 h-4 text-[#784D28]" /> Update Superadmin Password
+                  <FiSliders className="w-4 h-4 text-[#4A1A45]" /> Update Superadmin Password
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -1438,7 +1438,7 @@ export function AdminDashboardClient({
                       placeholder="Minimum 6 characters"
                       value={adminNewPassword}
                       onChange={(e) => setAdminNewPassword(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
                     />
                   </div>
                   <div>
@@ -1450,14 +1450,14 @@ export function AdminDashboardClient({
                       placeholder="Re-enter password"
                       value={adminConfirmPassword}
                       onChange={(e) => setAdminConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
                     />
                   </div>
                 </div>
                 <button
                   type="submit"
                   disabled={adminPasswordLoading || !adminNewPassword}
-                  className="px-6 py-2.5 rounded-full bg-black hover:bg-neutral-800 disabled:opacity-50 text-white font-bold text-xs shadow-sm transition-all"
+                  className="px-6 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs shadow-sm transition-all"
                 >
                   {adminPasswordLoading ? "Updating..." : "Save New Password"}
                 </button>
@@ -1467,7 +1467,7 @@ export function AdminDashboardClient({
             {/* Institutional Configuration Card */}
             <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <FiBookOpen className="w-5 h-5 text-[#784D28]" />
+                <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
                 Institutional Identity &amp; Academic Configuration
               </h3>
 
@@ -1527,7 +1527,7 @@ export function AdminDashboardClient({
             {/* Academic Policies & Enrollment Rules */}
             <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <FiAward className="w-5 h-5 text-[#784D28]" />
+                <FiAward className="w-5 h-5 text-[#4A1A45]" />
                 Academic Policies &amp; Lock Enforcement
               </h3>
 
@@ -1551,7 +1551,7 @@ export function AdminDashboardClient({
                       Minimum required evaluation grade to unlock institutional seal and official certificate download.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#784D28] text-white">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#4A1A45] text-white">
                     70% Pass Score
                   </span>
                 </div>
@@ -1573,7 +1573,7 @@ export function AdminDashboardClient({
             {/* Audit & Data Export Center */}
             <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <FiDownload className="w-5 h-5 text-[#784D28]" />
+                <FiDownload className="w-5 h-5 text-[#4A1A45]" />
                 Institutional Ledger CSV Export Center
               </h3>
               <p className="text-xs text-neutral-500">
@@ -1591,7 +1591,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiUsers className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <FiUsers className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Users Directory</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{users.length} total registered accounts</p>
@@ -1608,7 +1608,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiBookOpen className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <FiBookOpen className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Courses Catalog</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{courses.length} curriculum tracks</p>
@@ -1625,7 +1625,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiAward className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <FiAward className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Enrollments Ledger</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{enrollments.length} student registrations</p>
@@ -1642,7 +1642,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiActivity className="w-5 h-5 text-[#784D28] group-hover:scale-110 transition-transform" />
+                  <FiActivity className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Submissions Ledger</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{submissions.length} evaluated tasks</p>

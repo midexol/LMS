@@ -10,7 +10,7 @@ export default function NotFound() {
     <div className="min-h-screen bg-[#faf9f6] flex flex-col items-center justify-center p-6 text-black select-none">
       {/* Background radial accent glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
-        <div className="w-[600px] h-[600px] bg-[#784D28]/5 rounded-full blur-3xl -translate-y-12"></div>
+        <div className="w-[600px] h-[600px] bg-[#4A1A45]/10 rounded-full blur-3xl -translate-y-12"></div>
       </div>
 
       <div className="relative z-10 max-w-xl w-full text-center space-y-8">
@@ -24,7 +24,7 @@ export default function NotFound() {
         {/* Big Glitch / Architectural Typography */}
         <div className="space-y-3">
           <h1 className="text-8xl sm:text-9xl font-black tracking-tighter text-black leading-none font-mono">
-            4<span className="text-[#784D28]">0</span>4
+            4<span className="text-[#4A1A45]">0</span>4
           </h1>
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">
             Page Not Found in Academic Records
@@ -38,16 +38,16 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link
             href="/"
-            className="w-full sm:w-auto px-6 py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <FiHome className="w-4 h-4" /> Return to Homepage
           </Link>
 
           <Link
             href="/courses"
-            className="w-full sm:w-auto px-6 py-3 rounded-full bg-white hover:bg-neutral-100 border border-neutral-300 text-black font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-6 py-3 rounded-full bg-white hover:bg-[#F7F2F6] border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <FiBookOpen className="w-4 h-4 text-[#784D28]" /> Browse Course Catalog
+            <FiBookOpen className="w-4 h-4 text-[#4A1A45]" /> Browse Course Catalog
           </Link>
         </div>
 
@@ -60,10 +60,10 @@ export default function NotFound() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
             <Link
               href="/my-courses"
-              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-black transition-all group shadow-sm"
+              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group shadow-sm"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <FiCompass className="w-4 h-4 text-[#784D28] group-hover:scale-110 transition-transform" />
+                <FiCompass className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] text-neutral-400 font-mono">STUDENT</span>
               </div>
               <h3 className="text-xs font-bold text-black group-hover:underline">My Courses</h3>
@@ -72,10 +72,10 @@ export default function NotFound() {
 
             <Link
               href="/profile"
-              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-black transition-all group shadow-sm"
+              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group shadow-sm"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <FiShield className="w-4 h-4 text-[#784D28] group-hover:scale-110 transition-transform" />
+                <FiShield className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] text-neutral-400 font-mono">ACCOUNT</span>
               </div>
               <h3 className="text-xs font-bold text-black group-hover:underline">Student Profile</h3>
@@ -84,10 +84,10 @@ export default function NotFound() {
 
             <Link
               href="/login"
-              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-black transition-all group shadow-sm"
+              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group shadow-sm"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <FiHelpCircle className="w-4 h-4 text-[#784D28] group-hover:scale-110 transition-transform" />
+                <FiHelpCircle className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] text-neutral-400 font-mono">PORTAL</span>
               </div>
               <h3 className="text-xs font-bold text-black group-hover:underline">Sign In / Up</h3>
@@ -98,7 +98,7 @@ export default function NotFound() {
 
         {/* Footer info */}
         <p className="text-[11px] text-neutral-400 font-mono">
-          Status: 404_HTTP_NOT_FOUND &bull; ACADEMIA System Engine
+          Status: 404_HTTP_NOT_FOUND &bull; FedPoly Ado LMS Portal
         </p>
       </div>
     </div>

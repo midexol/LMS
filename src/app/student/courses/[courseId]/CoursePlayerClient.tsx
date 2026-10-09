@@ -226,7 +226,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             <button
               onClick={handleCompleteCourse}
               disabled={completingCourse}
-              className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all"
+              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all"
             >
               <FiCheckCircle className="w-4 h-4" />
               {completingCourse ? "Checking Criteria..." : "Complete Course & Release Lock"}
@@ -239,9 +239,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               </div>
               <button
                 onClick={() => setShowCertificate(true)}
-                className="px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all"
+                className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all"
               >
-                <FiAward className="w-4 h-4 text-[#D4A373]" />
+                <FiAward className="w-4 h-4 text-[#D6BDD4]" />
                 Official Certificate
               </button>
             </div>
@@ -259,13 +259,13 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2">
           <div className="flex justify-between items-center text-xs font-bold text-neutral-700">
             <span>Overall Course Progress</span>
-            <span className="text-[#784D28] font-bold">
+            <span className="text-[#4A1A45] font-bold">
               {completionPercentage}% ({completedLessonIds.length}/{allLessons.length} lessons)
             </span>
           </div>
           <div className="w-full bg-neutral-200 h-2.5 rounded-full overflow-hidden p-0.5">
             <div
-              className="bg-black h-full rounded-full transition-all duration-500"
+              className="bg-[#4A1A45] h-full rounded-full transition-all duration-500"
               style={{ width: `${completionPercentage}%` }}
             />
           </div>
@@ -280,9 +280,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             className="w-full flex items-center justify-between"
           >
             <h3 className="text-base font-bold text-black flex items-center gap-2">
-              <FiBell className="w-4 h-4 text-[#784D28]" />
+              <FiBell className="w-4 h-4 text-[#4A1A45]" />
               Course Announcements
-              <span className="px-2 py-0.5 rounded-full bg-[#784D28]/10 text-[#784D28] text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-[#4A1A45]/10 text-[#4A1A45] text-[10px] font-bold">
                 {announcements.length}
               </span>
             </h3>
@@ -315,9 +315,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
       <div className="lg:hidden flex items-center justify-between p-3.5 rounded-xl bg-white border border-neutral-200 shadow-sm">
         <button
           onClick={() => setMobileCurriculumOpen(true)}
-          className="flex items-center gap-2 text-xs font-bold text-black hover:text-[#784D28] transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-black hover:text-[#4A1A45] transition-colors"
         >
-          <FiList className="w-4 h-4 text-[#784D28]" />
+          <FiList className="w-4 h-4 text-[#4A1A45]" />
           <span>Curriculum Syllabus ({completedLessonIds.length}/{allLessons.length})</span>
         </button>
         <span className="text-[11px] font-semibold text-neutral-500">
@@ -329,7 +329,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         {/* Left Sidebar Navigator (Desktop) */}
         <div className="hidden lg:block lg:col-span-1 p-6 rounded-2xl bg-white border border-neutral-200 space-y-4 h-fit shadow-sm sticky top-24">
           <h3 className="font-bold text-black text-base flex items-center gap-2 border-b border-neutral-200 pb-3">
-            <FiBookOpen className="w-5 h-5 text-[#784D28]" />
+            <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
             Curriculum Navigator
           </h3>
 
@@ -356,7 +356,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                           isLocked
                             ? "opacity-50 cursor-not-allowed bg-neutral-100 border-neutral-200 text-neutral-400"
                             : isSelected
-                            ? "bg-black text-white border-black shadow-sm"
+                            ? "bg-[#4A1A45] text-white border-[#4A1A45] shadow-sm"
                             : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-400 hover:bg-neutral-50"
                         }`}
                       >
@@ -364,9 +364,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                           {isLocked ? (
                             <FiLock className="w-4 h-4 text-neutral-400 shrink-0" />
                           ) : isDone ? (
-                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-black"}`} />
+                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           ) : (
-                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#784D28]"}`} />
+                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           )}
                           <span className="truncate">{lesson.title}</span>
                         </div>
@@ -391,7 +391,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     onClick={() => handleToggleLessonComplete(activeLesson.id)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border ${
                       completedLessonIds.includes(activeLesson.id)
-                        ? "bg-black border-black text-white shadow-sm"
+                        ? "bg-[#4A1A45] border-[#4A1A45] text-white shadow-sm"
                         : "bg-white border-neutral-300 text-black hover:bg-neutral-50 shadow-sm"
                     }`}
                   >
@@ -445,7 +445,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     className="flex items-center gap-3 p-4 rounded-xl bg-white border border-neutral-200 hover:border-black hover:bg-neutral-50 transition-all shadow-sm group"
                   >
                     <div className="p-2 rounded-lg bg-neutral-100 border border-neutral-200 group-hover:bg-neutral-200 transition-all">
-                      <FiDownload className="w-4 h-4 text-[#784D28]" />
+                      <FiDownload className="w-4 h-4 text-[#4A1A45]" />
                     </div>
                     <div>
                       <p className="text-xs font-bold text-black">{activeLesson.resourceName}</p>
@@ -460,7 +460,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
                   <div className="border-b border-neutral-200 pb-3 flex justify-between items-center">
                     <div>
-                      <span className="text-xs font-bold text-[#784D28] uppercase tracking-wider">
+                      <span className="text-xs font-bold text-[#4A1A45] uppercase tracking-wider">
                         Lesson Assignment
                       </span>
                       <h3 className="text-lg font-bold text-black">{currentAssignment.title}</h3>
@@ -480,7 +480,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     <div className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4 shadow-sm">
                       <div className="flex justify-between items-center">
                         <h4 className="font-bold text-black text-sm flex items-center gap-2">
-                          <FiAward className="w-5 h-5 text-[#784D28]" />
+                          <FiAward className="w-5 h-5 text-[#4A1A45]" />
                           Evaluation Details
                         </h4>
                         <div className="flex items-center gap-3">
@@ -508,7 +508,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                       </div>
 
                       <div className="p-4 rounded-lg bg-white border border-neutral-200 space-y-2">
-                        <h5 className="text-xs font-bold text-[#784D28] uppercase tracking-wider">Evaluation Feedback:</h5>
+                        <h5 className="text-xs font-bold text-[#4A1A45] uppercase tracking-wider">Evaluation Feedback:</h5>
                         <p className="text-xs text-neutral-700 whitespace-pre-wrap leading-relaxed">
                           {previousSubmission.aiFeedback}
                         </p>
@@ -534,7 +534,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                           placeholder="Type your answer here..."
                           value={submissionText}
                           onChange={(e) => setSubmissionText(e.target.value)}
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
                         />
                       </div>
 
@@ -542,7 +542,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                         <button
                           onClick={handleSubmitAssignment}
                           disabled={submitting || !submissionText.trim()}
-                          className="px-6 py-3 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-sm flex items-center gap-2 shadow-sm transition-all"
+                          className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-sm flex items-center gap-2 shadow-sm transition-all"
                         >
                           <FiSend className="w-4 h-4" />
                           {submitting
@@ -568,7 +568,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               {/* Discussion Forum */}
               <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
                 <h3 className="text-lg font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-                  <FiMessageSquare className="w-5 h-5 text-[#784D28]" />
+                  <FiMessageSquare className="w-5 h-5 text-[#4A1A45]" />
                   Lesson Discussion &amp; Q&A Forum
                 </h3>
 
@@ -578,12 +578,12 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     placeholder="Ask a question or share a thought about this lesson..."
                     value={newPostContent}
                     onChange={(e) => setNewPostContent(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
                   />
                   <button
                     onClick={handleCreateDiscussionPost}
                     disabled={!newPostContent.trim()}
-                    className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+                    className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
                   >
                     <FiSend className="w-3.5 h-3.5" /> Post Question
                   </button>
@@ -638,11 +638,11 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                             onKeyDown={(e) =>
                               e.key === "Enter" && handleCreateDiscussionReply(post.id)
                             }
-                            className="flex-1 px-3 py-1.5 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-black"
+                            className="flex-1 px-3 py-1.5 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
                           />
                           <button
                             onClick={() => handleCreateDiscussionReply(post.id)}
-                            className="px-3 py-1.5 rounded-lg bg-black text-white font-bold text-xs shadow-sm hover:bg-neutral-800"
+                            className="px-3 py-1.5 rounded-lg bg-[#4A1A45] text-white font-bold text-xs shadow-sm hover:bg-[#3B1537]"
                           >
                             Reply
                           </button>
@@ -668,13 +668,13 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             {/* Modal Controls (Hidden in print) */}
             <div className="flex items-center justify-between p-4 bg-neutral-950 text-white print:hidden">
               <div className="flex items-center gap-2 text-xs font-bold">
-                <FiAward className="w-4 h-4 text-[#D4A373]" />
+                <FiAward className="w-4 h-4 text-[#D6BDD4]" />
                 Official Academic Certificate of Completion
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="px-4 py-1.5 rounded-xl bg-white text-black hover:bg-neutral-100 text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
+                  className="px-4 py-1.5 rounded-xl bg-white text-[#4A1A45] hover:bg-[#F7F2F6] text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
                 >
                   <FiPrinter className="w-3.5 h-3.5" /> Print / Save as PDF
                 </button>
@@ -691,7 +691,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             <div className="p-10 sm:p-14 text-center bg-white border-8 border-double border-neutral-900 m-4 rounded-2xl relative">
               <div className="space-y-6">
                 <div>
-                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#784D28] block mb-1">
+                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#4A1A45] block mb-1">
                     Polytechnic Academic Directorate &amp; Examination Board
                   </span>
                   <h2 className="font-serif text-3xl sm:text-4xl font-black text-black tracking-tight">
@@ -703,7 +703,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                   This is officially awarded to certify that
                 </p>
 
-                <div className="py-2 border-b-2 border-black inline-block px-10">
+                <div className="py-2 border-b-2 border-[#4A1A45] inline-block px-10">
                   <h3 className="font-serif text-2xl sm:text-3xl font-black text-black">
                     {student.name}
                   </h3>
@@ -717,7 +717,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                   <h4 className="font-black text-xl sm:text-2xl text-black">
                     {course.title}
                   </h4>
-                  <p className="text-xs font-bold text-[#784D28] uppercase tracking-wider">
+                  <p className="text-xs font-bold text-[#4A1A45] uppercase tracking-wider">
                     {course.faculty || course.category} · {course.department || student.department || "Academic Department"}
                   </p>
                 </div>
@@ -728,7 +728,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     <span className="font-bold text-black">{formatDate(enrollment.completedAt || new Date().toISOString())}</span>
                   </div>
                   <div className="text-center">
-                    <div className="w-12 h-12 rounded-full border-2 border-black bg-neutral-50 mx-auto flex items-center justify-center font-black text-[10px] tracking-wider text-black">
+                    <div className="w-12 h-12 rounded-full border-2 border-[#4A1A45] bg-[#F7F2F6] mx-auto flex items-center justify-center font-black text-[10px] tracking-wider text-[#4A1A45]">
                       SEAL
                     </div>
                     <span className="text-[9px] text-neutral-500 font-bold uppercase tracking-widest mt-1 block">Institutional Seal</span>
@@ -765,7 +765,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             onClick={() => setMobileCurriculumOpen(true)}
             className="flex-1 py-2.5 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 text-xs font-bold text-black flex items-center justify-center gap-2 transition-all duration-150 active:scale-95 shadow-xs"
           >
-            <FiList className="w-4 h-4 text-[#784D28]" />
+            <FiList className="w-4 h-4 text-[#4A1A45]" />
             <span className="truncate">
               Syllabus ({completedLessonIds.length}/{allLessons.length})
             </span>
@@ -775,7 +775,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           {nextLesson ? (
             <button
               onClick={handleNextLesson}
-              className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95 shadow-sm"
+              className="px-3.5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95 shadow-sm"
               title="Next Lesson"
             >
               <span>{completedLessonIds.includes(activeLesson?.id) ? "Next" : "Next"}</span>
@@ -795,7 +795,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               onClick={() => setShowCertificate(true)}
               className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95 shadow-sm"
             >
-              <FiAward className="w-4 h-4 text-[#D4A373]" />
+              <FiAward className="w-4 h-4 text-[#D6BDD4]" />
               <span>Cert</span>
             </button>
           )}
@@ -829,7 +829,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           <div className="px-6 py-3 border-b border-neutral-200 flex items-center justify-between">
             <div>
               <h3 className="font-bold text-base text-black flex items-center gap-2">
-                <FiBookOpen className="w-4 h-4 text-[#784D28]" />
+                <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                 Course Curriculum
               </h3>
               <p className="text-[11px] text-neutral-500 font-semibold mt-0.5">
@@ -869,7 +869,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                           isLocked
                             ? "opacity-50 cursor-not-allowed bg-neutral-100 border-neutral-200 text-neutral-400"
                             : isSelected
-                            ? "bg-black text-white border-black shadow-sm"
+                            ? "bg-[#4A1A45] text-white border-[#4A1A45] shadow-sm"
                             : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-400 hover:bg-neutral-50"
                         }`}
                       >
@@ -877,9 +877,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                           {isLocked ? (
                             <FiLock className="w-4 h-4 text-neutral-400 shrink-0" />
                           ) : isDone ? (
-                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-black"}`} />
+                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           ) : (
-                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#784D28]"}`} />
+                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           )}
                           <span className="truncate">{lesson.title}</span>
                         </div>

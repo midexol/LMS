@@ -8,12 +8,13 @@
   --font-family--heading: var(--font-sans);
   --font-family--body: var(--font-sans);
   --neu-bg: #ffffff;
-  --neu-text: #000000;
+  --neu-text: #1E0A1C;
+  --neu-accent: #4A1A45;
 }
 
 html, body {
   background-color: #ffffff;
-  color: #000000;
+  color: #1E0A1C;
   font-family: var(--font-family--body);
   letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;

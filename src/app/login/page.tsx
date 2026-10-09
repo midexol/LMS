@@ -42,15 +42,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-white flex">
-      {/* Left panel — Solid Jet Black Brand panel */}
-      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
+      {/* Left panel — Solid Purple Brand panel */}
+      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#2D0F2A] border-r border-[#3B1537] text-white p-12 relative overflow-hidden">
         <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">
             Welcome back to your academic portal.
           </h2>
-          <p className="text-neutral-400 text-sm leading-relaxed">
+          <p className="text-[#D6BDD4] text-sm leading-relaxed">
             Resume your coursework, submit evaluated coursework, and review instructor feedback in real time.
           </p>
           <div className="space-y-3 pt-2">
@@ -59,8 +59,8 @@ export default function LoginPage() {
               "Instant automated rubric evaluation",
               "Verified academic transcripts and grade overrides",
             ].map((f) => (
-              <div key={f} className="flex items-center gap-3 text-xs text-neutral-300">
-                <div className="w-5 h-5 rounded-full bg-[#784D28] flex items-center justify-center shrink-0">
+              <div key={f} className="flex items-center gap-3 text-xs text-neutral-200">
+                <div className="w-5 h-5 rounded-full bg-[#4A1A45] border border-white/20 flex items-center justify-center shrink-0">
                   <FiCheck className="w-3 h-3 text-white" />
                 </div>
                 <span>{f}</span>
@@ -69,16 +69,13 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="relative text-neutral-500 text-xs">&copy; {new Date().getFullYear()} Academia LMS. All rights reserved.</p>
+        <p className="relative text-neutral-400 text-xs">&copy; {new Date().getFullYear()} FedPoly Ado LMS. All rights reserved.</p>
       </div>
 
       {/* Right panel — Form */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 bg-white">
         <div className="lg:hidden flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-2xl bg-black flex items-center justify-center text-white">
-            <span className="font-bold text-xl text-white">A</span>
-          </div>
-          <span className="font-bold text-xl text-black">Academia LMS</span>
+          <BrandLogo href="/" variant="dark" size="sm" />
         </div>
 
         <div className="w-full max-w-sm space-y-7 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm">
@@ -117,7 +114,7 @@ export default function LoginPage() {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>
@@ -125,7 +122,7 @@ export default function LoginPage() {
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider">Password</label>
-                <Link href="/forgot-password" className="text-[11px] font-semibold text-[#784D28] hover:underline">
+                <Link href="/forgot-password" className="text-[11px] font-semibold text-[#4A1A45] hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -137,7 +134,7 @@ export default function LoginPage() {
                   placeholder="Your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
                 <button
                   type="button"
@@ -153,7 +150,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading || !email || !password}
-              className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50 mt-2"
+              className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50 mt-2"
             >
               <FiLogIn className="w-4 h-4" />
               {loading ? "Signing in..." : "Sign In to Account"}
@@ -163,7 +160,7 @@ export default function LoginPage() {
           <div className="pt-4 border-t border-neutral-200 text-center">
             <p className="text-xs text-neutral-600">
               Don&apos;t have an account?{" "}
-              <Link href="/signup" className="text-[#784D28] font-bold hover:underline">
+              <Link href="/signup" className="text-[#4A1A45] font-bold hover:underline">
                 Create one free
               </Link>
             </p>

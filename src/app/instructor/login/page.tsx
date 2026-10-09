@@ -43,7 +43,7 @@ export default function InstructorLoginPage() {
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-flex p-3 rounded-2xl bg-black text-[#D4A373] mb-2 shadow-sm">
+          <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-[#D6BDD4] mb-2 shadow-sm border border-[#4A1A45]/40">
             <FiShield className="w-8 h-8" />
           </div>
           <h1 className="text-2xl font-black text-black tracking-tight">Instructor Portal</h1>
@@ -68,7 +68,7 @@ export default function InstructorLoginPage() {
                 placeholder="marcus@tutor.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
               />
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function InstructorLoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
               />
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function InstructorLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mt-4 shadow-sm"
+            className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mt-4 shadow-sm"
           >
             <FiLogIn className="w-4 h-4" />
             {loading ? "Authenticating..." : "Instructor Log In"}
@@ -100,7 +100,7 @@ export default function InstructorLoginPage() {
 
         <div className="text-center text-xs text-neutral-500 border-t border-neutral-100 pt-4">
           Looking for student platform?{" "}
-          <Link href="/login" className="text-black font-bold hover:underline">
+          <Link href="/login" className="text-[#4A1A45] font-bold hover:underline">
             Go to Student Portal
           </Link>
         </div>

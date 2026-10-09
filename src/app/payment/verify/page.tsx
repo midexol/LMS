@@ -57,11 +57,11 @@ function PaymentVerifyContent() {
   }, [reference, mode, router]);
 
   return (
-    <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-6 text-white">
-      <div className="w-full max-w-md bg-black border border-neutral-800 rounded-3xl p-8 shadow-2xl text-center">
+    <div className="min-h-screen bg-[#1E0A1C] flex items-center justify-center p-6 text-white">
+      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-3xl p-8 shadow-2xl text-center">
         {loading ? (
           <div className="py-10 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-neutral-800 border border-neutral-700 mx-auto flex items-center justify-center animate-spin">
+            <div className="w-16 h-16 rounded-full bg-[#3B1537] border border-[#4A1A45]/40 mx-auto flex items-center justify-center animate-spin">
               <FiLoader className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-xl font-bold tracking-tight">Verifying Payment</h2>
@@ -84,13 +84,13 @@ function PaymentVerifyContent() {
             <div className="pt-4 flex flex-col gap-3">
               <Link
                 href="/courses"
-                className="w-full py-3 px-6 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 px-6 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
               >
                 Browse Course Catalog
               </Link>
               <Link
                 href="/my-courses"
-                className="w-full py-3 px-6 rounded-full bg-neutral-800 text-neutral-300 font-bold text-xs hover:bg-neutral-700 transition-all"
+                className="w-full py-3 px-6 rounded-full bg-[#1E0A1C] text-neutral-300 font-bold text-xs hover:bg-[#3B1537] transition-all"
               >
                 Go to My Courses
               </Link>
@@ -113,7 +113,7 @@ function PaymentVerifyContent() {
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-left space-y-1.5">
+            <div className="p-4 rounded-2xl bg-[#1E0A1C] border border-[#3B1537] text-left space-y-1.5">
               <div className="text-[11px] text-neutral-500 flex justify-between">
                 <span>Transaction Ref</span>
                 <span className="font-mono text-neutral-300">{reference}</span>
@@ -131,7 +131,7 @@ function PaymentVerifyContent() {
             <div className="pt-2">
               <Link
                 href={`/student/courses/${courseInfo?.id}`}
-                className="w-full py-3.5 px-6 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 shadow-lg"
+                className="w-full py-3.5 px-6 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg border border-white/20"
               >
                 <FiBookOpen className="w-4 h-4" /> Start Learning Now <FiArrowRight className="w-4 h-4" />
               </Link>

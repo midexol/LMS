@@ -39,20 +39,20 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen bg-white flex">
       {/* Brand Sidebar */}
-      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-black text-white p-12 relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#2D0F2A] border-r border-[#3B1537] text-white p-12 relative overflow-hidden">
         <BrandLogo href="/" variant="light" size="lg" />
 
         <div className="relative space-y-6 max-w-md">
           <h2 className="font-bold text-4xl leading-tight">
             Account Recovery & Security.
           </h2>
-          <p className="text-neutral-400 text-sm leading-relaxed">
+          <p className="text-[#D6BDD4] text-sm leading-relaxed">
             Enter your registered institutional email to receive a cryptographically signed recovery token valid for 60 minutes.
           </p>
         </div>
 
-        <div className="relative text-xs text-neutral-500">
-          © {new Date().getFullYear()} ACADEMIA Learning Management System.
+        <div className="relative text-xs text-neutral-400">
+          © {new Date().getFullYear()} FedPoly Ado LMS.
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
           <div>
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-black transition-colors mb-6"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-[#4A1A45] transition-colors mb-6"
             >
               <FiArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
             </Link>
@@ -83,8 +83,8 @@ export default function ForgotPasswordPage() {
 
           {submitted ? (
             <div className="space-y-6">
-              <div className="p-5 rounded-2xl bg-[#faf6f0] border border-[#ecdac8] space-y-3">
-                <div className="w-10 h-10 rounded-full bg-[#784D28] text-white flex items-center justify-center">
+              <div className="p-5 rounded-2xl bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
+                <div className="w-10 h-10 rounded-full bg-[#4A1A45] text-white flex items-center justify-center">
                   <FiCheck className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Reset Link Dispatched</h3>
@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
               <div className="pt-2 text-center">
                 <Link
                   href="/login"
-                  className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+                  className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
                   Return to Sign In
                 </Link>
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
                     placeholder="student@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black transition-all placeholder:text-neutral-400"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                   />
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
+                className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
               >
                 <FiSend className="w-4 h-4" />
                 {loading ? "Sending Instructions..." : "Send Reset Link"}
@@ -139,7 +139,7 @@ export default function ForgotPasswordPage() {
           <div className="pt-4 border-t border-neutral-200 text-center">
             <p className="text-xs text-neutral-600">
               Remember your password?{" "}
-              <Link href="/login" className="text-[#784D28] font-bold hover:underline">
+              <Link href="/login" className="text-[#4A1A45] font-bold hover:underline">
                 Sign in
               </Link>
             </p>

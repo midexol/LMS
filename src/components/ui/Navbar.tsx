@@ -80,8 +80,8 @@ export function Navbar({ currentUser }: NavbarProps) {
                   href={link.href}
                   className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
                     isActive
-                      ? "bg-black text-white"
-                      : "text-neutral-600 hover:text-black hover:bg-neutral-100"
+                      ? "bg-[#4A1A45] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6]"
                   }`}
                 >
                   {link.label}
@@ -97,18 +97,18 @@ export function Navbar({ currentUser }: NavbarProps) {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-full border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 transition-all text-left"
+                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-full border border-neutral-200 hover:border-[#4A1A45]/40 hover:bg-[#F7F2F6]/50 transition-all text-left"
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
-                <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                <div className="w-7 h-7 rounded-full bg-[#4A1A45] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                   {userInitial}
                 </div>
                 <div className="hidden sm:flex flex-col">
                   <span className="text-xs font-bold text-neutral-900 leading-tight">
                     {currentUser.name}
                   </span>
-                  <span className="text-[10px] text-neutral-500 font-medium leading-none">
+                  <span className="text-[10px] text-[#4A1A45] font-semibold leading-none">
                     {currentUser.role}
                   </span>
                 </div>
@@ -130,7 +130,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     <p className="text-[11px] text-neutral-500 truncate mt-0.5">
                       {currentUser.email}
                     </p>
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#784D28]/10 text-[#784D28] border border-[#784D28]/25">
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/25">
                       {currentUser.role} Account
                     </span>
                   </div>
@@ -150,15 +150,15 @@ export function Navbar({ currentUser }: NavbarProps) {
                         <Link
                           href="/admin?tab=settings"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiSliders className="w-4 h-4 text-[#784D28]" />
+                          <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                           System Settings
                         </Link>
                         <Link
                           href="/profile"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
                           <FiUser className="w-4 h-4 text-neutral-500" />
                           Account Security &amp; Profile
@@ -169,23 +169,23 @@ export function Navbar({ currentUser }: NavbarProps) {
                         <Link
                           href="/instructor"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiBookOpen className="w-4 h-4 text-[#D4A373]" />
+                          <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                           Instructor Studio
                         </Link>
                         <Link
                           href="/instructor?tab=settings"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiSliders className="w-4 h-4 text-[#784D28]" />
+                          <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                           Studio Settings
                         </Link>
                         <Link
                           href="/profile"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
                           <FiUser className="w-4 h-4 text-neutral-500" />
                           Account Profile
@@ -196,15 +196,15 @@ export function Navbar({ currentUser }: NavbarProps) {
                         <Link
                           href="/profile"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiUser className="w-4 h-4 text-[#784D28]" />
+                          <FiUser className="w-4 h-4 text-[#4A1A45]" />
                           Profile &amp; Academic Records
                         </Link>
                         <Link
                           href="/my-courses"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
                           <FiBookOpen className="w-4 h-4 text-neutral-500" />
                           My Learning Workspace
@@ -212,7 +212,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                         <Link
                           href="/profile#receipts"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
                           <FiCreditCard className="w-4 h-4 text-neutral-500" />
                           Tuition &amp; Payment Receipts
@@ -241,13 +241,13 @@ export function Navbar({ currentUser }: NavbarProps) {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-xs font-semibold px-3 py-1.5 text-neutral-700 hover:text-black transition-colors"
+                className="text-xs font-semibold px-3 py-1.5 text-neutral-700 hover:text-[#4A1A45] transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white text-xs font-semibold transition-all shadow-sm"
+                className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all shadow-sm"
               >
                 Get Started
               </Link>
@@ -277,8 +277,8 @@ export function Navbar({ currentUser }: NavbarProps) {
                 onClick={() => setMobileOpen(false)}
                 className={`block px-3 py-2 rounded-xl text-xs font-semibold ${
                   isActive
-                    ? "bg-black text-white"
-                    : "text-neutral-700 hover:bg-neutral-100"
+                    ? "bg-[#4A1A45] text-white"
+                    : "text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45]"
                 }`}
               >
                 {link.label}
@@ -292,7 +292,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                   <Link
                     href="/admin"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
                     <FiShield className="w-4 h-4 text-emerald-600" />
                     Superadmin Console
@@ -300,15 +300,15 @@ export function Navbar({ currentUser }: NavbarProps) {
                   <Link
                     href="/admin?tab=settings"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiSliders className="w-4 h-4 text-[#784D28]" />
+                    <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                     System Settings
                   </Link>
                   <Link
                     href="/profile"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
                     <FiUser className="w-4 h-4 text-neutral-500" />
                     Account Security &amp; Profile
@@ -319,23 +319,23 @@ export function Navbar({ currentUser }: NavbarProps) {
                   <Link
                     href="/instructor"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiBookOpen className="w-4 h-4 text-[#D4A373]" />
+                    <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                     Instructor Studio
                   </Link>
                   <Link
                     href="/instructor?tab=settings"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiSliders className="w-4 h-4 text-[#784D28]" />
+                    <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                     Studio Settings
                   </Link>
                   <Link
                     href="/profile"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
                     <FiUser className="w-4 h-4 text-neutral-500" />
                     Account Profile
@@ -346,15 +346,15 @@ export function Navbar({ currentUser }: NavbarProps) {
                   <Link
                     href="/profile"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiUser className="w-4 h-4 text-[#784D28]" />
+                    <FiUser className="w-4 h-4 text-[#4A1A45]" />
                     Profile &amp; Academic Records
                   </Link>
                   <Link
                     href="/my-courses"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
                     <FiBookOpen className="w-4 h-4 text-neutral-500" />
                     My Learning Workspace
@@ -362,7 +362,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                   <Link
                     href="/profile#receipts"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
                     <FiCreditCard className="w-4 h-4 text-neutral-500" />
                     Tuition &amp; Payment Receipts

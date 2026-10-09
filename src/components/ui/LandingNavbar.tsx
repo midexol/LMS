@@ -36,19 +36,19 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
           <nav className="hidden md:flex items-center gap-1.5" aria-label="Main Navigation">
             <Link
               href="/courses"
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
             >
               Course Catalog
             </Link>
             <a
               href="#how-it-works"
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
             >
               Academic Model
             </a>
             <a
               href="#campus-life"
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-black hover:bg-neutral-100 transition-colors"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
             >
               Curriculum Rigor
             </a>
@@ -61,13 +61,13 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
             <div className="flex items-center gap-2">
               <Link
                 href="/my-courses"
-                className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white text-xs font-semibold transition-all shadow-sm"
+                className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all shadow-sm"
               >
                 My Learning
               </Link>
               <button
                 onClick={handleLogout}
-                className="text-neutral-500 hover:text-black text-xs font-semibold px-3 py-2 transition-colors hidden sm:inline-block"
+                className="text-neutral-500 hover:text-[#4A1A45] text-xs font-semibold px-3 py-2 transition-colors hidden sm:inline-block"
               >
                 Sign Out
               </button>
@@ -76,13 +76,13 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-xs font-semibold px-3.5 py-2 text-neutral-700 hover:text-black transition-colors"
+                className="text-xs font-semibold px-3.5 py-2 text-neutral-700 hover:text-[#4A1A45] transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white text-xs font-semibold transition-all shadow-sm"
+                className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all shadow-sm"
               >
                 Get Started
               </Link>
@@ -107,21 +107,21 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
           <Link
             href="/courses"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-neutral-700 hover:text-black py-1.5"
+            className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
           >
             Course Catalog
           </Link>
           <a
             href="#how-it-works"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-neutral-700 hover:text-black py-1.5"
+            className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
           >
             Academic Model
           </a>
           <a
             href="#campus-life"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-neutral-700 hover:text-black py-1.5"
+            className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
           >
             Curriculum Rigor
           </a>
@@ -131,7 +131,7 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
                 <Link
                   href="/my-courses"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2 rounded-full bg-black text-white text-xs font-semibold text-center"
+                  className="px-4 py-2 rounded-full bg-[#4A1A45] text-white text-xs font-semibold text-center"
                 >
                   My Learning
                 </Link>
@@ -147,14 +147,14 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-xs font-semibold text-neutral-700 text-center py-2"
+                  className="text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] text-center py-2"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/signup"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2 rounded-full bg-black text-white text-xs font-semibold text-center"
+                  className="px-4 py-2 rounded-full bg-[#4A1A45] text-white text-xs font-semibold text-center"
                 >
                   Get Started
                 </Link>

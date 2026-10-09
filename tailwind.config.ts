@@ -9,14 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        fedpoly: {
+          DEFAULT: "#4A1A45",
+          dark: "#3B1537",
+          deep: "#2A0E27",
+          deeper: "#1E0A1C",
+          hover: "#5E2258",
+          light: "#6B2764",
+          soft: "#F7F2F6",
+          muted: "#896A86",
+          border: "rgba(74, 26, 69, 0.15)",
+        },
         neu: {
           bg: "#ffffff",
           surface: "#ffffff",
-          dark: "#121212",
-          accent: "#784D28",
-          accentHover: "#5E3B1E",
-          text: "#000000",
-          muted: "#71717A",
+          dark: "#2A0E27",
+          accent: "#4A1A45",
+          accentHover: "#3B1537",
+          text: "#1E0A1C",
+          muted: "#896A86",
           border: "#E4E4E7",
           success: "#166534",
           danger: "#991B1B",

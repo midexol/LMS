@@ -75,11 +75,11 @@ export function PrivyAuthButton({
         onClick={handleLoginClick}
         className={
           className ||
-          "w-full py-2.5 px-4 rounded-xl border border-neutral-300 hover:border-black bg-white hover:bg-neutral-50 text-black font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
+          "w-full py-2.5 px-4 rounded-xl border border-neutral-300 hover:border-[#4A1A45] bg-white hover:bg-[#F7F2F6] text-neutral-900 font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
         }
       >
         <span className="flex items-center gap-1.5 font-bold">
-          <FiShield className="w-3.5 h-3.5 text-[#784D28]" />
+          <FiShield className="w-3.5 h-3.5 text-[#4A1A45]" />
           {syncing ? "Connecting Account..." : label}
         </span>
         {!syncing && <FiArrowRight className="w-3.5 h-3.5 text-neutral-400" />}

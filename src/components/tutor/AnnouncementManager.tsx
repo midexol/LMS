@@ -88,7 +88,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
   return (
     <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <FiBell className="w-5 h-5 text-[#784D28]" />
+        <FiBell className="w-5 h-5 text-[#4A1A45]" />
         Course Announcements Manager
       </h2>
 
@@ -98,7 +98,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
         <select
           value={selectedCourseId}
           onChange={(e) => setSelectedCourseId(e.target.value)}
-          className="px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+          className="px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
@@ -131,19 +131,19 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
           placeholder="Announcement title..."
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         />
         <textarea
           rows={3}
           placeholder="Write your announcement message here..."
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         />
         <button
           onClick={handlePost}
           disabled={posting || !newTitle.trim() || !newContent.trim()}
-          className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+          className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
         >
           <FiPlus className="w-4 h-4" />
           {posting ? "Posting..." : "Post Announcement"}
