@@ -209,4 +209,16 @@ export const RATE_LIMIT_RULES = {
   PAYMENT_INIT: { limit: 10, windowMs: 5 * 60 * 1000 },
   // Payment verification: 15 attempts per 5 minutes per IP
   PAYMENT_VERIFY: { limit: 15, windowMs: 5 * 60 * 1000 },
+  // AI grading: each submission costs an AI call and sends an email (per user)
+  GRADE: { limit: 10, windowMs: 10 * 60 * 1000 },
+  // Tutor AI assistant (per user)
+  AI_ASSISTANT: { limit: 15, windowMs: 10 * 60 * 1000 },
+  // File upload URL requests (per user)
+  UPLOAD: { limit: 30, windowMs: 10 * 60 * 1000 },
+  // Discussion posts and replies (per user)
+  DISCUSSION: { limit: 20, windowMs: 5 * 60 * 1000 },
+  // Profile / password changes (per user)
+  PROFILE: { limit: 10, windowMs: 15 * 60 * 1000 },
+  // Public contact form (per IP)
+  CONTACT: { limit: 5, windowMs: 60 * 60 * 1000 },
 };

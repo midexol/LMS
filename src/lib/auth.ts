@@ -9,6 +9,7 @@ export interface SessionUser {
   role: "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN";
   faculty?: string | null;
   department?: string | null;
+  emailVerified: boolean;
 }
 
 const DEV_SESSION_SECRET = "dev_only_insecure_session_secret";
@@ -26,37 +27,46 @@ function getSessionSecret(): string {
   return DEV_SESSION_SECRET;
 }
 
-/**
- * Signs a user ID with an HMAC-SHA256 signature to prevent cookie spoofing/tampering
- */
-export function signSessionToken(userId: string): string {
-  const signature = crypto
-    .createHmac("sha256", getSessionSecret())
-    .update(userId)
-    .digest("hex");
-  return `${userId}.${signature}`;
+export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
+
+function signPayload(payload: string): string {
+  return crypto.createHmac("sha256", getSessionSecret()).update(payload).digest("hex");
 }
 
 /**
- * Validates a signed session token. Returns null if forged or invalid.
+ * Signs a session token of the form `userId.issuedAtMs.signature`. The issue time is signed too,
+ * so tokens expire on their own and can be revoked by moving the user's sessionsValidAfter forward.
  */
-export function verifySessionToken(token: string): string | null {
+export function signSessionToken(userId: string): string {
+  const issuedAt = Date.now();
+  return `${userId}.${issuedAt}.${signPayload(`${userId}.${issuedAt}`)}`;
+}
+
+export interface VerifiedSession {
+  userId: string;
+  issuedAt: number;
+}
+
+/**
+ * Validates a signed session token. Returns null if forged, malformed, or expired.
+ */
+export function verifySessionToken(token: string): VerifiedSession | null {
   if (!token) return null;
 
-  // Only signed tokens (userId.signature) are accepted
-  const [userId, signature, ...rest] = token.split(".");
-  if (!userId || !signature || rest.length > 0) return null;
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  const [userId, issuedAtRaw, signature] = parts;
+  const issuedAt = Number(issuedAtRaw);
+  if (!userId || !signature || !Number.isFinite(issuedAt)) return null;
 
-  const expectedSig = crypto
-    .createHmac("sha256", getSessionSecret())
-    .update(userId)
-    .digest("hex");
+  const ageMs = Date.now() - issuedAt;
+  if (ageMs < 0 || ageMs > SESSION_MAX_AGE_SECONDS * 1000) return null;
 
   try {
     const sigBuf = Buffer.from(signature, "hex");
-    const expBuf = Buffer.from(expectedSig, "hex");
+    const expBuf = Buffer.from(signPayload(`${userId}.${issuedAtRaw}`), "hex");
     if (sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf)) {
-      return userId;
+      return { userId, issuedAt };
     }
   } catch {
     return null;
@@ -73,16 +83,21 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       return null;
     }
 
-    const verifiedUserId = verifySessionToken(rawToken);
-    if (!verifiedUserId) {
+    const session = verifySessionToken(rawToken);
+    if (!session) {
       return null;
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: verifiedUserId },
+      where: { id: session.userId },
     });
 
     if (!user) return null;
+
+    // Sessions issued before a password change/reset are revoked
+    if (user.sessionsValidAfter && session.issuedAt < user.sessionsValidAfter.getTime()) {
+      return null;
+    }
 
     return {
       id: user.id,
@@ -91,6 +106,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       role: user.role as "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN",
       faculty: user.faculty,
       department: user.department,
+      emailVerified: user.emailVerified,
     };
   } catch (error) {
     console.error("[AUTH ERROR]", error);

@@ -17,7 +17,6 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState<"STUDENT" | "TUTOR">("STUDENT");
   const [faculty, setFaculty] = useState(ACADEMIC_STRUCTURE[0].name);
   const [department, setDepartment] = useState(ACADEMIC_STRUCTURE[0].departments[0]);
   const [loading, setLoading] = useState(false);
@@ -56,7 +55,6 @@ export default function SignupPage() {
           name,
           email,
           password,
-          role,
           faculty,
           department,
         }),
@@ -84,7 +82,7 @@ export default function SignupPage() {
             Begin your learning journey today.
           </h2>
           <p className="text-[#D6BDD4] text-sm leading-relaxed">
-            Join thousands of active students and instructors advancing their knowledge through structured coursework and automated assignment evaluations.
+            Learn through structured coursework with automated assignment evaluations and instructor feedback.
           </p>
           <div className="space-y-3 pt-2">
             {[
@@ -129,16 +127,16 @@ export default function SignupPage() {
                 {registeredEmail}
               </p>
               <p className="text-[11px] text-neutral-500 leading-relaxed pt-1">
-                Please click the link in your email to verify your address.
+                Click the link in your email to verify your address. You can browse courses now, but you must verify your email before you can enroll and pay.
               </p>
             </div>
 
             <div className="pt-2 space-y-3">
               <Link
-                href={role === "TUTOR" ? "/instructor" : "/my-courses"}
+                href="/my-courses"
                 className="w-full py-3.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
               >
-                Continue to Dashboard <FiArrowRight className="w-4 h-4" />
+                Browse Courses <FiArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -146,7 +144,7 @@ export default function SignupPage() {
           <div className="w-full max-w-sm space-y-6 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm">
             <div>
               <h1 className="font-bold text-2xl text-black">Create an account</h1>
-              <p className="text-xs text-neutral-500 mt-1">Select your role and start your academic journey.</p>
+              <p className="text-xs text-neutral-500 mt-1">Create your student account and start your academic journey.</p>
             </div>
 
           {error && (

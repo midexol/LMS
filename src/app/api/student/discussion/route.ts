@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser) {
       return NextResponse.json({ error: "Unauthorized access." }, { status: 401 });
+    }
+
+    const rateLimit = await checkRateLimit(`discussion:${currentUser.id}`, RATE_LIMIT_RULES.DISCUSSION);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
     }
 
     const { action, lessonId, postId, content } = await req.json();

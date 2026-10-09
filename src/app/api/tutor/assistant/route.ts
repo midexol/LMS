@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
+import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { generateCourseOutlineAI, generateAssignmentRubricAI } from "@/lib/ai/assistant";
 
 export async function POST(req: Request) {
@@ -7,6 +8,11 @@ export async function POST(req: Request) {
     const currentUser = await getCurrentUser();
     if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
       return NextResponse.json({ error: "Only instructors can access the AI assistant." }, { status: 403 });
+    }
+
+    const rateLimit = await checkRateLimit(`ai_assistant:${currentUser.id}`, RATE_LIMIT_RULES.AI_ASSISTANT);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
     }
 
     const { action, topic, prompt } = await req.json();

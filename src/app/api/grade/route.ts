@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { evaluateSubmissionAI } from "@/lib/ai";
 import { sendGradeEmail } from "@/lib/mail";
 
@@ -9,6 +10,11 @@ export async function POST(req: Request) {
     const currentUser = await getCurrentUser();
     if (!currentUser) {
       return NextResponse.json({ error: "Unauthorized access." }, { status: 401 });
+    }
+
+    const rateLimit = await checkRateLimit(`grade:${currentUser.id}`, RATE_LIMIT_RULES.GRADE);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
     }
 
     const { assignmentId, content } = await req.json();

@@ -81,6 +81,8 @@ export async function POST(req: Request) {
           email: finalIdentifier,
           password: hashedPassword,
           role: "STUDENT",
+          emailVerified: true,
+          emailVerifiedAt: new Date(),
         },
       });
     }

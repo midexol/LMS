@@ -27,6 +27,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
   );
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
@@ -76,6 +77,11 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
       return;
     }
 
+    if (password && !currentPassword) {
+      setErrorMsg("Enter your current password to set a new one.");
+      return;
+    }
+
     if (password && password !== confirmPassword) {
       setErrorMsg("Passwords do not match. Please re-enter your new password.");
       return;
@@ -91,6 +97,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           faculty,
           department,
           password: password || undefined,
+          currentPassword: password ? currentPassword : undefined,
         }),
       });
 
@@ -100,6 +107,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
       setSuccessMsg(true);
       setPassword("");
       setConfirmPassword("");
+      setCurrentPassword("");
       setTimeout(() => window.location.reload(), 1200);
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to update profile.");
@@ -492,6 +500,20 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   </button>
                 </div>
               </div>
+
+              {password && (
+                <div>
+                  <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Current Password</label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="Enter your current password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                  />
+                </div>
+              )}
 
               {password && (
                 <div>

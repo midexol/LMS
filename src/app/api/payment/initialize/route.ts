@@ -30,6 +30,18 @@ export async function POST(req: Request) {
       );
     }
 
+    // Paying requires a verified email so receipts and enrollment notices reach the right person
+    if (!currentUser.emailVerified) {
+      return NextResponse.json(
+        {
+          error:
+            "Please verify your email address before enrolling. Check your inbox for the verification link, or request a new one from the verification page.",
+          code: "EMAIL_NOT_VERIFIED",
+        },
+        { status: 403 }
+      );
+    }
+
     const { courseId, provider } = await req.json();
     if (!courseId) {
       return NextResponse.json({ error: "Course ID is required." }, { status: 400 });

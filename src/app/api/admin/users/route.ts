@@ -84,6 +84,8 @@ export async function PATCH(req: Request) {
         );
       }
       updateData.password = await bcrypt.hash(newPassword, 12);
+      // Revoke the user's existing sessions when an admin resets their password
+      updateData.sessionsValidAfter = new Date();
     }
 
     const updated = await prisma.user.update({

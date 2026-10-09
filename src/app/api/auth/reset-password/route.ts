@@ -59,6 +59,7 @@ export async function POST(req: Request) {
       where: { id: user.id },
       data: {
         password: hashedPassword,
+        sessionsValidAfter: new Date(),
         resetToken: null,
         resetTokenExpiry: null,
       },
