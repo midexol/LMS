@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LandingNavbar } from "@/components/ui/LandingNavbar";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import {
   FiBookOpen, FiArrowRight, FiCheck, FiUsers, FiAward,
   FiTrendingUp, FiCpu, FiStar, FiFileText, FiShield,
