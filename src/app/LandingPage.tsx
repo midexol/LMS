@@ -510,101 +510,44 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* ───────────────── TEACHABLE-STYLE FOOTER (FEDPOLY PURPLE) ───────────────── */}
-      <footer className="bg-[#1E0A1C] text-neutral-400 pt-20 pb-12 px-6 border-t border-[#3B1537]">
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
-            {/* Brand column */}
-            <div className="col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-2xl bg-[#4A1A45] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                  A
-                </div>
-                <span className="font-black text-xl text-white tracking-tight">ACADEMIA</span>
-              </div>
-              <p className="text-xs leading-relaxed max-w-sm text-neutral-400">
-                Academia is a modern polytechnic learning management system combining structured curricula, automated evaluation, and comprehensive academic telemetry.
-              </p>
-              <p className="text-[11px] font-semibold text-[#D6BDD4]">
-                A product of The Federal Polytechnic, Ado-Ekiti
-              </p>
-            </div>
-
-            {/* Column 1: Curriculum */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Curriculum</h4>
-              <ul className="space-y-2 text-xs">
-                <li><Link href="/courses" className="hover:text-white transition-colors">Course Catalog</Link></li>
-                <li><Link href="/courses" className="hover:text-white transition-colors">Software Engineering</Link></li>
-                <li><Link href="/courses" className="hover:text-white transition-colors">Computer Science</Link></li>
-                <li><Link href="/courses" className="hover:text-white transition-colors">Business Studies</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 2: Academics */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Academics</h4>
-              <ul className="space-y-2 text-xs">
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">Single Course Lock</a></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">Rubric Evaluation Standard</a></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">70% Mastery Threshold</a></li>
-                <li><a href="#campus-life" className="hover:text-white transition-colors">Peer Discussions</a></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Students */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Students</h4>
-              <ul className="space-y-2 text-xs">
-                <li><Link href="/signup" className="hover:text-white transition-colors">Join as Student</Link></li>
-                <li><Link href="/login" className="hover:text-white transition-colors">Sign In</Link></li>
-                <li><Link href="/courses" className="hover:text-white transition-colors">Browse Courses</Link></li>
-                <li><Link href="/signup" className="hover:text-white transition-colors">Academic Record</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 4: Institutional */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white">Trust &amp; Standards</h4>
-              <ul className="space-y-2 text-xs">
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">Curriculum Framework</a></li>
-                <li>
-                  <button onClick={() => setPolicyModal("integrity")} className="hover:text-white transition-colors text-left">
-                    Academic Integrity
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setPolicyModal("honor")} className="hover:text-white transition-colors text-left">
-                    The Honor Code
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setPolicyModal("security")} className="hover:text-white transition-colors text-left">
-                    Platform Security
-                  </button>
-                </li>
-              </ul>
-            </div>
+      {/* ───────────────── ELEGANT COMPACT FOOTER ───────────────── */}
+      <footer className="bg-[#1E0A1C] text-neutral-400 py-12 px-6 border-t border-[#3B1537]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Brand + Institutional Attribution */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+            <BrandLogo href="/" variant="light" size="sm" showSubtitle={false} />
+            <div className="hidden sm:block h-4 w-[1px] bg-[#3B1537]" />
+            <span className="text-xs text-[#D6BDD4]">
+              A product of The Federal Polytechnic, Ado-Ekiti
+            </span>
           </div>
 
-          {/* Subfooter */}
-          <div className="pt-8 border-t border-[#3B1537] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-            <p>&copy; {new Date().getFullYear()} Academia LMS. A product of The Federal Polytechnic, Ado-Ekiti. All rights reserved.</p>
-            <div className="flex flex-wrap items-center gap-6">
-              <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
-                Privacy Policy
-              </button>
-              <button onClick={() => setPolicyModal("terms")} className="hover:text-white transition-colors">
-                Terms of Service
-              </button>
-              <button onClick={() => setPolicyModal("honor")} className="hover:text-white transition-colors">
-                Honor Code
-              </button>
-              <button onClick={() => setPolicyModal("accessibility")} className="hover:text-white transition-colors">
-                Accessibility
-              </button>
-            </div>
+          {/* Important Quick Links */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs">
+            <Link href="/courses" className="hover:text-white transition-colors">
+              Courses
+            </Link>
+            <Link href="/login" className="hover:text-white transition-colors">
+              Sign In
+            </Link>
+            <Link href="/signup" className="hover:text-white transition-colors">
+              Join as Student
+            </Link>
+            <Link href="/instructor/login" className="hover:text-white transition-colors">
+              Faculty
+            </Link>
+            <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
+              Privacy
+            </button>
+            <button onClick={() => setPolicyModal("terms")} className="hover:text-white transition-colors">
+              Terms
+            </button>
           </div>
+
+          {/* Copyright */}
+          <p className="text-xs text-neutral-500 text-center md:text-right">
+            &copy; {new Date().getFullYear()} Academia. All rights reserved.
+          </p>
         </div>
       </footer>
 
