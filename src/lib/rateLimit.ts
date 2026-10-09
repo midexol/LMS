@@ -5,7 +5,7 @@ interface RateLimitEntry {
   resetAt: number;
 }
 
-// Global in-memory storage for rate limits
+// In-memory storage for the single-instance fallback limiter
 // Automatically prunes expired entries to prevent memory leaks
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
@@ -38,12 +38,10 @@ export interface RateLimitResult {
 }
 
 /**
- * Checks and increments rate limit for a specific identifier (IP, user ID, email, etc.)
+ * In-memory fixed-window counter. Only accurate within a single server instance,
+ * so it is used for local development and as a fallback when Redis is unavailable.
  */
-export function checkRateLimit(
-  identifier: string,
-  options: RateLimitOptions = { limit: 10, windowMs: 60 * 1000 }
-): RateLimitResult {
+function checkRateLimitInMemory(identifier: string, options: RateLimitOptions): RateLimitResult {
   cleanupExpiredEntries();
 
   const now = Date.now();
@@ -83,6 +81,74 @@ export function checkRateLimit(
     remaining: options.limit - entry.count,
     resetInSeconds,
   };
+}
+
+/**
+ * Shared fixed-window counter in Upstash Redis (REST API), so limits hold across
+ * all serverless instances. INCR + PEXPIRE NX run in one pipeline round trip.
+ */
+async function checkRateLimitRedis(
+  identifier: string,
+  options: RateLimitOptions,
+  redisUrl: string,
+  redisToken: string
+): Promise<RateLimitResult> {
+  const key = `rl:${identifier}`;
+  const res = await fetch(`${redisUrl.replace(/\/$/, "")}/pipeline`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${redisToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify([
+      ["INCR", key],
+      ["PEXPIRE", key, String(options.windowMs), "NX"],
+      ["PTTL", key],
+    ]),
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error(`Upstash responded with ${res.status}`);
+  }
+
+  const [incr, , pttl] = (await res.json()) as Array<{ result?: number; error?: string }>;
+  if (incr?.error || typeof incr?.result !== "number") {
+    throw new Error(`Upstash INCR failed: ${incr?.error ?? "no result"}`);
+  }
+
+  const count = incr.result;
+  const ttlMs = typeof pttl?.result === "number" && pttl.result > 0 ? pttl.result : options.windowMs;
+
+  return {
+    success: count <= options.limit,
+    limit: options.limit,
+    remaining: Math.max(0, options.limit - count),
+    resetInSeconds: Math.ceil(ttlMs / 1000),
+  };
+}
+
+/**
+ * Checks and increments rate limit for a specific identifier (IP, user ID, email, etc.)
+ * Uses Upstash Redis when UPSTASH_REDIS_REST_URL/TOKEN are set, otherwise in-memory.
+ */
+export async function checkRateLimit(
+  identifier: string,
+  options: RateLimitOptions = { limit: 10, windowMs: 60 * 1000 }
+): Promise<RateLimitResult> {
+  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (redisUrl && redisToken) {
+    try {
+      return await checkRateLimitRedis(identifier, options, redisUrl, redisToken);
+    } catch (err) {
+      // Degrade to per-instance limiting rather than blocking all traffic
+      console.error("[RATE LIMIT] Redis unavailable, falling back to in-memory limiter.", err);
+    }
+  }
+
+  return checkRateLimitInMemory(identifier, options);
 }
 
 /**

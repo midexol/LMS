@@ -7,7 +7,7 @@ import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`payment_init:${ip}`, RATE_LIMIT_RULES.PAYMENT_INIT);
+    const rateLimit = await checkRateLimit(`payment_init:${ip}`, RATE_LIMIT_RULES.PAYMENT_INIT);
     if (!rateLimit.success) {
       return rateLimitResponse(
         rateLimit,

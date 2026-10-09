@@ -24,7 +24,7 @@ function getPrivyClient(): PrivyClient {
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`privy_auth:${ip}`, PRIVY_AUTH_RATE_LIMIT);
+    const rateLimit = await checkRateLimit(`privy_auth:${ip}`, PRIVY_AUTH_RATE_LIMIT);
     if (!rateLimit.success) {
       return rateLimitResponse(rateLimit);
     }

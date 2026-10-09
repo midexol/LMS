@@ -11,7 +11,7 @@ import { sendVerificationEmail } from "@/lib/mail";
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`register:${ip}`, RATE_LIMIT_RULES.REGISTER);
+    const rateLimit = await checkRateLimit(`register:${ip}`, RATE_LIMIT_RULES.REGISTER);
     if (!rateLimit.success) {
       return rateLimitResponse(
         rateLimit,

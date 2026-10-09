@@ -5,7 +5,7 @@ import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from
 export async function GET(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`payment_verify:${ip}`, RATE_LIMIT_RULES.PAYMENT_VERIFY);
+    const rateLimit = await checkRateLimit(`payment_verify:${ip}`, RATE_LIMIT_RULES.PAYMENT_VERIFY);
     if (!rateLimit.success) {
       return rateLimitResponse(rateLimit);
     }
@@ -38,7 +38,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`payment_verify:${ip}`, RATE_LIMIT_RULES.PAYMENT_VERIFY);
+    const rateLimit = await checkRateLimit(`payment_verify:${ip}`, RATE_LIMIT_RULES.PAYMENT_VERIFY);
     if (!rateLimit.success) {
       return rateLimitResponse(rateLimit);
     }

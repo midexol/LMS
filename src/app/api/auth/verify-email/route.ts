@@ -8,7 +8,7 @@ const VERIFY_RATE_LIMIT = { limit: 10, windowMs: 15 * 60 * 1000 };
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`verify_email:${ip}`, VERIFY_RATE_LIMIT);
+    const rateLimit = await checkRateLimit(`verify_email:${ip}`, VERIFY_RATE_LIMIT);
     if (!rateLimit.success) {
       return rateLimitResponse(
         rateLimit,

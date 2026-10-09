@@ -8,7 +8,7 @@ const RESET_PW_RATE_LIMIT = { limit: 5, windowMs: 15 * 60 * 1000 };
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`reset_pw:${ip}`, RESET_PW_RATE_LIMIT);
+    const rateLimit = await checkRateLimit(`reset_pw:${ip}`, RESET_PW_RATE_LIMIT);
     if (!rateLimit.success) {
       return rateLimitResponse(
         rateLimit,

@@ -11,7 +11,7 @@ const FORGOT_PW_RATE_LIMIT = { limit: 3, windowMs: 15 * 60 * 1000 };
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`forgot_pw:${ip}`, FORGOT_PW_RATE_LIMIT);
+    const rateLimit = await checkRateLimit(`forgot_pw:${ip}`, FORGOT_PW_RATE_LIMIT);
     if (!rateLimit.success) {
       return rateLimitResponse(
         rateLimit,

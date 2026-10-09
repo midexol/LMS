@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   try {
     // Rate limiting by IP
     const ip = getClientIp(req);
-    const rateLimit = checkRateLimit(`login:${ip}`, RATE_LIMIT_RULES.LOGIN);
+    const rateLimit = await checkRateLimit(`login:${ip}`, RATE_LIMIT_RULES.LOGIN);
     if (!rateLimit.success) {
       return rateLimitResponse(
         rateLimit,
