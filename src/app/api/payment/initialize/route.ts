@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { initializeCoursePayment } from "@/lib/payment";
+import { sendEnrollmentEmail } from "@/lib/mail";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
@@ -113,6 +114,20 @@ export async function POST(req: Request) {
         },
         { status: 403 }
       );
+    }
+
+    // Free courses need no payment: enrol the student directly instead of sending a zero amount to Paystack
+    if (course.price <= 0) {
+      await prisma.enrollment.upsert({
+        where: { studentId_courseId: { studentId: currentUser.id, courseId: course.id } },
+        create: { studentId: currentUser.id, courseId: course.id, status: "ACTIVE" },
+        update: { status: "ACTIVE" },
+      });
+      await sendEnrollmentEmail(currentUser.email, {
+        studentName: currentUser.name,
+        courseTitle: course.title,
+      });
+      return NextResponse.json({ success: true, free: true, courseId: course.id });
     }
 
     // Initialize course payment

@@ -81,6 +81,18 @@ export function MockCheckoutModal({
         throw new Error(data.error || "Payment initialization failed.");
       }
 
+      // Free course: the server enrolled the student directly, so there is nothing to pay
+      if (data.free) {
+        setStatusText("Enrolling you in the course...");
+        setSuccess(true);
+        setTimeout(() => {
+          onEnrollSuccess();
+          onClose();
+          router.push(`/student/courses/${course.id}`);
+        }, 1200);
+        return;
+      }
+
       setStatusText("Redirecting to Paystack Gateway...");
 
       // 2. If authorizationUrl is provided, redirect to Paystack or callback
@@ -140,7 +152,7 @@ export function MockCheckoutModal({
               Course Checkout
             </h3>
             <p className="text-[11px] text-neutral-500">
-              Integrated with University Payment Portal &amp; Paystack
+              Secure payment by Paystack
             </p>
           </div>
         </div>
@@ -156,7 +168,7 @@ export function MockCheckoutModal({
             </div>
             <div className="text-right">
               <span className="text-base font-black text-[#4A1A45] block leading-none">
-                {formattedNgn}
+                {course.price <= 0 ? "Free" : formattedNgn}
               </span>
             </div>
           </div>
@@ -272,7 +284,7 @@ export function MockCheckoutModal({
                 ) : (
                   <>
                     <FiLock className="w-4 h-4" />
-                    Pay {formattedNgn} &amp; Enroll
+                    {course.price <= 0 ? "Enroll for free" : <>Pay {formattedNgn} &amp; Enroll</>}
                     <FiExternalLink className="w-3.5 h-3.5 ml-1 opacity-70" />
                   </>
                 )}
