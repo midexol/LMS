@@ -8,7 +8,8 @@ import { BrandLogo } from "@/components/ui/BrandLogo";
 import {
   FiBookOpen, FiArrowRight, FiCheck, FiUsers, FiAward,
   FiTrendingUp, FiCpu, FiStar, FiFileText, FiShield,
-  FiCheckCircle, FiCompass, FiMenu, FiX, FiClock, FiLock, FiBarChart2
+  FiCheckCircle, FiCompass, FiMenu, FiX, FiClock, FiLock, FiBarChart2,
+  FiMail, FiMapPin
 } from "react-icons/fi";
 import { formatNgn } from "@/lib/utils";
 
@@ -77,7 +78,14 @@ export function LandingPage({
     ],
   };
 
-  const [policyModal, setPolicyModal] = useState<"integrity" | "privacy" | "terms" | "honor" | "accessibility" | "security" | null>(null);
+  const [policyModal, setPolicyModal] = useState<"integrity" | "privacy" | "terms" | "honor" | "accessibility" | "security" | "contact" | null>(null);
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    subject: "Technical & Course Support",
+    message: "",
+  });
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -537,6 +545,9 @@ export function LandingPage({
             <Link href="/instructor/login" className="hover:text-white transition-colors">
               Faculty
             </Link>
+            <button onClick={() => setPolicyModal("contact")} className="hover:text-white transition-colors">
+              Contact &amp; Support
+            </button>
             <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
               Privacy
             </button>
@@ -665,9 +676,136 @@ export function LandingPage({
               </div>
             )}
 
+            {policyModal === "contact" && (
+              <div className="space-y-5">
+                <div>
+                  <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Direct Assistance</span>
+                  <h3 className="font-heading font-bold text-2xl text-black">Contact &amp; Support</h3>
+                  <p className="text-xs text-neutral-500 mt-1">
+                    Have questions regarding courses, admission, or technical inquiries? Reach out to our academic desk.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
+                    <div className="flex items-center gap-2 font-semibold text-black">
+                      <FiMail className="w-4 h-4 text-[#4A1A45]" />
+                      <span>Email Support</span>
+                    </div>
+                    <a
+                      href="mailto:support@academia.edu"
+                      className="text-[#4A1A45] hover:underline block font-medium"
+                    >
+                      support@academia.edu
+                    </a>
+                    <p className="text-[11px] text-neutral-500">Response within 24 hours</p>
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1">
+                    <div className="flex items-center gap-2 font-semibold text-black">
+                      <FiMapPin className="w-4 h-4 text-[#4A1A45]" />
+                      <span>Campus Desk</span>
+                    </div>
+                    <p className="text-neutral-700 font-medium">The Federal Polytechnic</p>
+                    <p className="text-[11px] text-neutral-500">Ado-Ekiti, Ekiti State, Nigeria</p>
+                  </div>
+                </div>
+
+                {contactSubmitted ? (
+                  <div className="p-5 rounded-2xl bg-[#4A1A45]/5 border border-[#4A1A45]/20 text-center space-y-2">
+                    <FiCheckCircle className="w-8 h-8 text-[#4A1A45] mx-auto" />
+                    <h4 className="text-sm font-bold text-black">Inquiry Submitted</h4>
+                    <p className="text-xs text-neutral-600 max-w-sm mx-auto">
+                      Thank you for contacting Academia Support. An academic advisor will reply to <span className="font-semibold text-black">{contactForm.email || "your email"}</span> promptly.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContactSubmitted(false);
+                        setContactForm({ name: "", email: "", subject: "Technical & Course Support", message: "" });
+                      }}
+                      className="text-xs text-[#4A1A45] underline font-semibold pt-1"
+                    >
+                      Send another message
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!contactForm.email || !contactForm.message) return;
+                      setContactSubmitted(true);
+                    }}
+                    className="space-y-3"
+                  >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Full Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                          placeholder="Your full name"
+                          className="w-full text-xs px-3 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Email Address</label>
+                        <input
+                          type="email"
+                          required
+                          value={contactForm.email}
+                          onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                          placeholder="you@example.com"
+                          className="w-full text-xs px-3 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45]"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Inquiry Topic</label>
+                      <select
+                        value={contactForm.subject}
+                        onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                        className="w-full text-xs px-3 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] bg-white"
+                      >
+                        <option value="Technical & Course Support">Technical &amp; Course Support</option>
+                        <option value="Enrollment & Account Access">Enrollment &amp; Account Access</option>
+                        <option value="Faculty & Instruction Inquiry">Faculty &amp; Instruction Inquiry</option>
+                        <option value="General Question">General Question</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-semibold text-neutral-700 mb-1">Message</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={contactForm.message}
+                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                        placeholder="How can our support team assist you today?"
+                        className="w-full text-xs px-3 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] resize-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+                    >
+                      Submit Support Ticket
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
+
             <button
-              onClick={() => setPolicyModal(null)}
-              className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              onClick={() => {
+                setPolicyModal(null);
+                setContactSubmitted(false);
+              }}
+              className="w-full py-3 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
             >
               Close Window
             </button>
