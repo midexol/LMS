@@ -899,15 +899,22 @@ function LessonRow({
         </div>
         {resourceUpload.error && <p className="text-[11px] text-red-600 mt-1">{resourceUpload.error}</p>}
         {/* Show existing file link */}
-        {lesson.resourceUrl && (
-          <a
-            href={lesson.resourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] text-[#4A1A45] font-bold hover:underline mt-1 inline-block"
-          >
-            {lesson.resourceName || lesson.resourceUrl}
-          </a>
+        {lesson.resourceUrl && lesson.resourceUrl.startsWith("storage:") ? (
+          // Private upload: students receive a signed link in the course player
+          <span className="text-[11px] text-[#4A1A45] font-bold mt-1 inline-block">
+            {lesson.resourceName || "Uploaded file"} (uploaded)
+          </span>
+        ) : (
+          lesson.resourceUrl && (
+            <a
+              href={lesson.resourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-[#4A1A45] font-bold hover:underline mt-1 inline-block"
+            >
+              {lesson.resourceName || lesson.resourceUrl}
+            </a>
+          )
         )}
       </div>
 

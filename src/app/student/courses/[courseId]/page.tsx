@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { StudentPlayerNavbar } from "@/components/student/StudentPlayerNavbar";
 import { CoursePlayerClient } from "./CoursePlayerClient";
 import { notFound, redirect } from "next/navigation";
+import { resolveStorageUrl } from "@/lib/storage";
 
 export const revalidate = 0;
 
@@ -27,7 +28,7 @@ export default async function CoursePlayerPage({ params }: PageProps) {
   }
 
 
-  const course = await prisma.course.findUnique({
+  const courseData = await prisma.course.findUnique({
     where: { id: params.courseId },
     include: {
       modules: {
@@ -64,7 +65,7 @@ export default async function CoursePlayerPage({ params }: PageProps) {
     },
   });
 
-  if (!course) {
+  if (!courseData) {
     notFound();
   }
 
@@ -73,7 +74,7 @@ export default async function CoursePlayerPage({ params }: PageProps) {
     where: {
       studentId_courseId: {
         studentId: currentUser.id,
-        courseId: course.id,
+        courseId: courseData.id,
       },
     },
   });
@@ -81,6 +82,23 @@ export default async function CoursePlayerPage({ params }: PageProps) {
   if (!enrollment) {
     redirect("/");
   }
+
+  // Lesson media is private: sign short-lived links for this enrolled student only
+  const course = {
+    ...courseData,
+    modules: await Promise.all(
+      courseData.modules.map(async (mod) => ({
+        ...mod,
+        lessons: await Promise.all(
+          mod.lessons.map(async (lesson) => ({
+            ...lesson,
+            videoUrl: await resolveStorageUrl(lesson.videoUrl),
+            resourceUrl: await resolveStorageUrl(lesson.resourceUrl),
+          }))
+        ),
+      }))
+    ),
+  };
 
   return (
     <div className="min-h-screen bg-white text-slate-800 pb-16">

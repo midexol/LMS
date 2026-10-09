@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import crypto from "crypto";
 import { getCurrentUser } from "@/lib/auth";
-import { getStorageAdmin, STORAGE_BUCKET } from "@/lib/storage";
+import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
+import { getStorageAdmin, STORAGE_BUCKET, STORAGE_REF_PREFIX } from "@/lib/storage";
 
 // Allowed MIME types and their extensions
 const ALLOWED: Record<string, string> = {
@@ -27,13 +28,19 @@ const MAX_SIZE = 100 * 1024 * 1024; // 100 MB
  * Issues a one-time signed upload URL. The browser uploads the file directly to Supabase Storage,
  * because serverless hosts cap request bodies (4.5 MB on Vercel) far below lesson video sizes.
  * The bucket's own size and MIME limits must mirror MAX_SIZE/ALLOWED, since the direct upload
- * bypasses this route.
+ * bypasses this route. The bucket must be PRIVATE: paid lesson media is served only through
+ * short-lived signed links created for enrolled students (see resolveStorageUrl).
  */
 export async function POST(req: NextRequest) {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Unauthorized." }, { status: 403 });
+    }
+
+    const rateLimit = await checkRateLimit(`upload:${currentUser.id}`, RATE_LIMIT_RULES.UPLOAD);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
     }
 
     const { fileName, fileType, fileSize } = await req.json();
@@ -69,15 +76,14 @@ export async function POST(req: NextRequest) {
       throw error || new Error("Failed to create signed upload URL.");
     }
 
-    const { data: publicData } = storage.getPublicUrl(objectPath);
-
     return NextResponse.json({
       success: true,
       bucket: STORAGE_BUCKET,
       path: data.path,
       token: data.token,
       contentType: fileType,
-      url: publicData.publicUrl,
+      // Private reference stored on the lesson; students get a signed link when they open the course
+      url: `${STORAGE_REF_PREFIX}${data.path}`,
       name: fileName,
     });
   } catch (err: any) {
