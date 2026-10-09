@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { FiArrowLeft, FiLogOut } from "react-icons/fi";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 interface StudentPlayerNavbarProps {
   courseTitle: string;
@@ -19,8 +20,12 @@ export function StudentPlayerNavbar({ courseTitle, category, studentName }: Stud
   return (
     <header className="sticky top-0 z-40 bg-[#1E0A1C] text-white border-b border-[#3B1537] shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Left: Back to Curriculum + Course Title */}
+        {/* Left: Brand Logo + Back to Curriculum + Course Title */}
         <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+          <BrandLogo href="/my-courses" variant="light" size="sm" />
+
+          <div className="h-5 w-[1px] bg-[#3B1537] shrink-0 hidden sm:block" />
+
           <Link
             href="/my-courses"
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#2D0F2A] hover:bg-[#4A1A45] text-neutral-200 hover:text-white text-xs font-semibold transition-colors shrink-0 border border-[#4A1A45]/40"

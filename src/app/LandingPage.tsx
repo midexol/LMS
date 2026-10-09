@@ -515,7 +515,7 @@ export function LandingPage({
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Brand + Institutional Attribution */}
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <BrandLogo href="/" variant="light" size="sm" showSubtitle={false} />
+            <BrandLogo href="/" variant="light" size="sm" />
             <div className="hidden sm:block h-4 w-[1px] bg-[#3B1537]" />
             <span className="text-xs text-[#D6BDD4]">
               A product of The Federal Polytechnic, Ado-Ekiti

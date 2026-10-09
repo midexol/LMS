@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FiBookOpen, FiMail, FiLock, FiLogIn, FiAlertCircle, FiShield } from "react-icons/fi";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function InstructorLoginPage() {
   const [email, setEmail] = useState("");
@@ -43,8 +44,11 @@ export default function InstructorLoginPage() {
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
         <div className="text-center space-y-2">
+          <div className="flex justify-center mb-2">
+            <BrandLogo href="/" variant="dark" size="md" />
+          </div>
           <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-[#D6BDD4] mb-2 shadow-sm border border-[#4A1A45]/40">
-            <FiShield className="w-8 h-8" />
+            <FiShield className="w-7 h-7" />
           </div>
           <h1 className="text-2xl font-black text-black tracking-tight">Instructor Portal</h1>
           <p className="text-xs text-neutral-500 font-medium">Sign in to manage curriculum, assignments, and analytics.</p>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FiShield, FiMail, FiLock, FiLogIn, FiAlertCircle } from "react-icons/fi";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
@@ -45,8 +46,11 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex p-4 rounded-2xl bg-[#2D0F2A] text-white shadow-md border border-[#4A1A45]/40">
-            <FiShield className="w-9 h-9 text-[#D6BDD4]" />
+          <div className="flex justify-center mb-2">
+            <BrandLogo href="/" variant="dark" size="md" />
+          </div>
+          <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-white shadow-md border border-[#4A1A45]/40">
+            <FiShield className="w-7 h-7 text-[#D6BDD4]" />
           </div>
           <h1 className="text-2xl font-black tracking-tight text-black">Superadmin Control Panel</h1>
           <p className="text-xs text-neutral-500 font-medium">
