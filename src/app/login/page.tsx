@@ -157,6 +157,13 @@ export default function LoginPage() {
             </button>
           </form>
 
+          <p className="text-[11px] text-neutral-500 text-center leading-relaxed">
+            By signing in you agree to our{" "}
+            <Link href="/terms" className="font-semibold text-[#4A1A45] hover:underline">Terms of Service</Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="font-semibold text-[#4A1A45] hover:underline">Privacy Policy</Link>.
+          </p>
+
           <div className="pt-4 border-t border-neutral-200 text-center">
             <p className="text-xs text-neutral-600">
               Don&apos;t have an account?{" "}

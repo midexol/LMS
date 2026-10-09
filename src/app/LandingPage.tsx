@@ -573,12 +573,12 @@ export function LandingPage({
             <button onClick={() => setPolicyModal("contact")} className="hover:text-white transition-colors">
               Contact &amp; Support
             </button>
-            <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy
-            </button>
-            <button onClick={() => setPolicyModal("terms")} className="hover:text-white transition-colors">
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
               Terms
-            </button>
+            </Link>
           </div>
 
           {/* Copyright */}
@@ -613,42 +613,6 @@ export function LandingPage({
                   </p>
                   <p>
                     Submissions must represent the student&apos;s authentic intellectual effort. Plagiarism, unauthorized automation, or evasion of rubrics will result in zero-score evaluations and formal review.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {policyModal === "privacy" && (
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Data Protection</span>
-                <h3 className="font-heading font-bold text-2xl text-black">Student Privacy Policy</h3>
-                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <p>
-                    Your student record, assignment responses, and evaluation metrics are treated with the highest degree of academic confidentiality under institutional guidelines.
-                  </p>
-                  <p>
-                    Student submissions are processed exclusively to perform real-time rubric evaluations. Your coursework is never sold, licensed, or shared with third-party advertisers.
-                  </p>
-                  <p>
-                    Authentication sessions are secured using encrypted, httpOnly cookies with strict same-origin isolation.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {policyModal === "terms" && (
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Institutional Agreement</span>
-                <h3 className="font-heading font-bold text-2xl text-black">Terms of Service</h3>
-                <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
-                  <p>
-                    By registering for Academia LMS, you commit to maintaining authentic academic conduct across all lecture coursework, discussion forums, and evaluations.
-                  </p>
-                  <p>
-                    Enrollment grants non-exclusive, personal access to instructional materials. Course materials, video assets, and rubric prompts may not be redistributed without institutional consent.
-                  </p>
-                  <p>
-                    Completion of a course requires satisfying all module assignments with verified mastery benchmarks.
                   </p>
                 </div>
               </div>
