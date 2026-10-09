@@ -193,6 +193,14 @@ export async function initializeCoursePayment({
 const SINGLE_COURSE_CONFLICT_MESSAGE =
   "Your payment was received, but you are already enrolled in another active course. Please contact support for a refund or course transfer.";
 
+/** Thrown when a verified payment cannot enroll the student because of the single-course lock. */
+export class SingleCourseConflictError extends Error {
+  constructor() {
+    super(SINGLE_COURSE_CONFLICT_MESSAGE);
+    this.name = "SingleCourseConflictError";
+  }
+}
+
 /**
  * Verifies Paystack transaction by reference and activates student course enrollment
  */
@@ -214,17 +222,34 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
 
   // If already processed and successful, return existing status
   if (payment.status === "SUCCESS") {
-    const existingEnrollment = await prisma.enrollment.findUnique({
-      where: {
-        studentId_courseId: {
-          studentId: payment.studentId,
-          courseId: payment.courseId,
+    const findEnrollment = () =>
+      prisma.enrollment.findUnique({
+        where: {
+          studentId_courseId: {
+            studentId: payment.studentId,
+            courseId: payment.courseId,
+          },
         },
-      },
-    });
+      });
+
+    let existingEnrollment = await findEnrollment();
 
     if (!existingEnrollment) {
-      throw new Error(SINGLE_COURSE_CONFLICT_MESSAGE);
+      // Paid but not enrolled: either the single-course lock blocked it, or a concurrent
+      // request (callback vs webhook) is still creating the enrollment.
+      const blocking = await prisma.enrollment.findFirst({
+        where: {
+          studentId: payment.studentId,
+          status: "ACTIVE",
+          courseId: { not: payment.courseId },
+        },
+      });
+      if (blocking) {
+        throw new SingleCourseConflictError();
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      existingEnrollment = await findEnrollment();
     }
 
     return {
@@ -349,7 +374,7 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
     console.error(
       `[ENROLLMENT BLOCKED] Payment ${reference} succeeded but student ${payment.studentId} is already active in "${activeEnrollment.course.title}". Needs refund or transfer.`
     );
-    throw new Error(SINGLE_COURSE_CONFLICT_MESSAGE);
+    throw new SingleCourseConflictError();
   }
 
   // Upsert Enrollment to ACTIVE

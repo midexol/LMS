@@ -13,6 +13,7 @@ function PaymentVerifyContent() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [conflict, setConflict] = useState(false);
   const [courseInfo, setCourseInfo] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
@@ -29,6 +30,14 @@ function PaymentVerifyContent() {
         const res = await fetch(`/api/payment/verify?reference=${encodeURIComponent(reference!)}${mode ? `&mode=${mode}` : ""}`);
         const data = await res.json();
 
+        if (res.status === 409 && data.code === "SINGLE_COURSE_CONFLICT") {
+          if (isMounted) {
+            setConflict(true);
+            setError(data.error);
+            setLoading(false);
+          }
+          return;
+        }
         if (!res.ok || !data.success) {
           throw new Error(data.error || "Unable to confirm payment status.");
         }
@@ -77,10 +86,20 @@ function PaymentVerifyContent() {
             <div className="w-16 h-16 rounded-full bg-red-950/60 border border-red-800 mx-auto flex items-center justify-center text-red-500">
               <FiAlertCircle className="w-8 h-8" />
             </div>
-            <h2 className="text-xl font-bold text-white tracking-tight">Payment Verification Failed</h2>
+            {conflict && (
+              <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-950 text-amber-300 border border-amber-800">
+                Payment Received
+              </span>
+            )}
+            <h2 className="text-xl font-bold text-white tracking-tight">
+              {conflict ? "Enrollment On Hold" : "Payment Verification Failed"}
+            </h2>
             <p className="text-xs text-neutral-400 leading-relaxed px-4">
               {error}
             </p>
+            {conflict && (
+              <p className="text-[11px] font-mono text-neutral-500">Keep this reference for support: {reference}</p>
+            )}
             <div className="pt-4 flex flex-col gap-3">
               <Link
                 href="/courses"

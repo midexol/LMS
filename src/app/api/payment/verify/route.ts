@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { verifyAndProcessPayment } from "@/lib/payment";
+import { verifyAndProcessPayment, SingleCourseConflictError } from "@/lib/payment";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function GET(req: Request) {
@@ -28,6 +28,9 @@ export async function GET(req: Request) {
     });
   } catch (error: any) {
     console.error("[PAYMENT VERIFY ERROR]", error);
+    if (error instanceof SingleCourseConflictError) {
+      return NextResponse.json({ error: error.message, code: "SINGLE_COURSE_CONFLICT" }, { status: 409 });
+    }
     return NextResponse.json(
       { error: error.message || "Failed to verify payment." },
       { status: 400 }
@@ -62,6 +65,9 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error("[PAYMENT VERIFY POST ERROR]", error);
+    if (error instanceof SingleCourseConflictError) {
+      return NextResponse.json({ error: error.message, code: "SINGLE_COURSE_CONFLICT" }, { status: 409 });
+    }
     return NextResponse.json(
       { error: error.message || "Failed to verify payment." },
       { status: 400 }
