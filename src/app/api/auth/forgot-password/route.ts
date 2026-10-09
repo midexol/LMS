@@ -1,3 +1,4 @@
+import { getAppUrl } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
@@ -53,9 +54,7 @@ export async function POST(req: Request) {
       },
     });
 
-    const url = new URL(req.url);
-    const origin = `${url.protocol}//${url.host}`;
-    const resetUrl = `${origin}/reset-password?token=${token}`;
+    const resetUrl = `${getAppUrl()}/reset-password?token=${token}`;
 
     await sendPasswordResetEmail(user.email, {
       userName: user.name,
@@ -66,7 +65,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[FORGOT PASSWORD API ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to process password reset request." },
+      { error: "Failed to process password reset request." },
       { status: 500 }
     );
   }

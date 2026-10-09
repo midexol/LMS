@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { buildGradingSystemPrompt, buildGradingUserPrompt, OPENAI_MODEL } from "./gradingPrompt";
 
 export async function gradeWithOpenAI(
   assignmentPrompt: string,
@@ -9,31 +10,14 @@ export async function gradeWithOpenAI(
 ): Promise<{ score: number; feedback: string }> {
   try {
     const openai = new OpenAI({ apiKey });
-    const promptText = `
-You are an expert academic evaluator. Compare the student's submission against the tutor's reference answer and rubric.
-
-ASSIGNMENT QUESTION:
-${assignmentPrompt}
-
-TUTOR REFERENCE ANSWER AND GRADING RUBRIC:
-${referenceAnswer}
-
-STUDENT SUBMISSION:
-${studentAnswer}
-
-MAXIMUM SCORE POSSIBLE: ${maxScore}
-
-Evaluate the student's answer based on relevance, accuracy, and key points matched.
-Return ONLY a valid JSON object strictly matching this format (no markdown formatting, no code block backticks):
-{
-  "score": <number between 0 and ${maxScore}>,
-  "feedback": "<detailed constructive feedback explaining points awarded, missing concepts, and strengths>"
-}
-`;
+    const promptText = buildGradingUserPrompt(assignmentPrompt, referenceAnswer, studentAnswer, maxScore);
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: promptText }],
+      model: OPENAI_MODEL,
+      messages: [
+        { role: "system", content: buildGradingSystemPrompt(maxScore) },
+        { role: "user", content: promptText },
+      ],
       response_format: { type: "json_object" },
     });
 

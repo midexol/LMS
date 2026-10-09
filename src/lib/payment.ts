@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { sendEnrollmentEmail } from "@/lib/mail";
+import { getAppUrl } from "@/lib/utils";
 
 export interface PaymentConfig {
   secretKey: string;
@@ -18,7 +19,7 @@ export function getPaymentConfig(): PaymentConfig {
   const currency = "NGN";
   const rate = 1;
   const baseUrl = "https://api.paystack.co";
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  const appUrl = getAppUrl();
   const gatewayUrl = (process.env.PAYMENT_GATEWAY_URL || "http://localhost:5000").replace(/\/$/, "");
 
   return { secretKey, publicKey, currency, rate, baseUrl, appUrl, gatewayUrl };
@@ -67,7 +68,6 @@ export interface InitializePaymentParams {
     price: number;
   };
   provider?: "PAYSTACK" | "ACBU_GATEWAY";
-  origin?: string;
 }
 
 export interface InitializePaymentResult {
@@ -88,10 +88,9 @@ export async function initializeCoursePayment({
   student,
   course,
   provider = "PAYSTACK",
-  origin,
 }: InitializePaymentParams): Promise<InitializePaymentResult> {
   const config = getPaymentConfig();
-  const baseAppUrl = origin || config.appUrl;
+  const baseAppUrl = config.appUrl;
   const reference = generatePaymentReference(course.id, student.id);
   const amountNgn = calculateNgnAmount(course.price);
 
@@ -191,6 +190,9 @@ export async function initializeCoursePayment({
   };
 }
 
+const SINGLE_COURSE_CONFLICT_MESSAGE =
+  "Your payment was received, but you are already enrolled in another active course. Please contact support for a refund or course transfer.";
+
 /**
  * Verifies Paystack transaction by reference and activates student course enrollment
  */
@@ -220,6 +222,10 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
         },
       },
     });
+
+    if (!existingEnrollment) {
+      throw new Error(SINGLE_COURSE_CONFLICT_MESSAGE);
+    }
 
     return {
       success: true,
@@ -256,6 +262,20 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
 
       const json = await res.json();
       if (res.ok && json.status && json.data && json.data.status === "success") {
+        // SECURITY: A "success" status alone is not enough; the charge must cover this course's price
+        const expectedKobo = Math.round(calculateNgnAmount(payment.amount) * 100);
+        const paidKobo = Number(json.data.amount);
+        const paidCurrency = String(json.data.currency || "").toUpperCase();
+        if (paidCurrency !== payment.currency.toUpperCase() || !(paidKobo >= expectedKobo)) {
+          console.error(
+            `[PAYSTACK VERIFY] Amount mismatch for ${reference}: paid ${paidKobo} ${paidCurrency}, expected ${expectedKobo} ${payment.currency}`
+          );
+          await prisma.payment.update({
+            where: { id: payment.id },
+            data: { status: "FAILED" },
+          });
+          throw new Error("Paid amount does not match the course price. Please contact support.");
+        }
         verified = true;
         paystackData = json.data;
       } else {
@@ -287,9 +307,10 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
     throw new Error("Payment transaction was not successful.");
   }
 
-  // Mark payment as SUCCESS
-  const updatedPayment = await prisma.payment.update({
-    where: { id: payment.id },
+  // Mark payment as SUCCESS. The status guard makes this an atomic claim, so concurrent
+  // callback + webhook verifications cannot both enroll and email the student.
+  const claim = await prisma.payment.updateMany({
+    where: { id: payment.id, status: { not: "SUCCESS" } },
     data: {
       status: "SUCCESS",
       paidAt: new Date(paystackData?.paid_at || Date.now()),
@@ -298,7 +319,21 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
     },
   });
 
-  // Verify single active course constraint
+  if (claim.count === 0) {
+    // Another request (callback or webhook) claimed this payment first and is enrolling the student
+    return {
+      success: true,
+      alreadyProcessed: true,
+      payment,
+      enrollment: null,
+      course: payment.course,
+    };
+  }
+
+  const updatedPayment = await prisma.payment.findUniqueOrThrow({ where: { id: payment.id } });
+
+  // Enforce single active course constraint. Two checkouts started before either was paid
+  // both pass the check at initialization, so it must be re-checked here.
   const activeEnrollment = await prisma.enrollment.findFirst({
     where: {
       studentId: payment.studentId,
@@ -309,7 +344,12 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
   });
 
   if (activeEnrollment) {
-    console.warn(`[ENROLLMENT WARN] Student already active in ${activeEnrollment.course.title}`);
+    // The money was received, so keep the payment as SUCCESS for refund/transfer handling,
+    // but do not grant a second active enrollment.
+    console.error(
+      `[ENROLLMENT BLOCKED] Payment ${reference} succeeded but student ${payment.studentId} is already active in "${activeEnrollment.course.title}". Needs refund or transfer.`
+    );
+    throw new Error(SINGLE_COURSE_CONFLICT_MESSAGE);
   }
 
   // Upsert Enrollment to ACTIVE

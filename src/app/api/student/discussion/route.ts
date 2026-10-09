@@ -151,6 +151,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid discussion action." }, { status: 400 });
   } catch (error: any) {
     console.error("[DISCUSSION API ERROR]", error);
-    return NextResponse.json({ error: error.message || "Discussion failed." }, { status: 500 });
+    return NextResponse.json({ error: "Discussion failed." }, { status: 500 });
   }
 }

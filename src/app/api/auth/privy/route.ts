@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     });
     cookieStore.set("lms_user_role", user.role, {
       path: "/",
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7,
@@ -107,7 +107,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[PRIVY AUTH API ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to authenticate with Privy." },
+      { error: "Failed to authenticate with Privy." },
       { status: 500 }
     );
   }

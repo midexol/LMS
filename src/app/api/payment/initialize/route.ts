@@ -103,10 +103,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Origin header or host for callback
-    const url = new URL(req.url);
-    const origin = `${url.protocol}//${url.host}`;
-
     // Initialize course payment
     const paymentResult = await initializeCoursePayment({
       student: {
@@ -120,14 +116,13 @@ export async function POST(req: Request) {
         price: course.price,
       },
       provider: provider === "ACBU_GATEWAY" ? "ACBU_GATEWAY" : "PAYSTACK",
-      origin,
     });
 
     return NextResponse.json(paymentResult);
   } catch (error: any) {
     console.error("[PAYMENT INITIALIZE ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to initialize course payment." },
+      { error: "Failed to initialize course payment." },
       { status: 500 }
     );
   }

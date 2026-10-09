@@ -62,6 +62,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, progress });
   } catch (error: any) {
     console.error("[PROGRESS API ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to update progress." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update progress." }, { status: 500 });
   }
 }

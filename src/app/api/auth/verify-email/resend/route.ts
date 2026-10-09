@@ -1,3 +1,4 @@
+import { getAppUrl } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
@@ -51,9 +52,7 @@ export async function POST(req: Request) {
       },
     });
 
-    const url = new URL(req.url);
-    const origin = process.env.NEXT_PUBLIC_APP_URL || `${url.protocol}//${url.host}`;
-    const verifyUrl = `${origin}/verify-email?token=${token}`;
+    const verifyUrl = `${getAppUrl()}/verify-email?token=${token}`;
 
     try {
       await sendVerificationEmail(user.email, {

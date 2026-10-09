@@ -30,6 +30,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid action." }, { status: 400 });
   } catch (error: any) {
     console.error("[TUTOR ASSISTANT API ERROR]", error);
-    return NextResponse.json({ error: error.message || "AI Assistant process failed." }, { status: 500 });
+    return NextResponse.json({ error: "AI Assistant process failed." }, { status: 500 });
   }
 }

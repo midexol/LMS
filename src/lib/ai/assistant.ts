@@ -1,3 +1,4 @@
+import { GEMINI_MODEL } from "./gradingPrompt";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function generateCourseOutlineAI(topic: string): Promise<{
@@ -7,7 +8,7 @@ export async function generateCourseOutlineAI(topic: string): Promise<{
   if (apiKey) {
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
       const prompt = `
 Generate a structured course syllabus for the topic: "${topic}".
@@ -72,7 +73,7 @@ export async function generateAssignmentRubricAI(prompt: string): Promise<{
   if (apiKey) {
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
       const query = `
 Given this assignment prompt: "${prompt}"

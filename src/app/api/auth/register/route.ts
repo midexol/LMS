@@ -1,3 +1,4 @@
+import { getAppUrl } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
@@ -81,9 +82,7 @@ export async function POST(req: Request) {
 
     // Send verification email
     try {
-      const url = new URL(req.url);
-      const origin = process.env.NEXT_PUBLIC_APP_URL || `${url.protocol}//${url.host}`;
-      const verifyUrl = `${origin}/verify-email?token=${verificationToken}`;
+      const verifyUrl = `${getAppUrl()}/verify-email?token=${verificationToken}`;
 
       await sendVerificationEmail(newUser.email, {
         userName: newUser.name,
@@ -103,7 +102,7 @@ export async function POST(req: Request) {
     });
     cookieStore.set("lms_user_role", newUser.role, {
       path: "/",
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7,
@@ -114,6 +113,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, user: safeUser });
   } catch (error: any) {
     console.error("[REGISTER API ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to register user." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to register user." }, { status: 500 });
   }
 }

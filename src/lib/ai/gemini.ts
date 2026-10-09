@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { buildGradingSystemPrompt, buildGradingUserPrompt, GEMINI_MODEL } from "./gradingPrompt";
 
 export async function gradeWithGemini(
   assignmentPrompt: string,
@@ -9,29 +10,12 @@ export async function gradeWithGemini(
 ): Promise<{ score: number; feedback: string }> {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: GEMINI_MODEL,
+      systemInstruction: buildGradingSystemPrompt(maxScore),
+    });
 
-    const promptText = `
-You are an expert academic evaluator. Compare the student's submission against the tutor's reference answer and rubric.
-
-ASSIGNMENT QUESTION:
-${assignmentPrompt}
-
-TUTOR REFERENCE ANSWER AND GRADING RUBRIC:
-${referenceAnswer}
-
-STUDENT SUBMISSION:
-${studentAnswer}
-
-MAXIMUM SCORE POSSIBLE: ${maxScore}
-
-Evaluate the student's answer based on relevance, accuracy, and key points matched.
-Return ONLY a valid JSON object strictly matching this format (no markdown formatting, no code block backticks):
-{
-  "score": <number between 0 and ${maxScore}>,
-  "feedback": "<detailed constructive feedback explaining points awarded, missing concepts, and strengths>"
-}
-`;
+    const promptText = buildGradingUserPrompt(assignmentPrompt, referenceAnswer, studentAnswer, maxScore);
 
     const result = await model.generateContent(promptText);
     const responseText = result.response.text();

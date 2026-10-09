@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     });
     cookieStore.set("lms_user_role", user.role, {
       path: "/",
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7,
@@ -74,6 +74,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, user: safeUser });
   } catch (error: any) {
     console.error("[LOGIN API ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to log in." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to log in." }, { status: 500 });
   }
 }

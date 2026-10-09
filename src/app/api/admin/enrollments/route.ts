@@ -54,6 +54,6 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true, message: "Enrollment successfully revoked and unlocked." });
   } catch (error: any) {
     console.error("[ADMIN ENROLLMENT DELETE ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to remove enrollment." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to remove enrollment." }, { status: 500 });
   }
 }

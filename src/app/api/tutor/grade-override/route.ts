@@ -86,6 +86,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, submission: updatedSubmission });
   } catch (error: any) {
     console.error("[GRADE OVERRIDE API ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to update grade." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update grade." }, { status: 500 });
   }
 }

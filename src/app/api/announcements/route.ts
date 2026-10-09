@@ -44,7 +44,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, announcements });
   } catch (error: any) {
     console.error("[ANNOUNCEMENT GET ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to fetch announcements." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch announcements." }, { status: 500 });
   }
 }
 
@@ -110,7 +110,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, announcement });
   } catch (error: any) {
     console.error("[ANNOUNCEMENT POST ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to post announcement." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to post announcement." }, { status: 500 });
   }
 }
 
@@ -147,6 +147,6 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error("[ANNOUNCEMENT DELETE ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to delete announcement." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to delete announcement." }, { status: 500 });
   }
 }

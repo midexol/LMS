@@ -71,7 +71,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[RESET PASSWORD API ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to reset password." },
+      { error: "Failed to reset password." },
       { status: 500 }
     );
   }

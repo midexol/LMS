@@ -38,6 +38,33 @@ const transporter = isRealSmtp
     })
   : null;
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Renders a template with user-supplied text (names, titles, feedback) HTML-escaped in the body,
+ * so a name like "<a href=...>" cannot inject markup. Subjects are plain text and use raw values.
+ * Fields ending in "Url" are generated server-side and left as-is.
+ */
+function renderTemplate<T extends object>(
+  template: (data: T) => { subject: string; html: string },
+  data: T
+): { subject: string; html: string } {
+  const escaped = Object.fromEntries(
+    Object.entries(data).map(([key, value]) => [
+      key,
+      typeof value === "string" && !key.endsWith("Url") ? escapeHtml(value) : value,
+    ])
+  ) as T;
+  return { subject: template(data).subject, html: template(escaped).html };
+}
+
 export async function sendEmailNotification(toEmail: string, subject: string, htmlContent: string) {
   if (!transporter) {
     console.log("==========================================");
@@ -65,44 +92,44 @@ export async function sendEmailNotification(toEmail: string, subject: string, ht
 }
 
 export async function sendEnrollmentEmail(studentEmail: string, data: EnrollmentEmailData) {
-  const { subject, html } = getEnrollmentEmailTemplate(data);
+  const { subject, html } = renderTemplate(getEnrollmentEmailTemplate, data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
 export async function sendGradeEmail(studentEmail: string, data: GradeEmailData) {
-  const { subject, html } = getGradeEmailTemplate(data);
+  const { subject, html } = renderTemplate(getGradeEmailTemplate, data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
 export async function sendGradeOverrideEmail(studentEmail: string, data: GradeOverrideEmailData) {
-  const { subject, html } = getGradeOverrideEmailTemplate(data);
+  const { subject, html } = renderTemplate(getGradeOverrideEmailTemplate, data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
 export async function sendAnnouncementEmail(studentEmail: string, data: AnnouncementEmailData) {
-  const { subject, html } = getAnnouncementEmailTemplate(data);
+  const { subject, html } = renderTemplate(getAnnouncementEmailTemplate, data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
 export async function sendCourseUpdateEmail(studentEmail: string, data: CourseUpdateEmailData) {
-  const { subject, html } = getCourseUpdateEmailTemplate(data);
+  const { subject, html } = renderTemplate(getCourseUpdateEmailTemplate, data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
 export async function sendCompletionEmail(studentEmail: string, data: CompletionEmailData) {
-  const { subject, html } = getCompletionEmailTemplate(data);
+  const { subject, html } = renderTemplate(getCompletionEmailTemplate, data);
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
 export async function sendPasswordResetEmail(userEmail: string, data: { userName: string; resetUrl: string }) {
   const { getPasswordResetEmailTemplate } = await import("./templates");
-  const { subject, html } = getPasswordResetEmailTemplate(data);
+  const { subject, html } = renderTemplate(getPasswordResetEmailTemplate, data);
   return await sendEmailNotification(userEmail, subject, html);
 }
 
 export async function sendVerificationEmail(userEmail: string, data: { userName: string; verifyUrl: string }) {
   const { getVerificationEmailTemplate } = await import("./templates");
-  const { subject, html } = getVerificationEmailTemplate(data);
+  const { subject, html } = renderTemplate(getVerificationEmailTemplate, data);
   return await sendEmailNotification(userEmail, subject, html);
 }
 
@@ -111,7 +138,7 @@ export async function sendWelcomeEmail(
   data: { userName: string; dashboardUrl: string; faculty?: string | null; department?: string | null }
 ) {
   const { getWelcomeEmailTemplate } = await import("./templates");
-  const { subject, html } = getWelcomeEmailTemplate(data);
+  const { subject, html } = renderTemplate(getWelcomeEmailTemplate, data);
   return await sendEmailNotification(userEmail, subject, html);
 }
 

@@ -80,6 +80,6 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error("[VERIFY EMAIL ERROR]", error);
-    return NextResponse.json({ error: error.message || "Failed to verify email." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to verify email." }, { status: 500 });
   }
 }

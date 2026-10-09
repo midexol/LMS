@@ -81,7 +81,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[DROP COURSE ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to drop course." },
+      { error: "Failed to drop course." },
       { status: 500 }
     );
   }

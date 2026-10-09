@@ -68,7 +68,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[TUTOR COURSE CREATE API ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to create course." },
+      { error: "Failed to create course." },
       { status: 500 }
     );
   }
@@ -181,7 +181,7 @@ export async function PUT(req: Request) {
   } catch (error: any) {
     console.error("[TUTOR COURSE UPDATE API ERROR]", error);
     return NextResponse.json(
-      { error: error.message || "Failed to update course." },
+      { error: "Failed to update course." },
       { status: 500 }
     );
   }
