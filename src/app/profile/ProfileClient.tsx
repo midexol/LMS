@@ -632,13 +632,13 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   <AcademiaLogoIcon className="w-11 h-11" />
                 </div>
                 <div className="inline-block px-3 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-black uppercase tracking-widest mb-1">
-                  Official Academic Bursary
+                  Payment Receipt
                 </div>
                 <h2 className="text-xl font-black uppercase tracking-tight">
-                  Federal Polytechnic Ado-Ekiti LMS
+                  Academia LMS
                 </h2>
                 <p className="text-[11px] text-neutral-600 font-medium">
-                  Electronic Course Tuition &amp; Registration Payment Receipt
+                  Course enrolment payment, processed by Paystack
                 </p>
                 <div className="text-[10px] font-mono text-neutral-500 pt-1">
                   Receipt No: REC-{selectedReceipt.reference}
@@ -703,15 +703,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[11px]">
                     <FiCheckCircle className="w-4 h-4 text-emerald-600" />
-                    <span>STATUS: OFFICIAL &amp; VERIFIED</span>
+                    <span>PAYMENT CONFIRMED</span>
                   </div>
                   <p className="text-[10px] text-neutral-500">
                     Paystack Ref: {selectedReceipt.paystackRef || selectedReceipt.reference}
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-mono text-neutral-400 block">DIGITALLY SECURED</span>
-                  <span className="text-[10px] font-bold text-neutral-800">BURSARY FINANCE OFFICE</span>
+                  <span className="text-[10px] font-bold text-neutral-800">Issued by Academia LMS</span>
                 </div>
               </div>
             </div>

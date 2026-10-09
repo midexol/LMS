@@ -692,7 +692,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               <div className="space-y-6">
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#4A1A45] block mb-1">
-                    Polytechnic Academic Directorate &amp; Examination Board
+                    Academia LMS
                   </span>
                   <h2 className="font-serif text-3xl sm:text-4xl font-black text-black tracking-tight">
                     Certificate of Completion
@@ -700,7 +700,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </div>
 
                 <p className="text-xs text-neutral-500 uppercase tracking-widest font-semibold">
-                  This is officially awarded to certify that
+                  This certifies that
                 </p>
 
                 <div className="py-2 border-b-2 border-[#4A1A45] inline-block px-10">
@@ -710,7 +710,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </div>
 
                 <p className="text-xs text-neutral-600 max-w-lg mx-auto leading-relaxed">
-                  has successfully satisfied all prescribed academic requirements, lecture modules, and evaluated assignments with verified competence in
+                  has completed all lessons and assignments, with an average score of at least 70%, in the course
                 </p>
 
                 <div className="space-y-1">
@@ -722,19 +722,13 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                   </p>
                 </div>
 
-                <div className="pt-8 border-t border-neutral-200 grid grid-cols-3 items-end text-left text-xs gap-4">
+                <div className="pt-8 border-t border-neutral-200 grid grid-cols-2 items-end text-left text-xs gap-4">
                   <div>
                     <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider block">Award Date</span>
                     <span className="font-bold text-black">{formatDate(enrollment.completedAt || new Date().toISOString())}</span>
                   </div>
-                  <div className="text-center">
-                    <div className="w-12 h-12 rounded-full border-2 border-[#4A1A45] bg-[#F7F2F6] mx-auto flex items-center justify-center font-black text-[10px] tracking-wider text-[#4A1A45]">
-                      SEAL
-                    </div>
-                    <span className="text-[9px] text-neutral-500 font-bold uppercase tracking-widest mt-1 block">Institutional Seal</span>
-                  </div>
                   <div className="text-right">
-                    <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider block">Verification ID</span>
+                    <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider block">Certificate ID</span>
                     <span className="font-mono text-xs font-bold text-neutral-800">
                       CERT-{enrollment.id.slice(-8).toUpperCase()}
                     </span>

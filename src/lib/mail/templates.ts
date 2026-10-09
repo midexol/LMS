@@ -86,7 +86,7 @@ function renderEmailShell({
       <!-- Shared ACADEMIA Footer -->
       <div style="border-top: 1px solid #eeeeee; padding-top: 20px; margin-top: 28px; text-align: center;">
         <p style="color: #888888; font-size: 11px; margin: 0; line-height: 1.5;">
-          ACADEMIA LMS &bull; Directorate of Digital Learning &amp; Academic Services
+          ACADEMIA LMS
         </p>
       </div>
     </div>

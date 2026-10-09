@@ -1632,66 +1632,6 @@ export function AdminDashboardClient({
               </form>
             </div>
 
-            {/* Institutional Configuration Card */}
-            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
-              <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
-                Institutional Identity &amp; Academic Configuration
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
-                    Institution Name
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value="The Federal Polytechnic, Ede"
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
-                  />
-                  <span className="text-[10px] text-neutral-400 mt-1 block">Accredited collegiate polytechnic repository.</span>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
-                    LMS Directorate Title
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value="ACADEMIA Digital Learning Directorate"
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
-                  />
-                  <span className="text-[10px] text-neutral-400 mt-1 block">Displayed on official student certificates.</span>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
-                    Current Academic Session
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value="2025/2026 Academic Session"
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">
-                    Official Support Contact Email
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value="academic.board@federalpolyede.edu.ng"
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black cursor-default"
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* Academic Policies & Enrollment Rules */}
             <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
@@ -1716,7 +1656,7 @@ export function AdminDashboardClient({
                   <div>
                     <h4 className="font-bold text-sm text-black">Certificate Completion Threshold</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
-                      Minimum required evaluation grade to unlock institutional seal and official certificate download.
+                      Minimum average grade required to complete a course and unlock the completion certificate.
                     </p>
                   </div>
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#4A1A45] text-white">
@@ -1742,10 +1682,10 @@ export function AdminDashboardClient({
             <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
                 <FiDownload className="w-5 h-5 text-[#4A1A45]" />
-                Institutional Ledger CSV Export Center
+                Data Export Center
               </h3>
               <p className="text-xs text-neutral-500">
-                Download verified real-time platform ledgers in CSV format for academic accreditation, external audits, and senate reporting.
+                Download platform data as CSV files for your own records and reporting.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
