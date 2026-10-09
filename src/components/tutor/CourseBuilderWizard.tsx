@@ -8,6 +8,7 @@ import {
 } from "react-icons/fi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { formatNgn } from "@/lib/utils";
+import { getBrowserStorage } from "@/lib/storageClient";
 
 
 
@@ -55,14 +56,27 @@ function useFileUpload() {
     setUploading(true);
     setError(null);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/tutor/upload", { method: "POST", body: fd });
+      // 1. Ask the server for a one-time signed upload URL (validates role, type, size)
+      const res = await fetch("/api/tutor/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileName: file.name, fileType: file.type, fileSize: file.size }),
+      });
       const data = await res.json();
       if (!res.ok || !data.success) {
         setError(data.error || "Upload failed.");
         return null;
       }
+
+      // 2. Upload straight to Supabase Storage, bypassing the serverless body size limit
+      const { error: uploadError } = await getBrowserStorage()
+        .storage.from(data.bucket)
+        .uploadToSignedUrl(data.path, data.token, file, { contentType: data.contentType });
+      if (uploadError) {
+        setError(uploadError.message || "Upload failed.");
+        return null;
+      }
+
       return { url: data.url, name: data.name };
     } catch (e: any) {
       setError(e.message || "Upload failed.");
@@ -823,7 +837,7 @@ function LessonRow({
         <div className="flex items-center gap-2 min-w-0">
           <input
             type="url"
-            placeholder="https://www.youtube.com/embed/... or /uploads/..."
+            placeholder="https://www.youtube.com/embed/... or upload a video file"
             value={lesson.videoUrl}
             onChange={(e) => onUpdate("videoUrl", e.target.value)}
             className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"

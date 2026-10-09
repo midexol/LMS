@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import crypto from "crypto";
 import { getCurrentUser } from "@/lib/auth";
+import { getStorageAdmin, STORAGE_BUCKET } from "@/lib/storage";
 
 // Allowed MIME types and their extensions
 const ALLOWED: Record<string, string> = {
@@ -22,6 +23,12 @@ const ALLOWED: Record<string, string> = {
 
 const MAX_SIZE = 100 * 1024 * 1024; // 100 MB
 
+/**
+ * Issues a one-time signed upload URL. The browser uploads the file directly to Supabase Storage,
+ * because serverless hosts cap request bodies (4.5 MB on Vercel) far below lesson video sizes.
+ * The bucket's own size and MIME limits must mirror MAX_SIZE/ALLOWED, since the direct upload
+ * bypasses this route.
+ */
 export async function POST(req: NextRequest) {
   try {
     const currentUser = await getCurrentUser();
@@ -29,45 +36,50 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized." }, { status: 403 });
     }
 
-    const formData = await req.formData();
-    const file = formData.get("file") as File | null;
+    const { fileName, fileType, fileSize } = await req.json();
 
-    if (!file) {
+    if (typeof fileName !== "string" || !fileName) {
       return NextResponse.json({ error: "No file provided." }, { status: 400 });
     }
 
-    if (file.size > MAX_SIZE) {
+    if (typeof fileSize !== "number" || fileSize > MAX_SIZE) {
       return NextResponse.json({ error: "File exceeds 100 MB limit." }, { status: 413 });
     }
 
-    const ext = ALLOWED[file.type];
+    const ext = ALLOWED[fileType];
     if (!ext) {
       return NextResponse.json(
-        { error: `File type "${file.type}" is not allowed.` },
+        { error: `File type "${fileType}" is not allowed.` },
         { status: 415 }
       );
     }
 
-    // Strip client extension and build a safe, unique filename ending in verified ext
-    const parsed = path.parse(file.name);
+    // Strip client extension and build a safe, unique object path ending in verified ext
+    const parsed = path.parse(fileName);
     const safeBase = (parsed.name || "upload")
       .replace(/[^a-zA-Z0-9_-]/g, "_")
       .replace(/_{2,}/g, "_")
       .slice(0, 50);
 
-    const timestamp = Date.now();
-    const filename = `${timestamp}_${safeBase}${ext}`;
+    const objectPath = `${currentUser.id}/${Date.now()}_${crypto.randomBytes(4).toString("hex")}_${safeBase}${ext}`;
 
-    // Save to public/uploads (served statically)
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
+    const storage = getStorageAdmin().storage.from(STORAGE_BUCKET);
+    const { data, error } = await storage.createSignedUploadUrl(objectPath);
+    if (error || !data) {
+      throw error || new Error("Failed to create signed upload URL.");
+    }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    await writeFile(path.join(uploadsDir, filename), buffer);
+    const { data: publicData } = storage.getPublicUrl(objectPath);
 
-    const publicUrl = `/uploads/${filename}`;
-    return NextResponse.json({ success: true, url: publicUrl, name: file.name });
+    return NextResponse.json({
+      success: true,
+      bucket: STORAGE_BUCKET,
+      path: data.path,
+      token: data.token,
+      contentType: fileType,
+      url: publicData.publicUrl,
+      name: fileName,
+    });
   } catch (err: any) {
     console.error("[UPLOAD ERROR]", err);
     return NextResponse.json({ error: "Upload failed." }, { status: 500 });

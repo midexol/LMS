@@ -406,7 +406,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 {activeLesson.videoUrl && (
                   <div className="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-sm flex items-center justify-center">
                     {activeLesson.videoUrl.startsWith("/uploads/") ||
-                    /\.(mp4|webm|ogg)(\?.*)?$/i.test(activeLesson.videoUrl) ? (
+                    /\.(mp4|webm|ogg|ogv)(\?.*)?$/i.test(activeLesson.videoUrl) ? (
                       <video
                         controls
                         controlsList="nodownload"
