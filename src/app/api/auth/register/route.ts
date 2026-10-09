@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { signSessionToken } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export async function POST(req: Request) {
   try {
@@ -59,6 +61,10 @@ export async function POST(req: Request) {
     // Hash password with bcrypt (12 salt rounds)
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Generate secure 32-byte verification token (valid for 24 hours)
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
     const newUser = await prisma.user.create({
       data: {
         name: trimmedName,
@@ -67,8 +73,25 @@ export async function POST(req: Request) {
         role: "STUDENT", // Enforce STUDENT on public registration. Faculty/Tutors are provisioned via Admin
         faculty: faculty?.trim() || null,
         department: department?.trim() || null,
+        emailVerified: false,
+        verificationToken,
+        verificationTokenExpiry,
       },
     });
+
+    // Send verification email
+    try {
+      const url = new URL(req.url);
+      const origin = process.env.NEXT_PUBLIC_APP_URL || `${url.protocol}//${url.host}`;
+      const verifyUrl = `${origin}/verify-email?token=${verificationToken}`;
+
+      await sendVerificationEmail(newUser.email, {
+        userName: newUser.name,
+        verifyUrl,
+      });
+    } catch (emailError) {
+      console.error("[REGISTER VERIFICATION EMAIL FAILED]", emailError);
+    }
 
     const cookieStore = await cookies();
     cookieStore.set("lms_user_id", signSessionToken(newUser.id), {

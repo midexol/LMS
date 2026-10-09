@@ -3,8 +3,13 @@ import "./globals.css";
 import { PrivyClientProvider } from "@/components/providers/PrivyClientProvider";
 
 export const metadata: Metadata = {
-  title: "Academia LMS - Polytechnic Learning Management System",
-  description: "Modern polytechnic LMS platform with single course lock, automated evaluation, and instructor studio.",
+  title: "FEDPOLY ADO LMS - Federal Polytechnic Ado-Ekiti",
+  description: "Official Federal Polytechnic Ado-Ekiti Learning Management System featuring single course progression, accredited curriculum, and instructor evaluation studio.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

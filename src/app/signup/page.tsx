@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   FiBookOpen, FiUser, FiMail, FiLock, FiUserPlus,
-  FiAlertCircle, FiEye, FiEyeOff, FiCheck,
+  FiAlertCircle, FiEye, FiEyeOff, FiCheck, FiArrowRight,
 } from "react-icons/fi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
@@ -22,6 +22,8 @@ export default function SignupPage() {
   const [department, setDepartment] = useState(ACADEMIC_STRUCTURE[0].departments[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
 
   const pwMatch = confirmPassword.length > 0 && password === confirmPassword;
   const pwMismatch = confirmPassword.length > 0 && password !== confirmPassword;
@@ -63,7 +65,7 @@ export default function SignupPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed.");
 
-      window.location.href = role === "TUTOR" ? "/instructor" : "/my-courses";
+      setRegisteredEmail(email);
     } catch (err: any) {
       setError(err.message || "Failed to create account.");
     } finally {
@@ -109,11 +111,43 @@ export default function SignupPage() {
           <BrandLogo href="/" variant="dark" size="md" />
         </div>
 
-        <div className="w-full max-w-sm space-y-6 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm">
-          <div>
-            <h1 className="font-bold text-2xl text-black">Create an account</h1>
-            <p className="text-xs text-neutral-500 mt-1">Select your role and start your academic journey.</p>
+        {registeredEmail ? (
+          <div className="w-full max-w-sm space-y-6 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm text-center">
+            <div className="w-16 h-16 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto border border-purple-100">
+              <FiMail className="w-8 h-8" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="inline-block text-[10px] font-bold text-[#4A1A45] bg-purple-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                Registration Successful
+              </span>
+              <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">Check Your Inbox</h2>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                We sent an official verification link to:
+              </p>
+              <p className="text-xs font-bold text-[#4A1A45] break-all bg-neutral-50 py-2 px-3 rounded-xl border border-neutral-200/60">
+                {registeredEmail}
+              </p>
+              <p className="text-[11px] text-neutral-500 leading-relaxed pt-1">
+                Please click the link in your email to verify your address.
+              </p>
+            </div>
+
+            <div className="pt-2 space-y-3">
+              <Link
+                href={role === "TUTOR" ? "/instructor" : "/my-courses"}
+                className="w-full py-3.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+              >
+                Continue to Dashboard <FiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
+        ) : (
+          <div className="w-full max-w-sm space-y-6 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm">
+            <div>
+              <h1 className="font-bold text-2xl text-black">Create an account</h1>
+              <p className="text-xs text-neutral-500 mt-1">Select your role and start your academic journey.</p>
+            </div>
 
           {error && (
             <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-red-50 border border-red-200">
@@ -282,6 +316,7 @@ export default function SignupPage() {
             </p>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

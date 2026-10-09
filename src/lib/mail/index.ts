@@ -100,3 +100,19 @@ export async function sendPasswordResetEmail(userEmail: string, data: { userName
   return await sendEmailNotification(userEmail, subject, html);
 }
 
+export async function sendVerificationEmail(userEmail: string, data: { userName: string; verifyUrl: string }) {
+  const { getVerificationEmailTemplate } = await import("./templates");
+  const { subject, html } = getVerificationEmailTemplate(data);
+  return await sendEmailNotification(userEmail, subject, html);
+}
+
+export async function sendWelcomeEmail(
+  userEmail: string,
+  data: { userName: string; dashboardUrl: string; faculty?: string | null; department?: string | null }
+) {
+  const { getWelcomeEmailTemplate } = await import("./templates");
+  const { subject, html } = getWelcomeEmailTemplate(data);
+  return await sendEmailNotification(userEmail, subject, html);
+}
+
+

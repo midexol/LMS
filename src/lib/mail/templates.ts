@@ -221,3 +221,100 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): { s
     `,
   };
 }
+
+export interface VerificationEmailData {
+  userName: string;
+  verifyUrl: string;
+}
+
+export function getVerificationEmailTemplate(data: VerificationEmailData): { subject: string; html: string } {
+  return {
+    subject: "Verify Your Email Address - FEDPOLY ADO LMS",
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #111111;">
+        <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 24px;">
+          <h1 style="color: #4A1A45; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Official Account Verification</p>
+        </div>
+
+        <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
+        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+          Welcome to the Federal Polytechnic Ado-Ekiti e-Learning Platform. To activate your student profile and enable course enrollments, please confirm your email address:
+        </p>
+
+        <div style="text-align: center; margin: 32px 0;">
+          <a href="${data.verifyUrl}" style="background-color: #4A1A45; color: #ffffff; padding: 14px 36px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; box-shadow: 0 4px 12px rgba(74, 26, 69, 0.25);">
+            Verify My Email Address
+          </a>
+        </div>
+
+        <div style="background-color: #faf7fa; border: 1px solid #e9d5e7; border-radius: 10px; padding: 16px; margin: 24px 0;">
+          <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 0 0 4px 0;">Important Notice</p>
+          <p style="color: #665564; font-size: 12px; margin: 0; line-height: 1.5;">This verification link will remain valid for <strong>24 hours</strong>. If you did not create this account, no further action is required.</p>
+        </div>
+
+        <p style="color: #999999; font-size: 11px; margin-top: 24px;">If button doesn't work, copy and paste this link in your browser:<br/><span style="color: #555555; word-break: break-all;">${data.verifyUrl}</span></p>
+      </div>
+    `,
+  };
+}
+
+export interface WelcomeEmailData {
+  userName: string;
+  dashboardUrl: string;
+  faculty?: string | null;
+  department?: string | null;
+}
+
+export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: string; html: string } {
+  return {
+    subject: "Welcome to FEDPOLY ADO LMS - Account Verified",
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #111111;">
+        <div style="background: linear-gradient(135deg, #2D0F2A 0%, #4A1A45 100%); padding: 32px 24px; border-radius: 12px; text-align: center; color: #ffffff; margin-bottom: 24px;">
+          <h1 style="color: #ffffff; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">Welcome to FEDPOLY ADO LMS</h1>
+          <p style="color: #e5bce2; font-size: 13px; font-weight: 600; margin-top: 6px; text-transform: uppercase;">Official Student Onboarding</p>
+        </div>
+
+        <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
+        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+          Your email has been verified successfully. Your academic record is now active and ready for coursework.
+        </p>
+
+        ${
+          data.department || data.faculty
+            ? `
+          <div style="background-color: #faf7fa; border: 1px solid #e9d5e7; border-radius: 10px; padding: 14px 18px; margin: 20px 0;">
+            <p style="color: #4A1A45; font-size: 11px; font-weight: 800; text-transform: uppercase; margin: 0 0 6px 0;">Academic Placement</p>
+            ${data.faculty ? `<p style="color: #333333; font-size: 13px; margin: 2px 0;"><strong>School / Faculty:</strong> ${data.faculty}</p>` : ""}
+            ${data.department ? `<p style="color: #333333; font-size: 13px; margin: 2px 0;"><strong>Department:</strong> ${data.department}</p>` : ""}
+          </div>
+        `
+            : ""
+        }
+
+        <div style="background-color: #fbfbfb; border: 1px solid #eeeeee; border-radius: 12px; padding: 20px; margin: 24px 0;">
+          <h3 style="color: #111111; font-size: 14px; font-weight: 800; margin: 0 0 12px 0;">Quick Start Guide:</h3>
+          <ul style="margin: 0; padding-left: 20px; color: #444444; font-size: 13px; line-height: 1.8;">
+            <li><strong>Select Course:</strong> Browse department-approved courses and register.</li>
+            <li><strong>Single Course Lock:</strong> Focus on one course at a time to maximize subject mastery.</li>
+            <li><strong>Automated Rubric Evaluations:</strong> Submit assignments and receive immediate grading criteria with helpful feedback.</li>
+            <li><strong>Certification:</strong> Complete 100% of modules and achieve a 70%+ score to earn your accredited certificate.</li>
+          </ul>
+        </div>
+
+        <div style="text-align: center; margin: 32px 0;">
+          <a href="${data.dashboardUrl}" style="background-color: #4A1A45; color: #ffffff; padding: 14px 36px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; box-shadow: 0 4px 12px rgba(74, 26, 69, 0.25);">
+            Access Student Dashboard
+          </a>
+        </div>
+
+        <div style="border-top: 1px solid #eeeeee; padding-top: 20px; text-align: center;">
+          <p style="color: #999999; font-size: 11px; margin: 0;">
+            Federal Polytechnic Ado-Ekiti &bull; Directorate of Digital Learning &amp; Academic Services
+          </p>
+        </div>
+      </div>
+    `,
+  };
+}

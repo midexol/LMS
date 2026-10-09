@@ -15,6 +15,10 @@ model User {
   role       String   @default("STUDENT") // "STUDENT" | "TUTOR" | "ADMIN"
   faculty          String?   // School/Faculty
   department       String?   // Specific Department
+  emailVerified    Boolean   @default(false)
+  emailVerifiedAt  DateTime?
+  verificationToken String?  @unique
+  verificationTokenExpiry DateTime?
   resetToken       String?
   resetTokenExpiry DateTime?
   createdAt        DateTime  @default(now())
