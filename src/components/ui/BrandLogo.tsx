@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function AcademiaLogoIcon({ className = "w-8 h-8" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-label="FedPoly Ado Crest">
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-label="Academia Crest">
       {/* Outer rounded container with FedPoly purple background */}
       <rect width="48" height="48" rx="13" fill="#4A1A45" />
       <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="12.25" stroke="url(#brand_border_grad)" strokeWidth="1.5" strokeOpacity="0.4" />
@@ -71,7 +71,7 @@ export function BrandLogo({
             variant === "light" ? "text-white" : "text-[#4A1A45]"
           }`}
         >
-          FEDPOLY ADO
+          ACADEMIA
         </span>
         {showSubtitle && (
           <span className={`font-bold tracking-widest uppercase text-[#896A86] mt-0.5 ${subSize}`}>

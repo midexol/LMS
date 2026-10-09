@@ -98,7 +98,7 @@ export default function NotFound() {
 
         {/* Footer info */}
         <p className="text-[11px] text-neutral-400 font-mono">
-          Status: 404_HTTP_NOT_FOUND &bull; FedPoly Ado LMS Portal
+          Status: 404_HTTP_NOT_FOUND &bull; Academia LMS Portal
         </p>
       </div>
     </div>

@@ -190,7 +190,7 @@ function VerifyEmailContent() {
 
       {/* Footer */}
       <div className="text-center py-4 text-[11px] text-neutral-400">
-        &copy; {new Date().getFullYear()} Federal Polytechnic Ado-Ekiti LMS. All rights reserved.
+        &copy; {new Date().getFullYear()} ACADEMIA LMS. All rights reserved.
       </div>
     </div>
   );

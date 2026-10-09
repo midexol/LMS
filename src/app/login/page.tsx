@@ -69,7 +69,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="relative text-neutral-400 text-xs">&copy; {new Date().getFullYear()} FedPoly Ado LMS. All rights reserved.</p>
+        <p className="relative text-neutral-400 text-xs">&copy; {new Date().getFullYear()} Academia LMS. All rights reserved.</p>
       </div>
 
       {/* Right panel — Form */}

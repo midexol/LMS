@@ -83,7 +83,7 @@ function ResetPasswordForm() {
           Set New Password
         </h1>
         <p className="text-neutral-500 text-xs mt-1">
-          Choose a secure password for your FedPoly Ado LMS account.
+          Choose a secure password for your Academia LMS account.
         </p>
       </div>
 
@@ -188,7 +188,7 @@ export default function ResetPasswordPage() {
         </div>
 
         <div className="relative text-xs text-neutral-400">
-          © {new Date().getFullYear()} FedPoly Ado LMS.
+          &copy; {new Date().getFullYear()} Academia LMS. All rights reserved.
         </div>
       </div>
 

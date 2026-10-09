@@ -70,7 +70,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Email verified successfully! Welcome to FEDPOLY ADO LMS.",
+      message: "Email verified successfully! Welcome to ACADEMIA LMS.",
       user: {
         id: updatedUser.id,
         name: updatedUser.name,

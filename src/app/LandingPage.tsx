@@ -546,12 +546,15 @@ export function LandingPage({
             <div className="col-span-2 space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-2xl bg-[#4A1A45] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                  F
+                  A
                 </div>
-                <span className="font-black text-xl text-white tracking-tight">FEDPOLY ADO</span>
+                <span className="font-black text-xl text-white tracking-tight">ACADEMIA</span>
               </div>
               <p className="text-xs leading-relaxed max-w-sm text-neutral-400">
-                The Federal Polytechnic, Ado-Ekiti Learning Management System combining structured polytechnic curricula, automated evaluation, and comprehensive academic telemetry.
+                Academia is a modern polytechnic learning management system combining structured curricula, automated evaluation, and comprehensive academic telemetry.
+              </p>
+              <p className="text-[11px] font-semibold text-[#D6BDD4]">
+                A product of The Federal Polytechnic, Ado-Ekiti
               </p>
             </div>
 
@@ -614,7 +617,7 @@ export function LandingPage({
 
           {/* Subfooter */}
           <div className="pt-8 border-t border-[#3B1537] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-            <p>&copy; {new Date().getFullYear()} The Federal Polytechnic, Ado-Ekiti. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Academia LMS. A product of The Federal Polytechnic, Ado-Ekiti. All rights reserved.</p>
             <div className="flex flex-wrap items-center gap-6">
               <button onClick={() => setPolicyModal("privacy")} className="hover:text-white transition-colors">
                 Privacy Policy
@@ -651,7 +654,7 @@ export function LandingPage({
                 <h3 className="font-heading font-bold text-2xl text-black">Academic Integrity Policy</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    Federal Polytechnic Ado-Ekiti LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
+                    Academia LMS is grounded in rigorous collegiate scholarship. Every course enforces our <strong>Single Active Enrollment Lock</strong>, guaranteeing students maintain deep, unfragmented immersion in their studies.
                   </p>
                   <p>
                     All assignments undergo automated rubric benchmarking. Work must meet or exceed a strict <strong>70% mastery standard</strong> to unlock subsequent lessons.
@@ -687,7 +690,7 @@ export function LandingPage({
                 <h3 className="font-heading font-bold text-2xl text-black">Terms of Service</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    By registering for FedPoly Ado LMS, you commit to maintaining authentic academic conduct across all lecture coursework, discussion forums, and evaluations.
+                    By registering for Academia LMS, you commit to maintaining authentic academic conduct across all lecture coursework, discussion forums, and evaluations.
                   </p>
                   <p>
                     Enrollment grants non-exclusive, personal access to instructional materials. Course materials, video assets, and rubric prompts may not be redistributed without institutional consent.
@@ -705,7 +708,7 @@ export function LandingPage({
                 <h3 className="font-heading font-bold text-2xl text-black">The Honor Code</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 italic text-neutral-800 text-sm font-medium">
-                    &ldquo;As a scholar at Federal Polytechnic Ado-Ekiti, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
+                    &ldquo;As a scholar on Academia LMS, I pledge to dedicate my complete attention to my active course, produce honest and rigorous academic work, and support the scholarly growth of my peers.&rdquo;
                   </div>
                   <ul className="space-y-1.5 list-disc pl-4 text-neutral-600">
                     <li>One active course focus until verified completion.</li>
@@ -737,7 +740,7 @@ export function LandingPage({
                 <h3 className="font-heading font-bold text-2xl text-black">Accessibility Statement</h3>
                 <div className="text-xs text-neutral-600 space-y-3 leading-relaxed">
                   <p>
-                    FedPoly Ado LMS is engineered to comply with WCAG 2.1 Level AA specifications. We prioritize high contrast, legible typography, keyboard accessibility, and screen reader compatibility.
+                    Academia LMS is engineered to comply with WCAG 2.1 Level AA specifications. We prioritize high contrast, legible typography, keyboard accessibility, and screen reader compatibility.
                   </p>
                   <p>
                     If you encounter any accessibility barrier, our academic support team is dedicated to providing tailored accommodations.

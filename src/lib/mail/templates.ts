@@ -46,7 +46,7 @@ export function getEnrollmentEmailTemplate(data: EnrollmentEmailData): { subject
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Official Enrollment Notice</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.studentName}</strong>,</p>
@@ -68,7 +68,7 @@ export function getGradeEmailTemplate(data: GradeEmailData): { subject: string; 
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Assignment Evaluation</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.studentName}</strong>,</p>
@@ -95,7 +95,7 @@ export function getGradeOverrideEmailTemplate(data: GradeOverrideEmailData): { s
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Instructor Grade Review</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.studentName}</strong>,</p>
@@ -127,7 +127,7 @@ export function getAnnouncementEmailTemplate(data: AnnouncementEmailData): { sub
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">New Course Announcement</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.studentName}</strong>,</p>
@@ -150,7 +150,7 @@ export function getCourseUpdateEmailTemplate(data: CourseUpdateEmailData): { sub
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Curriculum &amp; Materials Update</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.studentName}</strong>,</p>
@@ -172,7 +172,7 @@ export function getCompletionEmailTemplate(data: CompletionEmailData): { subject
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Official Course Completion</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hearty congratulations, <strong>${data.studentName}</strong>!</p>
@@ -198,15 +198,15 @@ export interface PasswordResetEmailData {
 
 export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): { subject: string; html: string } {
   return {
-    subject: "Reset Your Account Password - FEDPOLY ADO LMS",
+    subject: "Reset Your Account Password - ACADEMIA LMS",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #000000;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 20px;">
-          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Security Notification</p>
         </div>
         <p style="color: #333333; font-size: 15px; line-height: 1.6;">Hello <strong>${data.userName}</strong>,</p>
-        <p style="color: #333333; font-size: 15px; line-height: 1.6;">We received a request to reset your password for your FEDPOLY ADO LMS account. Click the button below to choose a new password:</p>
+        <p style="color: #333333; font-size: 15px; line-height: 1.6;">We received a request to reset your password for your ACADEMIA LMS account. Click the button below to choose a new password:</p>
         
         <div style="text-align: center; margin: 32px 0;">
           <a href="${data.resetUrl}" style="background-color: #4A1A45; color: #ffffff; padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block;">Reset My Password</a>
@@ -229,17 +229,17 @@ export interface VerificationEmailData {
 
 export function getVerificationEmailTemplate(data: VerificationEmailData): { subject: string; html: string } {
   return {
-    subject: "Verify Your Email Address - FEDPOLY ADO LMS",
+    subject: "Verify Your Email Address - ACADEMIA LMS",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #111111;">
         <div style="border-bottom: 2px solid #4A1A45; padding-bottom: 16px; margin-bottom: 24px;">
-          <h1 style="color: #4A1A45; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">FEDPOLY ADO LMS</h1>
+          <h1 style="color: #4A1A45; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">ACADEMIA LMS</h1>
           <p style="color: #4A1A45; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Official Account Verification</p>
         </div>
 
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
-          Welcome to the Federal Polytechnic Ado-Ekiti e-Learning Platform. To activate your student profile and enable course enrollments, please confirm your email address:
+          Welcome to ACADEMIA LMS. To activate your student profile and enable course enrollments, please confirm your email address:
         </p>
 
         <div style="text-align: center; margin: 32px 0;">
@@ -268,11 +268,11 @@ export interface WelcomeEmailData {
 
 export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: string; html: string } {
   return {
-    subject: "Welcome to FEDPOLY ADO LMS - Account Verified",
+    subject: "Welcome to ACADEMIA LMS - Account Verified",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #111111;">
         <div style="background: linear-gradient(135deg, #2D0F2A 0%, #4A1A45 100%); padding: 32px 24px; border-radius: 12px; text-align: center; color: #ffffff; margin-bottom: 24px;">
-          <h1 style="color: #ffffff; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">Welcome to FEDPOLY ADO LMS</h1>
+          <h1 style="color: #ffffff; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">Welcome to ACADEMIA LMS</h1>
           <p style="color: #e5bce2; font-size: 13px; font-weight: 600; margin-top: 6px; text-transform: uppercase;">Official Student Onboarding</p>
         </div>
 
@@ -311,7 +311,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: stri
 
         <div style="border-top: 1px solid #eeeeee; padding-top: 20px; text-align: center;">
           <p style="color: #999999; font-size: 11px; margin: 0;">
-            Federal Polytechnic Ado-Ekiti &bull; Directorate of Digital Learning &amp; Academic Services
+            Academia LMS &bull; A product of The Federal Polytechnic, Ado-Ekiti
           </p>
         </div>
       </div>

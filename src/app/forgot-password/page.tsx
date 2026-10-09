@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         <div className="relative text-xs text-neutral-400">
-          © {new Date().getFullYear()} FedPoly Ado LMS.
+          &copy; {new Date().getFullYear()} Academia LMS. All rights reserved.
         </div>
       </div>
 
