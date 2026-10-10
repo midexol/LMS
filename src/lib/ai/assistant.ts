@@ -1,5 +1,4 @@
-import { GEMINI_MODEL } from "./gradingPrompt";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateWithGemini } from "./geminiModels";
 
 export async function generateCourseOutlineAI(topic: string): Promise<{
   modules: Array<{ title: string; lessons: Array<{ title: string; content: string }> }>;
@@ -7,9 +6,6 @@ export async function generateCourseOutlineAI(topic: string): Promise<{
   const apiKey = process.env.GEMINI_API_KEY;
   if (apiKey) {
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
-
       const prompt = `
 Generate a structured course syllabus for the topic: "${topic}".
 Include 3 modules, with 2 lessons in each module.
@@ -25,8 +21,7 @@ Return ONLY valid JSON in this exact structure without markdown or backticks:
   ]
 }
 `;
-      const result = await model.generateContent(prompt);
-      const text = result.response.text().replace(/```json/g, "").replace(/```/g, "").trim();
+      const text = (await generateWithGemini(apiKey, prompt)).replace(/```json/g, "").replace(/```/g, "").trim();
       return JSON.parse(text);
     } catch (e) {
       console.log("[AI ASSISTANT FALLBACK] Could not fetch from API, using smart template.", e);
@@ -72,16 +67,12 @@ export async function generateAssignmentRubricAI(prompt: string): Promise<{
   const apiKey = process.env.GEMINI_API_KEY;
   if (apiKey) {
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
-
       const query = `
 Given this assignment prompt: "${prompt}"
 Generate a comprehensive model answer and key grading rubric criteria that students should include in their response.
 Return plain text without emdashes or emojis.
 `;
-      const result = await model.generateContent(query);
-      return { referenceAnswer: result.response.text().trim() };
+      return { referenceAnswer: (await generateWithGemini(apiKey, query)).trim() };
     } catch (e) {
       console.log("[AI ASSISTANT FALLBACK] Rubric fallback used.", e);
     }

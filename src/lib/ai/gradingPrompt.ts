@@ -39,5 +39,4 @@ ${fencedAnswer}
 </student_submission>`;
 }
 
-export const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 export const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";

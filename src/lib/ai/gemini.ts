@@ -1,5 +1,5 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { buildGradingSystemPrompt, buildGradingUserPrompt, GEMINI_MODEL } from "./gradingPrompt";
+import { buildGradingSystemPrompt, buildGradingUserPrompt } from "./gradingPrompt";
+import { generateWithGemini } from "./geminiModels";
 
 export async function gradeWithGemini(
   assignmentPrompt: string,
@@ -9,16 +9,9 @@ export async function gradeWithGemini(
   apiKey: string
 ): Promise<{ score: number; feedback: string }> {
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: GEMINI_MODEL,
-      systemInstruction: buildGradingSystemPrompt(maxScore),
-    });
-
     const promptText = buildGradingUserPrompt(assignmentPrompt, referenceAnswer, studentAnswer, maxScore);
 
-    const result = await model.generateContent(promptText);
-    const responseText = result.response.text();
+    const responseText = await generateWithGemini(apiKey, promptText, buildGradingSystemPrompt(maxScore));
     const cleanText = responseText.replace(/```json/g, "").replace(/```/g, "").trim();
     const parsed = JSON.parse(cleanText);
 
