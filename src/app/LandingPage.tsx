@@ -90,7 +90,7 @@ export function LandingPage({
       <LandingNavbar currentUser={currentUser} />
 
       {/* ───────────────── HERO SECTION ───────────────── */}
-      <section className="pt-8 sm:pt-14 pb-14 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
+      <section className="pt-6 sm:pt-10 pb-8 sm:pb-10 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             <h1 className="font-heading font-normal text-3xl sm:text-5xl lg:text-6xl text-black leading-[1.12] sm:leading-[1.08] tracking-tight">
@@ -143,7 +143,7 @@ export function LandingPage({
 
         {/* Categories with live course counts. Hidden until there is something real to show. */}
         {categoryCounts.length > 0 && (
-          <div className="mt-10 sm:mt-14 pt-6 border-t border-neutral-200/80">
+          <div className="mt-8 sm:mt-10 pt-5 border-t border-neutral-200/80">
             <div className="flex items-center justify-between gap-4 mb-3">
               <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Browse by subject</span>
               <Link href="/courses" className="text-sm font-bold text-[#4A1A45] hover:underline">
@@ -169,18 +169,20 @@ export function LandingPage({
       </section>
 
       {/* ───────────────── WHY ACADEMIA ───────────────── */}
-      <section className="py-20 px-6 max-w-7xl mx-auto" id="campus-life">
-        <div className="max-w-3xl mx-auto space-y-6">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Why Academia</span>
-          <h2 className="font-heading font-normal text-3xl sm:text-5xl text-black leading-tight tracking-tight">
-            Built to help you <span className="italic text-[#4A1A45]">finish what you start.</span>
-          </h2>
-          <p className="text-base text-neutral-600 leading-relaxed">
-            Every course has clear lessons, assignments set by the instructor, and a clear target to reach.
-            Here is what makes Academia different.
-          </p>
+      <section className="py-10 sm:py-14 px-6 max-w-7xl mx-auto" id="campus-life">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+          <div className="space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Why Academia</span>
+            <h2 className="font-heading font-normal text-3xl sm:text-4xl lg:text-5xl text-black leading-tight tracking-tight">
+              Built to help you <span className="italic text-[#4A1A45]">finish what you start.</span>
+            </h2>
+            <p className="text-base text-neutral-600 leading-relaxed max-w-lg">
+              Every course has clear lessons, assignments set by the instructor, and a clear target to reach.
+              Here is what makes Academia different.
+            </p>
+          </div>
 
-          <div className="space-y-4 pt-2">
+          <div className="space-y-4">
             <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
               <div className="flex items-center gap-3">
                 <span className="font-heading text-lg font-bold text-[#4A1A45]">01</span>
@@ -206,9 +208,9 @@ export function LandingPage({
       </section>
 
       {/* ───────────────── FEATURED COURSES CURRICULUM ───────────────── */}
-      <section className="py-20 px-6 bg-neutral-50 border-t border-neutral-200" id="curriculum">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-neutral-200 pb-8">
+      <section className="py-10 sm:py-14 px-6 bg-neutral-50 border-t border-neutral-200" id="curriculum">
+        <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-neutral-200 pb-5">
             <div className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Courses</span>
               <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
@@ -298,7 +300,7 @@ export function LandingPage({
                 </div>
               ))
             ) : (
-              <div className="col-span-3 text-center py-12 text-neutral-500 text-sm">
+              <div className="col-span-3 text-center py-4 text-neutral-500 text-sm">
                 New courses are coming soon. Create a free account and we will have them waiting for you.
               </div>
             )}
@@ -307,8 +309,8 @@ export function LandingPage({
       </section>
 
       {/* ───────────────── HOW IT WORKS ───────────────── */}
-      <section className="py-20 px-6 max-w-7xl mx-auto" id="how-it-works">
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
+      <section className="py-10 sm:py-14 px-6 max-w-7xl mx-auto" id="how-it-works">
+        <div className="text-center max-w-3xl mx-auto space-y-3 mb-8">
           <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">How it works</span>
           <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
             From sign-up to certificate in <span className="italic text-[#4A1A45]">three steps.</span>
@@ -335,9 +337,9 @@ export function LandingPage({
           ].map((pillar) => (
             <div
               key={pillar.step}
-              className="p-8 rounded-3xl border border-neutral-200 bg-white shadow-sm space-y-3"
+              className="p-6 rounded-3xl border border-neutral-200 bg-white shadow-sm space-y-2"
             >
-              <div className="text-5xl font-black text-neutral-200 select-none">{pillar.step}</div>
+              <div className="text-4xl font-black text-neutral-200 select-none">{pillar.step}</div>
               <h3 className="font-bold text-xl text-black">{pillar.title}</h3>
               <p className="text-sm text-neutral-600 leading-relaxed">{pillar.desc}</p>
             </div>
@@ -346,9 +348,9 @@ export function LandingPage({
       </section>
 
       {/* ───────────────── WHAT'S INCLUDED ───────────────── */}
-      <section className="bg-[#2D0F2A] text-white py-24 px-6 border-y border-[#3B1537]" id="whats-included">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-2xl space-y-4">
+      <section className="bg-[#2D0F2A] text-white py-12 sm:py-16 px-6 border-y border-[#3B1537]" id="whats-included">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="max-w-2xl space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-[#D6BDD4]">What you get</span>
             <h2 className="font-heading font-normal text-3xl sm:text-5xl leading-tight text-white tracking-tight">
               Everything you need to learn, <span className="italic text-[#E4D5E2]">in one place.</span>
@@ -404,8 +406,8 @@ export function LandingPage({
       </section>
 
       {/* ───────────────── FAQ ───────────────── */}
-      <section className="py-20 px-6 max-w-3xl mx-auto" id="faq">
-        <div className="text-center space-y-3 mb-10">
+      <section className="py-10 sm:py-14 px-6 max-w-3xl mx-auto" id="faq">
+        <div className="text-center space-y-3 mb-6">
           <span className="text-xs font-bold uppercase tracking-widest text-[#4A1A45]">Questions</span>
           <h2 className="font-heading font-normal text-3xl sm:text-4xl text-black">
             Things students <span className="italic text-[#4A1A45]">ask us.</span>
@@ -469,7 +471,7 @@ export function LandingPage({
       </section>
 
       {/* ───────────────── ELEGANT COMPACT FOOTER ───────────────── */}
-      <footer className="bg-[#1E0A1C] text-neutral-400 py-12 px-6 border-t border-[#3B1537]">
+      <footer className="bg-[#1E0A1C] text-neutral-400 py-8 px-6 border-t border-[#3B1537]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Brand + Institutional Attribution */}
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
