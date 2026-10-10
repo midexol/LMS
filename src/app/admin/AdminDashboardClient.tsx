@@ -117,6 +117,118 @@ function ConfirmModal({ title, body, onConfirm, onCancel, loading }: {
 }
 
 /* ─── Edit User Modal ────────────────────────────────────────── */
+/* ─── Add Instructor Modal ───────────────────────────────────── */
+function AddInstructorModal({ onSubmit, onClose }: {
+  onSubmit: (payload: { name: string; email: string; faculty: string; department: string }) => Promise<boolean>;
+  onClose: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [faculty, setFaculty] = useState("");
+  const [department, setDepartment] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const handleFacultyChange = (newFac: string) => {
+    setFaculty(newFac);
+    setDepartment("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    const ok = await onSubmit({ name, email, faculty, department });
+    setSaving(false);
+    if (ok) onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white rounded-3xl border border-neutral-200 shadow-2xl p-7 space-y-5">
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-lg text-black">Add Instructor</h3>
+          <button type="button" onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
+            <FiX className="w-4 h-4" />
+          </button>
+        </div>
+
+        <p className="text-xs text-neutral-500 leading-relaxed">
+          We email them a link to set their own password. If this email already belongs to a student account,
+          that account becomes an instructor.
+        </p>
+
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Full name</label>
+            <input
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Email</label>
+            <input
+              required
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">
+              Faculty <span className="text-neutral-400 normal-case font-normal">(optional)</span>
+            </label>
+            <select
+              value={faculty}
+              onChange={(e) => handleFacultyChange(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+            >
+              <option value="">Not specified</option>
+              {ACADEMIC_STRUCTURE.map((f) => (
+                <option key={f.name} value={f.name}>{f.name}</option>
+              ))}
+            </select>
+          </div>
+          {faculty && (
+            <div>
+              <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Department</label>
+              <select
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+              >
+                <option value="">Not specified</option>
+                {getDepartmentsForFaculty(faculty).map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-2 pt-1">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 py-2.5 rounded-full border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="flex-1 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs"
+          >
+            {saving ? "Adding..." : "Add instructor"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function EditUserModal({ user, currentAdminId, onSave, onClose }: {
   user: UserItem; currentAdminId: string;
   onSave: (userId: string, role: string, newPassword: string, faculty?: string, department?: string) => Promise<void>;
@@ -361,6 +473,7 @@ export function AdminDashboardClient({
   const [courseDeptFilter, setCourseDeptFilter] = useState("ALL");
 
   const [editUser, setEditUser] = useState<UserItem | null>(null);
+  const [showAddInstructor, setShowAddInstructor] = useState(false);
   const [deleteUser, setDeleteUser] = useState<UserItem | null>(null);
   const [deleteCourse, setDeleteCourse] = useState<CourseItem | null>(null);
   const [revokeEnrollment, setRevokeEnrollment] = useState<EnrollmentItem | null>(null);
@@ -489,6 +602,34 @@ export function AdminDashboardClient({
       success("User updated successfully.");
     } catch (e: any) {
       error(e.message || "Failed to update user.");
+    }
+  };
+
+  const handleAddInstructor = async (payload: { name: string; email: string; faculty: string; department: string }) => {
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to add instructor.");
+
+      if (data.created) {
+        setUsers((prev) => [{ ...data.user, _count: { enrollments: 0, submissions: 0, courses: 0 } }, ...prev]);
+        success(
+          data.emailSent
+            ? `Instructor added. An invite to set a password was emailed to ${data.user.email}.`
+            : "Instructor added, but the invite email could not be sent. Check the email settings, then reset their password from Edit."
+        );
+      } else {
+        setUsers((prev) => prev.map((u) => (u.id === data.user.id ? { ...u, ...data.user } : u)));
+        success(`${data.user.name} is now an instructor.`);
+      }
+      return true;
+    } catch (e: any) {
+      error(e.message || "Failed to add instructor.");
+      return false;
     }
   };
 
@@ -652,6 +793,9 @@ export function AdminDashboardClient({
           onCancel={() => setRevokeEnrollment(null)}
           loading={actionLoading}
         />
+      )}
+      {showAddInstructor && (
+        <AddInstructorModal onSubmit={handleAddInstructor} onClose={() => setShowAddInstructor(false)} />
       )}
       {editUser && (
         <EditUserModal
@@ -1173,14 +1317,22 @@ export function AdminDashboardClient({
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => setShowAddInstructor(true)}
+                  className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                >
+                  <FiPlus className="w-3.5 h-3.5" />
+                  Add instructor
+                </button>
                 <select
                   value={userRoleFilter}
                   onChange={(e) => setUserRoleFilter(e.target.value)}
                   className="px-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
                 >
                   <option value="ALL">All Roles ({users.length})</option>
-                  <option value="STUDENT">Students ({metrics.totalStudents})</option>
-                  <option value="TUTOR">Instructors ({metrics.totalTutors})</option>
+                  <option value="STUDENT">Students ({users.filter((u) => u.role === "STUDENT").length})</option>
+                  <option value="TUTOR">Instructors ({users.filter((u) => u.role === "TUTOR").length})</option>
                   <option value="ADMIN">Superadmins</option>
                 </select>
 

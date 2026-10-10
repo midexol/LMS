@@ -12,6 +12,8 @@ import {
   getAnnouncementEmailTemplate,
   getCourseUpdateEmailTemplate,
   getCompletionEmailTemplate,
+  getInstructorInviteEmailTemplate,
+  InstructorInviteEmailData,
 } from "./templates";
 
 const smtpHost = process.env.SMTP_HOST;
@@ -142,4 +144,7 @@ export async function sendWelcomeEmail(
   return await sendEmailNotification(userEmail, subject, html);
 }
 
-
+export async function sendInstructorInviteEmail(userEmail: string, data: InstructorInviteEmailData) {
+  const { subject, html } = renderTemplate(getInstructorInviteEmailTemplate, data);
+  return await sendEmailNotification(userEmail, subject, html);
+}

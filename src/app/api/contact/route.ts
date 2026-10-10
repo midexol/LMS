@@ -6,6 +6,7 @@ const TOPICS = [
   "Technical & Course Support",
   "Enrollment & Account Access",
   "Faculty & Instruction Inquiry",
+  "Teaching on Academia",
   "General Question",
 ];
 

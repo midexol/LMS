@@ -404,3 +404,38 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): { s
     }),
   };
 }
+
+
+export interface InstructorInviteEmailData {
+  userName: string;
+  inviteUrl: string;
+  loginUrl: string;
+}
+
+/**
+ * Sent when an administrator adds someone as an instructor. The link lets them set their own password,
+ * so no password is ever emailed or chosen by the admin.
+ */
+export function getInstructorInviteEmailTemplate(data: InstructorInviteEmailData): { subject: string; html: string } {
+  return {
+    subject: "You have been added as an instructor - ACADEMIA LMS",
+    html: renderEmailShell({
+      subtitle: "Instructor Account",
+      badgeIcon: "🎓",
+      bodyHtml: `
+        <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
+        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+          An administrator has added you as an instructor on ACADEMIA LMS. Set your password to get started:
+        </p>
+
+        ${renderPillButton(data.inviteUrl, "Set My Password")}
+
+        <div style="background-color: #faf7fa; border: 1px solid #e9d5e7; border-radius: 10px; padding: 14px 16px; margin: 24px 0;">
+          <p style="color: #665564; font-size: 12px; margin: 0; line-height: 1.5;">This link is valid for <strong>3 days</strong>. After setting your password, sign in at the instructor login page: <span style="color: #555555; word-break: break-all;">${data.loginUrl}</span></p>
+        </div>
+
+        <p style="color: #999999; font-size: 11px; margin-top: 24px;">If the button doesn't work, copy and paste this link in your browser:<br/><span style="color: #555555; word-break: break-all;">${data.inviteUrl}</span></p>
+      `,
+    }),
+  };
+}
