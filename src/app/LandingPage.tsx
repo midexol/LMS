@@ -53,7 +53,10 @@ export function LandingPage({
     website: "", // honeypot: hidden from people, filled in by bots
   });
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
-  const institutionName = process.env.NEXT_PUBLIC_INSTITUTION_NAME;
+  // Footer attribution. Override with NEXT_PUBLIC_INSTITUTION_NAME, or set it to "-" to hide the line.
+  const institutionEnv = process.env.NEXT_PUBLIC_INSTITUTION_NAME;
+  const institutionName =
+    institutionEnv === "-" ? null : institutionEnv || "A product of The Federal Polytechnic, Ado-Ekiti";
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,13 +124,6 @@ export function LandingPage({
                 </li>
               ))}
             </ul>
-
-            <p className="text-sm text-neutral-500">
-              Teaching a course?{" "}
-              <Link href="/instructor/login" className="font-semibold text-[#4A1A45] hover:underline">
-                Instructor sign in &rarr;
-              </Link>
-            </p>
           </div>
 
           <div className="lg:col-span-6 relative">
@@ -349,57 +345,41 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* ───────────────── FOR INSTRUCTORS ───────────────── */}
-      <section className="bg-[#2D0F2A] text-white py-24 px-6 border-y border-[#3B1537]" id="instructors">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#D6BDD4]">For instructors</span>
+      {/* ───────────────── WHAT'S INCLUDED ───────────────── */}
+      <section className="bg-[#2D0F2A] text-white py-24 px-6 border-y border-[#3B1537]" id="whats-included">
+        <div className="max-w-7xl mx-auto space-y-12">
+          <div className="max-w-2xl space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D6BDD4]">What you get</span>
             <h2 className="font-heading font-normal text-3xl sm:text-5xl leading-tight text-white tracking-tight">
-              Build and run your course <span className="italic text-[#E4D5E2]">in one place.</span>
+              Everything you need to learn, <span className="italic text-[#E4D5E2]">in one place.</span>
             </h2>
             <p className="text-base text-neutral-200 leading-relaxed">
-              Create modules, lessons and assignments, upload videos and files, and let Academia mark the first pass
-              while you stay in control of every grade.
+              Each course comes with its own lessons, assignments and discussion area, so you never have to piece your
+              learning together from different places.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <Link
-                href="/instructor/login"
-                className="px-7 py-3 rounded-full bg-white text-[#4A1A45] hover:bg-neutral-100 font-bold text-sm text-center transition-all"
-              >
-                Instructor sign in
-              </Link>
-              <button
-                type="button"
-                onClick={() => setPolicyModal("contact")}
-                className="px-7 py-3 rounded-full border border-white/30 hover:border-white text-white font-bold text-sm text-center transition-all"
-              >
-                Ask about teaching
-              </button>
-            </div>
-            <p className="text-sm text-neutral-300">Instructor accounts are set up by the Academia team.</p>
           </div>
 
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
-                icon: FiCpu,
-                title: "Course outline helper",
-                desc: "Turn a topic into a draft set of modules and lessons, then edit it your way.",
+                icon: FiBookOpen,
+                title: "Structured lessons",
+                desc: "Work through modules and lessons in order, with videos, notes and downloadable files.",
               },
               {
                 icon: FiCheckCircle,
-                title: "Grading against your rubric",
-                desc: "Write a reference answer once. Student answers are scored against it, with feedback.",
-              },
-              {
-                icon: FiAward,
-                title: "Override any grade",
-                desc: "Review submissions, change a score, and leave your own feedback for the student.",
+                title: "Instant feedback",
+                desc: "Submit an assignment and get a score and written feedback within seconds. You can resubmit to improve.",
               },
               {
                 icon: FiUsers,
-                title: "See your students",
-                desc: "Track who is enrolled, what they have submitted, and post announcements to the class.",
+                title: "Course discussions",
+                desc: "Ask questions and read replies from your instructor and classmates on each lesson.",
+              },
+              {
+                icon: FiAward,
+                title: "Certificate when you pass",
+                desc: "Reach an average of 70% across the course's assignments and receive your completion certificate.",
               },
             ].map((f) => (
               <div key={f.title} className="p-6 rounded-3xl bg-[#1E0A1C] border border-[#3B1537] space-y-3">
@@ -410,6 +390,15 @@ export function LandingPage({
                 <p className="text-sm text-neutral-300 leading-relaxed">{f.desc}</p>
               </div>
             ))}
+          </div>
+
+          <div>
+            <Link
+              href="/signup"
+              className="inline-block px-8 py-3.5 rounded-full bg-white text-[#4A1A45] hover:bg-neutral-100 font-bold text-sm transition-all"
+            >
+              Create free account
+            </Link>
           </div>
         </div>
       </section>
@@ -448,6 +437,10 @@ export function LandingPage({
             {
               q: "Can I get a refund?",
               a: "If your payment goes through but you cannot be enrolled, for example because you already have an active course, contact us with your payment reference and we will arrange a refund or a transfer. Other cases are covered in our Terms.",
+            },
+            {
+              q: "How do I become an instructor?",
+              a: "Instructor accounts are set up by the Academia team. Use the contact form and choose \"Teaching on Academia\", and we will get back to you.",
             },
             {
               q: "Who can see my work?",
@@ -613,6 +606,7 @@ export function LandingPage({
                         <option value="Technical & Course Support">Technical &amp; Course Support</option>
                         <option value="Enrollment & Account Access">Enrollment &amp; Account Access</option>
                         <option value="Faculty & Instruction Inquiry">Faculty &amp; Instruction Inquiry</option>
+                        <option value="Teaching on Academia">Teaching on Academia</option>
                         <option value="General Question">General Question</option>
                       </select>
                     </div>
