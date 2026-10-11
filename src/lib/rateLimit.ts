@@ -219,6 +219,8 @@ export const RATE_LIMIT_RULES = {
   DISCUSSION: { limit: 20, windowMs: 5 * 60 * 1000 },
   // Profile / password changes (per user)
   PROFILE: { limit: 10, windowMs: 15 * 60 * 1000 },
+  // Checkout price quotes (per IP): public, read-only
+  QUOTE: { limit: 60, windowMs: 5 * 60 * 1000 },
   // Public contact form (per IP)
   CONTACT: { limit: 5, windowMs: 60 * 60 * 1000 },
 };

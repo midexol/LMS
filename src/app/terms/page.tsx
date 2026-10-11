@@ -37,6 +37,7 @@ const sections: LegalSection[] = [
     title: "Payments and refunds",
     bullets: [
       "Prices are shown in Nigerian Naira (NGN) before you pay.",
+      "The total at checkout can include a platform service fee and payment-processing charges on top of the course price. You see the full breakdown before you pay, and the amount you are charged is the total shown.",
       "Payments are processed by Paystack. We do not see or store your card or bank details.",
       "Your enrolment starts once Paystack confirms your payment. Keep your payment reference until you have access to the course.",
       "If your payment succeeds but we cannot enrol you because you already have an active course, contact us with your payment reference. We will arrange a refund or a transfer to another course.",
@@ -125,7 +126,7 @@ export default function TermsPage() {
     <LegalPage
       title="Terms of Service"
       intro="Please read these terms carefully. They explain how Academia LMS works, what we expect from you, and what you can expect from us."
-      lastUpdated="October 9, 2026"
+      lastUpdated="October 11, 2026"
       sections={sections}
     />
   );

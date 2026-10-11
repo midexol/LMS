@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { sendEnrollmentEmail } from "@/lib/mail";
 import { getAppUrl } from "@/lib/utils";
+import { calculateCheckout, computePaystackChargeKobo, CheckoutBreakdown } from "@/lib/fees";
 
 export interface PaymentConfig {
   secretKey: string;
@@ -33,21 +34,8 @@ export function calculateNgnAmount(price: number): number {
   return Math.round(price);
 }
 
-/**
- * Compute Paystack charge matching payment-portal logic:
- * 1.5% + ₦100 if amount > ₦2,500, capped at ₦2,000 (amounts in kobo).
- */
-export function computePaystackChargeKobo(amountKobo: number): number {
-  const FLAT_FEE_THRESHOLD = 250000; // ₦2,500 in kobo
-  const FLAT_FEE = 10000;            // ₦100 in kobo
-  const CAP = 200000;                // ₦2,000 in kobo
-  const RATE = 0.015;
-
-  let charge = Math.round(amountKobo * RATE);
-  if (amountKobo > FLAT_FEE_THRESHOLD) charge += FLAT_FEE;
-  if (charge > CAP) charge = CAP;
-  return charge;
-}
+// Paystack's fee formula lives in fees.ts so the checkout maths and the tests share one definition
+export { computePaystackChargeKobo };
 
 export function generatePaymentReference(courseId: string, studentId: string): string {
   const shortId = crypto.randomBytes(3).toString("hex").toUpperCase();
@@ -73,7 +61,9 @@ export interface InitializePaymentParams {
 export interface InitializePaymentResult {
   success: boolean;
   reference: string;
+  /** What the student is charged in total (course price + platform fee + processing fee if passed on) */
   amountNgn: number;
+  breakdown: CheckoutBreakdown;
   amountUsd?: number;
   authorizationUrl: string;
   accessCode?: string;
@@ -92,7 +82,9 @@ export async function initializeCoursePayment({
   const config = getPaymentConfig();
   const baseAppUrl = config.appUrl;
   const reference = generatePaymentReference(course.id, student.id);
-  const amountNgn = calculateNgnAmount(course.price);
+  // Course price, plus the flat platform fee and Paystack's processing fee when those are switched on
+  const breakdown = calculateCheckout(course.price);
+  const amountNgn = breakdown.totalNgn;
 
   // 1. Create PENDING Payment record in database
   await prisma.payment.create({
@@ -100,7 +92,7 @@ export async function initializeCoursePayment({
       reference,
       studentId: student.id,
       courseId: course.id,
-      amount: course.price,
+      amount: amountNgn, // the full amount charged: verification later requires Paystack to confirm at least this
       currency: "NGN",
       provider,
       status: "PENDING",
@@ -108,6 +100,7 @@ export async function initializeCoursePayment({
         courseTitle: course.title,
         studentName: student.name,
         amountNgn,
+        breakdown,
       }),
     },
   });
@@ -158,6 +151,7 @@ export async function initializeCoursePayment({
           success: true,
           reference,
           amountNgn,
+          breakdown,
           authorizationUrl: resData.data.authorization_url,
           accessCode: resData.data.access_code,
           isSimulation: false,
@@ -183,6 +177,7 @@ export async function initializeCoursePayment({
     success: true,
     reference,
     amountNgn,
+    breakdown,
     authorizationUrl: simulationUrl,
     accessCode: `sim_${Date.now()}`,
     isSimulation: true,

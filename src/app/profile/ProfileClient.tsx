@@ -19,6 +19,17 @@ interface ProfileClientProps {
   payments?: any[];
 }
 
+/** The fee breakdown saved with a payment when it was started (older payments have none). */
+function parseReceiptBreakdown(metadata?: string | null) {
+  if (!metadata) return null;
+  try {
+    const b = JSON.parse(metadata)?.breakdown;
+    return b && typeof b.coursePriceNgn === "number" ? (b as { coursePriceNgn: number; platformFeeNgn: number; processingFeeNgn: number; platformFeeLabel: string }) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function ProfileClient({ currentUser, enrollments, submissions, payments = [] }: ProfileClientProps) {
   const [name, setName] = useState(currentUser.name || "");
   const [phone, setPhone] = useState(currentUser.phone || "");
@@ -46,6 +57,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
   const [selectedReceipt, setSelectedReceipt] = useState<any | null>(null);
 
   const completedEnrollments = enrollments.filter((e) => e.status === "COMPLETED");
+  const receiptBreakdown = selectedReceipt ? parseReceiptBreakdown(selectedReceipt.metadata) : null;
 
   const totalSubmissions = submissions.length;
   const gradedSubmissions = submissions.filter((s) => s.score !== null && s.score !== undefined);
@@ -685,9 +697,23 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                         Paystack ({selectedReceipt.channel || "card"})
                       </td>
                       <td className="p-3.5 text-right font-black text-sm text-black">
-                        {formatNgn(selectedReceipt.amount)}
+                        {formatNgn(receiptBreakdown ? receiptBreakdown.coursePriceNgn : selectedReceipt.amount)}
                       </td>
                     </tr>
+                    {receiptBreakdown && receiptBreakdown.platformFeeNgn > 0 && (
+                      <tr className="border-t border-neutral-100">
+                        <td className="p-3.5 text-neutral-700">{receiptBreakdown.platformFeeLabel}</td>
+                        <td />
+                        <td className="p-3.5 text-right font-semibold text-black">{formatNgn(receiptBreakdown.platformFeeNgn)}</td>
+                      </tr>
+                    )}
+                    {receiptBreakdown && receiptBreakdown.processingFeeNgn > 0 && (
+                      <tr className="border-t border-neutral-100">
+                        <td className="p-3.5 text-neutral-700">Payment processing (Paystack)</td>
+                        <td />
+                        <td className="p-3.5 text-right font-semibold text-black">{formatNgn(receiptBreakdown.processingFeeNgn)}</td>
+                      </tr>
+                    )}
                   </tbody>
                   <tfoot className="border-t-2 border-[#4A1A45] bg-[#F7F2F6] font-black">
                     <tr>

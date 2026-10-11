@@ -456,6 +456,31 @@ describe("MockCheckoutModal (course checkout)", () => {
   const paid = { id: "course_1", title: "Intro to Biology", price: 15000, description: "d" };
   const free = { ...paid, title: "Free Intro", price: 0 };
 
+  /** The breakdown the server would send for a course price, platform fee and processing fee. */
+  const breakdown = (price: number, platformFeeNgn = 0, processingFeeNgn = 0, label = "Platform service fee") => ({
+    coursePriceNgn: price,
+    platformFeeNgn,
+    processingFeeNgn,
+    totalNgn: price + platformFeeNgn + processingFeeNgn,
+    platformFeeLabel: label,
+  });
+
+  /** Fake backend for the checkout: answers the price quote and the payment start separately. */
+  function checkoutApi(opts: { quote?: ReturnType<typeof breakdown> | "fail" | "pending"; initialize?: FetchReply } = {}) {
+    const reply = (r: FetchReply) => ({ ok: r.ok ?? true, status: r.status ?? 200, json: async () => r.body }) as Response;
+    const fn = vi.fn(async (url: unknown, _init?: RequestInit) => {
+      if (String(url).startsWith("/api/payment/quote")) {
+        if (opts.quote === "fail") throw new Error("offline");
+        if (opts.quote === "pending") return new Promise<Response>(() => {});
+        return reply({ body: { success: true, breakdown: opts.quote ?? breakdown(15000) } });
+      }
+      return reply(opts.initialize ?? { body: { success: true } });
+    });
+    vi.stubGlobal("fetch", fn);
+    const initializeCalls = () => fn.mock.calls.filter((c) => String(c[0]) === "/api/payment/initialize");
+    return { fn, initializeCalls };
+  }
+
   const modal = (over: Partial<React.ComponentProps<typeof MockCheckoutModal>> = {}) => {
     const props = { isOpen: true, onClose: vi.fn(), onEnrollSuccess: vi.fn(), currentUser: student, course: paid, activeEnrollment: null, ...over };
     render(<MockCheckoutModal {...props} />);
@@ -463,67 +488,143 @@ describe("MockCheckoutModal (course checkout)", () => {
   };
 
   it("renders nothing while closed", () => {
+    checkoutApi();
     const { container } = render(
       <MockCheckoutModal isOpen={false} onClose={vi.fn()} onEnrollSuccess={vi.fn()} currentUser={student} course={paid} activeEnrollment={null} />
     );
     expect(container.innerHTML).toBe("");
   });
 
-  it("shows the price and who is paying", () => {
+  it("shows the price and who is paying", async () => {
+    checkoutApi();
     modal();
-    expect(screen.getByText(/Pay .*15,000 & Enroll/)).toBeTruthy();
+    expect(await screen.findByText(/Pay .*15,000 & Enroll/)).toBeTruthy();
     expect(screen.getByText(/Stu Dent \(stu@test.com\)/)).toBeTruthy();
     expect(screen.getByText("Secure payment by Paystack")).toBeTruthy();
   });
 
-  it("starts the payment and redirects to Paystack's checkout page", async () => {
-    const fetchFn = mockFetch({ body: { success: true, authorizationUrl: "https://checkout.paystack.com/abc" } });
-    const loc = trapNavigation();
-    modal();
-    fireEvent.click(screen.getByRole("button", { name: /Pay .*15,000/ }));
-    await waitFor(() => expect(loc.href).toBe("https://checkout.paystack.com/abc"));
-    expect(fetchFn.mock.calls[0][0]).toBe("/api/payment/initialize");
-    expect(lastBody(fetchFn)).toEqual({ courseId: "course_1" });
+  describe("fee breakdown", () => {
+    it("asks the server for the exact price of THIS course", async () => {
+      const api = checkoutApi();
+      modal();
+      await screen.findByText(/Pay .*15,000/);
+      expect(String(api.fn.mock.calls[0][0])).toBe("/api/payment/quote?courseId=course_1");
+    });
+
+    it("shows course fee, your service fee, Paystack's processing charge and the total (N20,000 course)", async () => {
+      checkoutApi({ quote: breakdown(20000, 400, 413) });
+      modal({ course: { ...paid, price: 20000 } });
+      const box = await screen.findByTestId("price-breakdown");
+      await waitFor(() => expect(within(box).getByText("Total to pay")).toBeTruthy());
+
+      const text = box.textContent!;
+      expect(text).toMatch(/Course fee.*20,000/);
+      expect(text).toMatch(/Platform service fee.*400/);
+      expect(text).toMatch(/Payment processing \(Paystack\).*413/);
+      expect(text).toMatch(/Total to pay.*20,813/);
+      expect(screen.getByRole("button", { name: /Pay .*20,813 & Enroll/ })).toBeTruthy();
+    });
+
+    it("uses the wording the server sends for the fee", async () => {
+      checkoutApi({ quote: breakdown(20000, 400, 413, "Learning platform fee") });
+      modal({ course: { ...paid, price: 20000 } });
+      expect(await screen.findByText("Learning platform fee")).toBeTruthy();
+    });
+
+    it("with no fees configured shows just the total, with no fee lines at all", async () => {
+      checkoutApi({ quote: breakdown(15000) });
+      modal();
+      const box = await screen.findByTestId("price-breakdown");
+      await waitFor(() => expect(box.textContent).toMatch(/Total to pay.*15,000/));
+      expect(box.textContent).not.toMatch(/Platform service fee|Payment processing/);
+    });
+
+    it("hides the processing line when the student is not covering it", async () => {
+      checkoutApi({ quote: breakdown(20000, 400, 0) });
+      modal({ course: { ...paid, price: 20000 } });
+      const box = await screen.findByTestId("price-breakdown");
+      await waitFor(() => expect(box.textContent).toMatch(/Platform service fee.*400/));
+      expect(box.textContent).not.toMatch(/Payment processing/);
+      expect(box.textContent).toMatch(/Total to pay.*20,400/);
+    });
+
+    it("cannot be paid until the total is known (no paying a price that is still loading)", () => {
+      checkoutApi({ quote: "pending" });
+      modal();
+      const button = screen.getByRole("button", { name: /Calculating total/ }) as HTMLButtonElement;
+      expect(button.disabled).toBe(true);
+      expect(screen.getByText("Calculating your total...")).toBeTruthy();
+    });
+
+    it("if the quote cannot be loaded, says so and still lets the student continue to Paystack", async () => {
+      const api = checkoutApi({ quote: "fail", initialize: { body: { success: true, authorizationUrl: "https://checkout.paystack.com/abc" } } });
+      const loc = trapNavigation();
+      modal();
+      expect(await screen.findByText(/could not load the price breakdown/)).toBeTruthy();
+      fireEvent.click(screen.getByRole("button", { name: /Continue to payment/ }));
+      await waitFor(() => expect(loc.href).toBe("https://checkout.paystack.com/abc"));
+      expect(api.initializeCalls()).toHaveLength(1);
+    });
   });
 
-  it("shows the server's reason when payment cannot start (for example an unverified email)", async () => {
-    mockFetch({ ok: false, status: 403, body: { error: "Please verify your email address before enrolling." } });
-    modal();
-    fireEvent.click(screen.getByRole("button", { name: /Pay .*15,000/ }));
-    expect(await screen.findByText(/verify your email address/)).toBeTruthy();
-    expect((screen.getByRole("button", { name: /Pay .*15,000/ }) as HTMLButtonElement).disabled).toBe(false); // can retry
-  });
+  describe("paying", () => {
+    it("starts the payment and redirects to Paystack's checkout page", async () => {
+      const api = checkoutApi({ initialize: { body: { success: true, authorizationUrl: "https://checkout.paystack.com/abc" } } });
+      const loc = trapNavigation();
+      modal();
+      fireEvent.click(await screen.findByRole("button", { name: /Pay .*15,000/ }));
+      await waitFor(() => expect(loc.href).toBe("https://checkout.paystack.com/abc"));
+      expect(api.initializeCalls()).toHaveLength(1);
+    });
 
-  it("sends a signed-out visitor to log in instead of calling the payment API", () => {
-    const fetchFn = mockFetch({ body: {} });
-    const loc = trapNavigation();
-    modal({ currentUser: null });
-    const action = screen.queryByRole("button", { name: /Pay .*15,000/ });
-    if (action) {
-      fireEvent.click(action);
-      expect(loc.href).toBe("/login");
-    }
-    expect(fetchFn).not.toHaveBeenCalled();
-  });
+    it("sends only the course id: the browser never tells the server what to charge", async () => {
+      const api = checkoutApi({ quote: breakdown(20000, 400, 413), initialize: { body: { success: true, authorizationUrl: "https://checkout.paystack.com/abc" } } });
+      trapNavigation();
+      modal({ course: { ...paid, price: 20000 } });
+      fireEvent.click(await screen.findByRole("button", { name: /Pay .*20,813/ }));
+      await waitFor(() => expect(api.initializeCalls()).toHaveLength(1));
+      expect(JSON.parse((api.initializeCalls()[0][1] as RequestInit).body as string)).toEqual({ courseId: "course_1" });
+    });
 
-  it("explains the one-course rule instead of offering to pay when another course is active", () => {
-    modal({ activeEnrollment: { id: "e1", courseId: "other", courseTitle: "Chemistry 101" } });
-    expect(screen.getByText("Chemistry 101")).toBeTruthy();
-    expect(screen.getByText(/only one active course/)).toBeTruthy();
-    expect(screen.queryByRole("button", { name: /Pay/ })).toBeNull();
-    expect(screen.getByText(/Go to Active Course/).closest("a")!.getAttribute("href")).toBe("/student/courses/other");
+    it("shows the server's reason when payment cannot start (for example an unverified email)", async () => {
+      checkoutApi({ initialize: { ok: false, status: 403, body: { error: "Please verify your email address before enrolling." } } });
+      modal();
+      fireEvent.click(await screen.findByRole("button", { name: /Pay .*15,000/ }));
+      expect(await screen.findByText(/verify your email address/)).toBeTruthy();
+      expect((screen.getByRole("button", { name: /Pay .*15,000/ }) as HTMLButtonElement).disabled).toBe(false); // can retry
+    });
+
+    it("sends a signed-out visitor to sign in instead of calling the payment API", async () => {
+      const api = checkoutApi();
+      modal({ currentUser: null });
+      expect(screen.getByText("Account Required")).toBeTruthy();
+      expect(screen.queryByRole("button", { name: /Pay/ })).toBeNull();
+      expect(api.initializeCalls()).toHaveLength(0);
+    });
+
+    it("explains the one-course rule instead of offering to pay when another course is active", () => {
+      checkoutApi();
+      modal({ activeEnrollment: { id: "e1", courseId: "other", courseTitle: "Chemistry 101" } });
+      expect(screen.getByText("Chemistry 101")).toBeTruthy();
+      expect(screen.getByText(/only one active course/)).toBeTruthy();
+      expect(screen.queryByRole("button", { name: /Pay/ })).toBeNull();
+      expect(screen.getByText(/Go to Active Course/).closest("a")!.getAttribute("href")).toBe("/student/courses/other");
+    });
   });
 
   describe("free course", () => {
-    it("offers 'Enroll for free', not a price", () => {
+    it("offers 'Enroll for free', shows no price breakdown and never asks for a quote", () => {
+      const api = checkoutApi();
       modal({ course: free });
       expect(screen.getByRole("button", { name: /Enroll for free/ })).toBeTruthy();
       expect(screen.queryByText(/Pay .*0 & Enroll/)).toBeNull();
+      expect(screen.queryByTestId("price-breakdown")).toBeNull();
+      expect(api.fn.mock.calls.filter((c) => String(c[0]).startsWith("/api/payment/quote"))).toHaveLength(0);
     });
 
     it("enrolls immediately without any Paystack redirect and opens the course", async () => {
       vi.useFakeTimers({ shouldAdvanceTime: true });
-      mockFetch({ body: { success: true, free: true, courseId: "course_1" } });
+      checkoutApi({ initialize: { body: { success: true, free: true, courseId: "course_1" } } });
       const loc = trapNavigation();
       const props = modal({ course: free });
 
@@ -538,7 +639,7 @@ describe("MockCheckoutModal (course checkout)", () => {
     });
 
     it("does not claim a payment was made", async () => {
-      mockFetch({ body: { success: true, free: true } });
+      checkoutApi({ initialize: { body: { success: true, free: true } } });
       modal({ course: free });
       fireEvent.click(screen.getByRole("button", { name: /Enroll for free/ }));
       expect(await screen.findByText(/You are enrolled/)).toBeTruthy();

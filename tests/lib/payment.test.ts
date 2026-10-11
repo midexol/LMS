@@ -115,6 +115,53 @@ describe("initializeCoursePayment", () => {
     });
   });
 
+  describe("with your fees switched on (N400 platform fee, student covers Paystack)", () => {
+    const course20k = { id: "course_1", title: "Intro to Chemistry", price: 20000 };
+    const feesOn = () => {
+      vi.stubEnv("PLATFORM_FEE_NGN", "400");
+      vi.stubEnv("PASS_PAYSTACK_FEE", "true");
+    };
+
+    it("charges Paystack the full total in kobo (N20,813 for a N20,000 course)", async () => {
+      feesOn();
+      live();
+      const fetchMock = vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ status: true, data: { authorization_url: "https://checkout.paystack.com/abc", access_code: "ac" } }), { status: 200 })
+      );
+      vi.stubGlobal("fetch", fetchMock);
+
+      const result = await initializeCoursePayment({ ...params, course: course20k });
+
+      expect(JSON.parse((fetchMock.mock.calls[0][1] as any).body).amount).toBe(2_081_300);
+      expect(result.amountNgn).toBe(20813);
+      expect(result.breakdown).toMatchObject({ coursePriceNgn: 20000, platformFeeNgn: 400, processingFeeNgn: 413, totalNgn: 20813 });
+    });
+
+    it("saves the full amount and the breakdown with the payment, for receipts and for verification", async () => {
+      feesOn();
+      vi.stubEnv("NODE_ENV", "development");
+      await initializeCoursePayment({ ...params, course: course20k });
+      const data = prismaMock.payment.create.mock.calls[0][0].data;
+      expect(data.amount).toBe(20813);
+      expect(JSON.parse(data.metadata).breakdown).toMatchObject({ coursePriceNgn: 20000, platformFeeNgn: 400, processingFeeNgn: 413 });
+    });
+
+    it("free courses are never charged fees", async () => {
+      feesOn();
+      vi.stubEnv("NODE_ENV", "development");
+      const result = await initializeCoursePayment({ ...params, course: { ...course20k, price: 0 } });
+      expect(result.amountNgn).toBe(0);
+      expect(prismaMock.payment.create.mock.calls[0][0].data.amount).toBe(0);
+    });
+  });
+
+  it("with no fees configured behaves exactly as before: charges the course price", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    const result = await initializeCoursePayment(params);
+    expect(result.amountNgn).toBe(5000);
+    expect(result.breakdown).toMatchObject({ platformFeeNgn: 0, processingFeeNgn: 0, totalNgn: 5000 });
+  });
+
   it("calls Paystack with the amount in kobo and a callback URL on the configured domain", async () => {
     live();
     const fetchMock = vi.fn().mockResolvedValue(
@@ -213,6 +260,35 @@ describe("verifyAndProcessPayment", () => {
     expect(prismaMock.payment.update.mock.calls[0][0]).toMatchObject({ data: { status: "FAILED" } });
     expect(prismaMock.enrollment.upsert).not.toHaveBeenCalled();
     expect(mailMock.sendEnrollmentEmail).not.toHaveBeenCalled();
+  });
+
+  describe("when fees are included in the amount owed", () => {
+    // the payment was started for N20,813 (N20,000 course + N400 fee + N413 Paystack)
+    beforeEach(() => {
+      prismaMock.payment.findUnique.mockResolvedValue({ ...basePayment, amount: 20813 });
+    });
+
+    it("accepts the full total", async () => {
+      live();
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(paystackOk({ amount: 2_081_300 })));
+      expect((await verifyAndProcessPayment("REF1")).success).toBe(true);
+      expect(prismaMock.enrollment.upsert).toHaveBeenCalled();
+    });
+
+    it("REJECTS a student who somehow paid only the bare course price (your fee would be missing)", async () => {
+      live();
+      vi.spyOn(console, "error").mockImplementation(() => {});
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(paystackOk({ amount: 2_000_000 })));
+      await expect(verifyAndProcessPayment("REF1")).rejects.toThrow(/does not match/);
+      expect(prismaMock.enrollment.upsert).not.toHaveBeenCalled();
+    });
+
+    it("is not affected by changing the fee settings after the payment was started", async () => {
+      live();
+      vi.stubEnv("PLATFORM_FEE_NGN", "9999"); // fee raised while the student was on Paystack's page
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(paystackOk({ amount: 2_081_300 })));
+      expect((await verifyAndProcessPayment("REF1")).success).toBe(true);
+    });
   });
 
   it("REJECTS a payment in the wrong currency", async () => {

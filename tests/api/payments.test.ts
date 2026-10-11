@@ -48,6 +48,7 @@ describe("POST /api/payment/initialize", () => {
       success: true,
       reference: "PP-CRS-ABC-1",
       amountNgn: 15000,
+      breakdown: { coursePriceNgn: 15000, platformFeeNgn: 0, processingFeeNgn: 0, totalNgn: 15000, platformFeeLabel: "Platform service fee" },
       authorizationUrl: "https://checkout.paystack.com/xyz",
       isSimulation: false,
     });

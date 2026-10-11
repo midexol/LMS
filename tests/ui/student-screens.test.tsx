@@ -302,6 +302,40 @@ describe("ProfileClient (student profile)", () => {
       }
     });
 
+    describe("fee breakdown on the receipt", () => {
+      const withFees = () => {
+        const breakdown = { coursePriceNgn: 20000, platformFeeNgn: 400, processingFeeNgn: 413, totalNgn: 20813, platformFeeLabel: "Platform service fee" };
+        return [
+          { id: "p9", reference: "PP-FEES", amount: 20813, status: "SUCCESS", channel: "card", paidAt: "2026-06-01T10:00:00Z", createdAt: "2026-06-01T09:59:00Z", paystackRef: "55", metadata: JSON.stringify({ breakdown }), course: { title: "Intro to Programming" } },
+        ];
+      };
+
+      it("itemises course fee, service fee, processing and the total the student actually paid", () => {
+        view({ payments: withFees() });
+        fireEvent.click(screen.getByText(/View Receipt/));
+        const receipt = document.body.textContent!;
+        expect(receipt).toMatch(/Intro to Programming.*20,000/);
+        expect(receipt).toMatch(/Platform service fee.*400/);
+        expect(receipt).toMatch(/Payment processing \(Paystack\).*413/);
+        expect(receipt).toMatch(/Total Remittance \(NGN\):.*20,813/);
+      });
+
+      it("older receipts without a breakdown still show a single line with the amount paid", () => {
+        view();
+        fireEvent.click(screen.getAllByText(/View Receipt/)[0]);
+        expect(document.body.textContent).not.toMatch(/Platform service fee|Payment processing/);
+        expect(document.body.textContent).toMatch(/Total Remittance \(NGN\):.*15,000/);
+      });
+
+      it("copes with damaged breakdown data", () => {
+        const broken = withFees();
+        broken[0].metadata = "{not json";
+        view({ payments: broken });
+        fireEvent.click(screen.getByText(/View Receipt/));
+        expect(document.body.textContent).toMatch(/Total Remittance \(NGN\):.*20,813/);
+      });
+    });
+
     it("can print the receipt", () => {
       const print = vi.fn();
       vi.stubGlobal("print", print);

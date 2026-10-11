@@ -34,6 +34,7 @@ const PUBLIC_ROUTES: Record<string, { why: string; protection: RegExp }> = {
   "auth/verify-email/resend": { why: "requesting a new verification email", protection: /checkRateLimit/ },
   "auth/privy": { why: "social sign-in, proven by a Privy-verified token", protection: /verifyAuthToken/ },
   "contact": { why: "public contact form", protection: /checkRateLimit/ },
+  "payment/quote": { why: "public read-only price breakdown for the checkout screen", protection: /checkRateLimit/ },
   "payment/verify": { why: "Paystack redirects the browser here; confirmation is done server-to-server", protection: /checkRateLimit/ },
   "payment/webhook": { why: "called by Paystack, authenticated by HMAC signature", protection: /verifyPaystackWebhookSignature/ },
 };
@@ -92,7 +93,7 @@ describe("error handling", () => {
 });
 
 describe("sensitive actions are rate limited", () => {
-  const mustLimit = ["auth/login", "auth/register", "auth/forgot-password", "auth/reset-password", "auth/verify-email/resend", "contact", "grade", "tutor/assistant", "tutor/upload", "student/discussion", "student/profile", "payment/initialize", "payment/verify"];
+  const mustLimit = ["auth/login", "auth/register", "auth/forgot-password", "auth/reset-password", "auth/verify-email/resend", "contact", "grade", "tutor/assistant", "tutor/upload", "student/discussion", "student/profile", "payment/initialize", "payment/quote", "payment/verify"];
   it.each(mustLimit)("%s calls checkRateLimit", (name) => {
     expect(routes.find((r) => r.name === name)!.source).toMatch(/checkRateLimit\(/);
   });

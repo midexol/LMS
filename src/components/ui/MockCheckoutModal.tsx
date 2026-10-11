@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FiX,
   FiCreditCard,
@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatNgn } from "@/lib/utils";
+import type { CheckoutBreakdown } from "@/lib/fees";
 
 interface MockCheckoutModalProps {
   isOpen: boolean;
@@ -51,6 +52,29 @@ export function MockCheckoutModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [statusText, setStatusText] = useState<string>("Pay with Paystack");
+  const [quote, setQuote] = useState<CheckoutBreakdown | null>(null);
+  const [quoteFailed, setQuoteFailed] = useState(false);
+
+  // Ask the server for the exact breakdown (course price, fees, total) so the student sees what will be charged
+  useEffect(() => {
+    if (!isOpen || course.price <= 0) return;
+    let cancelled = false;
+    setQuote(null);
+    setQuoteFailed(false);
+    fetch(`/api/payment/quote?courseId=${encodeURIComponent(course.id)}`)
+      .then(async (res) => ({ ok: res.ok, data: await res.json() }))
+      .then(({ ok, data }) => {
+        if (cancelled) return;
+        if (ok && data.breakdown) setQuote(data.breakdown);
+        else setQuoteFailed(true);
+      })
+      .catch(() => {
+        if (!cancelled) setQuoteFailed(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, course.id, course.price]);
 
   if (!isOpen) return null;
 
@@ -250,6 +274,46 @@ export function MockCheckoutModal({
               </div>
             </div>
 
+            {/* Price breakdown: shown whenever fees are added to the course price */}
+            {course.price > 0 && (
+              <div className="p-3.5 rounded-xl bg-white border border-neutral-200 text-xs space-y-1.5" data-testid="price-breakdown">
+                {quote ? (
+                  quote.platformFeeNgn > 0 || quote.processingFeeNgn > 0 ? (
+                    <>
+                      <div className="flex justify-between text-neutral-600">
+                        <span>Course fee</span>
+                        <span className="font-semibold text-black">{formatNgn(quote.coursePriceNgn)}</span>
+                      </div>
+                      {quote.platformFeeNgn > 0 && (
+                        <div className="flex justify-between text-neutral-600">
+                          <span>{quote.platformFeeLabel}</span>
+                          <span className="font-semibold text-black">{formatNgn(quote.platformFeeNgn)}</span>
+                        </div>
+                      )}
+                      {quote.processingFeeNgn > 0 && (
+                        <div className="flex justify-between text-neutral-600">
+                          <span>Payment processing (Paystack)</span>
+                          <span className="font-semibold text-black">{formatNgn(quote.processingFeeNgn)}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between border-t border-neutral-200 pt-2 mt-1 text-sm font-black text-black">
+                        <span>Total to pay</span>
+                        <span>{formatNgn(quote.totalNgn)}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-neutral-600">
+                      Total to pay: <strong className="text-black">{formatNgn(quote.totalNgn)}</strong>
+                    </p>
+                  )
+                ) : quoteFailed ? (
+                  <p className="text-neutral-500">We could not load the price breakdown. The exact amount is shown on the payment page before you pay.</p>
+                ) : (
+                  <p className="text-neutral-500">Calculating your total...</p>
+                )}
+              </div>
+            )}
+
             {/* Paystack Security Notice */}
             <div className="flex items-center gap-2 px-2 text-[11px] text-neutral-500">
               <FiShield className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
@@ -273,7 +337,7 @@ export function MockCheckoutModal({
             ) : (
               <button
                 onClick={handlePaystackCheckout}
-                disabled={loading}
+                disabled={loading || (course.price > 0 && !quote && !quoteFailed)}
                 className="w-full py-3.5 px-6 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
@@ -284,7 +348,7 @@ export function MockCheckoutModal({
                 ) : (
                   <>
                     <FiLock className="w-4 h-4" />
-                    {course.price <= 0 ? "Enroll for free" : <>Pay {formattedNgn} &amp; Enroll</>}
+                    {course.price <= 0 ? "Enroll for free" : quote ? <>Pay {formatNgn(quote.totalNgn)} &amp; Enroll</> : quoteFailed ? "Continue to payment" : "Calculating total..."}
                     <FiExternalLink className="w-3.5 h-3.5 ml-1 opacity-70" />
                   </>
                 )}

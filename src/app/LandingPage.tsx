@@ -423,7 +423,7 @@ export function LandingPage({
             },
             {
               q: "How do I pay?",
-              a: "Prices are in Nigerian Naira. You pay through Paystack, and your course opens as soon as the payment is confirmed. We never see or store your card details.",
+              a: "Prices are in Nigerian Naira. You pay through Paystack, and your course opens as soon as the payment is confirmed. The total at checkout can include a small service fee and payment-processing charges, and you see the full breakdown before you pay. We never see or store your card details.",
             },
             {
               q: "How are my assignments graded?",
