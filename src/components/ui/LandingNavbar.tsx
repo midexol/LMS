@@ -38,19 +38,19 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
               href="/courses"
               className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
             >
-              Course Catalog
+              Courses
             </Link>
             <a
               href="#how-it-works"
               className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
             >
-              Academic Model
+              How it works
             </a>
             <a
-              href="#campus-life"
+              href="#faq"
               className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
             >
-              Curriculum Rigor
+              FAQ
             </a>
           </nav>
         </div>
@@ -109,21 +109,21 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
           >
-            Course Catalog
+            Courses
           </Link>
           <a
             href="#how-it-works"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
           >
-            Academic Model
+            How it works
           </a>
           <a
-            href="#campus-life"
+            href="#faq"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
           >
-            Curriculum Rigor
+            FAQ
           </a>
           <div className="pt-3 border-t border-neutral-100 flex flex-col gap-2">
             {currentUser ? (
