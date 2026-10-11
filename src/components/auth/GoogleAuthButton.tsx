@@ -95,9 +95,20 @@ function GoogleAuthButtonInner({ clientId }: { clientId: string }) {
   );
 }
 
-/** "Continue with Google". Hidden entirely until NEXT_PUBLIC_GOOGLE_CLIENT_ID is set, so there is never a button that cannot work. */
-export function GoogleAuthButton() {
+/** "Continue with Google". Hidden entirely (with its divider) until NEXT_PUBLIC_GOOGLE_CLIENT_ID is set, so there is never a button that cannot work. */
+export function GoogleAuthButton({ dividerLabel }: { dividerLabel?: string }) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   if (!clientId) return null;
-  return <GoogleAuthButtonInner clientId={clientId} />;
+  return (
+    <>
+      <GoogleAuthButtonInner clientId={clientId} />
+      {dividerLabel && (
+        <div className="flex items-center gap-3" role="separator">
+          <div className="border-t border-neutral-200 flex-1" />
+          <span className="text-xs text-neutral-400">{dividerLabel}</span>
+          <div className="border-t border-neutral-200 flex-1" />
+        </div>
+      )}
+    </>
+  );
 }

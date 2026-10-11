@@ -14,6 +14,7 @@ vi.mock("@/components/auth/GoogleAuthButton", () => ({ GoogleAuthButton: () => <
 import { SignupsChart } from "@/components/admin/SignupsChart";
 import LoginPage from "@/app/login/page";
 import SignupPage from "@/app/signup/page";
+import { ACADEMIC_STRUCTURE } from "@/lib/academicStructure";
 import { LandingPage } from "@/app/LandingPage";
 import { MockCheckoutModal } from "@/components/ui/MockCheckoutModal";
 
@@ -188,12 +189,13 @@ describe("Login page", () => {
 /* ───────────────────────────── signup page ───────────────────────────── */
 describe("Signup page", () => {
   const fill = (over: Record<string, string> = {}) => {
-    const v = { name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "secret12", confirm: "secret12", ...over };
+    const v = { name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "secret12", faculty: ACADEMIC_STRUCTURE[0].name, department: ACADEMIC_STRUCTURE[0].departments[1], ...over };
     fireEvent.change(screen.getByPlaceholderText("e.g. Alex Rivera"), { target: { value: v.name } });
     fireEvent.change(screen.getByPlaceholderText("you@example.com"), { target: { value: v.email } });
     fireEvent.change(screen.getByPlaceholderText("e.g. 0803 123 4567"), { target: { value: v.phone } });
     fireEvent.change(screen.getByPlaceholderText("Min 6 characters"), { target: { value: v.password } });
-    fireEvent.change(screen.getByPlaceholderText("Re-enter password"), { target: { value: v.confirm } });
+    if (v.faculty) fireEvent.change(screen.getByLabelText("Faculty / School"), { target: { value: v.faculty } });
+    if (v.department) fireEvent.change(screen.getByLabelText("Department"), { target: { value: v.department } });
   };
   const submit = () => fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
 
@@ -205,21 +207,38 @@ describe("Signup page", () => {
     expect(screen.getByText("Privacy Policy").getAttribute("href")).toBe("/privacy");
   });
 
-  it("refuses mismatched passwords without calling the server", () => {
+  it("starts with no faculty chosen, and the department list is locked until one is", () => {
+    render(<SignupPage />);
+    expect((screen.getByLabelText("Faculty / School") as HTMLSelectElement).value).toBe("");
+    expect((screen.getByLabelText("Department") as HTMLSelectElement).disabled).toBe(true);
+    fireEvent.change(screen.getByLabelText("Faculty / School"), { target: { value: ACADEMIC_STRUCTURE[0].name } });
+    expect((screen.getByLabelText("Department") as HTMLSelectElement).disabled).toBe(false);
+  });
+
+  it("changing the faculty clears a department that no longer belongs", () => {
+    render(<SignupPage />);
+    fill();
+    expect((screen.getByLabelText("Department") as HTMLSelectElement).value).toBe(ACADEMIC_STRUCTURE[0].departments[1]);
+    fireEvent.change(screen.getByLabelText("Faculty / School"), { target: { value: ACADEMIC_STRUCTURE[1].name } });
+    expect((screen.getByLabelText("Department") as HTMLSelectElement).value).toBe("");
+  });
+
+  it("keeps Create Account disabled until a faculty and department are chosen", () => {
     const fetchFn = mockFetch({ body: {} });
     render(<SignupPage />);
-    fill({ confirm: "different1" });
-    submit();
-    expect(screen.getByText(/Passwords do not match/)).toBeTruthy();
+    fill({ faculty: "", department: "" });
+    const button = screen.getByRole("button", { name: "Create Account" }) as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
+    fireEvent.click(button);
     expect(fetchFn).not.toHaveBeenCalled();
   });
 
   it("refuses passwords shorter than 6 characters without calling the server", () => {
     const fetchFn = mockFetch({ body: {} });
     render(<SignupPage />);
-    fill({ password: "12345", confirm: "12345" });
-    submit();
+    fill({ password: "12345" });
     expect(screen.getByText(/at least 6 characters/)).toBeTruthy();
+    submit();
     expect(fetchFn).not.toHaveBeenCalled();
   });
 
@@ -231,7 +250,7 @@ describe("Signup page", () => {
     await waitFor(() => expect(fetchFn).toHaveBeenCalled());
     expect(fetchFn.mock.calls[0][0]).toBe("/api/auth/register");
     const body = lastBody(fetchFn);
-    expect(body).toMatchObject({ name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "secret12" });
+    expect(body).toMatchObject({ name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "secret12", faculty: ACADEMIC_STRUCTURE[0].name, department: ACADEMIC_STRUCTURE[0].departments[1] });
     expect(body).not.toHaveProperty("role");
   });
 
@@ -243,7 +262,7 @@ describe("Signup page", () => {
     expect(await screen.findByText("Check Your Inbox")).toBeTruthy();
     expect(screen.getByText("ada@test.com")).toBeTruthy();
     expect(screen.getByText(/must verify your email before you can enroll/)).toBeTruthy();
-    expect(screen.getByText(/Browse Courses/).closest("a")!.getAttribute("href")).toBe("/my-courses");
+    expect(screen.getByText(/Browse Courses/).closest("a")!.getAttribute("href")).toBe("/courses");
   });
 
   it("shows the server's error (for example a duplicate email)", async () => {

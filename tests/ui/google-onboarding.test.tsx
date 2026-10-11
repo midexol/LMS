@@ -57,9 +57,20 @@ describe("GoogleAuthButton", () => {
     expect(container.innerHTML).toBe("");
   });
 
+  it("hides its 'or' divider too, so the forms never start with a dangling separator", () => {
+    const { container } = render(<GoogleAuthButton dividerLabel="or use your email" />);
+    expect(container.innerHTML).toBe("");
+  });
+
   describe("when configured", () => {
     beforeEach(() => {
       vi.stubEnv("NEXT_PUBLIC_GOOGLE_CLIENT_ID", "123-abc.apps.googleusercontent.com");
+    });
+
+    it("shows the divider label under the button when one is given", () => {
+      render(<GoogleAuthButton dividerLabel="or use your email" />);
+      expect(screen.getByRole("separator")).toBeTruthy();
+      expect(screen.getByText("or use your email")).toBeTruthy();
     });
 
     it("sets up Google's button with our client id", async () => {
