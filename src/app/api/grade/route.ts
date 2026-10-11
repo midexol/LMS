@@ -5,6 +5,9 @@ import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateL
 import { evaluateSubmissionAI } from "@/lib/ai";
 import { sendGradeEmail } from "@/lib/mail";
 
+// AI calls can take longer than the default serverless limit
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();

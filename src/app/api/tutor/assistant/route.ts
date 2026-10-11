@@ -3,6 +3,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { generateCourseOutlineAI, generateAssignmentRubricAI } from "@/lib/ai/assistant";
 
+// AI calls can take longer than the default serverless limit
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
