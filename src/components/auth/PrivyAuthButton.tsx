@@ -9,7 +9,7 @@ interface PrivyAuthButtonProps {
   className?: string;
 }
 
-export function PrivyAuthButton({
+function PrivyAuthButtonInner({
   label = "Continue with Google or Web3 (Privy)",
   className,
 }: PrivyAuthButtonProps) {
@@ -81,4 +81,10 @@ export function PrivyAuthButton({
       )}
     </div>
   );
+}
+
+/** Shows the social sign-in button only when Privy is configured (otherwise there is no provider to talk to). */
+export function PrivyAuthButton(props: PrivyAuthButtonProps) {
+  if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID) return null;
+  return <PrivyAuthButtonInner {...props} />;
 }

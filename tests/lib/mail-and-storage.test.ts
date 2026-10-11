@@ -68,6 +68,17 @@ describe("email sending", () => {
     expect(log).toHaveBeenCalled();
   });
 
+  it("never invents a sender address: with no SMTP_FROM it sends from the SMTP login itself", async () => {
+    vi.stubEnv("SMTP_HOST", "smtp.real.test");
+    vi.stubEnv("SMTP_USER", "mailer@real.test");
+    vi.stubEnv("SMTP_PASS", "secret");
+    vi.resetModules();
+    const mail = await vi.importActual<typeof import("@/lib/mail")>("@/lib/mail");
+    await mail.sendEmailNotification("a@test.com", "S", "<p>x</p>");
+    expect(smtp.sent[0].from).toBe("mailer@real.test");
+    expect(JSON.stringify(smtp.sent[0])).not.toMatch(/lms-platform\.com/);
+  });
+
   it("ignores placeholder credentials like smtp.example.com", async () => {
     vi.stubEnv("SMTP_HOST", "smtp.example.com");
     vi.stubEnv("SMTP_USER", "user@example.com");

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage, LegalSection } from "@/components/legal/LegalPage";
+import { PASS_MARK_PERCENT } from "@/lib/grading";
 
 export const metadata: Metadata = {
   title: "Terms of Service - Academia LMS",
@@ -60,7 +61,7 @@ const sections: LegalSection[] = [
     bullets: [
       "Tutors and administrators can review and override a score. Where a score is overridden, the overridden score is the one that counts.",
       "You may resubmit an assignment. A new submission replaces your previous one for that assignment.",
-      "To complete a course you must submit every assignment and reach an average score of at least 70% across all assignments.",
+      `To complete a course you must submit every assignment and reach an average score of at least ${PASS_MARK_PERCENT}% across all assignments.`,
       "When you complete a course you receive a completion certificate reference. A certificate confirms that you completed a course on Academia. It is not a university degree or a professional licence unless the course page clearly says so.",
     ],
   },

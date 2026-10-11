@@ -82,6 +82,19 @@ describe("Admin dashboard: overview and navigation", () => {
     expect(screen.getByText("Total Accounts")).toBeTruthy();
   });
 
+  it("shows real subject tracks from the courses it has", () => {
+    dashboard();
+    expect(screen.getAllByText("Science").length).toBeGreaterThan(0);
+  });
+
+  it("with no courses or enrollments says so instead of inventing example tracks", () => {
+    const { container } = dashboard({ initialCourses: [], initialEnrollments: [] });
+    expect(screen.getByText(/No courses or enrollments yet/)).toBeTruthy();
+    for (const fake of ["Software Engineering", "Design & UX", "Data Science & AI"]) {
+      expect(container.textContent, fake).not.toContain(fake);
+    }
+  });
+
   it("honours the requested starting tab", () => {
     dashboard({ initialTab: "messages" });
     expect(screen.getByText("Visitor One")).toBeTruthy();
@@ -308,6 +321,19 @@ describe("Admin dashboard: enrollments and grades", () => {
     expect(await screen.findByText(/revoked and unlocked/)).toBeTruthy();
     expect(call(fetchFn)).toMatchObject({ url: "/api/admin/enrollments?id=e1", method: "DELETE" });
     expect(screen.queryByText("Ada Student")).toBeNull();
+  });
+
+  it("judges pass or fail by percentage of the assignment's own maximum, not the raw score", () => {
+    const small = submissions();
+    small[0].assignment.maxScore = 10;
+    small[0].score = 8; // 80% of 10: a pass, even though 8 < 70
+    dashboard({ initialTab: "submissions", initialSubmissions: small as any });
+    fireEvent.click(screen.getByRole("button", { name: /Override/ }));
+    const readout = document.querySelector("span.text-xl.font-bold.w-12") as HTMLElement;
+    expect(readout.textContent!.trim()).toBe("8");
+    expect(readout.className).toContain("text-black"); // passing style
+    fireEvent.change(document.querySelector('input[type="range"]')!, { target: { value: "6" } }); // 60%: not a pass
+    expect(readout.className).toContain("text-neutral-500");
   });
 
   it("overrides a grade with a score and a reason", async () => {

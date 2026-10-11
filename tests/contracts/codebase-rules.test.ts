@@ -168,6 +168,72 @@ describe("code ↔ database schema contract", () => {
   });
 });
 
+describe("no hardcoded or invented data", () => {
+  const SRC_DIR = path.join(ROOT, "src");
+  const stripComments = (code: string) => code.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
+  const toRelative = (file: string) => path.relative(ROOT, file).split(path.sep).join("/");
+  const files = walk(SRC_DIR).filter((f) => /\.(ts|tsx)$/.test(f));
+  const offendersIn = (sources: Array<{ rel: string; code: string }>, pattern: RegExp, skip: (rel: string) => boolean = () => false) =>
+    sources.filter((s) => !skip(s.rel)).filter((s) => pattern.test(stripComments(s.code))).map((s) => s.rel);
+  const realSources = files.map((f) => ({ rel: toRelative(f), code: fs.readFileSync(f, "utf-8") }));
+  const offendersFor = (pattern: RegExp, skip?: (rel: string) => boolean) => offendersIn(realSources, pattern, skip);
+
+  /** [description, pattern, a sample line the pattern MUST catch]. The samples prove each rule is not silently broken. */
+  const RULES: Array<[string, RegExp, string]> = [
+    ["a made-up semester label", /Fall Semester|Week 6/, "<p>Today · Fall Semester, Week 6</p>"],
+    ["made-up chart periods", /Period [1-4]\b/, '{ period: "Period 1", current: 82 }'],
+    ["a default average of 86", /(\?\?|\|\|)\s*86\b/, "value: `${metrics.avgScore ?? 86}%`"],
+    ["a made-up default grade split", /pctA:\s*40|pctB:\s*35|pctC:\s*25/, "{ pctA: 40, pctB: 35, pctC: 25 }"],
+    ["a default letter grade used as data", /(\?\?|\|\|)\s*"B\+"/, 'const letter = metrics.letter || "B+";'],
+    ["placeholder Privy app ids", /placeholder_futa|clxyzplaceholder/i, 'process.env.ID || "clxyzplaceholder_futa_lms"'],
+    ["example tracks used as fallback data", /cat:\s*"Software Engineering"/, '{ cat: "Software Engineering", active: 1 }'],
+    ["a made-up mail sender domain", /lms-platform\.com/, 'from || "no-reply@lms-platform.com"'],
+  ];
+
+  it("every rule really catches what it is meant to catch", () => {
+    for (const [label, pattern, sample] of RULES) {
+      expect(pattern.test(sample), label).toBe(true);
+    }
+    expect(/\b70\s*%/.test("at least 70% to pass")).toBe(true);
+    expect(/(>=|<)\s*70\b/.test("if (score >= 70) pass()")).toBe(true);
+    expect(/admin@lms\.com|marcus@tutor\.com|alex@student\.com/.test('placeholder="admin@lms.com"')).toBe(true);
+    // and the scanner itself finds offenders in code that has them, ignoring comments
+    const fake = [
+      { rel: "a.tsx", code: 'const x = metrics.avg ?? 86;' },
+      { rel: "b.tsx", code: "// metrics.avg ?? 86" },
+      { rel: "c.tsx", code: "const ok = 1;" },
+    ];
+    expect(offendersIn(fake, RULES[2][1])).toEqual(["a.tsx"]);
+  });
+
+  it("scans real files", () => {
+    expect(realSources.length).toBeGreaterThan(80);
+  });
+
+  it("the pass mark is defined once (src/lib/grading.ts) and never typed as a literal elsewhere", () => {
+    expect(offendersFor(/\b70\s*%/, (rel) => rel === "src/lib/grading.ts")).toEqual([]);
+    expect(offendersFor(/(>=|<)\s*70\b/, (rel) => rel === "src/lib/grading.ts")).toEqual([]);
+  });
+
+  it.each(RULES.map(([label, pattern]) => [label, pattern] as const))("source contains no %s", (_label, pattern) => {
+    expect(offendersFor(pattern)).toEqual([]);
+  });
+
+  it("demo account emails from the seed script appear nowhere in the app", () => {
+    expect(offendersFor(/admin@lms\.com|marcus@tutor\.com|alex@student\.com/)).toEqual([]);
+  });
+
+  it("the demo seed script refuses to run unless explicitly allowed, before it deletes anything", () => {
+    const seed = fs.readFileSync(path.join(ROOT, "prisma/seed.ts"), "utf-8");
+    const guard = seed.indexOf("ALLOW_DEMO_SEED");
+    const firstDelete = seed.indexOf("deleteMany");
+    expect(guard).toBeGreaterThan(-1);
+    expect(guard).toBeLessThan(firstDelete);
+    expect(seed).toMatch(/NODE_ENV === "production"/);
+    expect(seed).toMatch(/process\.exit\(1\)/);
+  });
+});
+
 describe("honest wording (no invented institution, accreditation or authority)", () => {
   const SRC_DIR = path.join(ROOT, "src");
   const stripComments = (code: string) => code.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");

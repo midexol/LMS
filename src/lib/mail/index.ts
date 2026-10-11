@@ -20,7 +20,8 @@ const smtpHost = process.env.SMTP_HOST;
 const smtpPort = parseInt(process.env.SMTP_PORT || "587");
 const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
-const smtpFrom = process.env.SMTP_FROM || "no-reply@lms-platform.com";
+// Never invent a sender domain: use the configured address, or the SMTP login itself
+const smtpFrom = process.env.SMTP_FROM || smtpUser;
 
 const isRealSmtp =
   Boolean(smtpHost && smtpUser && smtpPass) &&

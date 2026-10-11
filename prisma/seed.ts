@@ -4,6 +4,17 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
+  // This script DELETES every user, course and payment, then creates demo accounts that all share the
+  // password "password123". It must never run against a real database by accident.
+  if (process.env.NODE_ENV === "production" || process.env.ALLOW_DEMO_SEED !== "yes") {
+    console.error(
+      "Refusing to seed: this wipes all data and creates demo accounts with a known password.\n" +
+        "Only for a throwaway local database: run with ALLOW_DEMO_SEED=yes (never in production).\n" +
+        "To create your first real admin use: npm run db:create-admin"
+    );
+    process.exit(1);
+  }
+
   console.log("Seeding database...");
 
   // Clear existing data in dependency order

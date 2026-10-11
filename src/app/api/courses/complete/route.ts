@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { PASS_MARK_PERCENT, isPass } from "@/lib/grading";
 import { sendCompletionEmail } from "@/lib/mail";
 
 export async function POST(req: Request) {
@@ -83,10 +84,10 @@ export async function POST(req: Request) {
 
       const overallPercentage = totalMax > 0 ? (totalEarned / totalMax) * 100 : 100;
 
-      if (overallPercentage < 70) {
+      if (!isPass(overallPercentage)) {
         return NextResponse.json(
           {
-            error: `Course completion locked: Your current average score is ${Math.round(overallPercentage)}%. A minimum passing score of 70% across all assignments is required to unlock your next course registration.`,
+            error: `Course completion locked: Your current average score is ${Math.round(overallPercentage)}%. A minimum passing score of ${PASS_MARK_PERCENT}% across all assignments is required to unlock your next course registration.`,
           },
           { status: 400 }
         );

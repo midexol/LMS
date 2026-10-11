@@ -8,8 +8,12 @@ interface PrivyClientProviderProps {
 }
 
 export function PrivyClientProvider({ children }: PrivyClientProviderProps) {
-  // Use user's configured Privy App ID from environment, or fallback placeholder
-  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || "clxyzplaceholder_futa_lms";
+  // Without a real Privy app id there is no social sign-in: render the app normally and let the
+  // Privy button hide itself, instead of starting Privy with a made-up id that can never work.
+  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+  if (!appId) {
+    return <>{children}</>;
+  }
 
   return (
     <PrivyProvider

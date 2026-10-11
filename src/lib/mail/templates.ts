@@ -1,3 +1,4 @@
+import { PASS_MARK_PERCENT } from "@/lib/grading";
 export interface EnrollmentEmailData {
   studentName: string;
   courseTitle: string;
@@ -164,7 +165,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: stri
             <li><strong>Course Selection:</strong> Browse faculty and department-approved courses.</li>
             <li><strong>Single Course Lock Policy:</strong> Focus on one course at a time to maximize subject mastery.</li>
             <li><strong>AI Auto-Grading Rubric:</strong> Submit assignments and receive instant criteria evaluation and feedback.</li>
-            <li><strong>70% Certification Requirement:</strong> Pass with 70%+ to unlock your completion certificate and next courses.</li>
+            <li><strong>${PASS_MARK_PERCENT}% Certification Requirement:</strong> Pass with ${PASS_MARK_PERCENT}%+ to unlock your completion certificate and next courses.</li>
           </ul>
         </div>
 
@@ -193,7 +194,7 @@ export function getEnrollmentEmailTemplate(data: EnrollmentEmailData): { subject
         <div style="background-color: #faf7fa; border: 1px solid #e9d5e7; border-radius: 10px; padding: 18px; margin: 24px 0;">
           <p style="color: #4A1A45; font-size: 12px; font-weight: 800; text-transform: uppercase; margin: 0 0 6px 0;">Academic Progression Policy</p>
           <p style="color: #555555; font-size: 13px; line-height: 1.6; margin: 0;">
-            Single course lock is currently active. You must complete all lesson modules and pass all assignments with a minimum of 70% before enrolling in your next course.
+            Single course lock is currently active. You must complete all lesson modules and pass all assignments with a minimum of ${PASS_MARK_PERCENT}% before enrolling in your next course.
           </p>
         </div>
 

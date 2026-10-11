@@ -15,6 +15,7 @@ import {
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { SignupsChart } from "@/components/admin/SignupsChart";
+import { PASS_MARK_PERCENT, isPass as isPassingPercent } from "@/lib/grading";
 
 /* ─── Types ─────────────────────────────────────────────────── */
 interface UserItem {
@@ -396,7 +397,7 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
                 onChange={(e) => setScore(Number(e.target.value))}
                 className="flex-1 accent-black"
               />
-              <span className={`text-xl font-bold w-12 text-center ${score >= 70 ? "text-black" : "text-neutral-500"}`}>
+              <span className={`text-xl font-bold w-12 text-center ${isPassingPercent((score / (sub.assignment.maxScore || 100)) * 100) ? "text-black" : "text-neutral-500"}`}>
                 {score}
               </span>
             </div>
@@ -973,7 +974,7 @@ export function AdminDashboardClient({
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
-                      <span>Certified (70%+)</span>
+                      <span>Certified ({PASS_MARK_PERCENT}%+)</span>
                     </div>
                   </div>
                 </div>
@@ -1043,11 +1044,15 @@ export function AdminDashboardClient({
                     total: data.active + data.comp,
                   }));
 
-                  const displayTracks = tracks.length > 0 ? tracks : [
-                    { cat: "Software Engineering", active: 1, comp: 0, courses: 2, total: 1 },
-                    { cat: "Design & UX", active: 0, comp: 0, courses: 1, total: 0 },
-                    { cat: "Data Science & AI", active: 0, comp: 0, courses: 1, total: 0 },
-                  ];
+                  // Real data only: with no courses yet, say so instead of showing made-up tracks
+                  const displayTracks = tracks;
+                  if (displayTracks.length === 0) {
+                    return (
+                      <div className="p-8 text-center bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
+                        <p className="text-xs text-neutral-500">No courses or enrollments yet. Activity by subject appears here once courses are created.</p>
+                      </div>
+                    );
+                  }
 
                   const maxTotal = Math.max(1, ...displayTracks.map((t) => Math.max(t.active, t.comp, 1)));
 
@@ -1578,7 +1583,7 @@ export function AdminDashboardClient({
           <div className="space-y-4">
             {submissions.map((sub) => {
               const max = sub.assignment.maxScore || 100;
-              const isPass = sub.score !== null && (sub.score / max) * 100 >= 70;
+              const isPass = sub.score !== null && isPassingPercent((sub.score / max) * 100);
               return (
                 <div key={sub.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -1812,7 +1817,7 @@ export function AdminDashboardClient({
                     </p>
                   </div>
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#4A1A45] text-white">
-                    70% Pass Score
+                    {PASS_MARK_PERCENT}% Pass Score
                   </span>
                 </div>
 

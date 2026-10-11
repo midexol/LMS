@@ -185,6 +185,54 @@ describe("InstructorClient (instructor studio)", () => {
     expect(screen.getByText(/Student Submissions & Grading Queue/)).toBeTruthy();
   });
 
+  it("shows honest empty states, not invented averages, when nothing has been graded", () => {
+    const { container } = studio();
+    const text = container.textContent!;
+    expect(text).toContain("No grades yet");
+    expect(text).toContain("No graded submissions yet");
+    for (const fake of ["86%", "B+", "Fall Semester", "Week 6", "40%", "35%", "Period 1"]) {
+      expect(text, fake).not.toContain(fake);
+    }
+  });
+
+  it("shows the real average, letter, pass rate and grade split when work has been graded", () => {
+    const { container } = render(
+      <InstructorClient
+        currentUser={tutor}
+        tutorCourses={tutorCourses()}
+        allSubmissions={[]}
+        metrics={{ ...metrics, avgScore: 78, avgGradeLetter: "C", passRate: 75, gradeDistribution: { pctA: 25, pctB: 25, pctBelow80: 50 } }}
+        initialTab="dashboard"
+      />
+    );
+    const text = container.textContent!;
+    expect(text).toContain("78% (C)");
+    expect(text).toContain("75% Passing");
+    expect(text).toContain("Cohort performance against the 70% pass mark");
+    expect(text).toMatch(/Below 80%.*50%/);
+  });
+
+  it("never invents a pending-review count: an empty queue says so", () => {
+    studio();
+    expect(screen.getByText("Nothing is waiting for review right now.")).toBeTruthy();
+    expect(document.body.textContent).not.toMatch(/12 submissions|Period 3|Good Afternoon/);
+  });
+
+  it("reports the real number of submissions waiting for review, with correct singular and plural", () => {
+    const pending = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `p${i}`, score: null, courseTitle: "Biology 101", assignment: { title: "Q", maxScore: 100 }, student: { name: "S" }, content: "x" }));
+    const one = render(<InstructorClient currentUser={tutor} tutorCourses={tutorCourses()} allSubmissions={pending(1)} metrics={metrics} />);
+    expect(screen.getByText("1 submission")).toBeTruthy();
+    one.unmount();
+    render(<InstructorClient currentUser={tutor} tutorCourses={tutorCourses()} allSubmissions={pending(3)} metrics={metrics} />);
+    expect(screen.getAllByText("3 submissions").length).toBeGreaterThan(0);
+  });
+
+  it("does not show a made-up average for a course nobody has been graded in", () => {
+    const { container } = studio("dashboard");
+    expect(container.textContent).toContain("no grades yet");
+    expect(container.textContent).not.toMatch(/\d+% avg/);
+  });
+
   it("lists every enrolled student with email, department and status", () => {
     studio("students");
     const ada = screen.getByText("Ada Student").closest("tr")!;

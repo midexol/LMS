@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/lib/utils";
+import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { Badge } from "@/components/ui/Badge";
 import {
   FiPlayCircle,
@@ -719,7 +720,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </div>
 
                 <p className="text-xs text-neutral-600 max-w-lg mx-auto leading-relaxed">
-                  has completed all lessons and assignments, with an average score of at least 70%, in the course
+                  has completed all lessons and assignments, with an average score of at least {PASS_MARK_PERCENT}%, in the course
                 </p>
 
                 <div className="space-y-1">

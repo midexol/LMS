@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { isPass } from "@/lib/grading";
 import { formatDate } from "@/lib/utils";
 import { FiAward, FiEdit2, FiSave, FiUser, FiAlertCircle, FiCheck } from "react-icons/fi";
 
@@ -119,7 +120,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                     )}
                     <span
                       className={`text-sm font-bold px-3 py-1 rounded-full border ${
-                        scorePercent !== null && scorePercent >= 70
+                        scorePercent !== null && isPass(scorePercent)
                           ? "bg-[#4A1A45] text-white border-[#4A1A45]"
                           : scorePercent !== null
                           ? "bg-neutral-200 text-neutral-800 border-neutral-300"

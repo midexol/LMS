@@ -12,6 +12,7 @@ import {
   FiCompass, FiShield, FiActivity,
 } from "react-icons/fi";
 import { formatNgn } from "@/lib/utils";
+import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 
@@ -24,10 +25,10 @@ interface InstructorClientProps {
     publishedCourses: number;
     totalSubmissions: number;
     totalLessons: number;
-    avgScore?: number;
-    avgGradeLetter?: string;
-    gradeDistribution?: { pctA: number; pctB: number; pctC: number };
-    performanceBars?: { period: string; current: number; previous: number }[];
+    avgScore?: number | null;
+    avgGradeLetter?: string | null;
+    passRate?: number | null;
+    gradeDistribution?: { pctA: number; pctB: number; pctBelow80: number } | null;
   };
   initialTab?: "dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings";
 }
@@ -61,14 +62,14 @@ export function InstructorClient({
   const pendingSubmissions = allSubmissions.filter((s) => s.score === null);
   const gradedSubmissions = allSubmissions.filter((s) => s.score !== null);
 
-  const avgGradeLetter = metrics.avgGradeLetter || "B+";
-  const performanceBars = metrics.performanceBars || [
-    { period: "P1", current: 82, previous: 74 },
-    { period: "P2", current: 88, previous: 80 },
-    { period: "P3", current: 76, previous: 85 },
-    { period: "P4", current: 91, previous: 78 },
-  ];
-  const gradeDistribution = metrics.gradeDistribution || { pctA: 40, pctB: 35, pctC: 25 };
+  // No graded work yet means no figures: never show invented averages or grade splits
+  const avgScore = metrics.avgScore ?? null;
+  const avgGradeLetter = metrics.avgGradeLetter ?? null;
+  const passRate = metrics.passRate ?? null;
+  const gradeDistribution = metrics.gradeDistribution ?? null;
+  // Zeros draw an empty ring when there is no data; the labels show a dash instead of a percentage
+  const dist = gradeDistribution ?? { pctA: 0, pctB: 0, pctBelow80: 0 };
+  const avgLabel = avgScore === null ? "No grades yet" : `${avgScore}% (${avgGradeLetter})`;
 
   const currentDateStr = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -217,7 +218,7 @@ export function InstructorClient({
             </button>
             <div>
               <h1 className="font-bold text-2xl text-black leading-tight">Dashboard</h1>
-              <p className="text-xs text-neutral-500 font-medium">{currentDateStr} · Fall Semester, Week 6</p>
+              <p className="text-xs text-neutral-500 font-medium">{currentDateStr}</p>
             </div>
           </div>
 
@@ -253,13 +254,22 @@ export function InstructorClient({
                 }}
               >
                 <div className="relative max-w-xl space-y-3">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">Good Afternoon</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">Your Studio</p>
                   <h2 className="font-bold text-3xl leading-snug">
                     Welcome back, {currentUser.name.split(" ")[0]}
                   </h2>
                   <p className="text-xs text-neutral-300 leading-relaxed">
-                    Period 3 is checked in and your active grading queue has{" "}
-                    <strong className="text-white underline decoration-[#D6BDD4]">{pendingSubmissions.length || 12} submissions</strong> waiting for review.
+                    {pendingSubmissions.length > 0 ? (
+                      <>
+                        Your grading queue has{" "}
+                        <strong className="text-white underline decoration-[#D6BDD4]">
+                          {pendingSubmissions.length} {pendingSubmissions.length === 1 ? "submission" : "submissions"}
+                        </strong>{" "}
+                        waiting for review.
+                      </>
+                    ) : (
+                      "Nothing is waiting for review right now."
+                    )}
                   </p>
 
                   <div className="flex items-center gap-3 pt-3">
@@ -298,7 +308,7 @@ export function InstructorClient({
                     sub: "Submissions awaiting feedback",
                   },
                   {
-                    value: `${metrics.avgScore ?? 86}% (${avgGradeLetter})`,
+                    value: avgLabel,
                     label: "Average Cohort Score",
                     sub: "Aggregated performance",
                   },
@@ -370,7 +380,13 @@ export function InstructorClient({
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Cohort Mean Score</span>
                         <span className="text-lg font-black text-neutral-900 leading-tight">
-                          {metrics.avgScore ?? 86}% <span className="text-xs font-semibold text-neutral-500">({avgGradeLetter})</span>
+                          {avgScore === null ? (
+                            <span className="text-sm font-semibold text-neutral-500">No grades yet</span>
+                          ) : (
+                            <>
+                              {avgScore}% <span className="text-xs font-semibold text-neutral-500">({avgGradeLetter})</span>
+                            </>
+                          )}
                         </span>
                       </div>
                     </div>
@@ -389,8 +405,11 @@ export function InstructorClient({
                           const courseSubs = allSubmissions.filter((s) => s.courseTitle === c.title);
                           const courseGraded = courseSubs.filter((s) => s.score !== null);
                           const cScore = courseGraded.length > 0
-                            ? Math.round(courseGraded.reduce((a, s) => a + (s.score || 0), 0) / courseGraded.length)
-                            : (metrics.avgScore ?? 86);
+                            ? Math.round(
+                                courseGraded.reduce((a, s) => a + ((s.score || 0) / (s.assignment?.maxScore || 100)) * 100, 0) /
+                                  courseGraded.length
+                              )
+                            : null;
                           const maxMetric = Math.max(10, ...tutorCourses.map((tc) => Math.max(tc.enrollments.length, allSubmissions.filter((s) => s.courseTitle === tc.title).length)));
                           const enrPct = Math.min(100, Math.round((c.enrollments.length / maxMetric) * 100));
                           const subPct = Math.min(100, Math.round((courseSubs.length / maxMetric) * 100));
@@ -412,7 +431,7 @@ export function InstructorClient({
                                   <span className="text-[#4A1A45]">{courseSubs.length} submissions</span>
                                   <span>·</span>
                                   <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 font-mono">
-                                    {cScore}% avg
+                                    {cScore === null ? "no grades yet" : `${cScore}% avg`}
                                   </span>
                                 </div>
                               </div>
@@ -446,17 +465,19 @@ export function InstructorClient({
                     <div className="flex items-center justify-between">
                       <h3 className="font-black text-lg text-black tracking-tight">Grade Distribution</h3>
                       <span className="text-xs font-bold text-[#4A1A45]">
-                        {gradeDistribution.pctA + gradeDistribution.pctB}% Passing
+                        {passRate === null ? "" : `${passRate}% Passing`}
                       </span>
                     </div>
-                    <p className="text-xs text-neutral-500 mt-1">Cohort performance across 70% threshold</p>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      {gradeDistribution ? `Cohort performance against the ${PASS_MARK_PERCENT}% pass mark` : "No graded submissions yet. Results appear here as work is graded."}
+                    </p>
                   </div>
 
                   {/* Clean SVG Donut with Clear Central Metric */}
                   <div className="relative w-44 h-44 mx-auto flex items-center justify-center">
                     {(() => {
-                      const dashA = Math.round((gradeDistribution.pctA / 100) * 239);
-                      const dashB = Math.round((gradeDistribution.pctB / 100) * 239);
+                      const dashA = Math.round((dist.pctA / 100) * 239);
+                      const dashB = Math.round((dist.pctB / 100) * 239);
                       const dashC = Math.max(0, 239 - dashA - dashB);
                       return (
                         <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform">
@@ -495,9 +516,9 @@ export function InstructorClient({
                       );
                     })()}
                     <div className="absolute flex flex-col items-center justify-center text-center">
-                      <span className="font-black text-3xl text-black">{avgGradeLetter}</span>
+                      <span className="font-black text-3xl text-black">{avgGradeLetter ?? "—"}</span>
                       <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
-                      <span className="text-[10px] font-bold text-[#4A1A45] mt-0.5">{metrics.avgScore ?? 86}% Mean</span>
+                      <span className="text-[10px] font-bold text-[#4A1A45] mt-0.5">{avgScore === null ? "No grades yet" : `${avgScore}% Mean`}</span>
                     </div>
                   </div>
 
@@ -509,10 +530,10 @@ export function InstructorClient({
                           <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
                           Grade A (90–100%)
                         </span>
-                        <span className="font-black text-black">{gradeDistribution.pctA}%</span>
+                        <span className="font-black text-black">{gradeDistribution ? `${dist.pctA}%` : "—"}</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                        <div className="bg-black h-full rounded-full" style={{ width: `${gradeDistribution.pctA}%` }} />
+                        <div className="bg-black h-full rounded-full" style={{ width: `${dist.pctA}%` }} />
                       </div>
                     </div>
 
@@ -522,10 +543,10 @@ export function InstructorClient({
                           <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
                           Grade B (80–89%)
                         </span>
-                        <span className="font-black text-[#4A1A45]">{gradeDistribution.pctB}%</span>
+                        <span className="font-black text-[#4A1A45]">{gradeDistribution ? `${dist.pctB}%` : "—"}</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                        <div className="bg-[#4A1A45] h-full rounded-full" style={{ width: `${gradeDistribution.pctB}%` }} />
+                        <div className="bg-[#4A1A45] h-full rounded-full" style={{ width: `${dist.pctB}%` }} />
                       </div>
                     </div>
 
@@ -533,12 +554,12 @@ export function InstructorClient({
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-neutral-700 flex items-center gap-2">
                           <span className="w-2.5 h-2.5 rounded-full bg-neutral-400 inline-block" />
-                          Grade C / Threshold (&lt; 80%)
+                          Below 80%
                         </span>
-                        <span className="font-black text-neutral-700">{gradeDistribution.pctC}%</span>
+                        <span className="font-black text-neutral-700">{gradeDistribution ? `${dist.pctBelow80}%` : "—"}</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                        <div className="bg-neutral-400 h-full rounded-full" style={{ width: `${gradeDistribution.pctC}%` }} />
+                        <div className="bg-neutral-400 h-full rounded-full" style={{ width: `${dist.pctBelow80}%` }} />
                       </div>
                     </div>
                   </div>
@@ -776,9 +797,9 @@ export function InstructorClient({
                   <div className="py-3 flex items-center justify-between">
                     <div>
                       <p className="font-bold text-black">Rubric Evaluation Sensitivity</p>
-                      <p className="text-neutral-500 text-[11px]">Enforce 70% threshold with automated rubric benchmark</p>
+                      <p className="text-neutral-500 text-[11px]">Courses are completed at an average of {PASS_MARK_PERCENT}% or more</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-700 font-bold text-[10px]">Strict (70%)</span>
+                    <span className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-700 font-bold text-[10px]">Pass mark {PASS_MARK_PERCENT}%</span>
                   </div>
                   <div className="py-3 flex items-center justify-between">
                     <div>

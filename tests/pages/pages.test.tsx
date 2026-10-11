@@ -172,6 +172,68 @@ describe("/my-courses (student dashboard)", () => {
   });
 });
 
+describe("/instructor dashboard figures", () => {
+  const course = (submissions: Array<{ score: number | null; maxScore: number }>) => ({
+    id: "c1",
+    title: "Biology 101",
+    published: true,
+    modules: [
+      {
+        lessons: [
+          {
+            assignments: [
+              {
+                submissions: submissions.map((s, i) => ({ id: `s${i}`, score: s.score, assignment: { maxScore: s.maxScore } })),
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    enrollments: [],
+    announcements: [],
+  });
+  const metricsFor = async (subs: Array<{ score: number | null; maxScore: number }>) => {
+    loginAs("TUTOR");
+    prismaMock.course.findMany.mockResolvedValue([course(subs)]);
+    return ((await InstructorPage({})) as any).props.metrics;
+  };
+
+  it("with no graded work every figure is null: nothing is invented", async () => {
+    const m = await metricsFor([]);
+    expect(m.avgScore).toBeNull();
+    expect(m.avgGradeLetter).toBeNull();
+    expect(m.passRate).toBeNull();
+    expect(m.gradeDistribution).toBeNull();
+    expect(m).not.toHaveProperty("performanceBars");
+  });
+
+  it("ungraded submissions do not count as grades", async () => {
+    const m = await metricsFor([{ score: null, maxScore: 100 }]);
+    expect(m.avgScore).toBeNull();
+    expect(m.totalSubmissions).toBe(1);
+  });
+
+  it("computes the real average, letter and pass rate", async () => {
+    const m = await metricsFor([{ score: 90, maxScore: 100 }, { score: 70, maxScore: 100 }, { score: 50, maxScore: 100 }]);
+    expect(m.avgScore).toBe(70);
+    expect(m.avgGradeLetter).toBe("C");
+    expect(m.passRate).toBe(67);
+  });
+
+  it("scores each assignment against its own maximum", async () => {
+    const m = await metricsFor([{ score: 9, maxScore: 10 }, { score: 45, maxScore: 50 }]); // both 90%
+    expect(m.avgScore).toBe(90);
+  });
+
+  it("only loads this instructor's own courses", async () => {
+    const tutor = loginAs("TUTOR")!;
+    prismaMock.course.findMany.mockResolvedValue([]);
+    await InstructorPage({});
+    expect(prismaMock.course.findMany.mock.calls[0][0].where).toEqual({ tutorId: tutor.id });
+  });
+});
+
 describe("/my-courses and /instructor", () => {
   it("my-courses sends visitors to login and non-students to the instructor area", async () => {
     loginAs(null);

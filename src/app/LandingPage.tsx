@@ -12,6 +12,7 @@ import {
   FiMail, FiMapPin
 } from "react-icons/fi";
 import { formatNgn } from "@/lib/utils";
+import { PASS_MARK_PERCENT } from "@/lib/grading";
 
 
 // Category-based visual palette for course cards (no image required)
@@ -332,7 +333,7 @@ export function LandingPage({
             {
               step: "03",
               title: "Pass and get certified",
-              desc: "Reach an average of 70% or more across the course's assignments to complete it and receive your completion certificate. Then you can enrol in your next course.",
+              desc: `Reach an average of ${PASS_MARK_PERCENT}% or more across the course's assignments to complete it and receive your completion certificate. Then you can enrol in your next course.`,
             },
           ].map((pillar) => (
             <div
@@ -381,7 +382,7 @@ export function LandingPage({
               {
                 icon: FiAward,
                 title: "Certificate when you pass",
-                desc: "Reach an average of 70% across the course's assignments and receive your completion certificate.",
+                desc: `Reach an average of ${PASS_MARK_PERCENT}% across the course's assignments and receive your completion certificate.`,
               },
             ].map((f) => (
               <div key={f.title} className="p-6 rounded-3xl bg-[#1E0A1C] border border-[#3B1537] space-y-3">
@@ -430,7 +431,7 @@ export function LandingPage({
             },
             {
               q: "What do I need to complete a course?",
-              a: "Submit every assignment and reach an average of at least 70%. You then receive a completion certificate.",
+              a: `Submit every assignment and reach an average of at least ${PASS_MARK_PERCENT}%. You then receive a completion certificate.`,
             },
             {
               q: "Is the certificate a degree?",

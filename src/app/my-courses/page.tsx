@@ -2,6 +2,7 @@ import React from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
+import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { Navbar } from "@/components/ui/Navbar";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -157,7 +158,7 @@ export default async function MyCoursesPage() {
 
           {completedEnrollments.length === 0 ? (
             <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm py-10 text-center">
-              <p className="text-xs text-neutral-500 italic">No completed courses yet. Keep working towards your 70% average threshold!</p>
+              <p className="text-xs text-neutral-500 italic">No completed courses yet. Keep working towards your {PASS_MARK_PERCENT}% average pass mark!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
