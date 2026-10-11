@@ -138,7 +138,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Announcement not found." }, { status: 404 });
     }
 
-    if (announcement.course.tutorId !== currentUser.id && currentUser.role !== "ADMIN") {
+    if (announcement.course.tutorId !== currentUser.id && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN") {
       return NextResponse.json({ error: "Access denied." }, { status: 403 });
     }
 

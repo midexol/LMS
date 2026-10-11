@@ -6,7 +6,7 @@ import { generateCourseOutlineAI, generateAssignmentRubricAI } from "@/lib/ai/as
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN")) {
+    if (!currentUser || (currentUser.role !== "TUTOR" && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN")) {
       return NextResponse.json({ error: "Only instructors can access the AI assistant." }, { status: 403 });
     }
 

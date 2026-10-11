@@ -97,7 +97,7 @@ export default function LoginPage() {
           <div className="relative flex items-center justify-center my-4">
             <div className="border-t border-neutral-200 w-full"></div>
             <span className="bg-white px-3 text-[10px] uppercase tracking-wider font-bold text-neutral-400 shrink-0">
-              or institutional credentials
+              or email and password
             </span>
             <div className="border-t border-neutral-200 w-full"></div>
           </div>

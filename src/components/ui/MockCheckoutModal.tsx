@@ -268,7 +268,7 @@ export function MockCheckoutModal({
             {success ? (
               <div className="p-4 rounded-2xl bg-emerald-50 text-emerald-900 text-sm font-bold border border-emerald-200 flex items-center justify-center gap-2">
                 <FiCheck className="w-5 h-5 text-emerald-600" />
-                Payment Confirmed! Enrolling in Course...
+                {course.price <= 0 ? "You are enrolled! Opening your course..." : "Payment Confirmed! Enrolling in Course..."}
               </div>
             ) : (
               <button

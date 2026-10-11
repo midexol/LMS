@@ -444,7 +444,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 value={currentUser.email}
                 className="w-full px-4 py-2.5 rounded-xl bg-neutral-100 border border-neutral-200 text-sm text-neutral-500 cursor-not-allowed outline-none"
               />
-              <span className="text-[10px] text-neutral-400 mt-1 block">Institutional login email cannot be modified.</span>
+              <span className="text-[10px] text-neutral-400 mt-1 block">Your login email cannot be changed here.</span>
             </div>
 
             <div>
@@ -614,7 +614,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="bg-[#2D0F2A] text-white px-7 py-5 flex justify-between items-center border-b border-[#3B1537] print:hidden">
               <div className="flex items-center gap-2">
                 <FiFileText className="w-5 h-5" />
-                <span className="font-bold text-sm tracking-wide">Official Institutional E-Receipt</span>
+                <span className="font-bold text-sm tracking-wide">E-Receipt</span>
               </div>
               <button
                 onClick={() => setSelectedReceipt(null)}

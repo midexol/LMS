@@ -49,6 +49,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
   const [submitting, setSubmitting] = useState(false);
   const [isResubmitting, setIsResubmitting] = useState(false);
   const [gradeResult, setGradeResult] = useState<any>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [discussions, setDiscussions] = useState<any[]>(activeLesson?.discussionPosts || []);
   const [newPostContent, setNewPostContent] = useState("");
@@ -128,6 +129,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
     if (!currentAssignment || !submissionText.trim()) return;
     setSubmitting(true);
     setGradeResult(null);
+    setSubmitError(null);
 
     try {
       const res = await fetch("/api/grade", {
@@ -143,9 +145,13 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         if (!completedLessonIds.includes(activeLesson.id)) {
           handleToggleLessonComplete(activeLesson.id);
         }
+      } else {
+        // Never fail silently: rate limits, lost enrollment and server errors all need an explanation
+        setSubmitError(data.error || "Your answer could not be submitted. Please try again.");
       }
     } catch (e) {
       console.error(e);
+      setSubmitError("Could not reach the server. Check your connection and try again; your answer has been kept.");
     } finally {
       setSubmitting(false);
     }
@@ -242,7 +248,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all"
               >
                 <FiAward className="w-4 h-4 text-[#D6BDD4]" />
-                Official Certificate
+                Certificate
               </button>
             </div>
           )}
@@ -551,6 +557,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                             ? "Submit Revised Answer"
                             : "Submit Assignment"}
                         </button>
+                        {submitError && (
+                          <p role="alert" className="text-xs font-semibold text-red-700">{submitError}</p>
+                        )}
                         {isResubmitting && (
                           <button
                             onClick={() => { setIsResubmitting(false); setSubmissionText(""); }}
@@ -669,7 +678,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             <div className="flex items-center justify-between p-4 bg-neutral-950 text-white print:hidden">
               <div className="flex items-center gap-2 text-xs font-bold">
                 <FiAward className="w-4 h-4 text-[#D6BDD4]" />
-                Official Academic Certificate of Completion
+                Certificate of Completion
               </div>
               <div className="flex items-center gap-2">
                 <button

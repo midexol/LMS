@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
             Account Recovery & Security.
           </h2>
           <p className="text-[#D6BDD4] text-sm leading-relaxed">
-            Enter your registered institutional email to receive a cryptographically signed recovery token valid for 60 minutes.
+            Enter the email you registered with and we will send you a link to reset your password. The link is valid for 1 hour.
           </p>
         </div>
 

@@ -151,7 +151,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div>
                   <h3 className="text-base font-bold text-black">Curriculum Restricted to {course.department}</h3>
                   <p className="text-xs text-neutral-600 max-w-md mx-auto mt-1 leading-relaxed">
-                    Under institutional academic structure, syllabus contents, lesson plans, and assignments for this course are isolated exclusively to students enrolled in the <strong>{course.department}</strong> department.
+                    Lessons, files and assignments for this course are available only to students enrolled in the <strong>{course.department}</strong> department.
                   </p>
                 </div>
                 <div className="pt-2">

@@ -1705,7 +1705,7 @@ export function AdminDashboardClient({
           <div className="space-y-6 max-w-5xl">
             <div>
               <h2 className="font-bold text-2xl text-black">System Settings &amp; Governance</h2>
-              <p className="text-xs text-neutral-500">Configure institutional policies, superadmin credentials, and audit data export.</p>
+              <p className="text-xs text-neutral-500">Review platform policies, change your admin password, and export platform data.</p>
             </div>
 
             {/* Superadmin Security & Profile Card */}

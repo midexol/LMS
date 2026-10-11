@@ -112,7 +112,7 @@ function VerifyEmailContent() {
               </span>
               <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Email Verified!</h2>
               <p className="text-xs text-neutral-600 leading-relaxed max-w-sm mx-auto">
-                {message} We&apos;ve also dispatched your official welcome package to your inbox.
+                {message} We&apos;ve also sent a welcome email to your inbox.
               </p>
             </div>
 

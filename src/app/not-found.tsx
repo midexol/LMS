@@ -30,7 +30,7 @@ export default function NotFound() {
             Page Not Found in Academic Records
           </h2>
           <p className="text-neutral-500 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
-            The curriculum, lesson, or resource you are searching for has been moved, unlisted, or does not exist in our institutional database.
+            The curriculum, lesson, or resource you are searching for has been moved, unlisted, or does not exist.
           </p>
         </div>
 

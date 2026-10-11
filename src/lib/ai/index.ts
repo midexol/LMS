@@ -49,10 +49,27 @@ function fallbackHeuristicGrader(
   const refWords = Array.from(new Set(normRef.match(/\b[a-z]{4,}\b/g) || []));
   const subWords = new Set(normSub.match(/\b[a-z]{4,}\b/g) || []);
 
-  if (refWords.length === 0) {
+  // Short reference answers ("144", "True", "H2O", "Lagos") are right or wrong: they get strict matching, with
+  // no goodwill floor, instead of the lenient keyword scoring meant for paragraph answers.
+  const refTokens = Array.from(new Set(normRef.match(/[a-z0-9]+/g) || []));
+  if (refWords.length === 0 || refTokens.length <= 3) {
+    if (refTokens.length === 0) {
+      return {
+        score: 0,
+        feedback: "This assignment has no usable reference answer, so it could not be scored automatically. Your instructor will review it.",
+      };
+    }
+    const subTokens = new Set(normSub.match(/[a-z0-9]+/g) || []);
+    const matchedTokens = refTokens.filter((t) => subTokens.has(t)).length;
+    const score = Math.round(maxScore * (matchedTokens / refTokens.length));
     return {
-      score: maxScore,
-      feedback: "Submission recorded successfully. Full points awarded based on completed answer criteria.",
+      score,
+      feedback:
+        score === maxScore
+          ? `Automated Evaluation Summary:
+Score: ${score}/${maxScore}. Your answer matches the expected answer.`
+          : `Automated Evaluation Summary:
+Score: ${score}/${maxScore}. Your answer does not match the expected answer. Your instructor can review it.`,
     };
   }
 

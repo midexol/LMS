@@ -758,7 +758,7 @@ export function InstructorClient({
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Institutional Email</label>
+                    <label className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Email</label>
                     <input
                       type="email"
                       readOnly

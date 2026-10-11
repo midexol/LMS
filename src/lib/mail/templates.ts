@@ -60,7 +60,7 @@ export interface WelcomeEmailData {
 /**
  * Shared ACADEMIA Email Shell
  * Matches the 1:52 AM design: Deep plum & royal purple gradient, gold accent line,
- * gold icon emblem, bold ACADEMIA title, subtitle badge, and official LMS footer.
+ * gold icon emblem, bold ACADEMIA title, subtitle badge, and LMS footer.
  */
 function renderEmailShell({
   subtitle,
@@ -110,7 +110,7 @@ export function getVerificationEmailTemplate(data: VerificationEmailData): { sub
   return {
     subject: "Verify Your Email Address - ACADEMIA LMS",
     html: renderEmailShell({
-      subtitle: "Official Account Verification",
+      subtitle: "Account Verification",
       badgeIcon: "✉️",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
@@ -138,7 +138,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: stri
   return {
     subject: "Welcome to ACADEMIA LMS - Account Verified",
     html: renderEmailShell({
-      subtitle: "Official Student Onboarding",
+      subtitle: "Welcome",
       badgeIcon: "🎓",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
@@ -182,7 +182,7 @@ export function getEnrollmentEmailTemplate(data: EnrollmentEmailData): { subject
   return {
     subject: `Enrollment Confirmed: ${data.courseTitle}`,
     html: renderEmailShell({
-      subtitle: "Official Enrollment Notice",
+      subtitle: "Enrollment Confirmed",
       badgeIcon: "📚",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.studentName}</strong>,</p>
@@ -351,7 +351,7 @@ export function getCompletionEmailTemplate(data: CompletionEmailData): { subject
   return {
     subject: `Certificate Awarded: Completed ${data.courseTitle}`,
     html: renderEmailShell({
-      subtitle: "Official Course Completion",
+      subtitle: "Course Completed",
       badgeIcon: "🏆",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hearty congratulations, <strong>${data.studentName}</strong>!</p>
@@ -361,18 +361,18 @@ export function getCompletionEmailTemplate(data: CompletionEmailData): { subject
 
         <div style="background-color: #faf7fa; border: 1px solid #e9d5e7; border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;">
           <div style="font-size: 32px; margin-bottom: 8px;">🎓</div>
-          <h3 style="color: #4A1A45; font-size: 18px; font-weight: 800; margin: 0 0 8px 0;">Official Completion Certificate Ready</h3>
+          <h3 style="color: #4A1A45; font-size: 18px; font-weight: 800; margin: 0 0 8px 0;">Your Completion Certificate Is Ready</h3>
           ${
             data.certificateId
-              ? `<p style="font-family: monospace; font-size: 12px; color: #4A1A45; font-weight: 700; margin: 0 0 12px 0;">Verification ID: ${data.certificateId}</p>`
+              ? `<p style="font-family: monospace; font-size: 12px; color: #4A1A45; font-weight: 700; margin: 0 0 12px 0;">Certificate ID: ${data.certificateId}</p>`
               : ""
           }
           <p style="color: #555555; font-size: 13px; line-height: 1.6; margin: 0;">
-            Your single-course lock has now been released. You may view or print your official certificate directly from your student portal and enroll in your next course.
+            Your single-course lock has now been released. You may view or print your certificate directly from your student portal and enroll in your next course.
           </p>
         </div>
 
-        ${renderPillButton(portalUrl, "Download Official Certificate")}
+        ${renderPillButton(portalUrl, "View Your Certificate")}
       `,
     }),
   };

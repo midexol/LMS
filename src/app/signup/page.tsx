@@ -123,7 +123,7 @@ export default function SignupPage() {
               </span>
               <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">Check Your Inbox</h2>
               <p className="text-xs text-neutral-600 leading-relaxed">
-                We sent an official verification link to:
+                We sent a verification link to:
               </p>
               <p className="text-xs font-bold text-[#4A1A45] break-all bg-neutral-50 py-2 px-3 rounded-xl border border-neutral-200/60">
                 {registeredEmail}

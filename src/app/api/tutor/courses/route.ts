@@ -87,6 +87,10 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Course ID is required." }, { status: 400 });
     }
 
+    if (typeof title !== "string" || !title.trim() || typeof description !== "string" || !description.trim()) {
+      return NextResponse.json({ error: "Title and description are required." }, { status: 400 });
+    }
+
     const existingCourse = await prisma.course.findUnique({
       where: { id: courseId },
       include: { enrollments: { include: { student: true } } },
