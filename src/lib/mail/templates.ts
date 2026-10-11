@@ -207,7 +207,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: stri
  * 3. Course Enrollment Confirmation
  * ========================================================================= */
 export function getEnrollmentEmailTemplate(data: EnrollmentEmailData): { subject: string; html: string } {
-  const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/my-courses`;
+  const portalUrl = `${appUrl() || "http://localhost:3000"}/my-courses`;
   return {
     subject: `Enrollment Confirmed: ${data.courseTitle}`,
     html: renderEmailShell({
@@ -236,7 +236,7 @@ export function getEnrollmentEmailTemplate(data: EnrollmentEmailData): { subject
  * ========================================================================= */
 export function getGradeEmailTemplate(data: GradeEmailData): { subject: string; html: string } {
   const percentage = Math.round((data.score / data.maxScore) * 100);
-  const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/my-courses`;
+  const portalUrl = `${appUrl() || "http://localhost:3000"}/my-courses`;
 
   return {
     subject: `Assignment Graded: ${data.assignmentTitle} (${data.score}/${data.maxScore})`,
@@ -276,7 +276,7 @@ export function getGradeEmailTemplate(data: GradeEmailData): { subject: string; 
  * ========================================================================= */
 export function getGradeOverrideEmailTemplate(data: GradeOverrideEmailData): { subject: string; html: string } {
   const percentage = Math.round((data.newScore / data.maxScore) * 100);
-  const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/my-courses`;
+  const portalUrl = `${appUrl() || "http://localhost:3000"}/my-courses`;
 
   return {
     subject: `Instructor Feedback Update: ${data.assignmentTitle} (${data.newScore}/${data.maxScore})`,
@@ -317,7 +317,7 @@ export function getGradeOverrideEmailTemplate(data: GradeOverrideEmailData): { s
  * 6. Course Announcement
  * ========================================================================= */
 export function getAnnouncementEmailTemplate(data: AnnouncementEmailData): { subject: string; html: string } {
-  const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/my-courses`;
+  const portalUrl = `${appUrl() || "http://localhost:3000"}/my-courses`;
 
   return {
     subject: `Course Announcement: ${data.announcementTitle} [${data.courseTitle}]`,
@@ -344,7 +344,7 @@ export function getAnnouncementEmailTemplate(data: AnnouncementEmailData): { sub
  * 7. Curriculum Update
  * ========================================================================= */
 export function getCourseUpdateEmailTemplate(data: CourseUpdateEmailData): { subject: string; html: string } {
-  const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/my-courses`;
+  const portalUrl = `${appUrl() || "http://localhost:3000"}/my-courses`;
 
   return {
     subject: `Curriculum Update: ${data.courseTitle}`,
@@ -370,7 +370,7 @@ export function getCourseUpdateEmailTemplate(data: CourseUpdateEmailData): { sub
  * 8. Course Completion & Certificate
  * ========================================================================= */
 export function getCompletionEmailTemplate(data: CompletionEmailData): { subject: string; html: string } {
-  const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/my-courses`;
+  const portalUrl = `${appUrl() || "http://localhost:3000"}/my-courses`;
 
   return {
     subject: `Certificate Awarded: Completed ${data.courseTitle}`,
