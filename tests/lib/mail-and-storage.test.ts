@@ -210,3 +210,39 @@ describe("private lesson media (storage)", () => {
     expect(() => getStorageAdmin()).toThrow(/not configured/i);
   });
 });
+
+describe("email design", () => {
+  const T = () => import("@/lib/mail/templates");
+  const all = async () => {
+    const t = await T();
+    const s = { studentName: "Ada", userName: "Ada", courseTitle: "Biology", assignmentTitle: "Essay", score: 8, maxScore: 10, feedback: "Good", newScore: 9, tutorFeedback: "Nice", announcementTitle: "News", content: "Hello", updateSummary: "New lesson", certificateId: "CERT-1", resetUrl: "https://x.test/r", verifyUrl: "https://x.test/v", dashboardUrl: "https://x.test/d", inviteUrl: "https://x.test/i", loginUrl: "https://x.test/l" };
+    return [t.getVerificationEmailTemplate, t.getWelcomeEmailTemplate, t.getEnrollmentEmailTemplate, t.getGradeEmailTemplate, t.getGradeOverrideEmailTemplate, t.getAnnouncementEmailTemplate, t.getCourseUpdateEmailTemplate, t.getCompletionEmailTemplate, t.getPasswordResetEmailTemplate, t.getInstructorInviteEmailTemplate].map((f: any) => f(s));
+  };
+
+  it("uses no emojis in any email, subject or body", async () => {
+    for (const { subject, html } of await all()) {
+      expect(subject + html).not.toMatch(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/u);
+    }
+  });
+
+  it("puts the brand logo (a PNG, which email clients can show) and wordmark in every email", async () => {
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://academia.test/");
+    for (const { html } of await all()) {
+      expect(html).toContain('src="https://academia.test/email-logo.png"');
+      expect(html).toContain("ACADEMIA");
+    }
+  });
+
+  it("skips the logo image, never a broken one, when the site address is not configured", async () => {
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "");
+    for (const { html } of await all()) {
+      expect(html).not.toContain("<img");
+      expect(html).toContain("ACADEMIA");
+    }
+  });
+
+  it("ships the logo file the emails point at", async () => {
+    const { existsSync } = await import("node:fs");
+    expect(existsSync("public/email-logo.png")).toBe(true);
+  });
+});

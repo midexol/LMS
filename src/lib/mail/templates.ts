@@ -59,48 +59,78 @@ export interface WelcomeEmailData {
 }
 
 /**
- * Shared ACADEMIA Email Shell
- * Matches the 1:52 AM design: Deep plum & royal purple gradient, gold accent line,
- * gold icon emblem, bold ACADEMIA title, subtitle badge, and LMS footer.
+ * Shared email shell: a white card on a soft background with a plum accent bar, the brand logo
+ * and wordmark, a small label saying what the email is, the body, and a plain footer.
+ * Built from tables and inline styles only, because email clients ignore most modern CSS.
+ * No emojis anywhere. The logo is a PNG (email clients do not render SVG) served from the site;
+ * without a configured site address it is skipped and the wordmark stands alone.
  */
-function renderEmailShell({
-  subtitle,
-  badgeIcon = "🎓",
-  bodyHtml,
-}: {
-  subtitle: string;
-  badgeIcon?: string;
-  bodyHtml: string;
-}): string {
+function appUrl(): string {
+  return (process.env.NEXT_PUBLIC_APP_URL || "").replace(/\/+$/, "");
+}
+
+function renderEmailShell({ subtitle, bodyHtml }: { subtitle: string; bodyHtml: string }): string {
+  const base = appUrl();
+  const logo = base
+    ? `<td style="padding-right: 12px; vertical-align: middle;"><img src="${base}/email-logo.png" width="44" height="44" alt="" style="display: block; border: 0; border-radius: 11px;" /></td>`
+    : "";
+  const siteLink = base
+    ? `<a href="${base}" style="color: #4A1A45; text-decoration: none; font-weight: 600;">${base.replace(/^https?:\/\//, "")}</a>`
+    : "";
+
   return `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; border: 1px solid #e5e5e5; border-radius: 16px; background-color: #ffffff; color: #111111;">
-      <!-- Hero Banner matching 1:52 AM Preview -->
-      <div style="background: linear-gradient(135deg, #2D0F2A 0%, #4A1A45 100%); padding: 30px 24px; border-radius: 12px; text-align: center; color: #ffffff; margin-bottom: 24px; border-bottom: 3px solid #C9AB81;">
-        <div style="font-size: 34px; line-height: 1; margin-bottom: 10px;">${badgeIcon}</div>
-        <h1 style="color: #ffffff; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">ACADEMIA</h1>
-        <p style="color: #E5BCE2; font-size: 12px; font-weight: 600; margin: 6px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">${subtitle}</p>
-      </div>
-
-      <!-- Main Body Content -->
-      ${bodyHtml}
-
-      <!-- Shared ACADEMIA Footer -->
-      <div style="border-top: 1px solid #eeeeee; padding-top: 20px; margin-top: 28px; text-align: center;">
-        <p style="color: #888888; font-size: 11px; margin: 0; line-height: 1.5;">
-          ACADEMIA LMS
-        </p>
-      </div>
-    </div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #F4F0F4; padding: 32px 12px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #ffffff; border-radius: 14px; border: 1px solid #E6DCE5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <tr><td style="height: 5px; line-height: 5px; font-size: 0; background-color: #4A1A45; border-radius: 14px 14px 0 0;">&nbsp;</td></tr>
+        <tr>
+          <td style="padding: 28px 36px 20px 36px; border-bottom: 1px solid #EFE7EE;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                ${logo}
+                <td style="vertical-align: middle;">
+                  <div style="color: #2D0F2A; font-size: 20px; font-weight: 800; letter-spacing: 1.5px; line-height: 1.1;">ACADEMIA</div>
+                  <div style="color: #8A6F87; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; margin-top: 3px;">LEARNING MANAGEMENT SYSTEM</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 28px 36px 8px 36px;">
+            <div style="color: #4A1A45; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; margin: 0 0 18px 0;">${subtitle}</div>
+            ${bodyHtml}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 20px 36px 28px 36px;">
+            <div style="border-top: 1px solid #EFE7EE; padding-top: 18px; text-align: center;">
+              <p style="color: #8F8590; font-size: 12px; line-height: 1.6; margin: 0;">
+                Academia LMS${siteLink ? ` &middot; ${siteLink}` : ""}
+              </p>
+              <p style="color: #A89FA9; font-size: 11px; line-height: 1.6; margin: 6px 0 0 0;">
+                You are receiving this email because of activity on your Academia account.
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
   `;
 }
 
 function renderPillButton(url: string, label: string): string {
   return `
-    <div style="text-align: center; margin: 28px 0;">
-      <a href="${url}" style="background-color: #4A1A45; color: #ffffff; padding: 14px 36px; border-radius: 9999px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; box-shadow: 0 4px 14px rgba(74, 26, 69, 0.25);">
-        ${label} &rarr;
-      </a>
-    </div>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 28px auto;">
+      <tr>
+        <td align="center" bgcolor="#4A1A45" style="background-color: #4A1A45; border-radius: 9999px;">
+          <a href="${url}" style="display: inline-block; padding: 14px 34px; color: #ffffff; font-size: 14px; font-weight: 700; text-decoration: none; border-radius: 9999px;">${label}</a>
+        </td>
+      </tr>
+    </table>
   `;
 }
 
@@ -112,7 +142,6 @@ export function getVerificationEmailTemplate(data: VerificationEmailData): { sub
     subject: "Verify Your Email Address - ACADEMIA LMS",
     html: renderEmailShell({
       subtitle: "Account Verification",
-      badgeIcon: "✉️",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -133,14 +162,13 @@ export function getVerificationEmailTemplate(data: VerificationEmailData): { sub
 }
 
 /* =========================================================================
- * 2. Welcome & Onboarding Email (1:52 AM Baseline)
+ * 2. Welcome & Onboarding Email
  * ========================================================================= */
 export function getWelcomeEmailTemplate(data: WelcomeEmailData): { subject: string; html: string } {
   return {
     subject: "Welcome to ACADEMIA LMS - Account Verified",
     html: renderEmailShell({
       subtitle: "Welcome",
-      badgeIcon: "🎓",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -184,7 +212,6 @@ export function getEnrollmentEmailTemplate(data: EnrollmentEmailData): { subject
     subject: `Enrollment Confirmed: ${data.courseTitle}`,
     html: renderEmailShell({
       subtitle: "Enrollment Confirmed",
-      badgeIcon: "📚",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.studentName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -215,7 +242,6 @@ export function getGradeEmailTemplate(data: GradeEmailData): { subject: string; 
     subject: `Assignment Graded: ${data.assignmentTitle} (${data.score}/${data.maxScore})`,
     html: renderEmailShell({
       subtitle: "Assignment Evaluation",
-      badgeIcon: "📝",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.studentName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -256,7 +282,6 @@ export function getGradeOverrideEmailTemplate(data: GradeOverrideEmailData): { s
     subject: `Instructor Feedback Update: ${data.assignmentTitle} (${data.newScore}/${data.maxScore})`,
     html: renderEmailShell({
       subtitle: "Instructor Evaluation Review",
-      badgeIcon: "👨‍🏫",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.studentName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -298,7 +323,6 @@ export function getAnnouncementEmailTemplate(data: AnnouncementEmailData): { sub
     subject: `Course Announcement: ${data.announcementTitle} [${data.courseTitle}]`,
     html: renderEmailShell({
       subtitle: "Course Announcement",
-      badgeIcon: "📢",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.studentName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -326,7 +350,6 @@ export function getCourseUpdateEmailTemplate(data: CourseUpdateEmailData): { sub
     subject: `Curriculum Update: ${data.courseTitle}`,
     html: renderEmailShell({
       subtitle: "Curriculum & Syllabus Update",
-      badgeIcon: "🔄",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.studentName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -353,7 +376,6 @@ export function getCompletionEmailTemplate(data: CompletionEmailData): { subject
     subject: `Certificate Awarded: Completed ${data.courseTitle}`,
     html: renderEmailShell({
       subtitle: "Course Completed",
-      badgeIcon: "🏆",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hearty congratulations, <strong>${data.studentName}</strong>!</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -361,7 +383,7 @@ export function getCompletionEmailTemplate(data: CompletionEmailData): { subject
         </p>
 
         <div style="background-color: #faf7fa; border: 1px solid #e9d5e7; border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;">
-          <div style="font-size: 32px; margin-bottom: 8px;">🎓</div>
+          <div style="color: #8A6F87; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; margin-bottom: 8px;">CERTIFICATE OF COMPLETION</div>
           <h3 style="color: #4A1A45; font-size: 18px; font-weight: 800; margin: 0 0 8px 0;">Your Completion Certificate Is Ready</h3>
           ${
             data.certificateId
@@ -387,7 +409,6 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): { s
     subject: "Reset Your Account Password - ACADEMIA LMS",
     html: renderEmailShell({
       subtitle: "Security Notification",
-      badgeIcon: "🔒",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -422,7 +443,6 @@ export function getInstructorInviteEmailTemplate(data: InstructorInviteEmailData
     subject: "You have been added as an instructor - ACADEMIA LMS",
     html: renderEmailShell({
       subtitle: "Instructor Account",
-      badgeIcon: "🎓",
       bodyHtml: `
         <p style="color: #222222; font-size: 15px; line-height: 1.6; margin: 0 0 12px 0;">Hello <strong>${data.userName}</strong>,</p>
         <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
