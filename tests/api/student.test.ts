@@ -17,6 +17,7 @@ import { POST as completeCourse } from "@/app/api/courses/complete/route";
 import { POST as updateProfile } from "@/app/api/student/profile/route";
 import { POST as discussion } from "@/app/api/student/discussion/route";
 import { verifySessionToken } from "@/lib/auth";
+import { ACADEMIC_STRUCTURE } from "@/lib/academicStructure";
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -357,15 +358,61 @@ describe("POST /api/student/profile", () => {
 
   it("updates name, faculty, department and phone, and never returns the password hash", async () => {
     const { status, body } = await call(updateProfile, "/api/student/profile", {
-      body: { name: "  New Name ", faculty: " Science ", department: " Chemistry ", phone: "0803 111 2222" },
+      body: { name: "  New Name ", faculty: ` ${ACADEMIC_STRUCTURE[1].name} `, department: ` ${ACADEMIC_STRUCTURE[1].departments[0]} `, phone: "0803 111 2222" },
     });
     expect(status).toBe(200);
     expect(body.user).not.toHaveProperty("password");
     expect(prismaMock.user.update.mock.calls[0][0].data).toMatchObject({
       name: "New Name",
-      faculty: "Science",
-      department: "Chemistry",
+      faculty: ACADEMIC_STRUCTURE[1].name,
+      department: ACADEMIC_STRUCTURE[1].departments[0],
       phone: "08031112222",
+    });
+  });
+
+  describe("faculty and department", () => {
+    const [first, second] = ACADEMIC_STRUCTURE;
+    const save = (body: Record<string, unknown>) => call(updateProfile, "/api/student/profile", { body: { name: "Ada", ...body } });
+
+    it("accepts a real faculty with one of its own departments", async () => {
+      const { status } = await save({ faculty: first.name, department: first.departments[2] });
+      expect(status).toBe(200);
+      expect(prismaMock.user.update.mock.calls[0][0].data).toMatchObject({ faculty: first.name, department: first.departments[2] });
+    });
+
+    it("rejects a faculty that does not exist", async () => {
+      const { status, body } = await save({ faculty: "School of Wizardry", department: first.departments[0] });
+      expect(status).toBe(400);
+      expect(body.error).toMatch(/faculty/i);
+      expect(prismaMock.user.update).not.toHaveBeenCalled();
+    });
+
+    it("rejects a department that belongs to a DIFFERENT faculty", async () => {
+      const { status, body } = await save({ faculty: first.name, department: second.departments[0] });
+      expect(status).toBe(400);
+      expect(body.error).toMatch(/department/i);
+      expect(prismaMock.user.update).not.toHaveBeenCalled();
+    });
+
+    it("rejects an invented department", async () => {
+      expect((await save({ faculty: first.name, department: "Department of Made-Up Studies" })).status).toBe(400);
+    });
+
+    it("checks a department-only change against the faculty the student already has", async () => {
+      // the logged-in student's faculty is ACADEMIC_STRUCTURE[0] (see the test helper)
+      expect((await save({ department: first.departments[1] })).status).toBe(200);
+      expect((await save({ department: second.departments[0] })).status).toBe(400);
+    });
+
+    it("lets a name-only or phone-only update through without touching faculty rules", async () => {
+      expect((await save({})).status).toBe(200);
+      expect((await save({ phone: "08031112222" })).status).toBe(200);
+      expect(prismaMock.user.update.mock.calls[0][0].data).not.toHaveProperty("faculty");
+    });
+
+    it("lets a blank faculty and department clear them", async () => {
+      expect((await save({ faculty: "", department: "" })).status).toBe(200);
+      expect(prismaMock.user.update.mock.calls[0][0].data).toMatchObject({ faculty: null, department: null });
     });
   });
 

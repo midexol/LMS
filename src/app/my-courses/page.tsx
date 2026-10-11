@@ -18,6 +18,9 @@ export default async function MyCoursesPage() {
   if (!currentUser) redirect("/login");
   if (currentUser.role !== "STUDENT") redirect("/instructor");
 
+  // Students who signed up with Google (or older accounts) still need to choose a faculty and department
+  if (!currentUser.faculty || !currentUser.department) redirect("/onboarding");
+
   const enrollments = await prisma.enrollment.findMany({
     where: { studentId: currentUser.id },
     include: {

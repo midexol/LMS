@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { getCurrentUser } from "@/lib/auth";
+import { ACADEMIC_STRUCTURE } from "@/lib/academicStructure";
 
 export type Role = "STUDENT" | "TUTOR" | "ADMIN" | "SUPERADMIN";
 
@@ -24,8 +25,9 @@ export function makeUser(role: Role = "STUDENT", overrides: Partial<TestUser> = 
     name: `Test ${role}`,
     email: `${role.toLowerCase()}@test.com`,
     role,
-    faculty: null,
-    department: null,
+    // A registered student has picked a faculty and department; staff accounts need not have
+    faculty: role === "STUDENT" ? ACADEMIC_STRUCTURE[0].name : null,
+    department: role === "STUDENT" ? ACADEMIC_STRUCTURE[0].departments[0] : null,
     phone: null,
     emailVerified: true,
     ...overrides,

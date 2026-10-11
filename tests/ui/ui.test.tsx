@@ -9,7 +9,7 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
   useSearchParams: () => new URLSearchParams(),
 }));
-vi.mock("@/components/auth/PrivyAuthButton", () => ({ PrivyAuthButton: () => <div data-testid="privy-button" /> }));
+vi.mock("@/components/auth/GoogleAuthButton", () => ({ GoogleAuthButton: () => <div data-testid="google-button" /> }));
 
 import { SignupsChart } from "@/components/admin/SignupsChart";
 import LoginPage from "@/app/login/page";
@@ -108,7 +108,7 @@ describe("Login page", () => {
   it("shows the form, social login and links to reset, sign up, Terms and Privacy", () => {
     render(<LoginPage />);
     expect(screen.getByRole("heading", { name: "Sign in" })).toBeTruthy();
-    expect(screen.getByTestId("privy-button")).toBeTruthy();
+    expect(screen.getByTestId("google-button")).toBeTruthy();
     expect(screen.getByText("Forgot password?").getAttribute("href")).toBe("/forgot-password");
     expect(screen.getByText("Create one free").getAttribute("href")).toBe("/signup");
     expect(screen.getByText("Terms of Service").getAttribute("href")).toBe("/terms");
@@ -140,6 +140,7 @@ describe("Login page", () => {
     ["STUDENT", "/my-courses"],
     ["TUTOR", "/instructor"],
     ["ADMIN", "/admin"],
+    ["SUPERADMIN", "/admin"],
   ])("sends a %s to %s after signing in", async (role, destination) => {
     mockFetch({ body: { user: { role } } });
     const loc = trapNavigation();
@@ -325,10 +326,13 @@ describe("Landing page", () => {
     }
   });
 
-  it("is student-first: instructors are reached through the footer and FAQ, not a sales pitch", () => {
+  it("is student-first: instructors use the normal Sign In and ask through the FAQ, with no sales pitch", () => {
     const { container } = page();
     expect(container.textContent).not.toMatch(/Teaching a course\?/);
-    expect(screen.getByText("Instructor sign in").getAttribute("href")).toBe("/instructor/login");
+    // instructors are set up by an admin and use the normal Sign In: no instructor link is advertised to the public
+    expect(screen.queryByText("Instructor sign in")).toBeNull();
+    expect(document.querySelector('a[href="/instructor/login"]')).toBeNull();
+    expect(screen.getAllByText("Sign In").length).toBeGreaterThan(0);
   });
 
   describe("footer", () => {

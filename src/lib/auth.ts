@@ -115,3 +115,17 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     return null;
   }
 }
+
+/** Signs a user in by setting the signed, httpOnly session cookie and the role cookie. */
+export async function startSession(user: { id: string; role: string }): Promise<void> {
+  const cookieStore = await cookies();
+  const options = {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: SESSION_MAX_AGE_SECONDS,
+  };
+  cookieStore.set("lms_user_id", signSessionToken(user.id), options);
+  cookieStore.set("lms_user_role", user.role, options);
+}

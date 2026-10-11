@@ -492,7 +492,6 @@ export function LandingPage({
             <Link href="/signup" className="hover:text-white transition-colors">
               Create account
             </Link>
-            <Link href="/instructor/login" className="hover:text-white transition-colors">Instructor sign in</Link>
             <button onClick={() => setPolicyModal("contact")} className="hover:text-white transition-colors">
               Contact &amp; Support
             </button>

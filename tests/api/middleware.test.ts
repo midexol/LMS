@@ -18,14 +18,14 @@ const as = (role: string) => ({ lms_user_id: "token", lms_user_role: role });
 
 describe("route protection middleware", () => {
   describe("student pages", () => {
-    it.each(["/student/courses/abc", "/profile", "/my-courses"])("%s sends visitors to login and remembers where they were going", (path) => {
+    it.each(["/student/courses/abc", "/profile", "/my-courses", "/onboarding"])("%s sends visitors to login and remembers where they were going", (path) => {
       const r = run(path);
       expect(r.redirected).toBe(true);
       expect(r.to!.pathname).toBe("/login");
       expect(r.to!.searchParams.get("redirect")).toBe(path);
     });
 
-    it.each(["/student/courses/abc", "/profile", "/my-courses"])("%s lets signed-in users through", (path) => {
+    it.each(["/student/courses/abc", "/profile", "/my-courses", "/onboarding"])("%s lets signed-in users through", (path) => {
       expect(run(path, as("STUDENT")).passes).toBe(true);
     });
   });

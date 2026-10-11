@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FiBookOpen, FiMail, FiLock, FiLogIn, FiAlertCircle, FiEye, FiEyeOff, FiCheck, FiArrowRight } from "react-icons/fi";
 
-import { PrivyAuthButton } from "@/components/auth/PrivyAuthButton";
+import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
+import { homePathForRole } from "@/lib/roles";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function LoginPage() {
@@ -26,13 +27,7 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed.");
-      if (data.user.role === "TUTOR") {
-        window.location.href = "/instructor";
-      } else if (data.user.role === "ADMIN") {
-        window.location.href = "/admin";
-      } else {
-        window.location.href = "/my-courses";
-      }
+      window.location.href = homePathForRole(data.user.role);
     } catch (err: any) {
       setError(err.message || "Invalid credentials.");
     } finally {
@@ -91,8 +86,8 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* 1-Click Fast Login via Privy */}
-          <PrivyAuthButton label="Continue with Google, Email or Web3" />
+          {/* Sign in with Google (hidden until it is configured) */}
+          <GoogleAuthButton />
 
           <div className="relative flex items-center justify-center my-4">
             <div className="border-t border-neutral-200 w-full"></div>

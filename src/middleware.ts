@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
   const userRole = request.cookies.get("lms_user_role")?.value;
 
   // Protected student-only routes (must be logged in)
-  const studentPaths = ["/student", "/profile", "/my-courses"];
+  const studentPaths = ["/student", "/profile", "/my-courses", "/onboarding"];
   if (studentPaths.some((p) => pathname.startsWith(p))) {
     if (!isAuthenticated) {
       const loginUrl = new URL("/login", request.url);

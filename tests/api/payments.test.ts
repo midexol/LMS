@@ -75,6 +75,23 @@ describe("POST /api/payment/initialize", () => {
     expect(initializeCoursePayment).not.toHaveBeenCalled();
   });
 
+  it("requires the student to have chosen a faculty and department first (course access can depend on them)", async () => {
+    for (const missing of [{ faculty: null }, { department: null }, { faculty: null, department: null }]) {
+      loginAs("STUDENT", { emailVerified: true, ...missing });
+      const { status, body } = await start();
+      expect(status).toBe(403);
+      expect(body.code).toBe("PROFILE_INCOMPLETE");
+      expect(body.error).toMatch(/faculty and department/);
+    }
+    expect(initializeCoursePayment).not.toHaveBeenCalled();
+    expect(prismaMock.course.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("checks the profile AFTER the email, so each problem is reported once, in order", async () => {
+    loginAs("STUDENT", { emailVerified: false, faculty: null, department: null });
+    expect((await start()).body.code).toBe("EMAIL_NOT_VERIFIED");
+  });
+
   it("validates the course id and that the course exists and is published", async () => {
     expect((await start({})).status).toBe(400);
     prismaMock.course.findUnique.mockResolvedValue(null);
@@ -93,10 +110,15 @@ describe("POST /api/payment/initialize", () => {
     expect(body.error).toMatch(/Chemistry/);
   });
 
-  it("allows a student with no department, and a course with no department restriction", async () => {
+  it("a department-restricted course can no longer be reached by a student who skipped choosing a department", async () => {
     loginAs("STUDENT", { department: null });
     prismaMock.course.findUnique.mockResolvedValue(course({ department: "Chemistry" }));
-    expect((await start()).status).toBe(200);
+    const { status, body } = await start();
+    expect(status).toBe(403);
+    expect(body.code).toBe("PROFILE_INCOMPLETE");
+  });
+
+  it("a course with no department restriction is open to students of any department", async () => {
     loginAs("STUDENT", { department: "Physics" });
     prismaMock.course.findUnique.mockResolvedValue(course({ department: null }));
     expect((await start()).status).toBe(200);

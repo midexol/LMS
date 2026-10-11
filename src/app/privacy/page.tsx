@@ -17,7 +17,7 @@ const sections: LegalSection[] = [
     title: "What we collect",
     bullets: [
       "Account details: your name, email address, faculty and department, an optional phone number, the time of your last sign-in, and your password (stored only as a one-way hash, never in readable form).",
-      "Sign-in details from Privy if you use Google, email or wallet sign-in: your email address or wallet address and your name if your Google account provides it.",
+      "Sign-in details from Google if you choose \"Continue with Google\": your email address and name. We never see your Google password.",
       "Learning activity: your enrolments, lesson progress, assignment answers, scores, feedback, certificates, and discussion posts and replies.",
       "Payment records: the amount, currency, status, date and reference of each payment. Your card or bank details are handled by Paystack and are never stored by us.",
       "Messages you send us through the contact form: your name, email address, chosen topic and message.",
@@ -51,7 +51,7 @@ const sections: LegalSection[] = [
       "Supabase: our database and private file storage.",
       "Vercel: hosting of the website and its server functions.",
       "Paystack: payment processing.",
-      "Privy: sign-in with Google, email or wallet.",
+      "Google: \"Continue with Google\" sign-in.",
       "Google (Gemini) or OpenAI: automated grading, as described above.",
       "Our email delivery provider: sending the emails listed above.",
       "A rate-limiting service: short-lived counters tied to your IP address, which expire automatically within an hour.",
@@ -77,7 +77,6 @@ const sections: LegalSection[] = [
     bullets: [
       "A session cookie that keeps you signed in. It is protected from scripts, is not readable by the browser's code, and expires after 7 days.",
       "A second cookie that records your account type so pages can send you to the right dashboard.",
-      "Privy stores its own small items in your browser to keep your Privy sign-in working.",
     ],
   },
   {

@@ -32,7 +32,7 @@ const PUBLIC_ROUTES: Record<string, { why: string; protection: RegExp }> = {
   "auth/reset-password": { why: "using an emailed token", protection: /checkRateLimit/ },
   "auth/verify-email": { why: "using an emailed token", protection: /checkRateLimit/ },
   "auth/verify-email/resend": { why: "requesting a new verification email", protection: /checkRateLimit/ },
-  "auth/privy": { why: "social sign-in, proven by a Privy-verified token", protection: /verifyAuthToken/ },
+  "auth/google": { why: "Sign in with Google, proven by a Google-verified ID token", protection: /verifyIdToken/ },
   "contact": { why: "public contact form", protection: /checkRateLimit/ },
   "payment/quote": { why: "public read-only price breakdown for the checkout screen", protection: /checkRateLimit/ },
   "payment/verify": { why: "Paystack redirects the browser here; confirmation is done server-to-server", protection: /checkRateLimit/ },
@@ -186,7 +186,6 @@ describe("no hardcoded or invented data", () => {
     ["a default average of 86", /(\?\?|\|\|)\s*86\b/, "value: `${metrics.avgScore ?? 86}%`"],
     ["a made-up default grade split", /pctA:\s*40|pctB:\s*35|pctC:\s*25/, "{ pctA: 40, pctB: 35, pctC: 25 }"],
     ["a default letter grade used as data", /(\?\?|\|\|)\s*"B\+"/, 'const letter = metrics.letter || "B+";'],
-    ["placeholder Privy app ids", /placeholder_futa|clxyzplaceholder/i, 'process.env.ID || "clxyzplaceholder_futa_lms"'],
     ["example tracks used as fallback data", /cat:\s*"Software Engineering"/, '{ cat: "Software Engineering", active: 1 }'],
     ["a made-up mail sender domain", /lms-platform\.com/, 'from || "no-reply@lms-platform.com"'],
   ];
@@ -218,6 +217,13 @@ describe("no hardcoded or invented data", () => {
 
   it.each(RULES.map(([label, pattern]) => [label, pattern] as const))("source contains no %s", (_label, pattern) => {
     expect(offendersFor(pattern)).toEqual([]);
+  });
+
+  it("Privy is fully removed (no code, no packages, no settings)", () => {
+    expect(offendersFor(/privy/i)).toEqual([]);
+    const pkg = fs.readFileSync(path.join(ROOT, "package.json"), "utf-8");
+    expect(pkg).not.toMatch(/privy/i);
+    expect(fs.readFileSync(path.join(ROOT, ".env.example"), "utf-8")).not.toMatch(/privy/i);
   });
 
   it("demo account emails from the seed script appear nowhere in the app", () => {

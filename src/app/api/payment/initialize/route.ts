@@ -43,6 +43,17 @@ export async function POST(req: Request) {
       );
     }
 
+    // Courses can be limited to a department, so a student must have chosen theirs before enrolling
+    if (!currentUser.faculty || !currentUser.department) {
+      return NextResponse.json(
+        {
+          error: "Please choose your faculty and department in your profile before enrolling.",
+          code: "PROFILE_INCOMPLETE",
+        },
+        { status: 403 }
+      );
+    }
+
     const { courseId, provider } = await req.json();
     if (!courseId) {
       return NextResponse.json({ error: "Course ID is required." }, { status: 400 });

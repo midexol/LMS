@@ -112,6 +112,15 @@ export function getDepartmentsForFaculty(facultyName: string): string[] {
   return found ? found.departments : [];
 }
 
+/**
+ * True when `department` is a real department of the real faculty `faculty`.
+ * Used wherever a student picks their faculty and department, so nobody can save a made-up one.
+ */
+export function isValidFacultyAndDepartment(faculty: unknown, department: unknown): boolean {
+  if (typeof faculty !== "string" || typeof department !== "string") return false;
+  return getDepartmentsForFaculty(faculty).includes(department);
+}
+
 export function getFacultyForDepartment(deptName: string): string | undefined {
   const found = ACADEMIC_STRUCTURE.find((f) => f.departments.includes(deptName));
   return found?.name;

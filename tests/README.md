@@ -16,7 +16,7 @@ Run `npm test` before every push.
 
 - The normal suite **never touches your database**. Prisma is replaced by an in-memory fake (`tests/helpers/mocks.ts`),
   and `DATABASE_URL` is set to an unusable address. `tests/lib/safety-and-utils.test.ts` fails if that ever changes.
-- No real API keys are loaded. Paystack, Privy, Supabase, SMTP and AI calls are all faked.
+- No real API keys are loaded. Paystack, Google sign-in, Supabase, SMTP and AI calls are all faked.
 - Only `npm run test:live` uses real credentials, and it uses no database.
 
 ## What is covered
@@ -24,7 +24,7 @@ Run `npm test` before every push.
 | Folder | Covers |
 |---|---|
 | `tests/lib` | sessions and cookies, rate limiting (memory and Redis), Paystack payments and webhook signatures, **AI grading** (prompts, provider choice, fallback grader, Gemini model fallback), email (including HTML escaping), private file links |
-| `tests/api` | every API route: registration, login, password reset, email verification, Privy, grading, progress, completion/certificates, discussion, payments, announcements, course builder, grade overrides, uploads, admin tools, contact form, route protection middleware |
+| `tests/api` | every API route: registration, login, password reset, email verification, Google sign-in, grading, progress, completion/certificates, discussion, payments, announcements, course builder, grade overrides, uploads, admin tools, contact form, route protection middleware |
 | `tests/pages` | server-rendered pages: who is redirected where, what data each page loads, paid-content signing |
 | `tests/ui` | the screens in a simulated browser: login, signup, password reset, landing page and contact form, checkout, course player, student profile, catalog, instructor studio, course builder, admin dashboard |
 | `tests/contracts` | rules over the **whole codebase**: every route checks authentication unless explicitly public, no error text leaks, rate limits are awaited, security headers, schema matches the code, no invented institutional claims in user-facing text |
@@ -39,5 +39,5 @@ Run `npm test` before every push.
 ## Known limits
 
 - These tests use a fake database, so they cannot catch a wrong Prisma query shape or a missing column. Try new database-touching features once against a real database.
-- Real Paystack, Privy, Supabase uploads and email delivery are not exercised.
+- Real Paystack, Google sign-in, Supabase uploads and email delivery are not exercised.
 - The tests run in a simulated browser; they do not check how pages look, or real mobile behaviour.

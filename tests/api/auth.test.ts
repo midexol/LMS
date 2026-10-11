@@ -3,18 +3,6 @@ import bcrypt from "bcryptjs";
 import { prismaMock, mailMock, cookieJar } from "../helpers/mocks";
 import { call, makeRequest } from "../helpers/http";
 
-/* Fake Privy server SDK: tests decide what Privy says about a token. */
-const privy = vi.hoisted(() => ({
-  verify: vi.fn(),
-  getUser: vi.fn(),
-}));
-vi.mock("@privy-io/server-auth", () => ({
-  PrivyClient: class {
-    verifyAuthToken = privy.verify;
-    getUser = privy.getUser;
-  },
-}));
-
 import { POST as register } from "@/app/api/auth/register/route";
 import { POST as login } from "@/app/api/auth/login/route";
 import { POST as logout, GET as logoutGet } from "@/app/api/auth/logout/route";
@@ -22,7 +10,6 @@ import { POST as forgotPassword } from "@/app/api/auth/forgot-password/route";
 import { POST as resetPassword } from "@/app/api/auth/reset-password/route";
 import { POST as verifyEmail } from "@/app/api/auth/verify-email/route";
 import { POST as resendVerification } from "@/app/api/auth/verify-email/resend/route";
-import { POST as privyLogin } from "@/app/api/auth/privy/route";
 import { verifySessionToken } from "@/lib/auth";
 
 const HOUR = 60 * 60 * 1000;
@@ -403,80 +390,3 @@ describe("POST /api/auth/verify-email/resend", () => {
   });
 });
 
-/* ───────────────────────────── Privy sign-in ───────────────────────────── */
-describe("POST /api/auth/privy", () => {
-  const bearer = (t = "good-token") => ({ authorization: `Bearer ${t}` });
-
-  beforeEach(() => {
-    vi.stubEnv("NEXT_PUBLIC_PRIVY_APP_ID", "app_id");
-    vi.stubEnv("PRIVY_APP_SECRET", "app_secret");
-    privy.verify.mockReset();
-    privy.getUser.mockReset();
-    privy.verify.mockResolvedValue({ userId: "did:privy:abc" });
-    privy.getUser.mockResolvedValue({ email: { address: "Ada@Test.com" }, google: { name: "Ada Obi" } });
-    prismaMock.user.findUnique.mockResolvedValue(null);
-    prismaMock.user.create.mockImplementation(async ({ data }: any) => ({ id: "privy_user", ...data }));
-    prismaMock.user.update.mockImplementation(async ({ data, where }: any) => ({ id: where.id, role: "STUDENT", email: "ada@test.com", ...data }));
-  });
-
-  it("refuses requests with no token, so a spoofed email in the body is useless", async () => {
-    const { status } = await call(privyLogin, "/api/auth/privy", { body: { email: "admin@lms.com" } });
-    expect(status).toBe(401);
-    expect(prismaMock.user.findUnique).not.toHaveBeenCalled();
-    expect(cookieJar.has("lms_user_id")).toBe(false);
-  });
-
-  it("refuses a token Privy does not accept", async () => {
-    privy.verify.mockRejectedValue(new Error("invalid signature"));
-    const { status } = await call(privyLogin, "/api/auth/privy", { headers: bearer("forged"), body: { email: "admin@lms.com" } });
-    expect(status).toBe(401);
-    expect(cookieJar.has("lms_user_id")).toBe(false);
-  });
-
-  it("takes the identity from Privy, never from the request body", async () => {
-    await call(privyLogin, "/api/auth/privy", { headers: bearer(), body: { email: "admin@lms.com", name: "Mallory" } });
-    expect(prismaMock.user.findUnique).toHaveBeenCalledWith({ where: { email: "ada@test.com" } });
-    expect(prismaMock.user.create.mock.calls[0][0].data).toMatchObject({ email: "ada@test.com", name: "Ada Obi" });
-    expect(privy.verify).toHaveBeenCalledWith("good-token");
-    expect(privy.getUser).toHaveBeenCalledWith("did:privy:abc");
-  });
-
-  it("creates a verified STUDENT account for a new Privy user and signs them in", async () => {
-    const { status, body } = await call(privyLogin, "/api/auth/privy", { headers: bearer() });
-    expect(status).toBe(200);
-    expect(prismaMock.user.create.mock.calls[0][0].data).toMatchObject({ role: "STUDENT", emailVerified: true });
-    expect(body.user).not.toHaveProperty("password");
-    expect(verifySessionToken(cookieJar.get("lms_user_id")!.value)?.userId).toBe("privy_user");
-  });
-
-  it("signs an existing user in without creating a duplicate, keeping their role", async () => {
-    prismaMock.user.findUnique.mockResolvedValue({ id: "tutor_9", role: "TUTOR", email: "ada@test.com" });
-    prismaMock.user.update.mockResolvedValue({ id: "tutor_9", role: "TUTOR", email: "ada@test.com" });
-    await call(privyLogin, "/api/auth/privy", { headers: bearer() });
-    expect(prismaMock.user.create).not.toHaveBeenCalled();
-    expect(cookieJar.get("lms_user_role")!.value).toBe("TUTOR");
-  });
-
-  it("supports wallet-only users with a derived identifier", async () => {
-    privy.getUser.mockResolvedValue({ wallet: { address: "0xABCDEF1234567890" } });
-    await call(privyLogin, "/api/auth/privy", { headers: bearer() });
-    expect(prismaMock.user.create.mock.calls[0][0].data).toMatchObject({
-      email: "0xabcdef1234567890@wallet.privy",
-      name: "Student 0xABCD",
-    });
-  });
-
-  it("rejects Privy users that have neither an email nor a wallet", async () => {
-    privy.getUser.mockResolvedValue({});
-    expect((await call(privyLogin, "/api/auth/privy", { headers: bearer() })).status).toBe(400);
-  });
-
-  it("reports a configuration problem instead of silently trusting anyone", async () => {
-    vi.resetModules();
-    vi.stubEnv("PRIVY_APP_SECRET", "");
-    const fresh = await import("@/app/api/auth/privy/route");
-    const { status } = await call(fresh.POST, "/api/auth/privy", { headers: bearer() });
-    expect(status).toBe(500);
-    expect(cookieJar.has("lms_user_id")).toBe(false);
-  });
-});

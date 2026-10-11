@@ -8,7 +8,7 @@ import {
 } from "react-icons/fi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
-import { PrivyAuthButton } from "@/components/auth/PrivyAuthButton";
+import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function SignupPage() {
@@ -156,8 +156,8 @@ export default function SignupPage() {
             </div>
           )}
 
-          {/* 1-Click Signup via Privy */}
-          <PrivyAuthButton label="1-Click Sign Up with Google / Web3" />
+          {/* Sign up with Google (hidden until it is configured); new Google students pick their faculty next */}
+          <GoogleAuthButton />
 
           <div className="relative flex items-center justify-center my-4">
             <div className="border-t border-neutral-200 w-full"></div>

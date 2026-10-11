@@ -4,6 +4,7 @@ import { getCurrentUser, signSessionToken, SESSION_MAX_AGE_SECONDS } from "@/lib
 import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { cookies } from "next/headers";
 import { normalizePhone } from "@/lib/utils";
+import { ALL_FACULTIES, isValidFacultyAndDepartment } from "@/lib/academicStructure";
 import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
@@ -32,6 +33,18 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Please enter a valid phone number, or leave it blank." }, { status: 400 });
       }
       updateData.phone = cleanPhone;
+    }
+
+    // A faculty and department that are set must be real and belong together
+    if (faculty !== undefined || department !== undefined) {
+      const nextFaculty = faculty !== undefined ? (faculty ? String(faculty).trim() : null) : currentUser.faculty ?? null;
+      const nextDepartment = department !== undefined ? (department ? String(department).trim() : null) : currentUser.department ?? null;
+      if (nextFaculty && !ALL_FACULTIES.includes(nextFaculty)) {
+        return NextResponse.json({ error: "Please choose a faculty from the list." }, { status: 400 });
+      }
+      if (nextDepartment && !isValidFacultyAndDepartment(nextFaculty, nextDepartment)) {
+        return NextResponse.json({ error: "Please choose a department that belongs to your faculty." }, { status: 400 });
+      }
     }
 
     if (faculty !== undefined) {

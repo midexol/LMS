@@ -33,6 +33,8 @@ import AdminUserDetailPage from "@/app/admin/users/[id]/page";
 import CoursePlayerPage from "@/app/student/courses/[courseId]/page";
 import CoursePreviewPage from "@/app/courses/[courseId]/page";
 import CoursesCatalogPage from "@/app/courses/page";
+import OnboardingPage from "@/app/onboarding/page";
+import { OnboardingClient } from "@/app/onboarding/OnboardingClient";
 import { LandingPage } from "@/app/LandingPage";
 
 async function destination(run: () => Promise<unknown>): Promise<string> {
@@ -231,6 +233,52 @@ describe("/instructor dashboard figures", () => {
     prismaMock.course.findMany.mockResolvedValue([]);
     await InstructorPage({});
     expect(prismaMock.course.findMany.mock.calls[0][0].where).toEqual({ tutorId: tutor.id });
+  });
+});
+
+describe("/onboarding (choose faculty and department)", () => {
+  it("sends visitors to login", async () => {
+    loginAs(null);
+    expect(await destination(() => OnboardingPage())).toBe("→ /login");
+  });
+
+  it.each([
+    ["TUTOR", "→ /instructor"],
+    ["ADMIN", "→ /admin"],
+    ["SUPERADMIN", "→ /admin"],
+  ] as const)("is not for a %s: they are sent to %s", async (role, expected) => {
+    loginAs(role);
+    expect(await destination(() => OnboardingPage())).toBe(expected);
+  });
+
+  it("skips students who already chose (nothing to ask twice)", async () => {
+    loginAs("STUDENT"); // the helper gives students a faculty and department
+    expect(await destination(() => OnboardingPage())).toBe("→ /my-courses");
+  });
+
+  it.each([
+    ["no faculty", { faculty: null }],
+    ["no department", { department: null }],
+    ["neither", { faculty: null, department: null }],
+  ])("asks a student with %s", async (_label, missing) => {
+    loginAs("STUDENT", { name: "Ada Obi", email: "ada@gmail.com", ...missing });
+    const element: any = await OnboardingPage();
+    expect(element.type).toBe(OnboardingClient);
+    expect(element.props).toEqual({ name: "Ada Obi", email: "ada@gmail.com" });
+  });
+});
+
+describe("/my-courses requires a faculty and department", () => {
+  it("sends a student without them to onboarding BEFORE loading anything", async () => {
+    loginAs("STUDENT", { faculty: null, department: null });
+    expect(await destination(() => MyCoursesPage())).toBe("→ /onboarding");
+    expect(prismaMock.enrollment.findMany).not.toHaveBeenCalled();
+  });
+
+  it("lets a student who has them in", async () => {
+    loginAs("STUDENT");
+    prismaMock.enrollment.findMany.mockResolvedValue([]);
+    expect(await destination(() => MyCoursesPage())).toBe("RENDERED");
   });
 });
 

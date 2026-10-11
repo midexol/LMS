@@ -87,6 +87,53 @@ describe("signSessionToken / verifySessionToken", () => {
   });
 });
 
+describe("startSession (used by Sign in with Google)", () => {
+  it("sets a signed session cookie that getCurrentUser accepts, plus a role cookie", async () => {
+    const { startSession } = auth;
+    await startSession({ id: "user_7", role: "STUDENT" });
+    expect(verifySessionToken(cookieJar.get("lms_user_id")!.value)?.userId).toBe("user_7");
+    expect(cookieJar.get("lms_user_role")!.value).toBe("STUDENT");
+  });
+
+  it("makes both cookies httpOnly, lax, 7 days", async () => {
+    await auth.startSession({ id: "user_7", role: "TUTOR" });
+    for (const name of ["lms_user_id", "lms_user_role"]) {
+      expect(cookieJar.options(name)).toMatchObject({ httpOnly: true, sameSite: "lax", path: "/", maxAge: 604800 });
+    }
+  });
+
+  it("marks them Secure in production only", async () => {
+    await auth.startSession({ id: "u", role: "STUDENT" });
+    expect(cookieJar.options("lms_user_id")).toMatchObject({ secure: false });
+    vi.stubEnv("NODE_ENV", "production");
+    await auth.startSession({ id: "u", role: "STUDENT" });
+    expect(cookieJar.options("lms_user_id")).toMatchObject({ secure: true });
+  });
+});
+
+describe("homePathForRole", () => {
+  it("sends each kind of user to their own area", async () => {
+    const { homePathForRole } = await import("@/lib/roles");
+    expect(homePathForRole("STUDENT")).toBe("/my-courses");
+    expect(homePathForRole("TUTOR")).toBe("/instructor");
+    expect(homePathForRole("ADMIN")).toBe("/admin");
+    expect(homePathForRole("SUPERADMIN")).toBe("/admin");
+    expect(homePathForRole(undefined)).toBe("/my-courses");
+  });
+});
+
+describe("isValidFacultyAndDepartment", () => {
+  it("accepts matching pairs only", async () => {
+    const { isValidFacultyAndDepartment, ACADEMIC_STRUCTURE } = await import("@/lib/academicStructure");
+    const [a, b] = ACADEMIC_STRUCTURE;
+    expect(isValidFacultyAndDepartment(a.name, a.departments[0])).toBe(true);
+    expect(isValidFacultyAndDepartment(a.name, b.departments[0])).toBe(false);
+    expect(isValidFacultyAndDepartment("Nope", a.departments[0])).toBe(false);
+    expect(isValidFacultyAndDepartment(null, a.departments[0])).toBe(false);
+    expect(isValidFacultyAndDepartment(a.name, undefined)).toBe(false);
+  });
+});
+
 describe("getCurrentUser", () => {
   const dbUser = {
     id: "user_1",

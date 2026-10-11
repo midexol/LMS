@@ -56,12 +56,16 @@ describe("Content-Security-Policy", () => {
     expect(csp["connect-src"]).toContain("https://api.paystack.co");
   });
 
-  it("allows what Privy sign-in needs (its API, its popup frames and its bot check)", () => {
-    expect(csp["script-src"]).toContain("https://auth.privy.io");
-    expect(csp["frame-src"]).toContain("https://auth.privy.io");
-    expect(csp["connect-src"]).toContain("https://auth.privy.io");
-    expect(csp["script-src"]).toContain("https://challenges.cloudflare.com");
-    expect(csp["frame-src"]).toContain("https://challenges.cloudflare.com");
+  it("allows Google's sign-in button (script, frames, styles and its API)", () => {
+    expect(csp["script-src"]).toContain("https://accounts.google.com/gsi/client");
+    expect(csp["frame-src"]).toContain("https://accounts.google.com/gsi/");
+    expect(csp["connect-src"]).toContain("https://accounts.google.com/gsi/");
+    expect(csp["style-src"]).toContain("https://accounts.google.com/gsi/style");
+  });
+
+  it("no longer lists Privy, WalletConnect or Cloudflare hosts", () => {
+    const all = Object.values(csp).flat().join(" ");
+    expect(all).not.toMatch(/privy|walletconnect|cloudflare|walletlink/i);
   });
 
   it("allows Supabase for direct uploads and lesson video playback", () => {
