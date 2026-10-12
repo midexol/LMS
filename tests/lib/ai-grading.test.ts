@@ -4,10 +4,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
    prompt builders run for real. */
 vi.mock("@/lib/ai/gemini", () => ({ gradeWithGemini: vi.fn() }));
 vi.mock("@/lib/ai/openai", () => ({ gradeWithOpenAI: vi.fn() }));
+vi.mock("@/lib/ai/chatProviders", async (orig) => ({
+  ...(await orig<typeof import("@/lib/ai/chatProviders")>()),
+  gradeWithChatProvider: vi.fn(),
+}));
 
 import { evaluateSubmissionAI } from "@/lib/ai";
 import { gradeWithGemini } from "@/lib/ai/gemini";
 import { gradeWithOpenAI } from "@/lib/ai/openai";
+import { gradeWithChatProvider } from "@/lib/ai/chatProviders";
 import { buildGradingSystemPrompt, buildGradingUserPrompt } from "@/lib/ai/gradingPrompt";
 
 const QUESTION = "Explain photosynthesis.";
@@ -20,6 +25,7 @@ const BAD_ANSWER = "I like football and my favourite team won the match yesterda
 beforeEach(() => {
   vi.mocked(gradeWithGemini).mockReset();
   vi.mocked(gradeWithOpenAI).mockReset();
+  vi.mocked(gradeWithChatProvider).mockReset();
 });
 
 describe("grading prompts", () => {
@@ -100,12 +106,42 @@ describe("evaluateSubmissionAI: provider selection", () => {
     expect(result.feedback).toMatch(/Automated Evaluation Summary/);
   });
 
-  it("ignores a key for a provider that is not selected", async () => {
+  it("uses Groq when AI_PROVIDER=groq", async () => {
+    vi.stubEnv("AI_PROVIDER", "groq");
+    vi.stubEnv("GROQ_API_KEY", "q-key");
+    vi.mocked(gradeWithChatProvider).mockResolvedValue({ score: 77, feedback: "groq says" });
+    const result = await evaluateSubmissionAI(QUESTION, REFERENCE, GOOD_ANSWER, 100);
+    expect(result).toEqual({ score: 77, feedback: "groq says" });
+    expect(vi.mocked(gradeWithChatProvider).mock.calls[0][0]).toBe("groq");
+    expect(vi.mocked(gradeWithChatProvider).mock.calls[0][5]).toBe("q-key");
+  });
+
+  it("uses OpenRouter when AI_PROVIDER=openrouter", async () => {
+    vi.stubEnv("AI_PROVIDER", "openrouter");
+    vi.stubEnv("OPENROUTER_API_KEY", "r-key");
+    vi.mocked(gradeWithChatProvider).mockResolvedValue({ score: 60, feedback: "router says" });
+    const result = await evaluateSubmissionAI(QUESTION, REFERENCE, GOOD_ANSWER, 100);
+    expect(result.score).toBe(60);
+    expect(vi.mocked(gradeWithChatProvider).mock.calls[0][0]).toBe("openrouter");
+  });
+
+  it("falls through to another configured provider when the chosen one fails (rate limit)", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("AI_PROVIDER", "gemini");
+    vi.stubEnv("GEMINI_API_KEY", "g-key");
+    vi.stubEnv("GROQ_API_KEY", "q-key");
+    vi.mocked(gradeWithGemini).mockRejectedValue(new Error("429"));
+    vi.mocked(gradeWithChatProvider).mockResolvedValue({ score: 55, feedback: "backup" });
+    const result = await evaluateSubmissionAI(QUESTION, REFERENCE, GOOD_ANSWER, 100);
+    expect(result).toEqual({ score: 55, feedback: "backup" });
+  });
+
+  it("does not call a provider that has no key", async () => {
     vi.stubEnv("AI_PROVIDER", "openai");
-    vi.stubEnv("GEMINI_API_KEY", "g-key"); // wrong provider's key only
     await evaluateSubmissionAI(QUESTION, REFERENCE, GOOD_ANSWER, 100);
     expect(gradeWithGemini).not.toHaveBeenCalled();
     expect(gradeWithOpenAI).not.toHaveBeenCalled();
+    expect(gradeWithChatProvider).not.toHaveBeenCalled();
   });
 });
 

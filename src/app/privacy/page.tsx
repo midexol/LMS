@@ -38,7 +38,7 @@ const sections: LegalSection[] = [
   {
     title: "Automated grading and AI services",
     paragraphs: [
-      "Assignments are graded by an artificial-intelligence service, either Google Gemini or OpenAI, depending on how the platform is configured. To grade an answer we send that service the assignment question, the tutor's reference answer and rubric, and your answer. We do not send your name or email address with it.",
+      "Assignments are graded by an artificial-intelligence service, one of Google Gemini, OpenAI, Groq or OpenRouter, depending on how the platform is configured. To grade an answer we send that service the assignment question, the tutor's reference answer and rubric, and your answer. We do not send your name or email address with it.",
       "Tutors may also use an AI assistant to help draft course outlines. Tutors and administrators can review and override any automated score. If no AI service is available, a simple built-in keyword grader is used instead, and nothing leaves our systems.",
     ],
   },
@@ -52,7 +52,7 @@ const sections: LegalSection[] = [
       "Vercel: hosting of the website and its server functions.",
       "Paystack: payment processing.",
       "Google: \"Continue with Google\" sign-in.",
-      "Google (Gemini) or OpenAI: automated grading, as described above.",
+      "Google (Gemini), OpenAI, Groq or OpenRouter: automated grading, as described above.",
       "Our email delivery provider: sending the emails listed above.",
       "A rate-limiting service: short-lived counters tied to your IP address, which expire automatically within an hour.",
     ],

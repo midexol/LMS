@@ -1,5 +1,6 @@
 import { gradeWithGemini } from "./gemini";
 import { gradeWithOpenAI } from "./openai";
+import { gradeWithChatProvider, isChatProvider, CHAT_PROVIDERS } from "./chatProviders";
 
 export interface EvaluationResult {
   score: number;
@@ -13,22 +14,25 @@ export async function evaluateSubmissionAI(
   maxScore: number
 ): Promise<EvaluationResult> {
   const provider = (process.env.AI_PROVIDER || "gemini").toLowerCase();
-  const geminiKey = process.env.GEMINI_API_KEY;
-  const openAIKey = process.env.OPENAI_API_KEY;
 
-  if (provider === "gemini" && geminiKey) {
-    try {
-      return await gradeWithGemini(assignmentPrompt, referenceAnswer, studentAnswer, maxScore, geminiKey);
-    } catch (err) {
-      console.warn("[AI GRADINGS] Gemini failed, falling back to heuristic grader.", err);
-    }
-  }
+  // The chosen provider goes first. If it fails (for example a rate limit), any other provider that has a key
+  // configured gets a turn before the keyword grader, so a busy provider does not stop grading.
+  const order = [provider, "gemini", "openai", "groq", "openrouter"].filter((p, i, all) => all.indexOf(p) === i);
 
-  if (provider === "openai" && openAIKey) {
+  for (const name of order) {
     try {
-      return await gradeWithOpenAI(assignmentPrompt, referenceAnswer, studentAnswer, maxScore, openAIKey);
+      if (name === "gemini" && process.env.GEMINI_API_KEY) {
+        return await gradeWithGemini(assignmentPrompt, referenceAnswer, studentAnswer, maxScore, process.env.GEMINI_API_KEY);
+      }
+      if (name === "openai" && process.env.OPENAI_API_KEY) {
+        return await gradeWithOpenAI(assignmentPrompt, referenceAnswer, studentAnswer, maxScore, process.env.OPENAI_API_KEY);
+      }
+      if (isChatProvider(name)) {
+        const key = process.env[CHAT_PROVIDERS[name].keyEnv];
+        if (key) return await gradeWithChatProvider(name, assignmentPrompt, referenceAnswer, studentAnswer, maxScore, key);
+      }
     } catch (err) {
-      console.warn("[AI GRADINGS] OpenAI failed, falling back to heuristic grader.", err);
+      console.warn(`[AI GRADINGS] ${name} failed, trying the next provider.`, err);
     }
   }
 
