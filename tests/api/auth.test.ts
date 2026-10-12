@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import bcrypt from "bcryptjs";
 import { prismaMock, mailMock, cookieJar } from "../helpers/mocks";
 import { call, makeRequest } from "../helpers/http";
@@ -205,6 +205,51 @@ describe("POST /api/auth/login", () => {
     const { status, body } = await call(login, "/api/auth/login", { body: { email: "a@test.com", password: "x" } });
     expect(status).toBe(500);
     expect(JSON.stringify(body)).not.toContain("10.0.0.5");
+  });
+});
+
+/* ───────────────── REQUIRE_EMAIL_VERIFICATION ───────────────── */
+describe("required email verification", () => {
+  const student = (verified: boolean, role = "STUDENT") => ({ id: "u_1", name: "Ada", email: "ada@test.com", role, password: passwordHash, emailVerified: verified });
+
+  beforeEach(() => {
+    vi.stubEnv("REQUIRE_EMAIL_VERIFICATION", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("blocks an unverified student at login and sets no session", async () => {
+    prismaMock.user.findUnique.mockResolvedValue(student(false));
+    const { status, body } = await call(login, "/api/auth/login", { body: { email: "ada@test.com", password: "correct-horse" } });
+    expect(status).toBe(403);
+    expect(body.code).toBe("EMAIL_NOT_VERIFIED");
+    expect(cookieJar.has("lms_user_id")).toBe(false);
+    expect(prismaMock.user.update).not.toHaveBeenCalled();
+  });
+
+  it("still lets a verified student, and unverified staff, sign in", async () => {
+    prismaMock.user.findUnique.mockResolvedValue(student(true));
+    expect((await call(login, "/api/auth/login", { body: { email: "ada@test.com", password: "correct-horse" } })).status).toBe(200);
+    prismaMock.user.findUnique.mockResolvedValue(student(false, "ADMIN"));
+    expect((await call(login, "/api/auth/login", { body: { email: "ada@test.com", password: "correct-horse" } })).status).toBe(200);
+  });
+
+  it("does not sign a new student in on register; they must verify first", async () => {
+    prismaMock.user.findUnique.mockResolvedValue(null);
+    prismaMock.user.create.mockImplementation(async ({ data }: any) => ({ id: "new_user_1", createdAt: new Date(), ...data }));
+    const { status, body } = await call(register, "/api/auth/register", {
+      body: { name: "Ada Obi", email: "new@test.com", password: "secret12", faculty: "Science", department: "Chemistry" },
+    });
+    expect(status).toBe(200);
+    expect(body).toEqual({ success: true, needsVerification: true });
+    expect(cookieJar.has("lms_user_id")).toBe(false);
+  });
+
+  it("does nothing when the flag is off", async () => {
+    vi.stubEnv("REQUIRE_EMAIL_VERIFICATION", "");
+    prismaMock.user.findUnique.mockResolvedValue(student(false));
+    expect((await call(login, "/api/auth/login", { body: { email: "ada@test.com", password: "correct-horse" } })).status).toBe(200);
   });
 });
 

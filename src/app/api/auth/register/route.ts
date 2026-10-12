@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { signSessionToken } from "@/lib/auth";
+import { signSessionToken, mustVerifyEmail } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { sendVerificationEmail } from "@/lib/mail";
 
@@ -97,6 +97,11 @@ export async function POST(req: Request) {
       });
     } catch (emailError) {
       console.error("[REGISTER VERIFICATION EMAIL FAILED]", emailError);
+    }
+
+    // With verification required, the student signs in only after confirming their email
+    if (mustVerifyEmail(newUser)) {
+      return NextResponse.json({ success: true, needsVerification: true });
     }
 
     const cookieStore = await cookies();

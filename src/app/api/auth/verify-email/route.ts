@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendWelcomeEmail } from "@/lib/mail";
+import { getAppUrl } from "@/lib/utils";
 import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/rateLimit";
 
 const VERIFY_RATE_LIMIT = { limit: 10, windowMs: 15 * 60 * 1000 };
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
 
     // Send the custom designed Welcome Onboarding email
     try {
-      const origin = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      const origin = getAppUrl();
       await sendWelcomeEmail(updatedUser.email, {
         userName: updatedUser.name,
         dashboardUrl: `${origin}/my-courses`,

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { signSessionToken } from "@/lib/auth";
+import { signSessionToken, mustVerifyEmail } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
@@ -35,6 +35,16 @@ export async function POST(req: Request) {
 
     if (!passwordMatch) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+    }
+
+    if (mustVerifyEmail(user)) {
+      return NextResponse.json(
+        {
+          error: "Please verify your email before signing in. Check your inbox for the verification link, or request a new one.",
+          code: "EMAIL_NOT_VERIFIED",
+        },
+        { status: 403 }
+      );
     }
 
     await prisma.user.update({

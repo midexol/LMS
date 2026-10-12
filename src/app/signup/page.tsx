@@ -21,6 +21,7 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
+  const [needsVerification, setNeedsVerification] = useState(false);
 
   const departments = faculty ? getDepartmentsForFaculty(faculty) : [];
   const passwordTooShort = password.length > 0 && password.length < MIN_PASSWORD;
@@ -47,6 +48,7 @@ export default function SignupPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed.");
+      setNeedsVerification(data.needsVerification === true);
       setRegisteredEmail(email);
     } catch (err: any) {
       setError(err.message || "Failed to create account.");
@@ -71,10 +73,16 @@ export default function SignupPage() {
             <p className="text-sm text-neutral-600">We sent a verification link to</p>
             <p className="text-sm font-bold text-[#4A1A45] break-all bg-neutral-50 py-2 px-3 rounded-xl border border-neutral-200">{registeredEmail}</p>
             <p className="text-xs text-neutral-500 leading-relaxed">
-              You can browse courses now, but you must verify your email before you can enroll and pay.
+              {needsVerification
+                ? "Open the link in that email to activate your account, then sign in."
+                : "You can browse courses now, but you must verify your email before you can enroll and pay."}
             </p>
           </div>
-          <Link href="/courses" className={`${authButtonClass} inline-block`}>Browse Courses</Link>
+          {needsVerification ? (
+            <Link href="/login" className={`${authButtonClass} inline-block`}>Go to Sign In</Link>
+          ) : (
+            <Link href="/courses" className={`${authButtonClass} inline-block`}>Browse Courses</Link>
+          )}
         </div>
       ) : (
         <div className="space-y-6">

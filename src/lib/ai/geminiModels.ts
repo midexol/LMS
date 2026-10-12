@@ -26,6 +26,22 @@ function isModelUnavailable(err: unknown): boolean {
   );
 }
 
+/**
+ * True when this model is rate limited or overloaded right now (429 / 503). Each Gemini model has its own quota,
+ * so another model may well answer; the model is not broken, so it is not forgotten.
+ */
+function isBusy(err: unknown): boolean {
+  const message = String((err as { message?: unknown })?.message ?? err).toLowerCase();
+  return (
+    message.includes("429") ||
+    message.includes("503") ||
+    message.includes("quota") ||
+    message.includes("too many requests") ||
+    message.includes("overloaded") ||
+    message.includes("unavailable")
+  );
+}
+
 let workingModel: string | null = null;
 
 export async function generateWithGemini(
@@ -52,9 +68,10 @@ export async function generateWithGemini(
       return result.response.text();
     } catch (err) {
       lastError = err;
-      if (!isModelUnavailable(err)) throw err;
-      console.warn(`[AI] Gemini model ${name} is unavailable, trying the next one.`);
-      if (workingModel === name) workingModel = null;
+      const gone = isModelUnavailable(err);
+      if (!gone && !isBusy(err)) throw err;
+      console.warn(`[AI] Gemini model ${name} is ${gone ? "unavailable" : "busy or rate limited"}, trying the next one.`);
+      if (gone && workingModel === name) workingModel = null;
     }
   }
   throw lastError;

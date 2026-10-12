@@ -13,6 +13,15 @@ export interface SessionUser {
   emailVerified: boolean;
 }
 
+/**
+ * When REQUIRE_EMAIL_VERIFICATION is "true", students cannot sign in (and existing sessions stop working)
+ * until they confirm their email. Leave it off until outgoing email can reach every student.
+ * Staff accounts are created by admins and are not held back.
+ */
+export function mustVerifyEmail(user: { role: string; emailVerified: boolean }): boolean {
+  return process.env.REQUIRE_EMAIL_VERIFICATION === "true" && user.role === "STUDENT" && !user.emailVerified;
+}
+
 const DEV_SESSION_SECRET = "dev_only_insecure_session_secret";
 
 /**
@@ -99,6 +108,8 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     if (user.sessionsValidAfter && session.issuedAt < user.sessionsValidAfter.getTime()) {
       return null;
     }
+
+    if (mustVerifyEmail(user)) return null;
 
     return {
       id: user.id,

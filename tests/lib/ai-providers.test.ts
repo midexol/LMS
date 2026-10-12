@@ -104,12 +104,33 @@ describe("Gemini model fallback (geminiModels)", () => {
     expect(gemini.calls.map((c) => c.model)).toEqual(["gemini-3.5-flash-lite"]);
   });
 
-  it("does NOT fall back on rate limits or outages: those errors surface immediately", async () => {
+  it("moves to the next model when one is rate limited or overloaded", async () => {
     const { models } = await fresh();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    gemini.handler = (model) => {
+      if (model === "gemini-3.8-flash") throw new Error("[429 Too Many Requests] quota exceeded");
+      return "ok";
+    };
+    await expect(models.generateWithGemini("key", "p")).resolves.toBe("ok");
+    expect(gemini.calls).toHaveLength(2);
+  });
+
+  it("surfaces the error when every model is rate limited", async () => {
+    const { models } = await fresh();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     gemini.handler = () => {
       throw new Error("[429 Too Many Requests] quota exceeded");
     };
     await expect(models.generateWithGemini("key", "p")).rejects.toThrow(/429/);
+    expect(gemini.calls).toHaveLength(3);
+  });
+
+  it("does not fall back on other errors (bad key, bad request)", async () => {
+    const { models } = await fresh();
+    gemini.handler = () => {
+      throw new Error("[400 Bad Request] API key not valid");
+    };
+    await expect(models.generateWithGemini("key", "p")).rejects.toThrow(/400/);
     expect(gemini.calls).toHaveLength(1);
   });
 

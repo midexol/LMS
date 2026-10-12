@@ -14,11 +14,13 @@ export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [unverified, setUnverified] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setUnverified(false);
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -26,6 +28,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
+      if (data.code === "EMAIL_NOT_VERIFIED") setUnverified(true);
       if (!res.ok) throw new Error(data.error || "Login failed.");
       window.location.href = homePathForRole(data.user.role);
     } catch (err: any) {
@@ -48,6 +51,11 @@ export default function LoginPage() {
         </div>
 
         {error && <AuthError message={error} />}
+        {unverified && (
+          <p className="text-sm text-neutral-600">
+            <Link href="/verify-email" className="font-semibold text-[#4A1A45] hover:underline">Send me a new verification email</Link>
+          </p>
+        )}
 
         <GoogleAuthButton dividerLabel="or use your email" />
 
