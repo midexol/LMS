@@ -22,6 +22,18 @@ export function mustVerifyEmail(user: { role: string; emailVerified: boolean }):
   return process.env.REQUIRE_EMAIL_VERIFICATION === "true" && user.role === "STUDENT" && !user.emailVerified;
 }
 
+/**
+ * The user as it is safe to send to a browser: never the password hash or the one-time email
+ * verification and password reset tokens. Registration is open to anyone, so a leaked
+ * verification token would let a stranger "verify" an email address they do not own.
+ */
+export function toPublicUser<T extends Record<string, unknown>>(user: T) {
+  const { password: _pw, verificationToken: _vt, verificationTokenExpiry: _vte, resetToken: _rt, resetTokenExpiry: _rte, ...safe } = user as T & {
+    password?: unknown; verificationToken?: unknown; verificationTokenExpiry?: unknown; resetToken?: unknown; resetTokenExpiry?: unknown;
+  };
+  return safe;
+}
+
 const DEV_SESSION_SECRET = "dev_only_insecure_session_secret";
 
 /**

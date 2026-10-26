@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { signSessionToken, mustVerifyEmail } from "@/lib/auth";
+import { signSessionToken, mustVerifyEmail, toPublicUser } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
@@ -69,8 +69,7 @@ export async function POST(req: Request) {
     });
 
     // Return user without password
-    const { password: _pw, ...safeUser } = user;
-    return NextResponse.json({ success: true, user: safeUser });
+    return NextResponse.json({ success: true, user: toPublicUser(user) });
   } catch (error: any) {
     console.error("[LOGIN API ERROR]", error);
     return NextResponse.json({ error: "Failed to log in." }, { status: 500 });

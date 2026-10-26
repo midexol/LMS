@@ -3,7 +3,7 @@ import { OAuth2Client } from "google-auth-library";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
-import { startSession } from "@/lib/auth";
+import { startSession, toPublicUser } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/rateLimit";
 
 const GOOGLE_AUTH_RATE_LIMIT = { limit: 10, windowMs: 60 * 1000 };
@@ -82,8 +82,7 @@ export async function POST(req: Request) {
     // Students must tell us their faculty and department before they can enroll
     const needsProfile = user.role === "STUDENT" && (!user.faculty || !user.department);
 
-    const { password: _pw, ...safeUser } = user;
-    return NextResponse.json({ success: true, user: safeUser, needsProfile });
+    return NextResponse.json({ success: true, user: toPublicUser(user), needsProfile });
   } catch (error) {
     console.error("[GOOGLE AUTH API ERROR]", error);
     return NextResponse.json({ error: "Failed to sign in with Google." }, { status: 500 });

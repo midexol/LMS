@@ -78,6 +78,16 @@ describe("POST /api/auth/register", () => {
     expect(mailData.verifyUrl).toBe(`https://lms.test/verify-email?token=${data.verificationToken}`);
   });
 
+  it("never sends the password hash or the email verification token back to the browser", async () => {
+    // A stranger can register with someone else's address: seeing the token would let them verify it
+    const { body } = await call(register, "/api/auth/register", { body: valid });
+    expect(body.user).toMatchObject({ email: "ada@test.com", role: "STUDENT" });
+    for (const secret of ["password", "verificationToken", "verificationTokenExpiry", "resetToken", "resetTokenExpiry"]) {
+      expect(body.user).not.toHaveProperty(secret);
+    }
+    expect(JSON.stringify(body)).not.toMatch(/\$2[aby]\$|[0-9a-f]{64}/);
+  });
+
   it("signs the new user in with httpOnly session and role cookies", async () => {
     await call(register, "/api/auth/register", { body: valid });
     expect(verifySessionToken(cookieJar.get("lms_user_id")!.value)?.userId).toBe("new_user_1");

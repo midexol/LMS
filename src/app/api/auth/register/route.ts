@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { signSessionToken, mustVerifyEmail } from "@/lib/auth";
+import { signSessionToken, mustVerifyEmail, toPublicUser } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { sendVerificationEmail } from "@/lib/mail";
 
@@ -120,9 +120,7 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    // Return user without password
-    const { password: _pw, ...safeUser } = newUser;
-    return NextResponse.json({ success: true, user: safeUser });
+    return NextResponse.json({ success: true, user: toPublicUser(newUser) });
   } catch (error: any) {
     console.error("[REGISTER API ERROR]", error);
     return NextResponse.json({ error: "Failed to register user." }, { status: 500 });

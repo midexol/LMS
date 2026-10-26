@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser, signSessionToken, SESSION_MAX_AGE_SECONDS } from "@/lib/auth";
+import { getCurrentUser, signSessionToken, SESSION_MAX_AGE_SECONDS, toPublicUser } from "@/lib/auth";
 import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
 import { cookies } from "next/headers";
 import { normalizePhone } from "@/lib/utils";
@@ -100,8 +100,7 @@ export async function POST(req: Request) {
       });
     }
 
-    const { password: _pw, ...safeUser } = updatedUser;
-    return NextResponse.json({ success: true, user: safeUser });
+    return NextResponse.json({ success: true, user: toPublicUser(updatedUser) });
   } catch (error: any) {
     console.error("[PROFILE UPDATE API ERROR]", error);
     return NextResponse.json(
