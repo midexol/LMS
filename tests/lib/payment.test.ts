@@ -10,6 +10,7 @@ import {
   verifyAndProcessPayment,
   verifyPaystackWebhookSignature,
   SingleCourseConflictError,
+  PaymentRejectedError,
 } from "@/lib/payment";
 
 const live = () => vi.stubEnv("PAYSTACK_SECRET_KEY", "sk_test_abc123");
@@ -317,6 +318,28 @@ describe("verifyAndProcessPayment", () => {
     expect(prismaMock.enrollment.upsert).not.toHaveBeenCalled();
   });
 
+  it("classifies final refusals as PaymentRejectedError and temporary trouble as a plain Error", async () => {
+    live();
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    prismaMock.payment.findUnique.mockResolvedValueOnce(null);
+    await expect(verifyAndProcessPayment("NOPE")).rejects.toBeInstanceOf(PaymentRejectedError);
+
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(paystackOk({ amount: 400000 })));
+    await expect(verifyAndProcessPayment("REF1")).rejects.toBeInstanceOf(PaymentRejectedError);
+
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ status: true, data: { status: "abandoned" } }), { status: 200 })
+    ));
+    await expect(verifyAndProcessPayment("REF1")).rejects.toBeInstanceOf(PaymentRejectedError);
+
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("timeout")));
+    await expect(verifyAndProcessPayment("REF1")).rejects.not.toBeInstanceOf(PaymentRejectedError);
+
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ status: false, message: "Rate limited" }), { status: 429 })));
+    await expect(verifyAndProcessPayment("REF1")).rejects.not.toBeInstanceOf(PaymentRejectedError);
+  });
+
   it("single-course lock: payment is kept SUCCESS but the student is NOT enrolled in a second course", async () => {
     live();
     vi.spyOn(console, "error").mockImplementation(() => {});
@@ -360,6 +383,47 @@ describe("verifyAndProcessPayment", () => {
       prismaMock.enrollment.findUnique.mockResolvedValue(null);
       prismaMock.enrollment.findFirst.mockResolvedValue({ id: "enr_other" });
       await expect(verifyAndProcessPayment("REF1")).rejects.toBeInstanceOf(SingleCourseConflictError);
+    });
+
+    it("REPAIRS a payment whose first request died before enrolling: creates the enrollment and emails the student", async () => {
+      vi.useFakeTimers();
+      prismaMock.enrollment.findUnique.mockResolvedValue(null);
+      prismaMock.enrollment.findFirst.mockResolvedValue(null);
+      prismaMock.enrollment.create.mockResolvedValue({ id: "enr_repaired", studentId: "stu_1", courseId: "course_1", status: "ACTIVE" });
+
+      const pending = verifyAndProcessPayment("REF1");
+      await vi.advanceTimersByTimeAsync(1600);
+
+      expect(await pending).toMatchObject({ alreadyProcessed: true, enrollment: { id: "enr_repaired" } });
+      expect(prismaMock.enrollment.create.mock.calls[0][0]).toMatchObject({
+        data: { studentId: "stu_1", courseId: "course_1", status: "ACTIVE" },
+      });
+      expect(mailMock.sendEnrollmentEmail).toHaveBeenCalledTimes(1);
+    });
+
+    it("repair is safe against a concurrent request: a unique-constraint clash returns the winner's enrollment without a second email", async () => {
+      vi.useFakeTimers();
+      prismaMock.enrollment.findUnique.mockResolvedValueOnce(null).mockResolvedValueOnce(null).mockResolvedValueOnce({ id: "enr_winner" });
+      prismaMock.enrollment.findFirst.mockResolvedValue(null);
+      prismaMock.enrollment.create.mockRejectedValue(Object.assign(new Error("Unique constraint failed"), { code: "P2002" }));
+
+      const pending = verifyAndProcessPayment("REF1");
+      await vi.advanceTimersByTimeAsync(1600);
+
+      expect(await pending).toMatchObject({ enrollment: { id: "enr_winner" } });
+      expect(mailMock.sendEnrollmentEmail).not.toHaveBeenCalled();
+    });
+
+    it("repair does not swallow other database errors (so the webhook answers 500 and Paystack retries)", async () => {
+      vi.useFakeTimers();
+      prismaMock.enrollment.findUnique.mockResolvedValue(null);
+      prismaMock.enrollment.findFirst.mockResolvedValue(null);
+      prismaMock.enrollment.create.mockRejectedValue(new Error("connection reset"));
+
+      const pending = verifyAndProcessPayment("REF1");
+      const assertion = expect(pending).rejects.toThrow(/connection reset/);
+      await vi.advanceTimersByTimeAsync(1600);
+      await assertion;
     });
 
     it("waits briefly for a racing request to finish enrolling before answering", async () => {

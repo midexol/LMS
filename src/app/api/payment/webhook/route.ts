@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { verifyPaystackWebhookSignature, verifyAndProcessPayment } from "@/lib/payment";
+import {
+  verifyPaystackWebhookSignature,
+  verifyAndProcessPayment,
+  PaymentRejectedError,
+  SingleCourseConflictError,
+} from "@/lib/payment";
 
 export async function POST(req: Request) {
   try {
@@ -31,6 +36,12 @@ export async function POST(req: Request) {
           console.log(`[PAYSTACK WEBHOOK] Payment ${reference} verified and processed successfully.`);
         } catch (err) {
           console.error(`[PAYSTACK WEBHOOK ERROR] Processing reference ${reference}:`, err);
+          // Final outcomes (rejected payment, single-course lock) are acknowledged: redelivery cannot
+          // change them. Anything else (database or network trouble) answers 500 so Paystack redelivers.
+          const final = err instanceof PaymentRejectedError || err instanceof SingleCourseConflictError;
+          if (!final) {
+            return NextResponse.json({ error: "Temporary processing error" }, { status: 500 });
+          }
         }
       }
     }

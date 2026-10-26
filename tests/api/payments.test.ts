@@ -12,7 +12,7 @@ vi.mock("@/lib/payment", async (importOriginal) => {
   };
 });
 
-import { initializeCoursePayment, verifyAndProcessPayment, SingleCourseConflictError } from "@/lib/payment";
+import { initializeCoursePayment, verifyAndProcessPayment, SingleCourseConflictError, PaymentRejectedError } from "@/lib/payment";
 import { POST as initialize } from "@/app/api/payment/initialize/route";
 import { GET as verifyGet, POST as verifyPost } from "@/app/api/payment/verify/route";
 import { POST as webhook } from "@/app/api/payment/webhook/route";
@@ -334,10 +334,24 @@ describe("POST /api/payment/webhook", () => {
     expect(verifyAndProcessPayment).not.toHaveBeenCalled();
   });
 
-  it("answers 200 even when processing fails, so Paystack does not retry a payment we rejected", async () => {
-    vi.mocked(verifyAndProcessPayment).mockRejectedValue(new Error("amount mismatch"));
+  it("answers 200 for a payment we definitively rejected, so Paystack does not retry it", async () => {
+    vi.mocked(verifyAndProcessPayment).mockRejectedValue(new PaymentRejectedError("amount mismatch"));
     const raw = event();
     expect((await send(raw, sign(raw))).status).toBe(200);
+  });
+
+  it("answers 200 for the single-course lock (a redelivery cannot change it)", async () => {
+    vi.mocked(verifyAndProcessPayment).mockRejectedValue(new SingleCourseConflictError());
+    const raw = event();
+    expect((await send(raw, sign(raw))).status).toBe(200);
+  });
+
+  it("answers 500 for a temporary failure (database down) so Paystack redelivers the event", async () => {
+    vi.mocked(verifyAndProcessPayment).mockRejectedValue(new Error("Can't reach database server"));
+    const raw = event();
+    const res = await send(raw, sign(raw));
+    expect(res.status).toBe(500);
+    expect(JSON.stringify(await res.json())).not.toMatch(/database/i);
   });
 
   it("returns 500 for a signed but unparseable body, without leaking details", async () => {

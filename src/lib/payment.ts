@@ -197,6 +197,23 @@ export class SingleCourseConflictError extends Error {
 }
 
 /**
+ * Thrown when a payment is definitively refused (unknown reference, wrong amount, charge not
+ * successful). Retrying can never change the outcome, so the webhook acknowledges these with a 200.
+ * Any other error is treated as temporary and makes the webhook answer 500 so Paystack redelivers.
+ */
+export class PaymentRejectedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "PaymentRejectedError";
+  }
+}
+
+/** Unique-constraint violation: another request created the same row first */
+function isUniqueViolation(err: unknown): boolean {
+  return (err as { code?: string } | null)?.code === "P2002";
+}
+
+/**
  * Verifies Paystack transaction by reference and activates student course enrollment
  */
 export async function verifyAndProcessPayment(reference: string, isSimulatedMode = false) {
@@ -212,7 +229,7 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
   });
 
   if (!payment) {
-    throw new Error(`Payment record with reference ${reference} not found.`);
+    throw new PaymentRejectedError(`Payment record with reference ${reference} not found.`);
   }
 
   // If already processed and successful, return existing status
@@ -245,6 +262,25 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
 
       await new Promise((resolve) => setTimeout(resolve, 1500));
       existingEnrollment = await findEnrollment();
+
+      if (!existingEnrollment) {
+        // Still nothing after the grace period: the request that claimed this payment died before
+        // enrolling the student (timeout, database blip). Finish the job so a Paystack redelivery or
+        // a page refresh repairs it instead of leaving a paid student without access.
+        try {
+          existingEnrollment = await prisma.enrollment.create({
+            data: { studentId: payment.studentId, courseId: payment.courseId, status: "ACTIVE" },
+          });
+          await sendEnrollmentEmail(payment.student.email, {
+            studentName: payment.student.name,
+            courseTitle: payment.course.title,
+          });
+        } catch (err) {
+          // A concurrent request enrolled the student first: that is the outcome we wanted
+          if (!isUniqueViolation(err)) throw err;
+          existingEnrollment = await findEnrollment();
+        }
+      }
     }
 
     return {
@@ -294,15 +330,20 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
             where: { id: payment.id },
             data: { status: "FAILED" },
           });
-          throw new Error("Paid amount does not match the course price. Please contact support.");
+          throw new PaymentRejectedError("Paid amount does not match the course price. Please contact support.");
         }
         verified = true;
         paystackData = json.data;
+      } else if (res.ok && json.status && json.data) {
+        // Paystack answered and says the charge did not succeed (abandoned, failed): final
+        throw new PaymentRejectedError(json.message || "Payment verification failed on Paystack.");
       } else {
+        // Paystack itself errored (5xx, rate limit): temporary, so it can be retried
         throw new Error(json.message || "Payment verification failed on Paystack.");
       }
     } catch (err: any) {
       console.error("[PAYSTACK VERIFY ERROR]", err);
+      if (err instanceof PaymentRejectedError) throw err;
       throw new Error(err.message || "Could not verify payment with Paystack.");
     }
   } else if (!hasLivePaystack && isSimulatedMode && process.env.NODE_ENV !== "production") {
@@ -324,7 +365,7 @@ export async function verifyAndProcessPayment(reference: string, isSimulatedMode
       where: { id: payment.id },
       data: { status: "FAILED" },
     });
-    throw new Error("Payment transaction was not successful.");
+    throw new PaymentRejectedError("Payment transaction was not successful.");
   }
 
   // Mark payment as SUCCESS. The status guard makes this an atomic claim, so concurrent
