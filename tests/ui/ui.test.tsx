@@ -9,7 +9,6 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
   useSearchParams: () => new URLSearchParams(),
 }));
-vi.mock("@/components/auth/GoogleAuthButton", () => ({ GoogleAuthButton: () => <div data-testid="google-button" /> }));
 
 import { SignupsChart } from "@/components/admin/SignupsChart";
 import LoginPage from "@/app/login/page";
@@ -106,10 +105,10 @@ describe("Login page", () => {
   };
   const submit = () => fireEvent.click(screen.getByRole("button", { name: /Sign In to Account/ }));
 
-  it("shows the form, social login and links to reset, sign up, Terms and Privacy", () => {
+  it("shows the form (no Google sign-in for now) and links to reset, sign up, Terms and Privacy", () => {
     render(<LoginPage />);
     expect(screen.getByRole("heading", { name: "Sign in" })).toBeTruthy();
-    expect(screen.getByTestId("google-button")).toBeTruthy();
+    expect(screen.queryByTestId("google-button")).toBeNull();
     expect(screen.getByText("Forgot password?").getAttribute("href")).toBe("/forgot-password");
     expect(screen.getByText("Create one free").getAttribute("href")).toBe("/signup");
     expect(screen.getByText("Terms of Service").getAttribute("href")).toBe("/terms");

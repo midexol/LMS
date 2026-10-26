@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiEye, FiEyeOff, FiMail } from "react-icons/fi";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
-import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
 import { AuthShell, AuthError, authInputClass, authLabelClass, authButtonClass } from "@/components/auth/AuthShell";
 
 const MIN_PASSWORD = 6;
@@ -65,9 +64,6 @@ export default function SignupPage() {
     >
       {registeredEmail ? (
         <div className="space-y-5 text-center">
-          <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto border border-purple-100">
-            <FiMail className="w-7 h-7" />
-          </div>
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-neutral-900">Check Your Inbox</h2>
             <p className="text-sm text-neutral-600">We sent a verification link to</p>
@@ -92,9 +88,6 @@ export default function SignupPage() {
           </div>
 
           {error && <AuthError message={error} />}
-
-          {/* new Google students choose their faculty and department right after */}
-          <GoogleAuthButton dividerLabel="or sign up with your email" />
 
           <form onSubmit={handleSignup} className="space-y-4">
             <div>

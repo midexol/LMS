@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
 import { AuthShell, AuthError, authInputClass, authLabelClass, authButtonClass } from "@/components/auth/AuthShell";
 import { homePathForRole } from "@/lib/roles";
 
@@ -56,8 +55,6 @@ export default function LoginPage() {
             <Link href="/verify-email" className="font-semibold text-[#4A1A45] hover:underline">Send me a new verification email</Link>
           </p>
         )}
-
-        <GoogleAuthButton dividerLabel="or use your email" />
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>

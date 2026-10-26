@@ -1,5 +1,4 @@
 import React from "react";
-import { FiCheck } from "react-icons/fi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 interface AuthShellProps {
@@ -20,10 +19,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
           <p className="text-[#D6BDD4] text-sm leading-relaxed">{blurb}</p>
           <ul className="space-y-3 pt-2">
             {points.map((p) => (
-              <li key={p} className="flex items-center gap-3 text-xs text-neutral-200">
-                <span className="w-5 h-5 rounded-full bg-[#4A1A45] border border-white/20 flex items-center justify-center shrink-0">
-                  <FiCheck className="w-3 h-3 text-white" />
-                </span>
+              <li key={p} className="text-xs text-neutral-200 border-l-2 border-[#4A1A45] pl-3">
                 {p}
               </li>
             ))}
