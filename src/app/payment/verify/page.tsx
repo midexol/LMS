@@ -67,7 +67,7 @@ function PaymentVerifyContent() {
 
   return (
     <div className="min-h-screen bg-[#1E0A1C] flex items-center justify-center p-6 text-white">
-      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-3xl p-8 shadow-2xl text-center">
+      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-2xl p-8 shadow-2xl text-center">
         {loading ? (
           <div className="py-10 space-y-4">
             <div className="w-16 h-16 rounded-full bg-[#3B1537] border border-[#4A1A45]/40 mx-auto flex items-center justify-center animate-spin">
@@ -124,7 +124,7 @@ function PaymentVerifyContent() {
               <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-950 text-emerald-300 border border-emerald-800">
                 Payment Confirmed
               </span>
-              <h2 className="text-2xl font-black text-white tracking-tight pt-2">
+              <h2 className="text-2xl font-bold text-white tracking-tight pt-2">
                 Enrollment Activated!
               </h2>
               <p className="text-xs text-neutral-400 px-4">

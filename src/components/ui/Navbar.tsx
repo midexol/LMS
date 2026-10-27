@@ -124,7 +124,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                 <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white border border-neutral-200 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   {/* Account Summary Header */}
                   <div className="px-4 py-3 border-b border-neutral-100">
-                    <p className="text-xs font-black text-neutral-900 truncate">
+                    <p className="text-xs font-bold text-neutral-900 truncate">
                       {currentUser.name}
                     </p>
                     <p className="text-[11px] text-neutral-500 truncate mt-0.5">

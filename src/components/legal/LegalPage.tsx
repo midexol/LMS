@@ -35,7 +35,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
 
       <main className="max-w-3xl mx-auto px-6 py-12">
         <p className="text-[11px] font-bold uppercase tracking-widest text-[#4A1A45]">Legal</p>
-        <h1 className="mt-1 text-3xl sm:text-4xl font-black tracking-tight text-black">{title}</h1>
+        <h1 className="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-black">{title}</h1>
         <p className="mt-2 text-xs text-neutral-500">Last updated: {lastUpdated}</p>
         <p className="mt-6 text-sm leading-relaxed text-neutral-700">{intro}</p>
 

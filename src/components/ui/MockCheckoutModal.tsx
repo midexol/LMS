@@ -156,8 +156,8 @@ export function MockCheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="w-full max-w-lg bg-white rounded-3xl p-7 shadow-2xl border border-neutral-200 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-fadeIn">
+      <div className="w-full max-w-lg bg-white rounded-2xl p-7 shadow-2xl border border-neutral-200 relative">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -191,7 +191,7 @@ export function MockCheckoutModal({
               <h4 className="font-bold text-black text-sm mt-1">{course.title}</h4>
             </div>
             <div className="text-right">
-              <span className="text-base font-black text-[#4A1A45] block leading-none">
+              <span className="text-base font-bold text-[#4A1A45] block leading-none">
                 {course.price <= 0 ? "Free" : formattedNgn}
               </span>
             </div>
@@ -296,7 +296,7 @@ export function MockCheckoutModal({
                           <span className="font-semibold text-black">{formatNgn(quote.processingFeeNgn)}</span>
                         </div>
                       )}
-                      <div className="flex justify-between border-t border-neutral-200 pt-2 mt-1 text-sm font-black text-black">
+                      <div className="flex justify-between border-t border-neutral-200 pt-2 mt-1 text-sm font-bold text-black">
                         <span>Total to pay</span>
                         <span>{formatNgn(quote.totalNgn)}</span>
                       </div>

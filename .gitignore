@@ -39,3 +39,9 @@ yarn-error.log*
 # Vercel
 .vercel
 .neon
+
+# Local agent tooling (design skills)
+.claude/skills
+.claude/agents
+.taste-skill
+skills-lock.json

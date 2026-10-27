@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
           <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-white shadow-md border border-[#4A1A45]/40">
             <FiShield className="w-7 h-7 text-[#D6BDD4]" />
           </div>
-          <h1 className="text-2xl font-black tracking-tight text-black">Superadmin Control Panel</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-black">Superadmin Control Panel</h1>
           <p className="text-xs text-neutral-500 font-medium">
             Restricted access. Authorized platform administrators only.
           </p>

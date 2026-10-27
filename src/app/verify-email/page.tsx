@@ -88,7 +88,7 @@ function VerifyEmailContent() {
       </div>
 
       {/* Main Card */}
-      <div className="max-w-md mx-auto w-full bg-white rounded-3xl border border-neutral-200/80 shadow-sm p-8 sm:p-10 space-y-6">
+      <div className="max-w-md mx-auto w-full bg-white rounded-2xl border border-neutral-200/80 shadow-sm p-8 sm:p-10 space-y-6">
         {status === "loading" && (
           <div className="text-center py-8 space-y-4">
             <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto animate-spin">
@@ -110,7 +110,7 @@ function VerifyEmailContent() {
               <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
                 Account Activated
               </span>
-              <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Email Verified!</h2>
+              <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">Email Verified!</h2>
               <p className="text-xs text-neutral-600 leading-relaxed max-w-sm mx-auto">
                 {message} We&apos;ve also sent a welcome email to your inbox.
               </p>

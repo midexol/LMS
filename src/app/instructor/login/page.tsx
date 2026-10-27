@@ -50,7 +50,7 @@ export default function InstructorLoginPage() {
           <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-[#D6BDD4] mb-2 shadow-sm border border-[#4A1A45]/40">
             <FiShield className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl font-black text-black tracking-tight">Instructor Portal</h1>
+          <h1 className="text-2xl font-bold text-black tracking-tight">Instructor Portal</h1>
           <p className="text-xs text-neutral-500 font-medium">Sign in to manage curriculum, assignments, and analytics.</p>
         </div>
 

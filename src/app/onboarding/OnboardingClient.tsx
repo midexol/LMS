@@ -51,7 +51,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-3xl border border-neutral-200 shadow-sm">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-2xl border border-neutral-200 shadow-sm">
         <div>
           <h1 className="font-bold text-2xl text-black">One last step</h1>
           <p className="text-xs text-neutral-500 mt-1 leading-relaxed">

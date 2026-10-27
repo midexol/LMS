@@ -32,7 +32,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
         <div className="lg:hidden mb-6">
           <BrandLogo href="/" variant="dark" size="md" />
         </div>
-        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-3xl border border-neutral-200 shadow-sm">{children}</div>
+        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-2xl border border-neutral-200 shadow-sm">{children}</div>
       </main>
     </div>
   );

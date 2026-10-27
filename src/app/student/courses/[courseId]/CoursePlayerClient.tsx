@@ -673,8 +673,8 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
 
       {/* ──────────────── OFFICIAL COMPLETION CERTIFICATE MODAL ──────────────── */}
       {showCertificate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm print:p-0 print:bg-white">
-          <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-neutral-300 overflow-hidden print:border-none print:shadow-none print:w-full print:max-w-none">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 print:p-0 print:bg-white">
+          <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-neutral-300 overflow-hidden print:border-none print:shadow-none print:w-full print:max-w-none">
             {/* Modal Controls (Hidden in print) */}
             <div className="flex items-center justify-between p-4 bg-neutral-950 text-white print:hidden">
               <div className="flex items-center gap-2 text-xs font-bold">
@@ -701,10 +701,10 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             <div className="p-10 sm:p-14 text-center bg-white border-8 border-double border-neutral-900 m-4 rounded-2xl relative">
               <div className="space-y-6">
                 <div>
-                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#4A1A45] block mb-1">
+                  <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#4A1A45] block mb-1">
                     Academia LMS
                   </span>
-                  <h2 className="font-serif text-3xl sm:text-4xl font-black text-black tracking-tight">
+                  <h2 className="font-serif text-3xl sm:text-4xl font-bold text-black tracking-tight">
                     Certificate of Completion
                   </h2>
                 </div>
@@ -714,7 +714,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </p>
 
                 <div className="py-2 border-b-2 border-[#4A1A45] inline-block px-10">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-black text-black">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-black">
                     {student.name}
                   </h3>
                 </div>
@@ -724,7 +724,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </p>
 
                 <div className="space-y-1">
-                  <h4 className="font-black text-xl sm:text-2xl text-black">
+                  <h4 className="font-bold text-xl sm:text-2xl text-black">
                     {course.title}
                   </h4>
                   <p className="text-xs font-bold text-[#4A1A45] uppercase tracking-wider">
@@ -751,7 +751,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
       )}
 
       {/* ──────────────── STICKY MOBILE BOTTOM NAVIGATION BAR ──────────────── */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-3 py-2.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 border-t border-neutral-200 px-3 py-2.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
         <div className="max-w-md mx-auto flex items-center justify-between gap-2">
           {/* Previous Lesson */}
           <button
@@ -815,7 +815,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         {/* Backdrop overlay */}
         <div
           onClick={() => setMobileCurriculumOpen(false)}
-          className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+          className="absolute inset-0 bg-black/60-xs transition-opacity duration-300"
         />
 
         {/* Bottom sheet dialog */}

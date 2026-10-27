@@ -23,7 +23,7 @@ export default function NotFound() {
 
         {/* Big Glitch / Architectural Typography */}
         <div className="space-y-3">
-          <h1 className="text-8xl sm:text-9xl font-black tracking-tighter text-black leading-none font-mono">
+          <h1 className="text-8xl sm:text-9xl font-bold tracking-tighter text-black leading-none font-mono">
             4<span className="text-[#4A1A45]">0</span>4
           </h1>
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">

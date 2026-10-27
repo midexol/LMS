@@ -308,24 +308,24 @@ describe("Landing page", () => {
   it("with no courses: says so honestly and hides the category row", () => {
     page();
     expect(screen.getByText(/New courses are coming soon/)).toBeTruthy();
-    expect(screen.queryByText("Browse by subject")).toBeNull();
+    expect(screen.queryByText("Subjects")).toBeNull();
     expect(screen.queryByText(/loading/i)).toBeNull();
   });
 
   it("shows live category counts with correct singular and plural", () => {
     page({ categoryCounts: [{ category: "Business", count: 7 }, { category: "Science", count: 1 }] });
-    expect(screen.getByText("Browse by subject")).toBeTruthy();
-    expect(screen.getByText("7 courses")).toBeTruthy();
-    expect(screen.getByText("1 course")).toBeTruthy();
+    expect(screen.getByText("Subjects")).toBeTruthy();
+    expect(screen.getByText("(7 courses)")).toBeTruthy();
+    expect(screen.getByText("(1 course)")).toBeTruthy();
   });
 
   it("links each course card to that course, with its real price", () => {
     page({ featuredCourses: [course(), course({ id: "course_2", title: "Free Intro", price: 0 })] });
-    const card = screen.getByText("Intro to Biology").closest("div.group")!;
+    const card = screen.getByText("Intro to Biology").closest("article")!;
     expect(within(card as HTMLElement).getByText("View course").getAttribute("href")).toBe("/courses/course_1");
     expect(within(card as HTMLElement).getByText(/15,000/)).toBeTruthy();
     expect(screen.getByText("Free")).toBeTruthy();
-    expect(screen.getAllByText(/2 Modules/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/2 modules/).length).toBeGreaterThan(0);
   });
 
   it("answers the questions students actually have", () => {
@@ -350,7 +350,7 @@ describe("Landing page", () => {
     // instructors are set up by an admin and use the normal Sign In: no instructor link is advertised to the public
     expect(screen.queryByText("Instructor sign in")).toBeNull();
     expect(document.querySelector('a[href="/instructor/login"]')).toBeNull();
-    expect(screen.getAllByText("Sign In").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Sign in").length).toBeGreaterThan(0);
   });
 
   describe("footer", () => {
@@ -378,20 +378,20 @@ describe("Landing page", () => {
   });
 
   describe("contact form", () => {
-    const open = () => fireEvent.click(screen.getByText(/Contact & Support/));
+    const open = () => fireEvent.click(screen.getByText(/Contact and support/));
     const fill = (over: Record<string, string> = {}) => {
       const v = { name: "Visitor One", email: "visitor@test.com", message: "I paid but cannot see my course.", ...over };
       fireEvent.change(screen.getByPlaceholderText("Your full name"), { target: { value: v.name } });
       fireEvent.change(screen.getByPlaceholderText("you@example.com"), { target: { value: v.email } });
-      fireEvent.change(screen.getByPlaceholderText(/How can our support team assist/), { target: { value: v.message } });
+      fireEvent.change(screen.getByPlaceholderText("How can we help?"), { target: { value: v.message } });
     };
-    const send = () => fireEvent.click(screen.getByRole("button", { name: "Send Message" }));
+    const send = () => fireEvent.click(screen.getByRole("button", { name: "Send message" }));
 
     it("opens from the footer and offers the 'Teaching on Academia' topic", () => {
       page();
-      expect(screen.queryByText("Direct Assistance")).toBeNull();
+      expect(screen.queryByRole("dialog")).toBeNull();
       open();
-      expect(screen.getByText("Direct Assistance")).toBeTruthy();
+      expect(screen.getByRole("dialog")).toBeTruthy();
       expect(screen.getByRole("option", { name: "Teaching on Academia" })).toBeTruthy();
     });
 
@@ -418,7 +418,7 @@ describe("Landing page", () => {
       open();
       fill();
       send();
-      expect(await screen.findByText("Inquiry Submitted")).toBeTruthy();
+      expect(await screen.findByText("Message received")).toBeTruthy();
       expect(screen.getByText("visitor@test.com")).toBeTruthy();
     });
 
@@ -429,7 +429,7 @@ describe("Landing page", () => {
       fill();
       send();
       expect(await screen.findByText(/sent several messages recently/)).toBeTruthy();
-      expect(screen.queryByText("Inquiry Submitted")).toBeNull();
+      expect(screen.queryByText("Message received")).toBeNull();
       expect((screen.getByPlaceholderText("Your full name") as HTMLInputElement).value).toBe("Visitor One");
     });
 
@@ -466,8 +466,8 @@ describe("Landing page", () => {
     it("can be closed", () => {
       page();
       open();
-      fireEvent.click(screen.getByRole("button", { name: "Close Window" }));
-      expect(screen.queryByText("Direct Assistance")).toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: "Close" }));
+      expect(screen.queryByRole("dialog")).toBeNull();
     });
   });
 });

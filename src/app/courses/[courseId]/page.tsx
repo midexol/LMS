@@ -72,64 +72,35 @@ export default async function CoursePreviewPage({ params }: PageProps) {
       <Navbar currentUser={currentUser} />
 
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
-        {/* Course Header Banner */}
-        <div className="rounded-3xl bg-white border border-neutral-200 shadow-sm overflow-hidden">
-          <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-neutral-950 flex flex-col justify-end p-6 sm:p-8">
-            {course.coverImage ? (
-              <>
-                <img
-                  src={course.coverImage}
-                  alt={course.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-              </>
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1E0A1C] via-[#2D0F2A] to-[#4A1A45]">
-                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[140px] font-black text-white/5 select-none pointer-events-none leading-none">
-                  {course.category.slice(0, 2).toUpperCase()}
-                </span>
-              </div>
-            )}
-            <div className="relative text-white space-y-3 z-10">
-              <div className="flex flex-wrap gap-2 items-center">
-                {course.department && (
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-black shadow-sm">
-                    {course.department}
-                  </span>
-                )}
-                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-neutral-700">
-                  {course.faculty || course.category}
-                </span>
-                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-neutral-700">
-                  {course.level}
-                </span>
-              </div>
-              <h1 className="font-black text-2xl sm:text-4xl text-white leading-tight">
-                {course.title}
-              </h1>
-            </div>
+        {/* Course header */}
+        <div className="rounded-lg bg-white border border-neutral-200 overflow-hidden">
+          {course.coverImage && (
+            <img
+              src={course.coverImage}
+              alt={course.title}
+              className="w-full h-56 sm:h-72 object-cover"
+            />
+          )}
+          <div className="px-6 sm:px-8 pt-8">
+            <p className="text-sm text-neutral-500">
+              {[course.department, course.faculty || course.category, course.level].filter(Boolean).join(" · ")}
+            </p>
+            <h1 className="mt-2 font-heading font-semibold text-3xl sm:text-4xl text-black leading-tight">
+              {course.title}
+            </h1>
           </div>
 
-          <div className="p-8 space-y-5">
+          <div className="px-6 sm:px-8 pt-4 pb-8 space-y-5">
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">{course.description}</p>
 
-            <div className="flex flex-wrap gap-6 text-xs font-bold text-neutral-600 pt-4 border-t border-neutral-200">
-              <span className="flex items-center gap-1.5">
-                <FiUser className="w-4 h-4 text-[#4A1A45]" />
-                Instructor: <strong className="text-black">{course.tutor?.name || "Faculty"}</strong>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-600 pt-4 border-t border-neutral-200">
+              <span>Instructor: <strong className="text-black">{course.tutor?.name || "Faculty"}</strong>
               </span>
-              <span className="flex items-center gap-1.5">
-                <FiLayers className="w-4 h-4 text-[#4A1A45]" />
-                {course.modules.length} Modules
+              <span>{course.modules.length} modules
               </span>
-              <span className="flex items-center gap-1.5">
-                <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
-                {totalLessons} Lessons
+              <span>{totalLessons} lessons
               </span>
-              <span className="flex items-center gap-1.5">
-                <FiBarChart2 className="w-4 h-4 text-[#4A1A45]" />
-                {totalAssignments} Evaluated Assignments
+              <span>{totalAssignments} graded assignments
               </span>
             </div>
           </div>
@@ -137,8 +108,8 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Curriculum */}
-          <div className="lg:col-span-2 p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
-            <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
+          <div className="lg:col-span-2 p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+            <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
               <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
               Curriculum &amp; Syllabus
             </h2>
@@ -196,10 +167,10 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
           {/* Enrollment Card */}
           <div className="space-y-4">
-            <div className="p-7 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-5 sticky top-24">
+            <div className="p-7 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-5 sticky top-24">
               <div className="text-center">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Tuition Fee</span>
-                <span className="font-black text-3xl text-black">
+                <span className="font-bold text-3xl text-black">
                   {course.price === 0 ? "Free" : formatNgn(course.price)}
                 </span>
               </div>

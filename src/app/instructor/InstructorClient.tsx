@@ -248,7 +248,7 @@ export function InstructorClient({
             <>
               {/* 1. HERO BANNER - PURE JET BLACK WITH BROWN GRADIENT ACCENT */}
               <div
-                className="rounded-3xl p-8 text-white relative overflow-hidden shadow-md"
+                className="rounded-2xl p-8 text-white relative overflow-hidden shadow-md"
                 style={{
                   background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
                 }}
@@ -315,7 +315,7 @@ export function InstructorClient({
                 ].map((stat, i) => (
                   <div
                     key={i}
-                    className="bg-neutral-950 text-white rounded-3xl p-6 border border-neutral-800 shadow-md flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-all"
+                    className="bg-neutral-950 text-white rounded-2xl p-6 border border-neutral-800 shadow-md flex flex-col justify-between space-y-4 hover:border-neutral-700 transition-all"
                   >
                     <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{stat.label}</p>
                     <div>
@@ -329,10 +329,10 @@ export function InstructorClient({
               {/* 3. VISUALIZATION ROW: MODERN COURSE THROUGHPUT & GRADE DISTRIBUTION */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left: Course Performance & Cohort Engagement */}
-                <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
+                <div className="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                     <div>
-                      <h3 className="font-black text-lg text-black tracking-tight">Course Enrollment &amp; Evaluation Throughput</h3>
+                      <h3 className="font-bold text-lg text-black tracking-tight">Course Enrollment &amp; Evaluation Throughput</h3>
                       <p className="text-xs text-neutral-500 mt-0.5">Live student enrollment vs submission volume across your courses</p>
                     </div>
                     <div className="flex items-center gap-4 text-xs font-semibold text-neutral-600">
@@ -355,7 +355,7 @@ export function InstructorClient({
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Total Learners</span>
-                        <span className="text-lg font-black text-neutral-900 leading-tight">
+                        <span className="text-lg font-bold text-neutral-900 leading-tight">
                           {metrics.totalEnrollments} <span className="text-xs font-semibold text-neutral-500">enrolled</span>
                         </span>
                       </div>
@@ -367,7 +367,7 @@ export function InstructorClient({
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Submissions Logged</span>
-                        <span className="text-lg font-black text-[#4A1A45] leading-tight">
+                        <span className="text-lg font-bold text-[#4A1A45] leading-tight">
                           {allSubmissions.length} <span className="text-xs font-semibold text-neutral-500">total</span>
                         </span>
                       </div>
@@ -379,7 +379,7 @@ export function InstructorClient({
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Cohort Mean Score</span>
-                        <span className="text-lg font-black text-neutral-900 leading-tight">
+                        <span className="text-lg font-bold text-neutral-900 leading-tight">
                           {avgScore === null ? (
                             <span className="text-sm font-semibold text-neutral-500">No grades yet</span>
                           ) : (
@@ -460,10 +460,10 @@ export function InstructorClient({
                 </div>
 
                 {/* Right: Grade Distribution Breakdown */}
-                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
+                <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200 shadow-sm space-y-6 flex flex-col justify-between">
                   <div className="pb-3 border-b border-neutral-100">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-black text-lg text-black tracking-tight">Grade Distribution</h3>
+                      <h3 className="font-bold text-lg text-black tracking-tight">Grade Distribution</h3>
                       <span className="text-xs font-bold text-[#4A1A45]">
                         {passRate === null ? "" : `${passRate}% Passing`}
                       </span>
@@ -516,7 +516,7 @@ export function InstructorClient({
                       );
                     })()}
                     <div className="absolute flex flex-col items-center justify-center text-center">
-                      <span className="font-black text-3xl text-black">{avgGradeLetter ?? "—"}</span>
+                      <span className="font-bold text-3xl text-black">{avgGradeLetter ?? "—"}</span>
                       <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
                       <span className="text-[10px] font-bold text-[#4A1A45] mt-0.5">{avgScore === null ? "No grades yet" : `${avgScore}% Mean`}</span>
                     </div>
@@ -530,7 +530,7 @@ export function InstructorClient({
                           <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
                           Grade A (90–100%)
                         </span>
-                        <span className="font-black text-black">{gradeDistribution ? `${dist.pctA}%` : "—"}</span>
+                        <span className="font-bold text-black">{gradeDistribution ? `${dist.pctA}%` : "—"}</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
                         <div className="bg-black h-full rounded-full" style={{ width: `${dist.pctA}%` }} />
@@ -543,7 +543,7 @@ export function InstructorClient({
                           <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
                           Grade B (80–89%)
                         </span>
-                        <span className="font-black text-[#4A1A45]">{gradeDistribution ? `${dist.pctB}%` : "—"}</span>
+                        <span className="font-bold text-[#4A1A45]">{gradeDistribution ? `${dist.pctB}%` : "—"}</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
                         <div className="bg-[#4A1A45] h-full rounded-full" style={{ width: `${dist.pctB}%` }} />
@@ -556,7 +556,7 @@ export function InstructorClient({
                           <span className="w-2.5 h-2.5 rounded-full bg-neutral-400 inline-block" />
                           Below 80%
                         </span>
-                        <span className="font-black text-neutral-700">{gradeDistribution ? `${dist.pctBelow80}%` : "—"}</span>
+                        <span className="font-bold text-neutral-700">{gradeDistribution ? `${dist.pctBelow80}%` : "—"}</span>
                       </div>
                       <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
                         <div className="bg-neutral-400 h-full rounded-full" style={{ width: `${dist.pctBelow80}%` }} />
@@ -572,7 +572,7 @@ export function InstructorClient({
           {activeTab === "classes" && (
             <div className="space-y-6">
               {editingCourse ? (
-                <div className="bg-white rounded-3xl p-8 border-2 border-[#4A1A45] shadow-md space-y-6">
+                <div className="bg-white rounded-2xl p-8 border-2 border-[#4A1A45] shadow-md space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-neutral-200">
                     <div>
                       <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Editing Mode</span>
@@ -595,7 +595,7 @@ export function InstructorClient({
                   />
                 </div>
               ) : (
-                <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+                <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
                   <div>
                     <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
                     <p className="text-xs text-neutral-500">Create new course modules, integrate automated grading rubrics, and upload lecture content.</p>
@@ -608,7 +608,7 @@ export function InstructorClient({
                 <h3 className="font-bold text-xl text-black">Existing Courses ({tutorCourses.length})</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {tutorCourses.map((c) => (
-                    <div key={c.id} className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-3 flex flex-col justify-between">
+                    <div key={c.id} className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm space-y-3 flex flex-col justify-between">
                       <div className="space-y-3">
                         <div className="flex items-start justify-between flex-wrap gap-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
@@ -654,7 +654,7 @@ export function InstructorClient({
 
           {/* ──────────────── SUBMISSIONS TAB ──────────────── */}
           {activeTab === "submissions" && (
-            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Student Submissions &amp; Grading Queue</h2>
                 <p className="text-xs text-neutral-500">Review automated rubric evaluations, verify benchmark accuracy, and issue manual score overrides.</p>
@@ -665,7 +665,7 @@ export function InstructorClient({
 
           {/* ──────────────── STUDENTS TAB ──────────────── */}
           {activeTab === "students" && (
-            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Enrolled Students</h2>
                 <p className="text-xs text-neutral-500">Student roster across all your classes.</p>
@@ -709,7 +709,7 @@ export function InstructorClient({
 
           {/* ──────────────── ANNOUNCEMENTS TAB ──────────────── */}
           {activeTab === "announcements" && (
-            <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Class Announcements</h2>
                 <p className="text-xs text-neutral-500">Broadcast updates, exam guidelines, and reminders to your active classes.</p>
@@ -733,7 +733,7 @@ export function InstructorClient({
               </div>
 
               {/* Profile Card */}
-              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
+              <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-neutral-100">
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 rounded-2xl bg-[#4A1A45] text-white flex items-center justify-center text-2xl font-bold shadow-md">
@@ -791,7 +791,7 @@ export function InstructorClient({
               </div>
 
               {/* Studio Preferences */}
-              <div className="bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-4">
+              <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-4">
                 <h3 className="font-bold text-base text-black">Studio Preferences</h3>
                 <div className="divide-y divide-neutral-100 text-xs">
                   <div className="py-3 flex items-center justify-between">
@@ -819,7 +819,7 @@ export function InstructorClient({
               </div>
 
               {/* Session Management & Logout */}
-              <div className="bg-white rounded-3xl p-8 border border-red-100 shadow-sm space-y-4">
+              <div className="bg-white rounded-2xl p-8 border border-red-100 shadow-sm space-y-4">
                 <div>
                   <h3 className="font-bold text-base text-black">Session &amp; Security</h3>
                   <p className="text-xs text-neutral-500">Sign out of your active instructor session on this device.</p>

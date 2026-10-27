@@ -14,6 +14,10 @@ interface LandingNavbarProps {
   } | null;
 }
 
+const navLink = "text-sm text-ink-soft hover:text-[#4A1A45] transition-colors";
+const solidButton =
+  "rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-sm font-semibold px-4 py-2 transition-colors";
+
 export function LandingNavbar({ currentUser }: LandingNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -22,77 +26,41 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
     window.location.href = "/";
   };
 
+  const close = () => setMobileMenuOpen(false);
+
   return (
-    <header
-      id="site-header"
-      className="sticky top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200/80 transition-all duration-200"
-    >
-      <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between gap-6">
-        {/* Left: Clickable Uniform Brand Logo */}
-        <div className="flex items-center gap-8">
+    <header id="site-header" className="sticky top-0 left-0 right-0 z-50 bg-paper border-b border-rule">
+      <div className="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between gap-6">
+        <div className="flex items-center gap-10">
           <BrandLogo href="/" variant="dark" size="sm" />
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1.5" aria-label="Main Navigation">
-            <Link
-              href="/courses"
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
-            >
-              Courses
-            </Link>
-            <a
-              href="#how-it-works"
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
-            >
-              How it works
-            </a>
-            <a
-              href="#faq"
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-neutral-600 hover:text-[#4A1A45] hover:bg-[#F7F2F6] transition-colors"
-            >
-              FAQ
-            </a>
+          <nav className="hidden md:flex items-center gap-7" aria-label="Main Navigation">
+            <Link href="/courses" className={navLink}>Courses</Link>
+            <a href="#how-it-works" className={navLink}>How it works</a>
+            <a href="#faq" className={navLink}>FAQ</a>
           </nav>
         </div>
 
-        {/* Right: Auth Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {currentUser ? (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/my-courses"
-                className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all shadow-sm"
-              >
-                My Learning
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="text-neutral-500 hover:text-[#4A1A45] text-xs font-semibold px-3 py-2 transition-colors hidden sm:inline-block"
-              >
-                Sign Out
+            <>
+              <button onClick={handleLogout} className={`${navLink} hidden sm:inline-block`}>
+                Sign out
               </button>
-            </div>
+              <Link href="/my-courses" className={solidButton}>
+                My learning
+              </Link>
+            </>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/login"
-                className="text-xs font-semibold px-3.5 py-2 text-neutral-700 hover:text-[#4A1A45] transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/signup"
-                className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all shadow-sm"
-              >
-                Get Started
-              </Link>
-            </div>
+            <>
+              <Link href="/login" className={navLink}>Sign in</Link>
+              <Link href="/signup" className={solidButton}>Get started</Link>
+            </>
           )}
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 transition-colors"
+            className="md:hidden w-9 h-9 rounded-md border border-rule flex items-center justify-center text-ink hover:bg-white transition-colors"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -101,62 +69,28 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-neutral-200 px-6 py-4 space-y-3">
-          <Link
-            href="/courses"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
-          >
-            Courses
-          </Link>
-          <a
-            href="#how-it-works"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
-          >
-            How it works
-          </a>
-          <a
-            href="#faq"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] py-1.5"
-          >
-            FAQ
-          </a>
-          <div className="pt-3 border-t border-neutral-100 flex flex-col gap-2">
+        <div className="md:hidden bg-paper border-t border-rule px-6 py-4 space-y-1">
+          <Link href="/courses" onClick={close} className="block text-sm text-ink py-2">Courses</Link>
+          <a href="#how-it-works" onClick={close} className="block text-sm text-ink py-2">How it works</a>
+          <a href="#faq" onClick={close} className="block text-sm text-ink py-2">FAQ</a>
+          <div className="pt-3 mt-2 border-t border-rule flex flex-col gap-2">
             {currentUser ? (
               <>
-                <Link
-                  href="/my-courses"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2 rounded-full bg-[#4A1A45] text-white text-xs font-semibold text-center"
-                >
-                  My Learning
+                <Link href="/my-courses" onClick={close} className={`${solidButton} text-center`}>
+                  My learning
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="text-xs font-semibold text-red-600 text-left py-1"
-                >
-                  Sign Out
+                <button onClick={handleLogout} className="text-sm text-red-700 text-left py-2">
+                  Sign out
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-xs font-semibold text-neutral-700 hover:text-[#4A1A45] text-center py-2"
-                >
-                  Sign In
+                <Link href="/login" onClick={close} className="text-sm text-ink text-center py-2">
+                  Sign in
                 </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2 rounded-full bg-[#4A1A45] text-white text-xs font-semibold text-center"
-                >
-                  Get Started
+                <Link href="/signup" onClick={close} className={`${solidButton} text-center`}>
+                  Get started
                 </Link>
               </>
             )}

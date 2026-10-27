@@ -162,14 +162,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* STUDENT HEADER */}
-        <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-[#4A1A45] text-white flex items-center justify-center font-black text-2xl shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-[#4A1A45] text-white flex items-center justify-center font-bold text-2xl shadow-sm">
               {currentUser.name.charAt(0).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="font-black text-2xl text-black">{currentUser.name}</h1>
+                <h1 className="font-bold text-2xl text-black">{currentUser.name}</h1>
                 <span className="px-2.5 py-0.5 rounded-full bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 text-[10px] font-bold uppercase tracking-wider">
                   {currentUser.role}
                 </span>
@@ -228,15 +228,15 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="flex items-center gap-4 text-xs font-semibold flex-wrap">
               <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Assignments Submitted</span>
-                <span className="text-xl font-black text-black">{totalSubmissions}</span>
+                <span className="text-xl font-bold text-black">{totalSubmissions}</span>
               </div>
               <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Courses Completed</span>
-                <span className="text-xl font-black text-black">{completedEnrollments.length}</span>
+                <span className="text-xl font-bold text-black">{completedEnrollments.length}</span>
               </div>
               <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
-                <span className="text-xl font-black text-[#4A1A45]">{averagePercentage}%</span>
+                <span className="text-xl font-bold text-[#4A1A45]">{averagePercentage}%</span>
               </div>
             </div>
           )}
@@ -262,7 +262,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
         {/* ACTIVE COURSE BANNER (WITH DROP COURSE ACTION) */}
         {activeEnrollment && (
-          <div className="p-6 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-3">
+          <div className="p-6 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   </span>
                   <span className="text-xs text-neutral-500">{activeEnrollment.course.category}</span>
                 </div>
-                <h3 className="font-black text-xl text-black">{activeEnrollment.course.title}</h3>
+                <h3 className="font-bold text-xl text-black">{activeEnrollment.course.title}</h3>
                 <p className="text-xs text-neutral-500">
                   Single course policy active. Complete assignments or drop this track to enroll elsewhere.
                 </p>
@@ -299,8 +299,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* ACADEMIC TRANSCRIPT & RECEIPTS (STUDENTS ONLY) */}
         {currentUser.role === "STUDENT" && (
           <>
-            <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
-          <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
+            <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+          <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiAward className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
           </h2>
@@ -350,9 +350,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         </div>
 
         {/* TUITION RECEIPTS & PAYMENT HISTORY */}
-        <div id="receipts" className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        <div id="receipts" className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
           <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
-            <h2 className="font-black text-xl text-black flex items-center gap-2">
+            <h2 className="font-bold text-xl text-black flex items-center gap-2">
               <FiCreditCard className="w-5 h-5 text-black" />
               Tuition Receipts &amp; Payment History
             </h2>
@@ -384,7 +384,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     <tr key={p.id} className="hover:bg-neutral-50/80 transition-colors">
                       <td className="p-3.5 font-mono text-[11px] font-bold text-neutral-800">{p.reference}</td>
                       <td className="p-3.5 font-bold text-black">{p.course?.title || "Course Tuition"}</td>
-                      <td className="p-3.5 font-black text-black">{formatNgn(p.amount)}</td>
+                      <td className="p-3.5 font-bold text-black">{formatNgn(p.amount)}</td>
                       <td className="p-3.5 text-neutral-500">{formatDate(p.createdAt)}</td>
                       <td className="p-3.5">
                         <span
@@ -418,8 +418,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     )}
 
         {/* ACCOUNT SETTINGS */}
-        <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-6 max-w-2xl">
-          <h2 className="font-black text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
+        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6 max-w-2xl">
+          <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiUser className="w-5 h-5 text-black" />
             Account Settings
           </h2>
@@ -580,8 +580,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
       {/* DROP COURSE CONFIRMATION MODAL */}
       {dropModalOpen && activeEnrollment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white rounded-3xl p-7 shadow-2xl border border-neutral-200 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="w-full max-w-md bg-white rounded-2xl p-7 shadow-2xl border border-neutral-200 space-y-4">
             <div className="flex items-start gap-3">
               <div className="p-3 rounded-2xl bg-red-50 text-red-600">
                 <FiAlertCircle className="w-6 h-6" />
@@ -620,8 +620,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
       {/* OFFICIAL ELECTRONIC RECEIPT MODAL */}
       {selectedReceipt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-neutral-300 overflow-hidden relative print:border-none print:shadow-none print:w-full print:max-w-none">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+          <div className="w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-neutral-300 overflow-hidden relative print:border-none print:shadow-none print:w-full print:max-w-none">
             {/* Modal Header */}
             <div className="bg-[#2D0F2A] text-white px-7 py-5 flex justify-between items-center border-b border-[#3B1537] print:hidden">
               <div className="flex items-center gap-2">
@@ -643,10 +643,10 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 <div className="flex justify-center mb-2">
                   <AcademiaLogoIcon className="w-11 h-11" />
                 </div>
-                <div className="inline-block px-3 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-black uppercase tracking-widest mb-1">
+                <div className="inline-block px-3 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-bold uppercase tracking-widest mb-1">
                   Payment Receipt
                 </div>
-                <h2 className="text-xl font-black uppercase tracking-tight">
+                <h2 className="text-xl font-bold uppercase tracking-tight">
                   Academia LMS
                 </h2>
                 <p className="text-[11px] text-neutral-600 font-medium">
@@ -696,7 +696,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       <td className="p-3.5 text-center text-neutral-600 font-medium">
                         Paystack ({selectedReceipt.channel || "card"})
                       </td>
-                      <td className="p-3.5 text-right font-black text-sm text-black">
+                      <td className="p-3.5 text-right font-bold text-sm text-black">
                         {formatNgn(receiptBreakdown ? receiptBreakdown.coursePriceNgn : selectedReceipt.amount)}
                       </td>
                     </tr>
@@ -715,7 +715,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       </tr>
                     )}
                   </tbody>
-                  <tfoot className="border-t-2 border-[#4A1A45] bg-[#F7F2F6] font-black">
+                  <tfoot className="border-t-2 border-[#4A1A45] bg-[#F7F2F6] font-bold">
                     <tr>
                       <td colSpan={2} className="p-3.5 uppercase tracking-wider text-xs">Total Remittance (NGN):</td>
                       <td className="p-3.5 text-right text-base text-black">{formatNgn(selectedReceipt.amount)}</td>

@@ -57,7 +57,7 @@ export default async function MyCoursesPage() {
       <div className="bg-white border-b border-neutral-200">
         <div className="max-w-5xl mx-auto px-6 py-8">
           <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">Student Academic Record</span>
-          <h1 className="font-black text-3xl text-black mt-1">My Enrolled Courses</h1>
+          <h1 className="font-bold text-3xl text-black mt-1">My Enrolled Courses</h1>
           <p className="text-xs text-neutral-500 mt-1">Track your active course learning trajectory and review completed curriculum milestones.</p>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default async function MyCoursesPage() {
         <section className="space-y-4">
           <div className="flex items-center gap-2">
             <FiClock className="w-4 h-4 text-[#4A1A45]" />
-            <h2 className="font-black text-lg text-black">Active Course Enrollment</h2>
+            <h2 className="font-bold text-lg text-black">Active Course Enrollment</h2>
           </div>
 
           {activeEnrollment ? (() => {
@@ -76,7 +76,7 @@ export default async function MyCoursesPage() {
             const lessonCount = total;
 
             return (
-              <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
+              <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
                 <div className="p-8 space-y-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                     <div className="space-y-1.5">
@@ -86,7 +86,7 @@ export default async function MyCoursesPage() {
                         </span>
                         <span className="text-xs text-neutral-500">{activeEnrollment.course.category}</span>
                       </div>
-                      <h3 className="font-black text-2xl text-black">{activeEnrollment.course.title}</h3>
+                      <h3 className="font-bold text-2xl text-black">{activeEnrollment.course.title}</h3>
                       <p className="text-xs text-neutral-500">
                         Instructor: <strong className="text-black">{activeEnrollment.course.tutor?.name}</strong> · Enrolled {formatDate(activeEnrollment.enrolledAt)}
                       </p>
@@ -132,12 +132,12 @@ export default async function MyCoursesPage() {
               </div>
             );
           })() : (
-            <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm py-14 text-center space-y-4">
+            <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm py-14 text-center space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-[#F7F2F6] flex items-center justify-center mx-auto text-neutral-400">
                 <FiBookOpen className="w-7 h-7 text-[#4A1A45]" />
               </div>
               <div>
-                <p className="font-black text-base text-black">No Active Course Enrollment</p>
+                <p className="font-bold text-base text-black">No Active Course Enrollment</p>
                 <p className="text-xs text-neutral-500 mt-1">Browse our academic catalog to register for your next learning track.</p>
               </div>
               <Link
@@ -154,13 +154,13 @@ export default async function MyCoursesPage() {
         <section className="space-y-4">
           <div className="flex items-center gap-2">
             <FiAward className="w-4 h-4 text-[#4A1A45]" />
-            <h2 className="font-black text-lg text-black">
+            <h2 className="font-bold text-lg text-black">
               Completed Curriculum ({completedEnrollments.length})
             </h2>
           </div>
 
           {completedEnrollments.length === 0 ? (
-            <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm py-10 text-center">
+            <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm py-10 text-center">
               <p className="text-xs text-neutral-500 italic">No completed courses yet. Keep working towards your {PASS_MARK_PERCENT}% average pass mark!</p>
             </div>
           ) : (
@@ -170,12 +170,12 @@ export default async function MyCoursesPage() {
                 return (
                   <div
                     key={e.id}
-                    className="bg-white rounded-3xl border border-neutral-200 shadow-sm p-6 space-y-3"
+                    className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6 space-y-3"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{e.course.category}</span>
-                        <h3 className="font-black text-base text-black mt-0.5">{e.course.title}</h3>
+                        <h3 className="font-bold text-base text-black mt-0.5">{e.course.title}</h3>
                       </div>
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#4A1A45] text-white shrink-0">
                         Completed

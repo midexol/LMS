@@ -56,14 +56,14 @@ export function SignupsChart({ createdAt, days = 30 }: SignupsChartProps) {
   const hovered = hover !== null ? series[hover] : null;
 
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-4">
+    <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
-          <h3 className="font-black text-lg text-black tracking-tight">New Accounts, Last {days} Days</h3>
+          <h3 className="font-bold text-lg text-black tracking-tight">New Accounts, Last {days} Days</h3>
           <p className="text-xs text-neutral-500 mt-0.5">Daily sign-ups across students, tutors and admins.</p>
         </div>
         <div className="text-right">
-          <span className="text-3xl font-black text-black tracking-tight">{total}</span>
+          <span className="text-3xl font-bold text-black tracking-tight">{total}</span>
           <span className="text-xs text-neutral-500 ml-1.5">
             {total === 1 ? "account" : "accounts"} · peak {peak}/day
           </span>

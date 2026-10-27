@@ -9,6 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        paper: "#FBF9F6",
+        ink: { DEFAULT: "#1B1418", soft: "#5E555B" },
+        rule: "#E3DDD6",
         fedpoly: {
           DEFAULT: "#4A1A45",
           dark: "#3B1537",
@@ -35,18 +38,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["var(--font-sans)", "Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
-        sans: ["var(--font-sans)", "Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
-        body: ["var(--font-sans)", "Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
-        serif: ["var(--font-sans)", "Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
-      },
-      boxShadow: {
-        "neu-out": "6px 6px 14px #e2e8f0, -6px -6px 14px #ffffff",
-        "neu-in": "inset 4px 4px 8px #e2e8f0, inset -4px -4px 8px #ffffff",
-        "neu-out-sm": "3px 3px 7px #e2e8f0, -3px -3px 7px #ffffff",
-        "neu-in-sm": "inset 2px 2px 4px #e2e8f0, inset -2px -2px 4px #ffffff",
-        "neu-out-lg": "10px 10px 20px #e2e8f0, -10px -10px 20px #ffffff",
-        "neu-pressed": "inset 3px 3px 6px #e2e8f0, inset -3px -3px 6px #ffffff",
+        heading: ["var(--font-heading)", "Georgia", "Cambria", "serif"],
+        serif: ["var(--font-heading)", "Georgia", "Cambria", "serif"],
+        sans: ["var(--font-body)", "system-ui", "-apple-system", "Segoe UI", "Arial", "sans-serif"],
+        body: ["var(--font-body)", "system-ui", "-apple-system", "Segoe UI", "Arial", "sans-serif"],
       },
     },
   },

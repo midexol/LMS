@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import { Newsreader, Public_Sans } from "next/font/google";
 import "./globals.css";
+
+const headingFont = Newsreader({ subsets: ["latin"], variable: "--font-heading", display: "swap", style: ["normal", "italic"], adjustFontFallback: false });
+const bodyFont = Public_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Academia LMS - Learn one course at a time",
@@ -17,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="bg-white text-zinc-950 antialiased min-h-screen selection:bg-zinc-900 selection:text-white font-sans">
+    <html lang="en" className={`${headingFont.variable} ${bodyFont.variable}`}>
+      <body className="bg-paper text-ink antialiased min-h-screen selection:bg-[#4A1A45] selection:text-white font-sans">
         {children}
       </body>
     </html>
