@@ -17,14 +17,15 @@ interface CatalogClientProps {
   currentUser: any;
   courses: any[];
   activeEnrollment: any;
+  initialSearch?: string;
 }
 
 const LEVELS = ["All", "Beginner", "Intermediate", "Advanced"];
 
-export function CatalogClient({ currentUser, courses, activeEnrollment }: CatalogClientProps) {
+export function CatalogClient({ currentUser, courses, activeEnrollment, initialSearch = "" }: CatalogClientProps) {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
   const [facultyFilter, setFacultyFilter] = useState("All");
   const [deptFilter, setDeptFilter] = useState("All");
   const [levelFilter, setLevelFilter] = useState("All");

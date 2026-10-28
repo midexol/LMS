@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { FiX } from "react-icons/fi";
 import { LandingNavbar } from "@/components/ui/LandingNavbar";
-import { BrandLogo } from "@/components/ui/BrandLogo";
+import { BrandLogo, AcademiaLogoIcon } from "@/components/ui/BrandLogo";
 import { formatNgn } from "@/lib/utils";
 import { PASS_MARK_PERCENT } from "@/lib/grading";
 
@@ -90,6 +89,103 @@ const textLink =
 const fieldClass =
   "w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45]";
 
+/** The certificate a student receives, drawn from the same facts the real one carries. */
+function CertificatePreview({ name }: { name: string }) {
+  const shown = name.trim();
+  return (
+    <div className="bg-[#2D0F2A] p-4 sm:p-8 rounded-md">
+      <div
+        className="bg-[#FBF6EC] text-[#24122A] border-[3px] border-double border-[#4A1A45]/70 px-5 py-7 sm:px-10 sm:py-10 text-center"
+        role="img"
+        aria-label={`Completion certificate for ${shown || "you"}`}
+      >
+        <p className="text-[11px] sm:text-xs tracking-[0.2em] uppercase text-[#4A1A45]">Academia &middot; Certificate of completion</p>
+        <p className="mt-6 text-sm text-[#24122A]/70">This certifies that</p>
+        <p
+          className={`mt-2 font-heading text-3xl sm:text-4xl leading-tight break-words border-b border-[#24122A]/30 pb-2 ${
+            shown ? "text-[#24122A]" : "text-[#24122A]/30"
+          }`}
+        >
+          {shown || "Your name"}
+        </p>
+        <p className="mt-5 text-sm text-[#24122A]/70">has completed the course</p>
+        <p className="mt-1 font-heading text-xl sm:text-2xl text-[#24122A]">The course you choose</p>
+        <p className="mt-3 text-xs sm:text-sm text-[#24122A]/70 max-w-xs mx-auto leading-relaxed">
+          with an average of at least {PASS_MARK_PERCENT}% across its assignments
+        </p>
+        <div className="mt-8 grid grid-cols-[1fr_auto_1fr] items-end gap-4">
+          <div className="border-t border-[#24122A]/40 pt-1 text-[11px] text-[#24122A]/70">Course instructor</div>
+          <AcademiaLogoIcon className="w-10 h-10" />
+          <div className="border-t border-[#24122A]/40 pt-1 text-[11px] text-[#24122A]/70">Date of completion</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** A drawn view of the course screen students work in: lessons, progress, and a scored assignment. */
+function CourseViewPreview() {
+  const lessons = [
+    { title: "Welcome and how this course works", done: true },
+    { title: "Understanding your customer", done: true },
+    { title: "Pricing and positioning", done: true },
+    { title: "Assignment 1: position a product", current: true },
+    { title: "Writing a marketing plan" },
+  ];
+  return (
+    <figure className="m-0">
+      <div className="bg-[#2D0F2A] p-4 sm:p-7 rounded-md">
+        <div
+          className="bg-white rounded-md border border-rule overflow-hidden"
+          role="img"
+          aria-label="Example of a course view with a lesson list, progress bar and a scored assignment"
+        >
+          <div className="px-5 pt-5">
+            <p className="text-xs text-ink-soft">Module 2 of 5</p>
+            <p className="font-heading text-xl sm:text-2xl font-semibold text-ink leading-tight">Introduction to Marketing</p>
+            <div className="mt-3 h-1.5 bg-[#EFE7EE] rounded-full">
+              <div className="h-1.5 rounded-full bg-[#4A1A45]" style={{ width: "42%" }} />
+            </div>
+            <p className="mt-1.5 text-xs text-ink-soft">3 of 7 lessons done</p>
+          </div>
+
+          <ul className="mt-3 px-5 divide-y divide-rule border-t border-rule">
+            {lessons.map((l) => (
+              <li key={l.title} className="flex items-center gap-3 py-2.5 text-sm">
+                <span
+                  aria-hidden="true"
+                  className={`shrink-0 w-4 h-4 rounded-sm border ${
+                    l.done ? "bg-[#4A1A45] border-[#4A1A45]" : l.current ? "border-[#4A1A45] border-2" : "border-[#B9AAB7]"
+                  }`}
+                />
+                <span className={l.done ? "text-ink-soft" : l.current ? "font-semibold text-ink" : "text-ink"}>{l.title}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="bg-[#F7F2F6] border-t border-rule px-5 py-4">
+            <div className="flex items-baseline justify-between gap-4">
+              <p className="text-sm font-semibold text-ink">Your last assignment</p>
+              <p className="font-heading text-2xl font-semibold text-[#4A1A45]">78%</p>
+            </div>
+            <div className="relative mt-2 h-1.5 bg-[#E4D5E2] rounded-full">
+              <div className="h-1.5 rounded-full bg-[#4A1A45]" style={{ width: "78%" }} />
+              <div className="absolute -top-1 h-3.5 w-px bg-ink" style={{ left: `${PASS_MARK_PERCENT}%` }} />
+            </div>
+            <p className="mt-1 text-xs text-ink-soft">Pass mark {PASS_MARK_PERCENT}%</p>
+            <p className="mt-3 text-sm text-ink leading-relaxed">
+              Clear positioning. Compare against one competitor to earn full marks.
+            </p>
+          </div>
+        </div>
+      </div>
+      <figcaption className="mt-3 text-sm text-ink-soft">
+        An example course view. Your lessons, scores and written feedback appear here.
+      </figcaption>
+    </figure>
+  );
+}
+
 export function LandingPage({
   currentUser,
   featuredCourses,
@@ -110,6 +206,7 @@ export function LandingPage({
     message: "",
     website: "", // honeypot: hidden from people, filled in by bots
   });
+  const [certName, setCertName] = useState("");
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
   // Footer attribution. Override with NEXT_PUBLIC_INSTITUTION_NAME, or set it to "-" to hide the line.
   const institutionEnv = process.env.NEXT_PUBLIC_INSTITUTION_NAME;
@@ -144,8 +241,8 @@ export function LandingPage({
       {/* Hero */}
       <section className="px-6 max-w-7xl mx-auto pt-12 sm:pt-20 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          <div className="lg:col-span-7">
-            <h1 className="font-heading font-medium text-[2.5rem] sm:text-6xl lg:text-[4.5rem] leading-[1.04] text-ink">
+          <div className="lg:col-span-6">
+            <h1 className="font-heading font-medium text-[2.5rem] sm:text-6xl lg:text-[4.25rem] leading-[1.04] text-ink">
               Learn one course at a time. Finish it.
             </h1>
             <p className="mt-6 text-lg text-ink-soft leading-relaxed max-w-xl">
@@ -153,35 +250,59 @@ export function LandingPage({
               Because you take one course at a time, you stay with it until it is done.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Link href="/signup" className={buttonPrimary}>
+            <form action="/courses" method="get" role="search" className="mt-8 flex max-w-xl">
+              <label htmlFor="hero-search" className="sr-only">Search courses</label>
+              <input
+                id="hero-search"
+                name="q"
+                type="search"
+                autoComplete="off"
+                placeholder="What do you want to learn?"
+                className="min-w-0 flex-1 rounded-l-md border border-r-0 border-neutral-300 bg-white px-4 py-3 text-base text-ink placeholder:text-neutral-500 focus:outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45]"
+              />
+              <button type="submit" className="rounded-r-md bg-[#4A1A45] px-5 sm:px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#3B1537]">
+                Search
+              </button>
+            </form>
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3">
+              <Link href="/signup" className={textLink}>
                 Create free account
               </Link>
               <Link href="/courses" className={textLink}>
                 Browse courses
               </Link>
             </div>
-
-            <p className="mt-8 text-sm text-ink-soft">
-              Pay in Naira with Paystack. Feedback within seconds. A certificate when you pass.
-            </p>
           </div>
 
-          <div className="lg:col-span-5">
-            <Image
-              src="/assets/hero_library_study_option1.jpg"
-              alt="A student studying on a laptop in a library"
-              width={1200}
-              height={675}
-              priority
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              className="w-full h-auto aspect-[4/3] lg:aspect-[4/5] object-cover rounded-md"
-            />
+          <div className="lg:col-span-6">
+            <CourseViewPreview />
           </div>
         </div>
 
+        <dl className="mt-14 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 border-t border-rule">
+          <div className="py-6 sm:pr-8 sm:border-r border-rule">
+            <dt className="font-heading text-5xl sm:text-6xl font-medium text-[#4A1A45]">{PASS_MARK_PERCENT}%</dt>
+            <dd className="mt-2 text-ink-soft leading-relaxed">
+              The average across a course&apos;s assignments that earns your certificate.
+            </dd>
+          </div>
+          <div className="py-6 sm:px-8 sm:border-r border-t sm:border-t-0 border-rule">
+            <dt className="font-heading text-5xl sm:text-6xl font-medium text-[#4A1A45]">1</dt>
+            <dd className="mt-2 text-ink-soft leading-relaxed">
+              Active course at a time, so every course you start gets finished.
+            </dd>
+          </div>
+          <div className="py-6 sm:pl-8 border-t sm:border-t-0 border-rule">
+            <dt className="font-heading text-5xl sm:text-6xl font-medium text-[#4A1A45]">&#8358;</dt>
+            <dd className="mt-2 text-ink-soft leading-relaxed">
+              Prices and payment in Naira, through Paystack.
+            </dd>
+          </div>
+        </dl>
+
         {categoryCounts.length > 0 && (
-          <div className="mt-12 pt-5 border-t border-rule flex flex-wrap items-baseline gap-x-6 gap-y-2 text-sm">
+          <div className="mt-2 pt-5 border-t border-rule flex flex-wrap items-baseline gap-x-6 gap-y-2 text-sm">
             <span className="text-ink-soft">Subjects</span>
             {categoryCounts.map((cat) => (
               <Link key={cat.category} href="/courses" className="text-ink hover:text-[#4A1A45] hover:underline underline-offset-4">
@@ -290,6 +411,39 @@ export function LandingPage({
         </ol>
       </section>
 
+      {/* Certificate */}
+      <section className="px-6 max-w-7xl mx-auto py-14 sm:py-20 border-t border-rule" id="certificate">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div className="lg:col-span-5">
+            <h2 className="font-heading font-medium text-3xl sm:text-4xl lg:text-5xl leading-[1.1] text-ink">
+              A certificate with your name on it
+            </h2>
+            <p className="mt-5 text-lg text-ink-soft leading-relaxed">
+              Finish a course with an average of {PASS_MARK_PERCENT}% or more across its assignments and your
+              completion certificate is issued. It confirms that you completed the course on Academia.
+            </p>
+            <div className="mt-6 max-w-sm">
+              <label htmlFor="cert-name" className="block text-sm font-medium text-ink mb-1">
+                Put your name on it
+              </label>
+              <input
+                id="cert-name"
+                type="text"
+                maxLength={40}
+                autoComplete="off"
+                value={certName}
+                onChange={(e) => setCertName(e.target.value)}
+                placeholder="Type your name"
+                className={fieldClass}
+              />
+            </div>
+          </div>
+          <div className="lg:col-span-7">
+            <CertificatePreview name={certName} />
+          </div>
+        </div>
+      </section>
+
       {/* What is included */}
       <section className="bg-[#2D0F2A] text-white py-14 sm:py-20 px-6" id="whats-included">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
@@ -348,27 +502,56 @@ export function LandingPage({
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1E0A1C] text-neutral-400 py-8 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <BrandLogo href="/" variant="light" size="sm" />
-            {institutionName && <span className="text-xs text-[#D6BDD4]">{institutionName}</span>}
+      <footer className="bg-[#1E0A1C] text-[#D6BDD4]">
+        <div className="max-w-7xl mx-auto px-6 pt-14 pb-8">
+          <div className="grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-10">
+            <div className="col-span-2 md:col-span-4 max-w-sm">
+              <BrandLogo href="/" variant="light" size="md" />
+              <p className="mt-4 text-sm leading-relaxed">
+                Structured online courses with feedback on every submission and a certificate when you pass.
+              </p>
+              {institutionName && <p className="mt-3 text-sm text-white/80">{institutionName}</p>}
+            </div>
+
+            <nav aria-label="Learn" className="md:col-span-2 md:col-start-6">
+              <h2 className="font-sans text-sm font-semibold text-white">Learn</h2>
+              <ul className="mt-4 space-y-3 text-sm">
+                <li><Link href="/courses" className="hover:text-white transition-colors">Courses</Link></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">How it works</a></li>
+                <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
+              </ul>
+            </nav>
+
+            <nav aria-label="Support" className="col-span-2 sm:col-span-1 md:col-span-3">
+              <h2 className="font-sans text-sm font-semibold text-white">Support</h2>
+              <ul className="mt-4 space-y-3 text-sm">
+                <li>
+                  <button onClick={() => setPolicyModal("contact")} className="hover:text-white transition-colors text-left">
+                    Contact and support
+                  </button>
+                </li>
+                {supportEmail && (
+                  <li>
+                    <a href={`mailto:${supportEmail}`} className="hover:text-white transition-colors break-all">
+                      {supportEmail}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </nav>
+
+            <nav aria-label="Legal" className="md:col-span-2">
+              <h2 className="font-sans text-sm font-semibold text-white">Legal</h2>
+              <ul className="mt-4 space-y-3 text-sm">
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li>
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></li>
+              </ul>
+            </nav>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
-            <Link href="/courses" className="hover:text-white transition-colors">Courses</Link>
-            <Link href="/login" className="hover:text-white transition-colors">Sign in</Link>
-            <Link href="/signup" className="hover:text-white transition-colors">Create account</Link>
-            <button onClick={() => setPolicyModal("contact")} className="hover:text-white transition-colors">
-              Contact and support
-            </button>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-          </div>
-
-          <p className="text-xs text-neutral-500 text-center md:text-right">
+          <div className="mt-12 pt-6 border-t border-white/15 text-xs text-[#D6BDD4]/80">
             &copy; {new Date().getFullYear()} Academia. All rights reserved.
-          </p>
+          </div>
         </div>
       </footer>
 

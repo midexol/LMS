@@ -10,7 +10,8 @@ const config: Config = {
     extend: {
       colors: {
         paper: "#FBF9F6",
-        ink: { DEFAULT: "#1B1418", soft: "#5E555B" },
+        black: "#221024",
+        ink: { DEFAULT: "#221024", soft: "#5A4858" },
         rule: "#E3DDD6",
         fedpoly: {
           DEFAULT: "#4A1A45",

@@ -520,22 +520,32 @@ describe("/courses catalog", () => {
 
   it("shows only published courses, and narrows students to their department", async () => {
     loginAs("STUDENT", { department: "Chemistry" });
-    await CoursesCatalogPage();
+    await CoursesCatalogPage({ searchParams: {} });
     expect(prismaMock.course.findMany.mock.calls[0][0].where).toEqual({ published: true, department: "Chemistry" });
   });
 
   it("shows everything published to visitors and to students with no department", async () => {
     loginAs(null);
-    await CoursesCatalogPage();
+    await CoursesCatalogPage({ searchParams: {} });
     expect(prismaMock.course.findMany.mock.calls[0][0].where).toEqual({ published: true });
     loginAs("STUDENT", { department: null });
-    await CoursesCatalogPage();
+    await CoursesCatalogPage({ searchParams: {} });
     expect(prismaMock.course.findMany.mock.calls[1][0].where).toEqual({ published: true });
+  });
+
+  it("passes the homepage search (?q=) through to the catalogue, trimmed to a sane length", async () => {
+    loginAs(null);
+    const result: any = await CoursesCatalogPage({ searchParams: { q: "marketing" } });
+    expect(result.props.initialSearch).toBe("marketing");
+    const long: any = await CoursesCatalogPage({ searchParams: { q: "x".repeat(500) } });
+    expect(long.props.initialSearch.length).toBe(100);
+    const none: any = await CoursesCatalogPage({ searchParams: {} });
+    expect(none.props.initialSearch).toBe("");
   });
 
   it("looks up the signed-in student's active enrollment for the lock banner", async () => {
     const student = loginAs("STUDENT")!;
-    await CoursesCatalogPage();
+    await CoursesCatalogPage({ searchParams: {} });
     expect(prismaMock.enrollment.findFirst.mock.calls[0][0].where).toEqual({ studentId: student.id, status: "ACTIVE" });
   });
 });

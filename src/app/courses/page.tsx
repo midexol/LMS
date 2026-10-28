@@ -5,8 +5,14 @@ import { CatalogClient } from "../CatalogClient";
 
 export const revalidate = 0;
 
-export default async function CoursesCatalogPage() {
+export default async function CoursesCatalogPage({
+  searchParams,
+}: {
+  searchParams: { q?: string | string[] };
+}) {
   const currentUser = await getCurrentUser();
+  const rawQuery = searchParams.q;
+  const initialSearch = (Array.isArray(rawQuery) ? rawQuery[0] : rawQuery)?.slice(0, 100) ?? "";
 
   const whereClause: any = { published: true };
   if (currentUser?.role === "STUDENT" && currentUser.department) {
@@ -35,6 +41,7 @@ export default async function CoursesCatalogPage() {
       currentUser={currentUser}
       courses={courses}
       activeEnrollment={activeEnrollment}
+      initialSearch={initialSearch}
     />
   );
 }

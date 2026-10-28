@@ -328,6 +328,22 @@ describe("Landing page", () => {
     expect(screen.getAllByText(/2 modules/).length).toBeGreaterThan(0);
   });
 
+  it("has a search box that sends the visitor to the catalogue with their search", () => {
+    page();
+    const form = screen.getByRole("search") as HTMLFormElement;
+    expect(form.getAttribute("action")).toBe("/courses");
+    expect(form.getAttribute("method")).toBe("get");
+    const input = within(form).getByLabelText("Search courses") as HTMLInputElement;
+    expect(input.name).toBe("q");
+  });
+
+  it("lets a visitor type their name onto the example certificate", () => {
+    page();
+    expect(screen.getByRole("img", { name: /Completion certificate for you/ })).toBeTruthy();
+    fireEvent.change(screen.getByLabelText("Put your name on it"), { target: { value: "Ada Obi" } });
+    expect(screen.getByRole("img", { name: "Completion certificate for Ada Obi" })).toBeTruthy();
+  });
+
   it("answers the questions students actually have", () => {
     page();
     for (const q of [
@@ -460,7 +476,10 @@ describe("Landing page", () => {
       vi.stubEnv("NEXT_PUBLIC_SUPPORT_EMAIL", "help@example.edu.ng");
       page();
       open();
-      expect(screen.getByText("help@example.edu.ng").getAttribute("href")).toBe("mailto:help@example.edu.ng");
+      // the footer lists it too; the contact dialog must show it as well
+      const inDialog = within(screen.getByRole("dialog")).getByText("help@example.edu.ng");
+      expect(inDialog.getAttribute("href")).toBe("mailto:help@example.edu.ng");
+      expect(screen.getAllByText("help@example.edu.ng").length).toBe(2);
     });
 
     it("can be closed", () => {
