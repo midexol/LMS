@@ -1,5 +1,6 @@
 "use client";
 
+import { isSafeRenderUrl } from "@/lib/safeUrl";
 import React, { useState, useRef } from "react";
 import { PiSpinner, PiTrash, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
@@ -891,7 +892,7 @@ function LessonRow({
             {lesson.resourceName || "Uploaded file"} (uploaded)
           </span>
         ) : (
-          lesson.resourceUrl && (
+          isSafeRenderUrl(lesson.resourceUrl) && (
             <a
               href={lesson.resourceUrl}
               target="_blank"

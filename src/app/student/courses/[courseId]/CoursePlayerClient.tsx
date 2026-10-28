@@ -1,5 +1,6 @@
 "use client";
 
+import { isSafeRenderUrl } from "@/lib/safeUrl";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/lib/utils";
 import { PASS_MARK_PERCENT } from "@/lib/grading";
@@ -390,7 +391,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </div>
 
                 {/* Video */}
-                {activeLesson.videoUrl && (
+                {isSafeRenderUrl(activeLesson.videoUrl) && (
                   <div className="aspect-video w-full rounded-xl overflow-hidden bg-[#4A1A45] flex items-center justify-center">
                     {activeLesson.videoUrl.startsWith("/uploads/") ||
                     /\.(mp4|webm|ogg|ogv)(\?.*)?$/i.test(activeLesson.videoUrl) ? (
@@ -424,7 +425,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 </div>
 
                 {/* Resource Attachment */}
-                {activeLesson.resourceName && activeLesson.resourceUrl && (
+                {activeLesson.resourceName && isSafeRenderUrl(activeLesson.resourceUrl) && (
                   <a
                     href={activeLesson.resourceUrl}
                     target="_blank"

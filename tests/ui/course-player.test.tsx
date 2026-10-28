@@ -157,6 +157,15 @@ describe("Course player: lesson media", () => {
     expect(link.getAttribute("rel")).toContain("noopener");
   });
 
+  it("never draws a script link as a video or a download, so it cannot run in a student's session", () => {
+    backend();
+    const { container } = player(course([lesson(1, { videoUrl: "javascript:alert(1)", resourceName: "Notes", resourceUrl: "javascript:alert(1)" }), lesson(2), lesson(3)]));
+    expect(container.querySelector("iframe")).toBeNull();
+    expect(container.querySelector("video")).toBeNull();
+    expect(container.querySelector('a[href^="javascript"]')).toBeNull();
+    expect(screen.queryByText("Notes")).toBeNull();
+  });
+
   it("shows no video or resource blocks for a lesson without them", () => {
     backend();
     const { container } = player();

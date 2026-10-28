@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { sendCourseUpdateEmail } from "@/lib/mail";
+import { lessonLinksAreSafe, LESSON_LINK_ERROR } from "@/lib/safeUrl";
 
 export async function POST(req: Request) {
   try {
@@ -18,6 +19,10 @@ export async function POST(req: Request) {
 
     if (!modules || !Array.isArray(modules) || modules.length === 0) {
       return NextResponse.json({ error: "At least one module is required." }, { status: 400 });
+    }
+
+    if (!lessonLinksAreSafe(modules)) {
+      return NextResponse.json({ error: LESSON_LINK_ERROR }, { status: 400 });
     }
 
     const newCourse = await prisma.course.create({
@@ -89,6 +94,10 @@ export async function PUT(req: Request) {
 
     if (typeof title !== "string" || !title.trim() || typeof description !== "string" || !description.trim()) {
       return NextResponse.json({ error: "Title and description are required." }, { status: 400 });
+    }
+
+    if (!lessonLinksAreSafe(modules)) {
+      return NextResponse.json({ error: LESSON_LINK_ERROR }, { status: 400 });
     }
 
     const existingCourse = await prisma.course.findUnique({

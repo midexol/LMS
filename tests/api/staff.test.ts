@@ -254,6 +254,17 @@ describe("/api/tutor/courses", () => {
       expect((await create({ ...valid, modules: undefined })).status).toBe(400);
     });
 
+    it("refuses lesson links that could run script in a student's browser, and saves nothing", async () => {
+      loginAs("TUTOR");
+      for (const bad of ["javascript:alert(1)", "data:text/html,<script>1</script>", "http://example.com/a.pdf"]) {
+        const asVideo = [{ title: "M", lessons: [{ title: "A", videoUrl: bad }] }];
+        const asFile = [{ title: "M", lessons: [{ title: "A", resourceName: "notes", resourceUrl: bad }] }];
+        expect((await create({ ...valid, modules: asVideo })).status).toBe(400);
+        expect((await create({ ...valid, modules: asFile })).status).toBe(400);
+      }
+      expect(prismaMock.course.create).not.toHaveBeenCalled();
+    });
+
     it("creates the course owned by the signed-in tutor, with ordered modules and lessons", async () => {
       const tutor = loginAs("TUTOR")!;
       const { status } = await create(valid);
@@ -324,6 +335,14 @@ describe("/api/tutor/courses", () => {
       expect(prismaMock.module.create).toHaveBeenCalledOnce();
       expect(prismaMock.lesson.create).toHaveBeenCalledTimes(2);
       expect(prismaMock.assignment.create).toHaveBeenCalledOnce(); // only the lesson with a prompt
+    });
+
+    it("refuses dangerous lesson links when editing too, before anything is rewritten", async () => {
+      const tutor = loginAs("TUTOR")!;
+      existing(tutor.id);
+      const evil = [{ title: "M", lessons: [{ title: "A", videoUrl: "javascript:alert(1)" }] }];
+      expect((await edit({ ...payload, modules: evil })).status).toBe(400);
+      expect(prismaMock.$transaction).not.toHaveBeenCalled();
     });
 
     it("emails only ACTIVE students about the update", async () => {
