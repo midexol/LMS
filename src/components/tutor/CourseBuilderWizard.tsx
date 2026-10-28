@@ -390,7 +390,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
             <h4 className="font-bold text-black text-sm flex items-center gap-2">
               Curriculum Template Generator
-              <span className="ml-auto text-xs sm:text-[10px] text-[#4A1A45] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider">Optional</span>
+              <span className="ml-auto shrink-0 whitespace-nowrap text-xs sm:text-[10px] text-[#4A1A45] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider">Optional</span>
             </h4>
             <div className="flex flex-col sm:flex-row gap-3">
               <input

@@ -416,7 +416,7 @@ export function InstructorClient({
                                     </span>
                                   )}
                                 </div>
-                                <div className="flex items-center gap-3 text-xs sm:text-[11px] font-bold text-neutral-500">
+                                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-[11px] font-bold text-neutral-500">
                                   <span className="text-black">{c.enrollments.length} enrolled</span>
                                   <span>·</span>
                                   <span className="text-[#4A1A45]">{courseSubs.length} submissions</span>

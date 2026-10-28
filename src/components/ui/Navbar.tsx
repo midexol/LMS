@@ -61,7 +61,7 @@ export function Navbar({ currentUser }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-40 bg-white text-black border-b border-rule">
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Brand & Navigation */}
         <div className="flex items-center gap-6 sm:gap-8">
           <BrandLogo
@@ -91,7 +91,7 @@ export function Navbar({ currentUser }: NavbarProps) {
         </div>
 
         {/* Right: Auth / User Avatar Menu */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {currentUser ? (
             <div className="relative" ref={userMenuRef}>
               <button
@@ -224,13 +224,13 @@ export function Navbar({ currentUser }: NavbarProps) {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-xs font-semibold px-3 py-1.5 text-neutral-700 hover:text-[#4A1A45] transition-colors"
+                className="text-xs font-semibold px-2 sm:px-3 py-1.5 text-neutral-700 hover:text-[#4A1A45] transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all"
+                className="px-3 sm:px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all"
               >
                 Get Started
               </Link>
