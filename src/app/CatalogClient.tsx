@@ -67,14 +67,14 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
       <Navbar currentUser={currentUser} />
 
       {/* Hero Header */}
-      <div className="bg-neutral-50 border-b border-neutral-200">
+      <div className="bg-[#F7F2F6] border-b border-rule">
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-widest">
                 Academic Curriculum
               </span>
-              <h1 className="font-bold text-3xl sm:text-4xl text-black mt-1 leading-tight">
+              <h1 className="font-heading font-semibold text-3xl sm:text-4xl text-black mt-1 leading-tight">
                 Course Catalog
               </h1>
               <p className="text-neutral-600 text-sm mt-1 max-w-md leading-relaxed">
@@ -84,7 +84,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
             {/* Active enrollment indicator */}
             {activeEnrollment && (
-              <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-white border border-neutral-200 max-w-sm">
+              <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-white border border-rule max-w-sm">
                 <div className="p-2 rounded-xl bg-[#4A1A45] text-white shrink-0">
                   <PiBookOpen className="w-4 h-4 text-white" />
                 </div>
@@ -106,7 +106,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="px-4 py-2.5 rounded-md border border-neutral-300 text-xs font-bold text-black hover:bg-neutral-100 transition-all"
+                  className="px-4 py-2.5 rounded-md border border-neutral-300 text-xs font-bold text-black hover:bg-[#F3EAF2] transition-all"
                 >
                   Sign In
                 </Link>
@@ -162,7 +162,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             </div>
             <Link
               href="/profile"
-              className="px-5 py-2.5 rounded-md bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all shrink-0"
+              className="px-5 py-2.5 rounded-md bg-white text-black text-xs font-bold hover:bg-[#E4D5E2] transition-all shrink-0"
             >
               Set Department in Profile
             </Link>
@@ -170,7 +170,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
         )}
 
         {/* Search & Filters */}
-        <div className="bg-white rounded-lg border border-neutral-200 p-4 flex flex-col sm:flex-row gap-3 flex-wrap">
+        <div className="bg-white rounded-lg border border-rule p-4 flex flex-col sm:flex-row gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[240px]">
             <PiMagnifyingGlass className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4" />
             <input
@@ -182,7 +182,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
               }
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-9 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] placeholder:text-neutral-400"
+              className="w-full pl-10 pr-9 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] placeholder:text-neutral-400"
             />
             {search && (
               <button
@@ -204,7 +204,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     setFacultyFilter(e.target.value);
                     setDeptFilter("All");
                   }}
-                  className="px-3.5 py-2 text-xs rounded-md bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none max-w-[190px]"
+                  className="px-3.5 py-2 text-xs rounded-md bg-[#F7F2F6] border border-rule font-bold text-neutral-700 outline-none max-w-[190px]"
                 >
                   <option value="All">All Schools</option>
                   {ACADEMIC_STRUCTURE.map((f) => (
@@ -217,7 +217,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                 <select
                   value={deptFilter}
                   onChange={(e) => setDeptFilter(e.target.value)}
-                  className="px-3.5 py-2 text-xs rounded-md bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none max-w-[200px]"
+                  className="px-3.5 py-2 text-xs rounded-md bg-[#F7F2F6] border border-rule font-bold text-neutral-700 outline-none max-w-[200px]"
                 >
                   <option value="All">All Departments</option>
                   {(facultyFilter === "All"
@@ -235,7 +235,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             <select
               value={levelFilter}
               onChange={(e) => setLevelFilter(e.target.value)}
-              className="px-4 py-2 text-xs rounded-md bg-neutral-50 border border-neutral-200 font-bold text-neutral-700 outline-none"
+              className="px-4 py-2 text-xs rounded-md bg-[#F7F2F6] border border-rule font-bold text-neutral-700 outline-none"
             >
               {LEVELS.map((l) => (
                 <option key={l} value={l}>
@@ -252,7 +252,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                   setDeptFilter("All");
                   setLevelFilter("All");
                 }}
-                className="px-4 py-2 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold text-xs transition-all"
+                className="px-4 py-2 rounded-md bg-[#F3EAF2] hover:bg-[#E4D5E2] text-neutral-700 font-bold text-xs transition-all"
               >
                 Reset
               </button>
@@ -274,7 +274,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
         {/* Course Cards Grid */}
         {filteredCourses.length === 0 ? (
-          <div className="bg-white rounded-lg border border-neutral-200 py-16 text-center space-y-2">
+          <div className="bg-white rounded-lg border border-rule py-16 text-center space-y-2">
             <PiMagnifyingGlass className="w-10 h-10 text-neutral-300 mx-auto mb-2" />
             <p className="font-bold text-neutral-700 text-base">
               {studentDepartment
@@ -310,7 +310,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
               return (
                 <div
                   key={course.id}
-                  className="bg-white rounded-lg border border-neutral-200 transition-colors flex flex-col justify-between overflow-hidden group"
+                  className="bg-white rounded-lg border border-rule transition-colors flex flex-col justify-between overflow-hidden group"
                 >
                   {course.coverImage && (
                     <img
@@ -334,7 +334,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                           {course.department}
                         </span>
                       )}
-                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold border bg-neutral-50 text-neutral-800 border-neutral-200">
+                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold border bg-[#F7F2F6] text-neutral-800 border-rule">
                         {course.level}
                       </span>
                       <span className="text-[11px] text-neutral-500">
@@ -344,12 +344,12 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                       <span className="text-[11px] text-neutral-500">{lessonCount} lessons</span>
                     </div>
 
-                    <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 text-xs text-neutral-600">
+                    <div className="pt-3 border-t border-rule flex items-center gap-2 text-xs text-neutral-600">
                       <span className="font-bold text-black truncate">Instructor: {course.tutor?.name || "Instructor"}</span>
                     </div>
                   </div>
 
-                  <div className="p-5 bg-neutral-50 border-t border-neutral-200 space-y-2">
+                  <div className="p-5 bg-[#F7F2F6] border-t border-rule space-y-2">
                     <Link
                       href={`/courses/${course.id}`}
                       className="w-full py-2 rounded-md border border-neutral-300 bg-white text-xs font-bold text-black flex items-center justify-center hover:border-black transition-all"
@@ -367,7 +367,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     ) : isLocked ? (
                       <button
                         disabled
-                        className="w-full py-2.5 rounded-md bg-neutral-200 text-neutral-500 font-bold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
+                        className="w-full py-2.5 rounded-md bg-[#E4D5E2] text-neutral-500 font-bold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
                       >
                         <PiLock className="w-3.5 h-3.5" /> Registration Locked
                       </button>

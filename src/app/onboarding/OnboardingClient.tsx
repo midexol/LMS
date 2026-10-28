@@ -43,7 +43,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
   };
 
   const selectClass =
-    "w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all";
+    "w-full px-4 py-3 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all";
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-12">
@@ -51,9 +51,9 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-lg border border-neutral-200">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-lg border border-rule">
         <div>
-          <h1 className="font-bold text-2xl text-black">One last step</h1>
+          <h1 className="font-heading font-semibold text-2xl text-black">One last step</h1>
           <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
             Welcome, {name}. Tell us your faculty and department so we can show you the right courses. You are signed in as {email}.
           </p>

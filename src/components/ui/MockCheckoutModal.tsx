@@ -145,11 +145,11 @@ export function MockCheckoutModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-fadeIn">
-      <div className="w-full max-w-lg bg-white rounded-lg p-7 border border-neutral-200 relative">
+      <div className="w-full max-w-lg bg-white rounded-lg p-7 border border-rule relative">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full border border-neutral-200 text-neutral-500 hover:text-black hover:border-black transition-all"
+          className="absolute top-5 right-5 p-2 rounded-full border border-rule text-neutral-500 hover:text-black hover:border-black transition-all"
         >
           <PiX className="w-4 h-4" />
         </button>
@@ -189,7 +189,7 @@ export function MockCheckoutModal({
 
         {/* UNAUTHENTICATED USER CHECK */}
         {!currentUser ? (
-          <div className="mt-5 p-6 rounded-lg bg-neutral-50 border border-neutral-200 space-y-4">
+          <div className="mt-5 p-6 rounded-lg bg-[#F7F2F6] border border-rule space-y-4">
             <div className="flex items-start gap-3">
               <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -243,7 +243,7 @@ export function MockCheckoutModal({
         ) : (
           /* Authenticated Paystack Payment Form */
           <div className="mt-5 space-y-4">
-            <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs space-y-2">
+            <div className="p-3.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs space-y-2">
               <div className="flex justify-between items-center text-neutral-600">
                 <span>Payer Account:</span>
                 <span className="font-bold text-black">{currentUser.name} ({currentUser.email})</span>
@@ -254,7 +254,7 @@ export function MockCheckoutModal({
                   <span className="font-semibold text-black">{currentUser.department}</span>
                 </div>
               )}
-              <div className="flex justify-between items-center text-neutral-600 border-t border-neutral-200/60 pt-2">
+              <div className="flex justify-between items-center text-neutral-600 border-t border-rule pt-2">
                 <span>Payment Channels:</span>
                 <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px]">
                   Mastercard, Visa, Verve &amp; Transfer
@@ -264,7 +264,7 @@ export function MockCheckoutModal({
 
             {/* Price breakdown: shown whenever fees are added to the course price */}
             {course.price > 0 && (
-              <div className="p-3.5 rounded-xl bg-white border border-neutral-200 text-xs space-y-1.5" data-testid="price-breakdown">
+              <div className="p-3.5 rounded-xl bg-white border border-rule text-xs space-y-1.5" data-testid="price-breakdown">
                 {quote ? (
                   quote.platformFeeNgn > 0 || quote.processingFeeNgn > 0 ? (
                     <>
@@ -284,7 +284,7 @@ export function MockCheckoutModal({
                           <span className="font-semibold text-black">{formatNgn(quote.processingFeeNgn)}</span>
                         </div>
                       )}
-                      <div className="flex justify-between border-t border-neutral-200 pt-2 mt-1 text-sm font-bold text-black">
+                      <div className="flex justify-between border-t border-rule pt-2 mt-1 text-sm font-bold text-black">
                         <span>Total to pay</span>
                         <span>{formatNgn(quote.totalNgn)}</span>
                       </div>

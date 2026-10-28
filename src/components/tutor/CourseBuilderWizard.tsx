@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { PiBookOpen, PiCheckCircle, PiFileText, PiFloppyDisk, PiImage, PiLightning, PiPaperclip, PiPlus, PiQuestion, PiSpinner, PiTrash, PiUploadSimple, PiVideoCamera, PiWarningCircle, PiX } from "react-icons/pi";
+import { PiSpinner, PiTrash, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { formatNgn } from "@/lib/utils";
 import { getBrowserStorage } from "@/lib/storageClient";
@@ -99,7 +99,7 @@ function FilePickerButton({
   onPicked: (file: File) => void;
   uploading: boolean;
   label: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
 }) {
   const ref = useRef<HTMLInputElement>(null);
   return (
@@ -119,7 +119,7 @@ function FilePickerButton({
         type="button"
         onClick={() => ref.current?.click()}
         disabled={uploading}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 border border-neutral-300 text-xs font-bold text-black hover:bg-neutral-200 disabled:opacity-60 transition-all"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F3EAF2] border border-neutral-300 text-xs font-bold text-black hover:bg-[#E4D5E2] disabled:opacity-60 transition-all"
       >
         {uploading ? <PiSpinner className="w-3.5 h-3.5 animate-spin" /> : icon}
         {uploading ? "Uploading..." : label}
@@ -325,9 +325,9 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
   // Shared styles
   // ─────────────────────────────────────────────────────────────
   const inputCls =
-    "w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all";
+    "w-full px-4 py-3 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all";
   const smallInputCls =
-    "w-full px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all";
+    "w-full px-3 py-2 rounded-lg bg-white border border-rule text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all";
   const labelCls = "block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1.5";
 
   // ─────────────────────────────────────────────────────────────
@@ -338,7 +338,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ── Step Navigator ── */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex-1 p-3 rounded-lg bg-white border border-neutral-200 flex items-center justify-around">
+        <div className="flex-1 p-3 rounded-lg bg-white border border-rule flex items-center justify-around">
           {([1, 2, 3] as const).map((s) => (
             <button
               key={s}
@@ -348,7 +348,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               }`}
             >
               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                step === s ? "bg-white text-[#4A1A45]" : "bg-neutral-100 text-neutral-800"
+                step === s ? "bg-white text-[#4A1A45]" : "bg-[#F3EAF2] text-neutral-800"
               }`}>{s}</span>
               {s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : isEditing ? "Review & Update" : "Review & Publish"}
             </button>
@@ -357,7 +357,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
         {onClose && (
           <button
             onClick={onClose}
-            className="p-3 rounded-lg bg-white border border-neutral-200 hover:bg-neutral-100 text-black font-bold text-xs flex items-center gap-1.5 transition-all"
+            className="p-3 rounded-lg bg-white border border-rule hover:bg-[#F3EAF2] text-black font-bold text-xs flex items-center gap-1.5 transition-all"
           >
             <PiX className="w-4 h-4" /> Cancel
           </button>
@@ -366,10 +366,9 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 1 ══════════════════════════════ */}
       {step === 1 && (
-        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-          <div className="border-b border-neutral-200 pb-4">
+        <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+          <div className="border-b border-rule pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
-              <PiBookOpen className="w-6 h-6 text-[#4A1A45]" />
               {isEditing ? `Edit Course: ${title || initialCourse.title}` : "Step 1: Course Overview"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
@@ -380,9 +379,8 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           </div>
 
           {/* AI Syllabus */}
-          <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
+          <div className="p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
             <h4 className="font-bold text-black text-sm flex items-center gap-2">
-              <PiLightning className="w-4 h-4 text-[#4A1A45]" />
               Curriculum Template Generator
               <span className="ml-auto text-[10px] text-[#4A1A45] font-bold uppercase tracking-wider">Optional</span>
             </h4>
@@ -393,7 +391,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                 value={aiTopic}
                 onChange={(e) => setAiTopic(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleGenerateOutlineAI()}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
               />
               <button
                 type="button"
@@ -401,7 +399,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                 disabled={generatingOutline || !aiTopic.trim()}
                 className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
               >
-                {generatingOutline ? <PiSpinner className="w-4 h-4 animate-spin" /> : <PiLightning className="w-4 h-4" />}
+                {generatingOutline && <PiSpinner className="w-4 h-4 animate-spin" />}
                 {generatingOutline ? "Generating..." : "Generate"}
               </button>
             </div>
@@ -484,14 +482,13 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                   placeholder="https://... or upload below"
                   value={coverImage}
                   onChange={(e) => setCoverImage(e.target.value)}
-                  className="w-full min-w-0 px-4 py-3 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all flex-1"
+                  className="w-full min-w-0 px-4 py-3 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all flex-1"
                 />
                 <div className="shrink-0">
                   <FilePickerButton
                     accept="image/jpeg,image/png,image/webp"
                     uploading={coverUpload.uploading}
                     label="Upload"
-                    icon={<PiImage className="w-3.5 h-3.5" />}
                     onPicked={async (file) => {
                       const result = await coverUpload.upload(file);
                       if (result) setCoverImage(result.url);
@@ -504,7 +501,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               )}
               {coverImage && (
                 <div className="mt-2 flex items-center gap-2">
-                  <img src={coverImage} alt="Cover preview" className="w-14 h-10 object-cover rounded-lg border border-neutral-200" />
+                  <img src={coverImage} alt="Cover preview" className="w-14 h-10 object-cover rounded-lg border border-rule" />
                   <button onClick={() => setCoverImage("")} className="text-[11px] text-neutral-500 hover:text-black flex items-center gap-1">
                     <PiX className="w-3 h-3" /> Remove
                   </button>
@@ -540,11 +537,10 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 2 ══════════════════════════════ */}
       {step === 2 && (
-        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-          <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+        <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+          <div className="flex items-center justify-between border-b border-rule pb-4">
             <div>
               <h3 className="text-xl font-bold text-black flex items-center gap-2">
-                <PiFileText className="w-6 h-6 text-[#4A1A45]" />
                 Step 2: Modules & Lessons
               </h3>
               <p className="text-sm text-neutral-500 mt-1">
@@ -555,7 +551,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               onClick={addModule}
               className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
-              <PiPlus className="w-4 h-4" /> Add Module
+              Add Module
             </button>
           </div>
 
@@ -579,7 +575,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="flex justify-between pt-2">
             <button
               onClick={() => setStep(1)}
-              className="px-6 py-3 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all"
+              className="px-6 py-3 rounded-xl bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-[#E4D5E2] transition-all"
             >
               Back
             </button>
@@ -595,10 +591,9 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 3 ══════════════════════════════ */}
       {step === 3 && (
-        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-          <div className="border-b border-neutral-200 pb-4">
+        <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+          <div className="border-b border-rule pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
-              <PiCheckCircle className="w-6 h-6 text-black" />
               {isEditing ? "Step 3: Review & Save Updates" : "Step 3: Final Review & Publish"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
@@ -608,13 +603,13 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </p>
           </div>
 
-          <div className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4">
+          <div className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
             {/* Cover preview if set */}
             {coverImage && (
               <img
                 src={coverImage}
                 alt="Cover"
-                className="w-full h-40 object-cover rounded-xl border border-neutral-200 mb-2"
+                className="w-full h-40 object-cover rounded-xl border border-rule mb-2"
               />
             )}
 
@@ -622,7 +617,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               <div className="flex flex-wrap gap-2 mb-2 items-center">
                 <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">{faculty}</span>
                 <span className="text-[11px] font-bold text-neutral-400">·</span>
-                <span className="text-[11px] font-bold text-black bg-neutral-200 px-2 py-0.5 rounded-md">{department}</span>
+                <span className="text-[11px] font-bold text-black bg-[#E4D5E2] px-2 py-0.5 rounded-md">{department}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
                 <span className="text-[11px] font-bold text-neutral-500">{level}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
@@ -634,13 +629,13 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               <p className="text-sm text-neutral-600 mt-2">{description || "No description provided."}</p>
             </div>
 
-            <div className="border-t border-neutral-200 pt-4">
+            <div className="border-t border-rule pt-4">
               <h4 className="font-bold text-black text-sm mb-3 uppercase tracking-wider">
                 Curriculum ({modules.length} modules, {modules.reduce((a, m) => a + m.lessons.length, 0)} lessons)
               </h4>
               <div className="space-y-2">
                 {modules.map((m, idx) => (
-                  <div key={idx} className="p-3 rounded-lg bg-white border border-neutral-200">
+                  <div key={idx} className="p-3 rounded-lg bg-white border border-rule">
                     <h5 className="font-bold text-xs text-black">{m.title || `Module ${idx + 1}`}</h5>
                     <p className="text-[11px] text-neutral-500 mt-0.5">
                       {m.lessons.length} lessons
@@ -656,14 +651,12 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
           {saveError && (
             <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
-              <PiWarningCircle className="w-4 h-4 shrink-0" />
               {saveError}
             </div>
           )}
 
           {successMsg && (
-            <div className="p-4 rounded-xl bg-neutral-100 text-black font-bold text-sm border border-neutral-300 flex items-center gap-2">
-              <PiCheckCircle className="w-5 h-5 text-black" />
+            <div className="p-4 rounded-xl bg-[#F3EAF2] text-black font-bold text-sm border border-neutral-300 flex items-center gap-2">
               {isEditing
                 ? "Course updated successfully! Enrolled students have been notified via email."
                 : "Course published successfully. Redirecting..."}
@@ -673,7 +666,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="flex justify-between pt-2">
             <button
               onClick={() => setStep(2)}
-              className="px-6 py-3 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all"
+              className="px-6 py-3 rounded-xl bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-[#E4D5E2] transition-all"
             >
               Back
             </button>
@@ -682,7 +675,6 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               disabled={saving || successMsg}
               className="px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
-              <PiFloppyDisk className="w-5 h-5" />
               {saving
                 ? (isEditing ? "Saving Updates..." : "Publishing...")
                 : (isEditing ? "Save Changes & Notify Students" : "Publish Course")}
@@ -719,7 +711,7 @@ function LessonModuleBlock({
   smallInputCls: string;
 }) {
   return (
-    <div className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4">
+    <div className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
       {/* Module header */}
       <div className="flex items-center justify-between gap-4">
         <input
@@ -727,14 +719,14 @@ function LessonModuleBlock({
           placeholder={`Module ${mIdx + 1} title`}
           value={mod.title}
           onChange={(e) => onModuleTitleChange(e.target.value)}
-          className="flex-1 px-4 py-2 rounded-lg bg-white border border-neutral-200 text-sm font-bold text-black outline-none focus:border-[#4A1A45]"
+          className="flex-1 px-4 py-2 rounded-lg bg-white border border-rule text-sm font-bold text-black outline-none focus:border-[#4A1A45]"
         />
         <div className="flex items-center gap-2">
           <button
             onClick={onAddLesson}
             className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-semibold text-black flex items-center gap-1 hover:border-black"
           >
-            <PiPlus className="w-3.5 h-3.5" /> Add Lesson
+            Add Lesson
           </button>
           {onRemoveModule && (
             <button
@@ -748,7 +740,7 @@ function LessonModuleBlock({
       </div>
 
       {/* Lessons */}
-      <div className="space-y-4 pl-4 border-l-2 border-neutral-200">
+      <div className="space-y-4 pl-4 border-l-2 border-rule">
         {mod.lessons.map((lesson, lIdx) => (
           <LessonRow
             key={lIdx}
@@ -790,7 +782,7 @@ function LessonRow({
   const videoUpload    = useFileUpload();
 
   return (
-    <div className="p-5 rounded-xl bg-white border border-neutral-200 space-y-4">
+    <div className="p-5 rounded-xl bg-white border border-rule space-y-4">
       {/* Lesson title row */}
       <div className="flex items-center justify-between gap-3">
         <input
@@ -798,7 +790,7 @@ function LessonRow({
           placeholder={`Lesson ${lIdx + 1} title`}
           value={lesson.title}
           onChange={(e) => onUpdate("title", e.target.value)}
-          className="flex-1 px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none focus:border-[#4A1A45]"
+          className="flex-1 px-3 py-1.5 rounded-lg bg-[#F7F2F6] border border-rule text-xs font-bold text-black outline-none focus:border-[#4A1A45]"
         />
         {canRemove && (
           <button
@@ -813,7 +805,7 @@ function LessonRow({
       {/* Lesson content / notes */}
       <div>
         <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
-          <PiFileText className="w-3 h-3" /> Lesson Notes / Text Content
+          Lesson Notes / Text Content
         </label>
         <textarea
           rows={2}
@@ -827,7 +819,7 @@ function LessonRow({
       {/* Video — URL or file upload */}
       <div>
         <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
-          <PiVideoCamera className="w-3 h-3" /> Video
+          Video
           <span className="text-neutral-400 font-normal normal-case">(YouTube embed, MP4 URL, or upload)</span>
         </label>
         <div className="flex items-center gap-2 min-w-0">
@@ -836,14 +828,13 @@ function LessonRow({
             placeholder="https://www.youtube.com/embed/... or upload a video file"
             value={lesson.videoUrl}
             onChange={(e) => onUpdate("videoUrl", e.target.value)}
-            className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+            className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-rule text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
           />
           <div className="shrink-0">
             <FilePickerButton
               accept="video/mp4,video/webm,video/ogg"
               uploading={videoUpload.uploading}
               label="Upload"
-              icon={<PiUploadSimple className="w-3 h-3" />}
               onPicked={async (file) => {
                 const result = await videoUpload.upload(file);
                 if (result) onUpdate("videoUrl", result.url);
@@ -857,7 +848,7 @@ function LessonRow({
       {/* Resource / file attachment */}
       <div>
         <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
-          <PiPaperclip className="w-3 h-3" /> Resource File
+          Resource File
           <span className="text-neutral-400 font-normal normal-case">(PDF, slides, zip, etc.)</span>
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 min-w-0">
@@ -866,7 +857,7 @@ function LessonRow({
             placeholder="File name (e.g. Lecture Notes.pdf)"
             value={lesson.resourceName}
             onChange={(e) => onUpdate("resourceName", e.target.value)}
-            className="sm:col-span-4 w-full min-w-0 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+            className="sm:col-span-4 w-full min-w-0 px-3 py-2 rounded-lg bg-white border border-rule text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
           />
           <div className="sm:col-span-8 flex items-center gap-2 min-w-0">
             <input
@@ -874,14 +865,13 @@ function LessonRow({
               placeholder="URL or upload file"
               value={lesson.resourceUrl}
               onChange={(e) => onUpdate("resourceUrl", e.target.value)}
-              className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+              className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-rule text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
             />
             <div className="shrink-0">
               <FilePickerButton
                 accept="application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
                 uploading={resourceUpload.uploading}
                 label="Upload"
-                icon={<PiUploadSimple className="w-3 h-3" />}
                 onPicked={async (file) => {
                   const result = await resourceUpload.upload(file);
                   if (result) {
@@ -915,9 +905,9 @@ function LessonRow({
       </div>
 
       {/* Assignment (optional) */}
-      <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
+      <div className="p-4 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
         <span className="text-[11px] font-bold text-[#4A1A45] flex items-center gap-1 uppercase tracking-wider">
-          <PiQuestion className="w-3.5 h-3.5" /> Assignment
+          Assignment
           <span className="text-neutral-400 font-normal normal-case ml-1">(optional)</span>
         </span>
         <input
@@ -938,7 +928,7 @@ function LessonRow({
               disabled={!lesson.assignmentPrompt.trim()}
               className="text-[10px] px-2 py-0.5 rounded bg-[#4A1A45] text-white font-bold flex items-center gap-1 disabled:opacity-50"
             >
-              <PiLightning className="w-3 h-3 text-[#D6BDD4]" /> Auto-Generate
+              Auto-Generate
             </button>
           </div>
           <textarea

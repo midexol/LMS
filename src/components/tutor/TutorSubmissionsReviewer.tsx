@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { isPass } from "@/lib/grading";
 import { formatDate } from "@/lib/utils";
-import { PiCheck, PiFloppyDisk, PiMedal, PiPencilSimple, PiUser, PiWarningCircle } from "react-icons/pi";
+import { PiPencilSimple } from "react-icons/pi";
 
 interface TutorSubmissionsReviewerProps {
   initialSubmissions: any[];
@@ -65,15 +65,13 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
   };
 
   return (
-    <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-      <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <PiMedal className="w-5 h-5 text-[#4A1A45]" />
+    <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+      <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
         Student Submissions &amp; Grade Override Reviewer
       </h2>
 
       {saveError && (
         <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
-          <PiWarningCircle className="w-4 h-4 shrink-0" />
           {saveError}
         </div>
       )}
@@ -93,7 +91,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
               <div
                 key={sub.id}
                 data-testid="submission-card"
-                className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3"
+                className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-3"
               >
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                   <div>
@@ -104,7 +102,6 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                       {sub.assignment?.title || "Assignment"}
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-neutral-500 mt-1">
-                      <PiUser className="w-3.5 h-3.5" />
                       <span>
                         Student: <strong className="text-black">{sub.student?.name || sub.studentId}</strong>
                       </span>
@@ -116,7 +113,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                   <div className="flex items-center gap-3 shrink-0">
                     {saveSuccess === sub.id && (
                       <span className="text-xs text-black font-bold flex items-center gap-1">
-                        <PiCheck className="w-3.5 h-3.5" /> Saved
+                        Saved
                       </span>
                     )}
                     <span
@@ -124,8 +121,8 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                         scorePercent !== null && isPass(scorePercent)
                           ? "bg-[#4A1A45] text-white border-[#4A1A45]"
                           : scorePercent !== null
-                          ? "bg-neutral-200 text-neutral-800 border-neutral-300"
-                          : "bg-neutral-100 text-neutral-600 border-neutral-200"
+                          ? "bg-[#E4D5E2] text-neutral-800 border-neutral-300"
+                          : "bg-[#F3EAF2] text-neutral-600 border-rule"
                       }`}
                     >
                       {sub.score !== null ? `${sub.score} / ${maxScore}` : "Ungraded"}
@@ -134,7 +131,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                     {!isEditing && (
                       <button
                         onClick={() => handleStartEdit(sub)}
-                        className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-bold text-black flex items-center gap-1.5 hover:bg-neutral-100 transition-all"
+                        className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-bold text-black flex items-center gap-1.5 hover:bg-[#F3EAF2] transition-all"
                       >
                         <PiPencilSimple className="w-3.5 h-3.5" /> Override
                       </button>
@@ -143,7 +140,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                 </div>
 
                 {/* Student answer */}
-                <div className="p-4 rounded-xl bg-white border border-neutral-200">
+                <div className="p-4 rounded-xl bg-white border border-rule">
                   <p className="text-[11px] font-bold text-neutral-500 mb-1 uppercase tracking-wider">Student Answer:</p>
                   <p className="text-xs text-neutral-800 whitespace-pre-wrap leading-relaxed">
                     {sub.content}
@@ -152,7 +149,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
 
                 {/* AI Feedback */}
                 {sub.aiFeedback && (
-                  <div className="p-4 rounded-xl bg-white border border-neutral-200">
+                  <div className="p-4 rounded-xl bg-white border border-rule">
                     <p className="text-[11px] font-bold text-[#4A1A45] mb-1 uppercase tracking-wider">Automated Evaluation Feedback:</p>
                     <p className="text-xs text-neutral-700 whitespace-pre-wrap leading-relaxed">
                       {sub.aiFeedback}
@@ -162,7 +159,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
 
                 {/* Tutor Feedback (existing) */}
                 {sub.tutorFeedback && !isEditing && (
-                  <div className="p-4 rounded-xl bg-neutral-100 border border-neutral-300">
+                  <div className="p-4 rounded-xl bg-[#F3EAF2] border border-neutral-300">
                     <p className="text-[11px] font-bold text-black mb-1 uppercase tracking-wider">Your Override Note:</p>
                     <p className="text-xs text-neutral-800 leading-relaxed">{sub.tutorFeedback}</p>
                   </div>
@@ -186,7 +183,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                           max={maxScore}
                           value={editScore}
                           onChange={(e) => setEditScore(Number(e.target.value))}
-                          className="px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] w-28"
+                          className="px-3 py-1.5 rounded-lg bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] w-28"
                         />
                       </div>
                       <div className="flex-1 min-w-[200px]">
@@ -198,14 +195,14 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                           placeholder="Explain your grade adjustment..."
                           value={editFeedback}
                           onChange={(e) => setEditFeedback(e.target.value)}
-                          className="w-full px-3 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+                          className="w-full px-3 py-1.5 rounded-lg bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
                         />
                       </div>
                     </div>
                     <div className="flex justify-end gap-2 pt-1">
                       <button
                         onClick={() => { setEditingId(null); setSaveError(null); }}
-                        className="px-3 py-1.5 rounded-lg bg-neutral-100 border border-neutral-200 text-neutral-700 font-bold text-xs hover:bg-neutral-200"
+                        className="px-3 py-1.5 rounded-lg bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs hover:bg-[#E4D5E2]"
                       >
                         Cancel
                       </button>
@@ -214,7 +211,6 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                         disabled={saving}
                         className="px-4 py-1.5 rounded-lg bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-60"
                       >
-                        <PiFloppyDisk className="w-3.5 h-3.5" />
                         {saving ? "Saving..." : "Save Override"}
                       </button>
                     </div>

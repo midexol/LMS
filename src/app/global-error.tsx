@@ -23,7 +23,7 @@ export default function GlobalError({
       <body className="bg-white text-zinc-950 antialiased min-h-screen font-sans">
         <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
           <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Academia LMS</p>
-          <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900">
+          <h1 className="font-heading mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900">
             Something went wrong
           </h1>
           <p className="mt-3 max-w-md text-sm sm:text-base text-neutral-500 leading-relaxed">

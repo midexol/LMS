@@ -79,7 +79,7 @@ function ResetPasswordForm() {
   return (
     <div className="w-full max-w-md space-y-8">
       <div>
-        <h1 className="font-extrabold text-2xl tracking-tight text-black">
+        <h1 className="font-heading font-semibold text-2xl tracking-tight text-black">
           Set New Password
         </h1>
         <p className="text-neutral-500 text-xs mt-1">
@@ -127,7 +127,7 @@ function ResetPasswordForm() {
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
               />
               <button
                 type="button"
@@ -152,7 +152,7 @@ function ResetPasswordForm() {
                 placeholder="Re-enter password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
               />
             </div>
           </div>

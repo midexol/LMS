@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDate } from "@/lib/utils";
-import { PiBell, PiCheck, PiPlus, PiTrash, PiWarningCircle } from "react-icons/pi";
+import { PiTrash } from "react-icons/pi";
 
 interface Announcement {
   id: string;
@@ -86,9 +86,8 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
   };
 
   return (
-    <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-      <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <PiBell className="w-5 h-5 text-[#4A1A45]" />
+    <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+      <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
         Course Announcements Manager
       </h2>
 
@@ -98,7 +97,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
         <select
           value={selectedCourseId}
           onChange={(e) => setSelectedCourseId(e.target.value)}
-          className="px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+          className="px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
@@ -109,19 +108,17 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
       </div>
 
       {/* New Announcement Form */}
-      <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
+      <div className="p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
         <h3 className="text-sm font-bold text-black">Post New Announcement</h3>
 
         {error && (
           <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
-            <PiWarningCircle className="w-4 h-4 shrink-0" />
             {error}
           </div>
         )}
 
         {success && (
-          <div className="p-3 rounded-xl bg-neutral-100 border border-neutral-300 text-black text-xs font-bold flex items-center gap-2">
-            <PiCheck className="w-4 h-4" />
+          <div className="p-3 rounded-xl bg-[#F3EAF2] border border-neutral-300 text-black text-xs font-bold flex items-center gap-2">
             Announcement posted successfully.
           </div>
         )}
@@ -131,21 +128,20 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
           placeholder="Announcement title..."
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         />
         <textarea
           rows={3}
           placeholder="Write your announcement message here..."
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         />
         <button
           onClick={handlePost}
           disabled={posting || !newTitle.trim() || !newContent.trim()}
           className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
         >
-          <PiPlus className="w-4 h-4" />
           {posting ? "Posting..." : "Post Announcement"}
         </button>
       </div>

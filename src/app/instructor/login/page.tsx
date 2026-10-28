@@ -42,7 +42,7 @@ export default function InstructorLoginPage() {
 
   return (
     <div className="min-h-screen bg-paper flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
+      <div className="w-full max-w-md bg-white rounded-lg p-8 border border-rule space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-2">
             <BrandLogo href="/" variant="dark" size="md" />
@@ -50,7 +50,7 @@ export default function InstructorLoginPage() {
           <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-[#D6BDD4] mb-2 border border-[#4A1A45]/40">
             <PiShield className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl font-bold text-black tracking-tight">Instructor Portal</h1>
+          <h1 className="font-heading text-2xl font-semibold text-black tracking-tight">Instructor Portal</h1>
           <p className="text-xs text-neutral-500 font-medium">Sign in to manage curriculum, assignments, and analytics.</p>
         </div>
 
@@ -72,7 +72,7 @@ export default function InstructorLoginPage() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function InstructorLoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+                className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
               />
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function InstructorLoginPage() {
           </button>
         </form>
 
-        <div className="text-center text-xs text-neutral-500 border-t border-neutral-100 pt-4">
+        <div className="text-center text-xs text-neutral-500 border-t border-rule pt-4">
           Looking for student platform?{" "}
           <Link href="/login" className="text-[#4A1A45] font-bold hover:underline">
             Go to Student Portal

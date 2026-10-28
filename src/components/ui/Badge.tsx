@@ -31,14 +31,14 @@ export function Badge({ type, text }: BadgeProps) {
       );
     case "PENDING":
       return (
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-neutral-100 text-neutral-700 border border-neutral-300">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[#F3EAF2] text-neutral-700 border border-neutral-300">
           <PiClock className="w-3.5 h-3.5 text-neutral-600" />
           {text || "Pending Grade"}
         </span>
       );
     case "LOCKED":
       return (
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-neutral-100 text-neutral-500 border border-neutral-200">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[#F3EAF2] text-neutral-500 border border-rule">
           <PiLock className="w-3.5 h-3.5 text-neutral-400" />
           {text || "Course Locked"}
         </span>

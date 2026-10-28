@@ -66,7 +66,7 @@ export default function ForgotPasswordPage() {
             >
               <PiArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
             </Link>
-            <h1 className="font-extrabold text-2xl tracking-tight text-black">
+            <h1 className="font-heading font-semibold text-2xl tracking-tight text-black">
               Forgot Your Password?
             </h1>
             <p className="text-neutral-500 text-xs mt-1">
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
                     placeholder="student@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
                   />
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function ForgotPasswordPage() {
             </form>
           )}
 
-          <div className="pt-4 border-t border-neutral-200 text-center">
+          <div className="pt-4 border-t border-rule text-center">
             <p className="text-xs text-neutral-600">
               Remember your password?{" "}
               <Link href="/login" className="text-[#4A1A45] font-bold hover:underline">

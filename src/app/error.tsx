@@ -24,7 +24,7 @@ export default function ErrorPage({
       <BrandLogo href="/" size="md" />
 
       <p className="mt-12 text-xs font-bold text-neutral-400 uppercase tracking-widest">Something went wrong</p>
-      <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900">
+      <h1 className="font-heading mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900">
         We couldn&apos;t load this page
       </h1>
       <p className="mt-3 max-w-md text-sm sm:text-base text-neutral-500 leading-relaxed">

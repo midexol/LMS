@@ -45,7 +45,7 @@ export default function LoginPage() {
     >
       <div className="space-y-6">
         <div>
-          <h1 className="font-bold text-2xl text-black">Sign in</h1>
+          <h1 className="font-heading font-semibold text-2xl text-black">Sign in</h1>
           <p className="text-sm text-neutral-500 mt-1">Use the email and password you registered with.</p>
         </div>
 
@@ -111,7 +111,7 @@ export default function LoginPage() {
           <Link href="/privacy" className="font-semibold text-[#4A1A45] hover:underline">Privacy Policy</Link>.
         </p>
 
-        <p className="pt-4 border-t border-neutral-200 text-sm text-neutral-600 text-center">
+        <p className="pt-4 border-t border-rule text-sm text-neutral-600 text-center">
           New here?{" "}
           <Link href="/signup" className="text-[#4A1A45] font-bold hover:underline">Create one free</Link>
         </p>

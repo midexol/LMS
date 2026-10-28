@@ -88,7 +88,7 @@ function VerifyEmailContent() {
       </div>
 
       {/* Main Card */}
-      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-neutral-200/80 p-8 sm:p-10 space-y-6">
+      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-rule p-8 sm:p-10 space-y-6">
         {status === "loading" && (
           <div className="text-center py-8 space-y-4">
             <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto animate-spin">
@@ -116,7 +116,7 @@ function VerifyEmailContent() {
               </p>
             </div>
 
-            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 text-left text-xs text-neutral-600 space-y-1">
+            <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule text-left text-xs text-neutral-600 space-y-1">
               <p className="font-bold text-neutral-900">Next Steps:</p>
               <p>• Explore approved faculty and departmental courses.</p>
               <p>• Submit assignments to receive immediate automated rubric feedback.</p>
@@ -143,7 +143,7 @@ function VerifyEmailContent() {
               </p>
             </div>
 
-            <div className="border-t border-neutral-100 pt-6 space-y-4">
+            <div className="border-t border-rule pt-6 space-y-4">
               <div className="space-y-1">
                 <h3 className="text-xs font-bold text-neutral-900">Need a new verification link?</h3>
                 <p className="text-[11px] text-neutral-500">
@@ -166,7 +166,7 @@ function VerifyEmailContent() {
                     value={resendEmail}
                     onChange={(e) => setResendEmail(e.target.value)}
                     placeholder="student@example.com"
-                    className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 rounded-xl border border-neutral-200 text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#4A1A45]/20 focus:border-[#4A1A45]"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F7F2F6] rounded-xl border border-rule text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#4A1A45]/20 focus:border-[#4A1A45]"
                   />
                 </div>
                 <button

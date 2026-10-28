@@ -60,7 +60,7 @@ export function Navbar({ currentUser }: NavbarProps) {
   const userInitial = currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : "U";
 
   return (
-    <header className="sticky top-0 z-40 bg-white text-black border-b border-neutral-200">
+    <header className="sticky top-0 z-40 bg-white text-black border-b border-rule">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         {/* Left: Brand & Navigation */}
         <div className="flex items-center gap-8">
@@ -96,7 +96,7 @@ export function Navbar({ currentUser }: NavbarProps) {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-md border border-neutral-200 hover:border-[#4A1A45]/40 hover:bg-[#F7F2F6]/50 transition-all text-left"
+                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-md border border-rule hover:border-[#4A1A45]/40 hover:bg-[#F7F2F6]/50 transition-all text-left"
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
@@ -120,9 +120,9 @@ export function Navbar({ currentUser }: NavbarProps) {
 
               {/* User Dropdown Menu */}
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-lg bg-white border border-neutral-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-64 rounded-lg bg-white border border-rule py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   {/* Account Summary Header */}
-                  <div className="px-4 py-3 border-b border-neutral-100">
+                  <div className="px-4 py-3 border-b border-rule">
                     <p className="text-xs font-bold text-neutral-900 truncate">
                       {currentUser.name}
                     </p>
@@ -141,7 +141,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                         <Link
                           href="/admin"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F3EAF2] hover:text-black transition-colors"
                         >
                           <PiShield className="w-4 h-4 text-emerald-600" />
                           Superadmin Console
@@ -221,7 +221,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                   </div>
 
                   {/* Logout Row */}
-                  <div className="border-t border-neutral-100 pt-1 mt-1">
+                  <div className="border-t border-rule pt-1 mt-1">
                     <button
                       onClick={() => {
                         setUserMenuOpen(false);
@@ -256,7 +256,7 @@ export function Navbar({ currentUser }: NavbarProps) {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 transition-colors"
+            className="md:hidden w-8 h-8 rounded-lg bg-[#F3EAF2] hover:bg-[#E4D5E2] flex items-center justify-center text-neutral-700 transition-colors"
             aria-label="Toggle navigation"
           >
             {mobileOpen ? <PiX className="w-5 h-5" /> : <PiList className="w-5 h-5" />}
@@ -266,7 +266,7 @@ export function Navbar({ currentUser }: NavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-b border-neutral-200 px-4 py-3 space-y-2">
+        <div className="md:hidden bg-white border-b border-rule px-4 py-3 space-y-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (

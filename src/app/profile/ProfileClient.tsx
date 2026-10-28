@@ -158,7 +158,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* STUDENT HEADER */}
-        <div className="p-8 rounded-lg bg-white border border-neutral-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="p-8 rounded-lg bg-white border border-rule flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center font-bold text-2xl">
               {currentUser.name.charAt(0).toUpperCase()}
@@ -175,7 +175,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </p>
               {currentUser.department && (
                 <div className="flex items-center gap-2 mt-2">
-                  <span className="px-2.5 py-0.5 rounded-md bg-neutral-100 text-black text-[11px] font-bold border border-neutral-300">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#F3EAF2] text-black text-[11px] font-bold border border-neutral-300">
                     {currentUser.department}
                   </span>
                   <span className="text-[11px] text-neutral-400">
@@ -197,7 +197,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </Link>
               <Link
                 href="/admin?tab=settings"
-                className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-[#F3EAF2] font-bold transition-all flex items-center gap-2"
               >
                 <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                 <span>System Settings</span>
@@ -214,7 +214,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </Link>
               <Link
                 href="/instructor?tab=settings"
-                className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-[#F3EAF2] font-bold transition-all flex items-center gap-2"
               >
                 <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                 <span>Studio Settings</span>
@@ -222,15 +222,15 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
           ) : (
             <div className="flex items-center gap-4 text-xs font-semibold flex-wrap">
-              <div className="px-4 py-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-center">
+              <div className="px-4 py-2.5 rounded-lg bg-[#F7F2F6] border border-rule text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Assignments Submitted</span>
                 <span className="text-xl font-bold text-black">{totalSubmissions}</span>
               </div>
-              <div className="px-4 py-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-center">
+              <div className="px-4 py-2.5 rounded-lg bg-[#F7F2F6] border border-rule text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Courses Completed</span>
                 <span className="text-xl font-bold text-black">{completedEnrollments.length}</span>
               </div>
-              <div className="px-4 py-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-center">
+              <div className="px-4 py-2.5 rounded-lg bg-[#F7F2F6] border border-rule text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
                 <span className="text-xl font-bold text-[#4A1A45]">{averagePercentage}%</span>
               </div>
@@ -258,7 +258,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
         {/* ACTIVE COURSE BANNER (WITH DROP COURSE ACTION) */}
         {activeEnrollment && (
-          <div className="p-6 rounded-lg bg-white border border-neutral-200 space-y-3">
+          <div className="p-6 rounded-lg bg-white border border-rule space-y-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
@@ -295,8 +295,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* ACADEMIC TRANSCRIPT & RECEIPTS (STUDENTS ONLY) */}
         {currentUser.role === "STUDENT" && (
           <>
-            <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-          <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
+            <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+          <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
             <PiMedal className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
           </h2>
@@ -313,7 +313,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-neutral-200 text-neutral-500 uppercase font-bold tracking-wider bg-neutral-50">
+                  <tr className="border-b border-rule text-neutral-500 uppercase font-bold tracking-wider bg-[#F7F2F6]">
                     <th className="p-3.5">Course Title</th>
                     <th className="p-3.5">Category</th>
                     <th className="p-3.5">Status</th>
@@ -321,9 +321,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     <th className="p-3.5">Completed</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody className="divide-y divide-rule">
                   {enrollments.map((e) => (
-                    <tr key={e.id} className="hover:bg-neutral-50/80 transition-colors">
+                    <tr key={e.id} className="hover:bg-[#F7F2F6] transition-colors">
                       <td className="p-3.5 font-bold text-black">{e.course.title}</td>
                       <td className="p-3.5 font-semibold text-[#4A1A45]">{e.course.category}</td>
                       <td className="p-3.5">
@@ -346,8 +346,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         </div>
 
         {/* TUITION RECEIPTS & PAYMENT HISTORY */}
-        <div id="receipts" className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
-          <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
+        <div id="receipts" className="p-8 rounded-lg bg-white border border-rule space-y-6">
+          <div className="flex justify-between items-center border-b border-rule pb-3">
             <h2 className="font-bold text-xl text-black flex items-center gap-2">
               <PiCreditCard className="w-5 h-5 text-black" />
               Tuition Receipts &amp; Payment History
@@ -366,7 +366,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-neutral-200 text-neutral-500 uppercase font-bold tracking-wider bg-neutral-50">
+                  <tr className="border-b border-rule text-neutral-500 uppercase font-bold tracking-wider bg-[#F7F2F6]">
                     <th className="p-3.5">Reference</th>
                     <th className="p-3.5">Course Item</th>
                     <th className="p-3.5">Amount</th>
@@ -375,9 +375,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     <th className="p-3.5 text-right">E-Receipt</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody className="divide-y divide-rule">
                   {payments.map((p) => (
-                    <tr key={p.id} className="hover:bg-neutral-50/80 transition-colors">
+                    <tr key={p.id} className="hover:bg-[#F7F2F6] transition-colors">
                       <td className="p-3.5 font-mono text-[11px] font-bold text-neutral-800">{p.reference}</td>
                       <td className="p-3.5 font-bold text-black">{p.course?.title || "Course Tuition"}</td>
                       <td className="p-3.5 font-bold text-black">{formatNgn(p.amount)}</td>
@@ -398,7 +398,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       <td className="p-3.5 text-right">
                         <button
                           onClick={() => setSelectedReceipt(p)}
-                          className="px-3 py-1 rounded-md text-[11px] font-bold bg-neutral-100 hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-md text-[11px] font-bold bg-[#F3EAF2] hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
                         >
                           <PiPrinter className="w-3 h-3" /> View Receipt
                         </button>
@@ -414,14 +414,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     )}
 
         {/* ACCOUNT SETTINGS */}
-        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6 max-w-2xl">
-          <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
+        <div className="p-8 rounded-lg bg-white border border-rule space-y-6 max-w-2xl">
+          <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
             <PiUser className="w-5 h-5 text-black" />
             Account Settings
           </h2>
 
           {successMsg && (
-            <div className="p-3.5 rounded-lg bg-neutral-100 text-black text-xs font-bold border border-neutral-300 flex items-center gap-2">
+            <div className="p-3.5 rounded-lg bg-[#F3EAF2] text-black text-xs font-bold border border-neutral-300 flex items-center gap-2">
               <PiCheck className="w-4 h-4 text-black" /> Profile updated successfully!
             </div>
           )}
@@ -440,7 +440,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
               />
             </div>
 
@@ -450,7 +450,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 type="email"
                 disabled
                 value={currentUser.email}
-                className="w-full px-4 py-2.5 rounded-xl bg-neutral-100 border border-neutral-200 text-sm text-neutral-500 cursor-not-allowed outline-none"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#F3EAF2] border border-rule text-sm text-neutral-500 cursor-not-allowed outline-none"
               />
               <span className="text-[10px] text-neutral-400 mt-1 block">Your login email cannot be changed here.</span>
             </div>
@@ -465,7 +465,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 placeholder="e.g. 0803 123 4567"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
               />
             </div>
 
@@ -476,7 +476,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   <select
                     value={faculty}
                     onChange={(e) => handleFacultyChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   >
                     {ACADEMIC_STRUCTURE.map((fac) => (
                       <option key={fac.name} value={fac.name}>{fac.name}</option>
@@ -489,7 +489,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   <select
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   >
                     {getDepartmentsForFaculty(faculty).map((dept) => (
                       <option key={dept} value={dept}>{dept}</option>
@@ -499,7 +499,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
             )}
 
-            <div className="pt-4 border-t border-neutral-200 space-y-4">
+            <div className="pt-4 border-t border-rule space-y-4">
               <h3 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-1.5">
                 <PiLock className="w-4 h-4 text-[#4A1A45]" /> Security &amp; Password
               </h3>
@@ -513,7 +513,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     minLength={6}
-                    className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                    className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   />
                   <button
                     type="button"
@@ -534,7 +534,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     placeholder="Enter your current password"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   />
                 </div>
               )}
@@ -547,12 +547,12 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     placeholder="Re-enter your new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className={`w-full px-4 py-2.5 rounded-xl bg-neutral-50 border text-sm text-black outline-none transition-all ${
+                    className={`w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border text-sm text-black outline-none transition-all ${
                       confirmPassword && confirmPassword !== password
                         ? "border-red-400 focus:border-red-500"
                         : confirmPassword && confirmPassword === password
-                        ? "border-black focus:border-[#4A1A45]"
-                        : "border-neutral-200 focus:border-[#4A1A45]"
+                        ? "border-[#4A1A45] focus:border-[#4A1A45]"
+                        : "border-rule focus:border-[#4A1A45]"
                     }`}
                   />
                   {confirmPassword && confirmPassword !== password && (
@@ -577,7 +577,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
       {/* DROP COURSE CONFIRMATION MODAL */}
       {dropModalOpen && activeEnrollment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
-          <div className="w-full max-w-md bg-white rounded-lg p-7 border border-neutral-200 space-y-4">
+          <div className="w-full max-w-md bg-white rounded-lg p-7 border border-rule space-y-4">
             <div className="flex items-start gap-3">
               <div className="p-3 rounded-lg bg-red-50 text-red-600">
                 <PiWarningCircle className="w-6 h-6" />
@@ -593,11 +593,11 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-3 border-t border-neutral-100">
+            <div className="flex justify-end gap-3 pt-3 border-t border-rule">
               <button
                 onClick={() => setDropModalOpen(false)}
                 disabled={dropLoading}
-                className="px-5 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+                className="px-5 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-[#F3EAF2]"
               >
                 Cancel
               </button>
@@ -626,7 +626,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
               <button
                 onClick={() => setSelectedReceipt(null)}
-                className="p-1.5 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white"
+                className="p-1.5 rounded-full hover:bg-[#3B1537] text-neutral-400 hover:text-white"
               >
                 <PiX className="w-4 h-4" />
               </button>
@@ -654,7 +654,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
 
               {/* Receipt Details Grid */}
-              <div className="grid grid-cols-2 gap-4 text-xs bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+              <div className="grid grid-cols-2 gap-4 text-xs bg-[#F7F2F6] p-4 rounded-lg border border-rule">
                 <div>
                   <span className="text-neutral-500 font-semibold block text-[10px] uppercase">Student Name</span>
                   <span className="font-bold text-black text-sm">{currentUser.name}</span>
@@ -674,9 +674,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
 
               {/* Itemized Line Items */}
-              <div className="border border-neutral-200 rounded-lg overflow-hidden">
+              <div className="border border-rule rounded-lg overflow-hidden">
                 <table className="w-full text-xs">
-                  <thead className="bg-neutral-100 text-neutral-700 font-bold border-b border-neutral-200">
+                  <thead className="bg-[#F3EAF2] text-neutral-700 font-bold border-b border-rule">
                     <tr>
                       <th className="p-3 text-left">Description</th>
                       <th className="p-3 text-center">Gateway</th>
@@ -697,14 +697,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       </td>
                     </tr>
                     {receiptBreakdown && receiptBreakdown.platformFeeNgn > 0 && (
-                      <tr className="border-t border-neutral-100">
+                      <tr className="border-t border-rule">
                         <td className="p-3.5 text-neutral-700">{receiptBreakdown.platformFeeLabel}</td>
                         <td />
                         <td className="p-3.5 text-right font-semibold text-black">{formatNgn(receiptBreakdown.platformFeeNgn)}</td>
                       </tr>
                     )}
                     {receiptBreakdown && receiptBreakdown.processingFeeNgn > 0 && (
-                      <tr className="border-t border-neutral-100">
+                      <tr className="border-t border-rule">
                         <td className="p-3.5 text-neutral-700">Payment processing (Paystack)</td>
                         <td />
                         <td className="p-3.5 text-right font-semibold text-black">{formatNgn(receiptBreakdown.processingFeeNgn)}</td>
@@ -721,7 +721,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
 
               {/* Security Seal & Verification Footer */}
-              <div className="flex justify-between items-center pt-2 border-t border-neutral-200 text-xs">
+              <div className="flex justify-between items-center pt-2 border-t border-rule text-xs">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[11px]">
                     <PiCheckCircle className="w-4 h-4 text-emerald-600" />
@@ -738,10 +738,10 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
 
             {/* Modal Actions */}
-            <div className="bg-neutral-50 px-7 py-4 border-t border-neutral-200 flex justify-between items-center print:hidden">
+            <div className="bg-[#F7F2F6] px-7 py-4 border-t border-rule flex justify-between items-center print:hidden">
               <button
                 onClick={() => setSelectedReceipt(null)}
-                className="px-5 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+                className="px-5 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-[#F3EAF2]"
               >
                 Close
               </button>

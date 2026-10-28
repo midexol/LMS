@@ -52,7 +52,7 @@ export default async function MyCoursesPage() {
       <Navbar currentUser={currentUser} />
 
       {/* Page Header */}
-      <div className="bg-white border-b border-neutral-200">
+      <div className="bg-white border-b border-rule">
         <div className="max-w-5xl mx-auto px-6 py-8">
           <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">Student Academic Record</span>
           <h1 className="font-bold text-3xl text-black mt-1">My Enrolled Courses</h1>
@@ -74,7 +74,7 @@ export default async function MyCoursesPage() {
             const lessonCount = total;
 
             return (
-              <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+              <div className="bg-white rounded-lg border border-rule overflow-hidden">
                 <div className="p-8 space-y-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                     <div className="space-y-1.5">
@@ -112,7 +112,7 @@ export default async function MyCoursesPage() {
                   </div>
 
                   {/* Stats Row */}
-                  <div className="pt-4 border-t border-neutral-200 flex items-center gap-6 text-xs text-neutral-600">
+                  <div className="pt-4 border-t border-rule flex items-center gap-6 text-xs text-neutral-600">
                     <div className="flex items-center gap-1.5">
                       <PiStack className="w-3.5 h-3.5 text-[#4A1A45]" />
                       <span>{activeEnrollment.course.modules.length} modules</span>
@@ -130,7 +130,7 @@ export default async function MyCoursesPage() {
               </div>
             );
           })() : (
-            <div className="bg-white rounded-lg border border-neutral-200 py-14 text-center space-y-4">
+            <div className="bg-white rounded-lg border border-rule py-14 text-center space-y-4">
               <div className="w-14 h-14 rounded-lg bg-[#F7F2F6] flex items-center justify-center mx-auto text-neutral-400">
                 <PiBookOpen className="w-7 h-7 text-[#4A1A45]" />
               </div>
@@ -158,7 +158,7 @@ export default async function MyCoursesPage() {
           </div>
 
           {completedEnrollments.length === 0 ? (
-            <div className="bg-white rounded-lg border border-neutral-200 py-10 text-center">
+            <div className="bg-white rounded-lg border border-rule py-10 text-center">
               <p className="text-xs text-neutral-500 italic">No completed courses yet. Keep working towards your {PASS_MARK_PERCENT}% average pass mark!</p>
             </div>
           ) : (
@@ -168,7 +168,7 @@ export default async function MyCoursesPage() {
                 return (
                   <div
                     key={e.id}
-                    className="bg-white rounded-lg border border-neutral-200 p-6 space-y-3"
+                    className="bg-white rounded-lg border border-rule p-6 space-y-3"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
@@ -183,7 +183,7 @@ export default async function MyCoursesPage() {
                       <PiCheckCircle className="w-3.5 h-3.5 text-[#4A1A45]" /> Completed {formatDate(e.completedAt)}
                     </div>
                     <p className="text-[11px] text-neutral-500">{completed}/{total} lessons · Instructor: {e.course.tutor?.name}</p>
-                    <div className="flex items-center justify-between pt-2 border-t border-neutral-100">
+                    <div className="flex items-center justify-between pt-2 border-t border-rule">
                       <Link
                         href={`/student/courses/${e.courseId}`}
                         className="text-xs text-black font-bold hover:underline inline-flex items-center gap-1"

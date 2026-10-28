@@ -52,7 +52,7 @@ export default function NotFound() {
         </div>
 
         {/* Helpful Shortcut Cards */}
-        <div className="pt-6 border-t border-neutral-200">
+        <div className="pt-6 border-t border-rule">
           <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-4">
             Quick Academic Destinations
           </p>
@@ -60,7 +60,7 @@ export default function NotFound() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
             <Link
               href="/my-courses"
-              className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
+              className="p-3.5 rounded-lg bg-white border border-rule hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <PiCompass className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
@@ -72,7 +72,7 @@ export default function NotFound() {
 
             <Link
               href="/profile"
-              className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
+              className="p-3.5 rounded-lg bg-white border border-rule hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <PiShield className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
@@ -84,7 +84,7 @@ export default function NotFound() {
 
             <Link
               href="/login"
-              className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
+              className="p-3.5 rounded-lg bg-white border border-rule hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <PiQuestion className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />

@@ -24,7 +24,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      <header className="border-b border-neutral-200">
+      <header className="border-b border-rule">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <BrandLogo href="/" variant="dark" size="sm" />
           <Link href="/" className="text-xs font-bold text-[#4A1A45] hover:underline">
@@ -35,7 +35,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
 
       <main className="max-w-3xl mx-auto px-6 py-12">
         <p className="text-[11px] font-bold uppercase tracking-widest text-[#4A1A45]">Legal</p>
-        <h1 className="mt-1 text-3xl sm:text-4xl font-bold tracking-tight text-black">{title}</h1>
+        <h1 className="font-heading mt-1 text-3xl sm:text-4xl font-semibold tracking-tight text-black">{title}</h1>
         <p className="mt-2 text-xs text-neutral-500">Last updated: {lastUpdated}</p>
         <p className="mt-6 text-sm leading-relaxed text-neutral-700">{intro}</p>
 
@@ -61,7 +61,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
           ))}
         </div>
 
-        <div className="mt-12 p-5 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700 leading-relaxed">
+        <div className="mt-12 p-5 rounded-lg bg-[#F7F2F6] border border-rule text-sm text-neutral-700 leading-relaxed">
           Questions about this page? {" "}
           {supportEmail ? (
             <>

@@ -32,7 +32,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
         <div className="lg:hidden mb-6">
           <BrandLogo href="/" variant="dark" size="md" />
         </div>
-        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-lg border border-neutral-200">{children}</div>
+        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-lg border border-rule">{children}</div>
       </main>
     </div>
   );
@@ -47,7 +47,7 @@ export function AuthError({ message }: { message: string }) {
 }
 
 export const authInputClass =
-  "w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:bg-white transition-colors placeholder:text-neutral-400";
+  "w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:bg-white transition-colors placeholder:text-neutral-400";
 export const authLabelClass = "block text-xs font-semibold text-neutral-700 mb-1.5";
 export const authButtonClass =
   "w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm transition-colors";

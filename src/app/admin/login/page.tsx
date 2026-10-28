@@ -52,14 +52,14 @@ export default function AdminLoginPage() {
           <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-white border border-[#4A1A45]/40">
             <PiShield className="w-7 h-7 text-[#D6BDD4]" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-black">Superadmin Control Panel</h1>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight text-black">Superadmin Control Panel</h1>
           <p className="text-xs text-neutral-500 font-medium">
             Restricted access. Authorized platform administrators only.
           </p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
+        <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
               <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" />
@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all placeholder:text-neutral-400"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>
@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all placeholder:text-neutral-400"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all placeholder:text-neutral-400"
                 />
               </div>
             </div>

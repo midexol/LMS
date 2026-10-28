@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { formatDate, formatNgn } from "@/lib/utils";
-import { PiBookOpen, PiChartBar, PiCheckCircle, PiDownloadSimple, PiEnvelopeSimple, PiMagnifyingGlass, PiMedal, PiPencilSimple, PiPlus, PiPulse, PiShield, PiSignOut, PiSlidersHorizontal, PiStack, PiToggleLeft, PiToggleRight, PiTrash, PiTray, PiUsers, PiWarningCircle, PiX } from "react-icons/pi";
+import { PiBookOpen, PiChartBar, PiMagnifyingGlass, PiMedal, PiPencilSimple, PiPulse, PiSlidersHorizontal, PiTrash, PiTray, PiUsers, PiX } from "react-icons/pi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -87,21 +87,18 @@ function ConfirmModal({ title, body, onConfirm, onCancel, loading }: {
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-4">
+      <div className="w-full max-w-sm bg-white rounded-lg border border-rule p-7 space-y-4">
         <div className="flex items-start gap-3">
-          <div className="p-2.5 rounded-lg bg-neutral-100 text-black">
-            <PiWarningCircle className="w-5 h-5 text-red-600" />
-          </div>
           <div>
             <h3 className="font-bold text-black text-base">{title}</h3>
             <p className="text-xs text-neutral-500 mt-1 leading-relaxed">{body}</p>
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-2">
-          <button onClick={onCancel} className="px-4 py-2 rounded-md border border-neutral-200 text-neutral-600 font-bold text-xs hover:bg-neutral-100">
+          <button onClick={onCancel} className="px-4 py-2 rounded-md border border-rule text-neutral-600 font-bold text-xs hover:bg-[#F3EAF2]">
             Cancel
           </button>
-          <button onClick={onConfirm} disabled={loading} className="px-4 py-2 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50">
+          <button onClick={onConfirm} disabled={loading} className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs disabled:opacity-50">
             {loading ? "Deleting..." : "Confirm Delete"}
           </button>
         </div>
@@ -137,10 +134,10 @@ function AddInstructorModal({ onSubmit, onClose }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-5">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white rounded-lg border border-rule p-7 space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Add Instructor</h3>
-          <button type="button" onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
+          <button type="button" onClick={onClose} className="p-1.5 rounded-full hover:bg-[#F3EAF2] text-neutral-500">
             <PiX className="w-4 h-4" />
           </button>
         </div>
@@ -157,7 +154,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             />
           </div>
           <div>
@@ -167,7 +164,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             />
           </div>
           <div>
@@ -177,7 +174,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
             <select
               value={faculty}
               onChange={(e) => handleFacultyChange(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             >
               <option value="">Not specified</option>
               {ACADEMIC_STRUCTURE.map((f) => (
@@ -191,7 +188,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+                className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
               >
                 <option value="">Not specified</option>
                 {getDepartmentsForFaculty(faculty).map((d) => (
@@ -206,7 +203,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+            className="flex-1 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-[#F3EAF2]"
           >
             Cancel
           </button>
@@ -250,15 +247,15 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-5">
+      <div className="w-full max-w-sm bg-white rounded-lg border border-rule p-7 space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Edit User Account</h3>
-          <button onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
+          <button onClick={onClose} className="p-1.5 rounded-full hover:bg-[#F3EAF2] text-neutral-500">
             <PiX className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-3.5 rounded-lg bg-neutral-100 border border-neutral-200">
+        <div className="p-3.5 rounded-lg bg-[#F3EAF2] border border-rule">
           <p className="font-bold text-black text-sm">{user.name}</p>
           <p className="text-xs text-neutral-500">{user.email}</p>
         </div>
@@ -293,7 +290,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
             <select
               value={faculty}
               onChange={(e) => handleFacultyChange(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             >
               {ACADEMIC_STRUCTURE.map((f) => (
                 <option key={f.name} value={f.name}>{f.name}</option>
@@ -306,7 +303,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
             <select
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none focus:border-[#4A1A45]"
             >
               {getDepartmentsForFaculty(faculty).map((d) => (
                 <option key={d} value={d}>{d}</option>
@@ -321,7 +318,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
               placeholder="Leave blank to preserve current"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
             />
             {password && password.length < 6 && (
               <p className="text-[10px] text-red-600 font-bold mt-1">Min 6 characters required.</p>
@@ -330,13 +327,13 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
         </div>
 
         <div className="flex justify-end gap-2 pt-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-md border border-neutral-200 text-neutral-600 text-xs font-bold hover:bg-neutral-100">
+          <button onClick={onClose} className="px-4 py-2 rounded-md border border-rule text-neutral-600 text-xs font-bold hover:bg-[#F3EAF2]">
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={saving || (!!password && password.length < 6)}
-            className="px-5 py-2 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50"
+            className="px-5 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs disabled:opacity-50"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>
@@ -364,14 +361,14 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg border border-neutral-200 p-7 space-y-5">
+      <div className="w-full max-w-md bg-white rounded-lg border border-rule p-7 space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Grade Override Desk</h3>
-          <button onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
+          <button onClick={onClose} className="p-1.5 rounded-full hover:bg-[#F3EAF2] text-neutral-500">
             <PiX className="w-4 h-4" />
           </button>
         </div>
-        <div className="p-3.5 rounded-lg bg-neutral-100 border border-neutral-200 space-y-1">
+        <div className="p-3.5 rounded-lg bg-[#F3EAF2] border border-rule space-y-1">
           <p className="text-[10px] font-bold text-[#4A1A45] uppercase">{sub.assignment.lesson.module.course.title}</p>
           <p className="font-bold text-black text-sm">{sub.assignment.title}</p>
           <p className="text-xs text-neutral-500">Student: {sub.student.name}</p>
@@ -406,13 +403,13 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
               placeholder="Reason for this grade adjustment..."
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+              className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
             />
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-1">
-          <button onClick={onClose} className="px-4 py-2 rounded-md border border-neutral-200 text-neutral-600 text-xs font-bold hover:bg-neutral-100">Cancel</button>
-          <button onClick={handleSave} disabled={saving} className="px-5 py-2 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50">
+          <button onClick={onClose} className="px-4 py-2 rounded-md border border-rule text-neutral-600 text-xs font-bold hover:bg-[#F3EAF2]">Cancel</button>
+          <button onClick={handleSave} disabled={saving} className="px-5 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs disabled:opacity-50">
             {saving ? "Saving..." : "Apply Override"}
           </button>
         </div>
@@ -424,9 +421,9 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
 /* ─── Role Badge ─────────────────────────────────────────────── */
 function RoleBadge({ role }: { role: string }) {
   const map: Record<string, string> = {
-    ADMIN: "bg-black text-white border-black",
-    TUTOR: "bg-neutral-800 text-white border-neutral-800",
-    STUDENT: "bg-neutral-100 text-neutral-800 border-neutral-200",
+    ADMIN: "bg-[#4A1A45] text-white border-[#4A1A45]",
+    TUTOR: "bg-[#3B1537] text-white border-[#3B1537]",
+    STUDENT: "bg-[#F3EAF2] text-neutral-800 border-rule",
   };
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${map[role] || map.STUDENT}`}>
@@ -750,11 +747,10 @@ export function AdminDashboardClient({
             key={t.id}
             className={`pointer-events-auto px-4 py-3 rounded-lg  text-xs font-bold flex items-center gap-2 border ${
               t.type === "success"
-                ? "bg-black text-white border-black"
+                ? "bg-[#4A1A45] text-white border-[#4A1A45]"
                 : "bg-red-600 text-white border-red-600"
             }`}
           >
-            {t.type === "success" ? <PiCheckCircle className="w-4 h-4 text-white" /> : <PiWarningCircle className="w-4 h-4 text-white" />}
             {t.text}
           </div>
         ))}
@@ -808,11 +804,11 @@ export function AdminDashboardClient({
       )}
 
       {/* ───────────────── HEADER (RICH COMMAND CENTER BLACK) ───────────────── */}
-      <header className="bg-neutral-950 text-white border-b border-neutral-800 sticky top-0 z-40">
+      <header className="bg-[#1E0A1C] text-white border-b border-[#3B1537] sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <BrandLogo href="/admin" variant="light" size="sm" />
-            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-neutral-800 text-[11px]">
+            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#3B1537] text-[11px]">
               <span className="font-bold text-[#D6BDD4]">Superadmin Console</span>
               <span className="text-neutral-500">· System Command &amp; Analytics</span>
             </div>
@@ -824,31 +820,27 @@ export function AdminDashboardClient({
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all ${
                 activeTab === "settings"
                   ? "bg-white text-black border-white "
-                  : "border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white hover:border-neutral-700"
+                  : "border-[#3B1537] bg-[#2D0F2A] text-neutral-300 hover:text-white hover:border-[#4A1A45]"
               }`}
             >
-              <PiSlidersHorizontal className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Settings</span>
             </button>
             <Link
               href="/profile"
-              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-[#3B1537] bg-[#2D0F2A] text-xs font-bold text-neutral-300 hover:text-white hover:border-[#4A1A45] transition-all"
             >
-              <PiShield className="w-3.5 h-3.5 text-emerald-400" />
               <span>Profile</span>
             </Link>
             <Link
               href="/courses"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-[#3B1537] bg-[#2D0F2A] text-xs font-bold text-neutral-300 hover:text-white hover:border-[#4A1A45] transition-all"
             >
-              <PiBookOpen className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Student Catalog</span>
             </Link>
             <Link
               href="/instructor"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-[#3B1537] bg-[#2D0F2A] text-xs font-bold text-neutral-300 hover:text-white hover:border-[#4A1A45] transition-all"
             >
-              <PiStack className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Instructor Studio</span>
             </Link>
             <button
@@ -856,9 +848,8 @@ export function AdminDashboardClient({
                 await fetch("/api/auth/logout", { method: "POST" });
                 window.location.href = "/login";
               }}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-white text-black hover:bg-[#E4D5E2] text-xs font-bold transition-colors"
             >
-              <PiSignOut className="w-3.5 h-3.5 text-neutral-700" />
               <span className="hidden sm:inline">Log out</span>
             </button>
           </div>
@@ -954,15 +945,15 @@ export function AdminDashboardClient({
             {/* Visual Analytics Row: Modern Dual Bar & SVG Ring Distribution (CLEAR & READABLE) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Category Throughput Dual Comparison */}
-              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-neutral-200/80 space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
+              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-rule">
                   <div>
                     <h3 className="font-bold text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
                     <p className="text-xs text-neutral-500 mt-0.5">Live active cohorts vs certified course completions</p>
                   </div>
                   <div className="flex items-center gap-4 text-xs font-semibold text-neutral-600">
                     <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-black inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#4A1A45] inline-block" />
                       <span>Active Enrollees</span>
                     </div>
                     <div className="flex items-center gap-1.5">
@@ -974,10 +965,7 @@ export function AdminDashboardClient({
 
                 {/* 3 Executive KPI Capsules */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                  <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
-                      <PiPulse className="w-5 h-5 text-emerald-400" />
-                    </div>
+                  <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Active Cohorts</span>
                       <span className="text-lg font-bold text-neutral-900 leading-tight">
@@ -986,10 +974,7 @@ export function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/20 flex items-center justify-center shrink-0">
-                      <PiMedal className="w-5 h-5" />
-                    </div>
+                  <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Certifications</span>
                       <span className="text-lg font-bold text-[#4A1A45] leading-tight">
@@ -998,10 +983,7 @@ export function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-neutral-200 text-neutral-800 flex items-center justify-center shrink-0">
-                      <PiCheckCircle className="w-5 h-5" />
-                    </div>
+                  <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Completion Velocity</span>
                       <span className="text-lg font-bold text-neutral-900 leading-tight">
@@ -1041,7 +1023,7 @@ export function AdminDashboardClient({
                   const displayTracks = tracks;
                   if (displayTracks.length === 0) {
                     return (
-                      <div className="p-8 text-center bg-neutral-50 rounded-lg border border-dashed border-neutral-200">
+                      <div className="p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
                         <p className="text-xs text-neutral-500">No courses or enrollments yet. Activity by subject appears here once courses are created.</p>
                       </div>
                     );
@@ -1059,7 +1041,7 @@ export function AdminDashboardClient({
                           return (
                             <div
                               key={track.cat}
-                              className="p-4 rounded-lg bg-neutral-50/70 hover:bg-neutral-50 border border-neutral-100 hover:border-neutral-200 transition-all space-y-2.5 group"
+                              className="p-4 rounded-lg bg-[#F7F2F6] hover:bg-[#F7F2F6] border border-rule hover:border-rule transition-all space-y-2.5 group"
                             >
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                                 <div className="flex items-center gap-2">
@@ -1075,15 +1057,15 @@ export function AdminDashboardClient({
                                 <div className="flex items-center gap-2 text-xs">
                                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                     track.active > 0
-                                      ? "bg-black text-white"
-                                      : "bg-neutral-200/70 text-neutral-500"
+                                      ? "bg-[#4A1A45] text-white"
+                                      : "bg-[#E4D5E2]/70 text-neutral-500"
                                   }`}>
                                     {track.active} active
                                   </span>
                                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                     track.comp > 0
                                       ? "bg-[#4A1A45] text-white"
-                                      : "bg-neutral-200/70 text-neutral-500"
+                                      : "bg-[#E4D5E2]/70 text-neutral-500"
                                   }`}>
                                     {track.comp} certified
                                   </span>
@@ -1096,10 +1078,10 @@ export function AdminDashboardClient({
                                   <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-14 shrink-0">
                                     Enrolled
                                   </span>
-                                  <div className="w-full h-2.5 bg-neutral-200/60 rounded-full overflow-hidden relative">
+                                  <div className="w-full h-2.5 bg-[#E4D5E2]/60 rounded-full overflow-hidden relative">
                                     {track.active > 0 ? (
                                       <div
-                                        className="h-full rounded-full bg-neutral-900 transition-all duration-700"
+                                        className="h-full rounded-full bg-[#2D0F2A] transition-all duration-700"
                                         style={{ width: `${Math.max(6, activePercent)}%` }}
                                       />
                                     ) : (
@@ -1115,7 +1097,7 @@ export function AdminDashboardClient({
                                   <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-14 shrink-0">
                                     Certified
                                   </span>
-                                  <div className="w-full h-2.5 bg-neutral-200/60 rounded-full overflow-hidden relative">
+                                  <div className="w-full h-2.5 bg-[#E4D5E2]/60 rounded-full overflow-hidden relative">
                                     {track.comp > 0 ? (
                                       <div
                                         className="h-full rounded-full bg-[#4A1A45] transition-all duration-700"
@@ -1140,10 +1122,9 @@ export function AdminDashboardClient({
               </div>
 
               {/* Platform Composition Breakdown */}
-              <div className="bg-white rounded-lg p-6 sm:p-8 border border-neutral-200/80 space-y-6 flex flex-col justify-between">
-                <div className="pb-3 border-b border-neutral-100">
+              <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-6 flex flex-col justify-between">
+                <div className="pb-3 border-b border-rule">
                   <div className="flex items-center gap-2">
-                    <PiUsers className="w-4 h-4 text-[#4A1A45]" />
                     <h3 className="font-bold text-lg text-black tracking-tight">Platform Composition</h3>
                   </div>
                   <p className="text-xs text-neutral-500 mt-0.5">Distribution across active system accounts</p>
@@ -1219,43 +1200,36 @@ export function AdminDashboardClient({
                         </svg>
 
                         {/* Center Statistics Capsule */}
-                        <div className="absolute w-28 h-28 rounded-full bg-white shadow-xs border border-neutral-100 flex flex-col items-center justify-center text-center p-2">
-                          <PiUsers className="w-4 h-4 text-[#4A1A45] mb-0.5" />
+                        <div className="absolute w-28 h-28 rounded-full bg-white shadow-xs border border-rule flex flex-col items-center justify-center text-center p-2">
                           <span className="font-bold text-2xl text-black leading-none">{total}</span>
                           <span className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Directory</span>
                         </div>
                       </div>
 
                       {/* 3 Executive Role Breakdown Cards */}
-                      <div className="space-y-2.5 pt-2 border-t border-neutral-100">
+                      <div className="space-y-2.5 pt-2 border-t border-rule">
                         {/* Students Card */}
-                        <div className="p-3 rounded-lg bg-neutral-50/80 border border-neutral-100 space-y-1.5">
+                        <div className="p-3 rounded-lg bg-[#F7F2F6] border border-rule space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center text-[11px] font-bold">
-                                <PiBookOpen className="w-3.5 h-3.5" />
-                              </div>
                               <span className="font-bold text-neutral-900">Students</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-black">{sCount}</span>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 text-neutral-800">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#E4D5E2] text-neutral-800">
                                 {sPct}%
                               </span>
                             </div>
                           </div>
-                          <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-black h-full rounded-full transition-all duration-700" style={{ width: `${sPct}%` }} />
+                          <div className="w-full bg-[#E4D5E2]/70 h-1.5 rounded-full overflow-hidden">
+                            <div className="bg-[#4A1A45] h-full rounded-full transition-all duration-700" style={{ width: `${sPct}%` }} />
                           </div>
                         </div>
 
                         {/* Faculty & Tutors Card */}
-                        <div className="p-3 rounded-lg bg-neutral-50/80 border border-neutral-100 space-y-1.5">
+                        <div className="p-3 rounded-lg bg-[#F7F2F6] border border-rule space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-lg bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/25 flex items-center justify-center text-[11px] font-bold">
-                                <PiMedal className="w-3.5 h-3.5" />
-                              </div>
                               <span className="font-bold text-neutral-900">Faculty &amp; Tutors</span>
                             </div>
                             <div className="flex items-center gap-1.5">
@@ -1265,28 +1239,25 @@ export function AdminDashboardClient({
                               </span>
                             </div>
                           </div>
-                          <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
+                          <div className="w-full bg-[#E4D5E2]/70 h-1.5 rounded-full overflow-hidden">
                             <div className="bg-[#4A1A45] h-full rounded-full transition-all duration-700" style={{ width: `${tPct}%` }} />
                           </div>
                         </div>
 
                         {/* Administrators Card */}
-                        <div className="p-3 rounded-lg bg-neutral-50/80 border border-neutral-100 space-y-1.5">
+                        <div className="p-3 rounded-lg bg-[#F7F2F6] border border-rule space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-lg bg-neutral-200 text-neutral-700 flex items-center justify-center text-[11px] font-bold">
-                                <PiShield className="w-3.5 h-3.5" />
-                              </div>
                               <span className="font-bold text-neutral-900">Administrators</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-neutral-800">{aCount}</span>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 text-neutral-700">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#E4D5E2] text-neutral-700">
                                 {aPct}%
                               </span>
                             </div>
                           </div>
-                          <div className="w-full bg-neutral-200/70 h-1.5 rounded-full overflow-hidden">
+                          <div className="w-full bg-[#E4D5E2]/70 h-1.5 rounded-full overflow-hidden">
                             <div className="bg-neutral-500 h-full rounded-full transition-all duration-700" style={{ width: `${aPct}%` }} />
                           </div>
                         </div>
@@ -1302,7 +1273,7 @@ export function AdminDashboardClient({
         {/* USERS TAB */}
         {activeTab === "users" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
+            <div className="bg-white rounded-lg border border-rule p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1310,7 +1281,7 @@ export function AdminDashboardClient({
                   placeholder="Search users by name, email, or department..."
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+                  className="w-full pl-10 pr-4 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
                 />
               </div>
 
@@ -1320,13 +1291,12 @@ export function AdminDashboardClient({
                   onClick={() => setShowAddInstructor(true)}
                   className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-1.5"
                 >
-                  <PiPlus className="w-3.5 h-3.5" />
                   Add instructor
                 </button>
                 <select
                   value={userRoleFilter}
                   onChange={(e) => setUserRoleFilter(e.target.value)}
-                  className="px-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
+                  className="px-4 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs font-bold text-black outline-none"
                 >
                   <option value="ALL">All Roles ({users.length})</option>
                   <option value="STUDENT">Students ({users.filter((u) => u.role === "STUDENT").length})</option>
@@ -1337,7 +1307,7 @@ export function AdminDashboardClient({
                 <select
                   value={userDeptFilter}
                   onChange={(e) => setUserDeptFilter(e.target.value)}
-                  className="px-3.5 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
+                  className="px-3.5 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs font-bold text-black outline-none max-w-[210px]"
                 >
                   <option value="ALL">All Departments</option>
                   {ACADEMIC_STRUCTURE.flatMap((f) => f.departments).map((d) => (
@@ -1349,10 +1319,10 @@ export function AdminDashboardClient({
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+            <div className="bg-white rounded-lg border border-rule overflow-hidden">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
+                  <tr className="border-b border-rule text-neutral-500 font-bold bg-[#F7F2F6]">
                     <th className="p-4">User</th>
                     <th className="p-4">Role</th>
                     <th className="p-4">Department &amp; School</th>
@@ -1362,11 +1332,11 @@ export function AdminDashboardClient({
                     <th className="p-4">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody className="divide-y divide-rule">
                   {filteredUsers.map((u) => {
                     const isSelf = u.id === currentUser.id;
                     return (
-                      <tr key={u.id} className="hover:bg-neutral-50">
+                      <tr key={u.id} className="hover:bg-[#F7F2F6]">
                         <td className="p-4">
                           <p className="font-bold text-black">{u.name}</p>
                           <p className="text-[10px] text-neutral-500">
@@ -1379,7 +1349,7 @@ export function AdminDashboardClient({
                         <td className="p-4">
                           {u.department ? (
                             <div>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200 inline-block truncate max-w-[190px]">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#F3EAF2] text-black border border-rule inline-block truncate max-w-[190px]">
                                 {u.department}
                               </span>
                               <span className="text-[10px] text-neutral-400 block truncate max-w-[190px] mt-0.5">
@@ -1402,14 +1372,14 @@ export function AdminDashboardClient({
                           <div className="flex items-center gap-2">
                             <Link
                               href={`/admin/users/${u.id}`}
-                              className="px-2.5 py-1.5 rounded-lg border border-neutral-200 text-[11px] font-bold text-black hover:bg-neutral-100"
+                              className="px-2.5 py-1.5 rounded-lg border border-rule text-[11px] font-bold text-black hover:bg-[#F3EAF2]"
                               title="View full profile, payments and progress"
                             >
                               View
                             </Link>
                             <button
                               onClick={() => setEditUser(u)}
-                              className="p-1.5 rounded-lg border border-neutral-200 text-black hover:bg-neutral-100"
+                              className="p-1.5 rounded-lg border border-rule text-black hover:bg-[#F3EAF2]"
                               title="Edit user role / password"
                             >
                               <PiPencilSimple className="w-3.5 h-3.5" />
@@ -1417,7 +1387,7 @@ export function AdminDashboardClient({
                             {!isSelf && (
                               <button
                                 onClick={() => setDeleteUser(u)}
-                                className="p-1.5 rounded-lg border border-neutral-200 text-black hover:text-red-600 hover:border-red-300"
+                                className="p-1.5 rounded-lg border border-rule text-black hover:text-red-600 hover:border-red-300"
                                 title="Delete user"
                               >
                                 <PiTrash className="w-3.5 h-3.5" />
@@ -1437,7 +1407,7 @@ export function AdminDashboardClient({
         {/* COURSES TAB */}
         {activeTab === "courses" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
+            <div className="bg-white rounded-lg border border-rule p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1445,7 +1415,7 @@ export function AdminDashboardClient({
                   placeholder="Search courses by title, instructor, or department..."
                   value={courseSearch}
                   onChange={(e) => setCourseSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+                  className="w-full pl-10 pr-4 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
                 />
               </div>
 
@@ -1453,7 +1423,7 @@ export function AdminDashboardClient({
                 <select
                   value={coursePublishedFilter}
                   onChange={(e) => setCoursePublishedFilter(e.target.value)}
-                  className="px-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
+                  className="px-4 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs font-bold text-black outline-none"
                 >
                   <option value="ALL">All Status ({courses.length})</option>
                   <option value="PUBLISHED">Published ({metrics.publishedCourses})</option>
@@ -1463,7 +1433,7 @@ export function AdminDashboardClient({
                 <select
                   value={courseDeptFilter}
                   onChange={(e) => setCourseDeptFilter(e.target.value)}
-                  className="px-3.5 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
+                  className="px-3.5 py-2 rounded-md bg-[#F7F2F6] border border-rule text-xs font-bold text-black outline-none max-w-[210px]"
                 >
                   <option value="ALL">All Departments</option>
                   {ACADEMIC_STRUCTURE.flatMap((f) => f.departments).map((d) => (
@@ -1477,12 +1447,12 @@ export function AdminDashboardClient({
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredCourses.map((c) => (
-                <div key={c.id} className="bg-white rounded-lg p-6 border border-neutral-200 space-y-4 flex flex-col justify-between">
+                <div key={c.id} className="bg-white rounded-lg p-6 border border-rule space-y-4 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-start justify-between flex-wrap gap-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {c.department && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-black text-white">
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
                             {c.department}
                           </span>
                         )}
@@ -1496,19 +1466,18 @@ export function AdminDashboardClient({
                     <p className="text-xs text-neutral-500">Instructor: <strong>{c.tutor.name}</strong></p>
                     <p className="text-xs text-neutral-500 line-clamp-2">{c.description}</p>
                   </div>
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <div className="pt-3 border-t border-rule flex items-center justify-between">
                     <button
                       onClick={() => handleTogglePublish(c)}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
-                        c.published ? "bg-black text-white" : "bg-neutral-100 text-neutral-600 border border-neutral-200"
+                        c.published ? "bg-[#4A1A45] text-white" : "bg-[#F3EAF2] text-neutral-600 border border-rule"
                       }`}
                     >
-                      {c.published ? <PiToggleRight className="w-4 h-4" /> : <PiToggleLeft className="w-4 h-4" />}
                       {c.published ? "Published" : "Draft"}
                     </button>
                     <button
                       onClick={() => setDeleteCourse(c)}
-                      className="p-2 rounded-full border border-neutral-200 text-neutral-600 hover:text-red-600"
+                      className="p-2 rounded-full border border-rule text-neutral-600 hover:text-red-600"
                     >
                       <PiTrash className="w-3.5 h-3.5" />
                     </button>
@@ -1521,10 +1490,10 @@ export function AdminDashboardClient({
 
         {/* ENROLLMENTS TAB */}
         {activeTab === "enrollments" && (
-          <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+          <div className="bg-white rounded-lg border border-rule overflow-hidden">
             <table className="w-full text-xs text-left">
               <thead>
-                <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
+                <tr className="border-b border-rule text-neutral-500 font-bold bg-[#F7F2F6]">
                   <th className="p-4">Student</th>
                   <th className="p-4">Course</th>
                   <th className="p-4">Price</th>
@@ -1533,9 +1502,9 @@ export function AdminDashboardClient({
                   <th className="p-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100">
+              <tbody className="divide-y divide-rule">
                 {enrollments.map((e) => (
-                  <tr key={e.id} className="hover:bg-neutral-50">
+                  <tr key={e.id} className="hover:bg-[#F7F2F6]">
                     <td className="p-4">
                       <p className="font-bold text-black">{e.student.name}</p>
                       <p className="text-[10px] text-neutral-500">{e.student.department || e.student.email}</p>
@@ -1549,7 +1518,7 @@ export function AdminDashboardClient({
                     </td>
                     <td className="p-4 text-neutral-500">{formatDate(e.enrolledAt)}</td>
                     <td className="p-4">
-                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-black text-white">
+                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
                         {e.status}
                       </span>
                     </td>
@@ -1578,7 +1547,7 @@ export function AdminDashboardClient({
               const max = sub.assignment.maxScore || 100;
               const isPass = sub.score !== null && isPassingPercent((sub.score / max) * 100);
               return (
-                <div key={sub.id} className="bg-white rounded-lg p-6 border border-neutral-200 space-y-4">
+                <div key={sub.id} className="bg-white rounded-lg p-6 border border-rule space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
                       <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
@@ -1599,13 +1568,12 @@ export function AdminDashboardClient({
                         onClick={() => setGradeOverrideSub(sub)}
                         className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5"
                       >
-                        <PiSlidersHorizontal className="w-3.5 h-3.5" />
                         Override
                       </button>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-lg bg-neutral-100 text-xs space-y-1">
+                  <div className="p-4 rounded-lg bg-[#F3EAF2] text-xs space-y-1">
                     <span className="text-[10px] font-bold text-neutral-500 uppercase block">Student Submission:</span>
                     <p className="text-neutral-800 leading-relaxed">{sub.content}</p>
                   </div>
@@ -1626,7 +1594,7 @@ export function AdminDashboardClient({
                   className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all ${
                     messageFilter === f
                       ? "bg-[#4A1A45] text-white border-[#4A1A45]"
-                      : "bg-white text-neutral-600 border-neutral-200 hover:border-[#4A1A45]"
+                      : "bg-white text-neutral-600 border-rule hover:border-[#4A1A45]"
                   }`}
                 >
                   {f === "ALL" ? `All (${messages.length})` : `Unread (${unreadCount})`}
@@ -1635,8 +1603,7 @@ export function AdminDashboardClient({
             </div>
 
             {messages.filter((m) => messageFilter === "ALL" || m.status === "NEW").length === 0 ? (
-              <div className="bg-white rounded-lg p-10 border border-neutral-200 text-center space-y-2">
-                <PiTray className="w-8 h-8 text-neutral-300 mx-auto" />
+              <div className="bg-white rounded-lg p-10 border border-rule text-center space-y-2">
                 <p className="text-sm font-semibold text-neutral-600">
                   {messages.length === 0 ? "No messages yet." : "No unread messages."}
                 </p>
@@ -1649,7 +1616,7 @@ export function AdminDashboardClient({
                   <div
                     key={msg.id}
                     className={`bg-white rounded-lg p-6 border  space-y-3 ${
-                      msg.status === "NEW" ? "border-[#4A1A45]/40" : "border-neutral-200"
+                      msg.status === "NEW" ? "border-[#4A1A45]/40" : "border-rule"
                     }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
@@ -1671,25 +1638,24 @@ export function AdminDashboardClient({
                           onClick={() => msg.status === "NEW" && handleToggleMessageRead(msg)}
                           className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5"
                         >
-                          <PiEnvelopeSimple className="w-3.5 h-3.5" />
                           Reply
                         </a>
                         <button
                           onClick={() => handleToggleMessageRead(msg)}
-                          className="px-4 py-2 rounded-md border border-neutral-200 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs transition-all"
+                          className="px-4 py-2 rounded-md border border-rule hover:border-[#4A1A45] text-neutral-700 font-bold text-xs transition-all"
                         >
                           {msg.status === "NEW" ? "Mark read" : "Mark unread"}
                         </button>
                         <button
                           onClick={() => handleDeleteMessage(msg)}
                           aria-label="Delete message"
-                          className="p-2 rounded-full border border-neutral-200 hover:border-red-400 hover:text-red-600 text-neutral-500 transition-all"
+                          className="p-2 rounded-full border border-rule hover:border-red-400 hover:text-red-600 text-neutral-500 transition-all"
                         >
                           <PiTrash className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
-                    <p className="p-4 rounded-lg bg-neutral-100 text-xs text-neutral-800 leading-relaxed whitespace-pre-wrap break-words">
+                    <p className="p-4 rounded-lg bg-[#F3EAF2] text-xs text-neutral-800 leading-relaxed whitespace-pre-wrap break-words">
                       {msg.message}
                     </p>
                   </div>
@@ -1707,22 +1673,22 @@ export function AdminDashboardClient({
             </div>
 
             {/* Superadmin Security & Profile Card */}
-            <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neutral-100">
+            <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-rule">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-lg bg-black text-white flex items-center justify-center text-2xl font-bold">
+                  <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center text-2xl font-bold">
                     {currentUser.name.charAt(0)}
                   </div>
                   <div>
                     <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
                     <p className="text-xs text-neutral-500">{currentUser.email}</p>
-                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-black text-white">
+                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[#4A1A45] text-white">
                       Superadministrator
                     </span>
                   </div>
                 </div>
 
-                <div className="text-xs text-neutral-500 bg-neutral-50 px-4 py-3 rounded-lg border border-neutral-200">
+                <div className="text-xs text-neutral-500 bg-[#F7F2F6] px-4 py-3 rounded-lg border border-rule">
                   <span className="font-bold text-black block">System Authority Level: Highest</span>
                   <span>Full access to database, user records, course publishing, and grade ledgers.</span>
                 </div>
@@ -1731,7 +1697,7 @@ export function AdminDashboardClient({
               {/* Password Change Form */}
               <form onSubmit={handleUpdateAdminPassword} className="space-y-4 max-w-xl">
                 <h4 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-2">
-                  <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" /> Update Superadmin Password
+                  Update Superadmin Password
                 </h4>
                 <div>
                   <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
@@ -1743,7 +1709,7 @@ export function AdminDashboardClient({
                     placeholder="Enter your current password"
                     value={adminCurrentPassword}
                     onChange={(e) => setAdminCurrentPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1756,7 +1722,7 @@ export function AdminDashboardClient({
                       placeholder="Minimum 6 characters"
                       value={adminNewPassword}
                       onChange={(e) => setAdminNewPassword(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
                     />
                   </div>
                   <div>
@@ -1768,7 +1734,7 @@ export function AdminDashboardClient({
                       placeholder="Re-enter password"
                       value={adminConfirmPassword}
                       onChange={(e) => setAdminConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
                     />
                   </div>
                 </div>
@@ -1783,26 +1749,25 @@ export function AdminDashboardClient({
             </div>
 
             {/* Academic Policies & Enrollment Rules */}
-            <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
-              <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <PiMedal className="w-5 h-5 text-[#4A1A45]" />
+            <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
+              <h3 className="font-bold text-lg text-black border-b border-rule pb-3 flex items-center gap-2">
                 Academic Policies &amp; Lock Enforcement
               </h3>
 
               <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <h4 className="font-bold text-sm text-black">1:1 Single Course Active Enrollment Rule</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
                       Ensures focused student learning by locking concurrent registrations until current course is completed or dropped.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-black text-white">
+                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-[#4A1A45] text-white">
                     Strictly Active
                   </span>
                 </div>
 
-                <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <h4 className="font-bold text-sm text-black">Certificate Completion Threshold</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
@@ -1814,14 +1779,14 @@ export function AdminDashboardClient({
                   </span>
                 </div>
 
-                <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <h4 className="font-bold text-sm text-black">Automated Evaluation Engine</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
                       Instant evaluation feedback on student assignment submissions with superadmin grade override capability.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-black text-white">
+                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-[#4A1A45] text-white">
                     Enabled
                   </span>
                 </div>
@@ -1829,9 +1794,8 @@ export function AdminDashboardClient({
             </div>
 
             {/* Audit & Data Export Center */}
-            <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
-              <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <PiDownloadSimple className="w-5 h-5 text-[#4A1A45]" />
+            <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
+              <h3 className="font-bold text-lg text-black border-b border-rule pb-3 flex items-center gap-2">
                 Data Export Center
               </h3>
               <p className="text-xs text-neutral-500">
@@ -1851,9 +1815,8 @@ export function AdminDashboardClient({
                       ])
                     )
                   }
-                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <PiUsers className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Users Directory</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{users.length} total registered accounts</p>
@@ -1868,9 +1831,8 @@ export function AdminDashboardClient({
                       courses.map((c) => [c.id, c.title, c.category, c.faculty || "", c.department || "", c.price, c.published ? "Yes" : "No", c.tutor.name])
                     )
                   }
-                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <PiBookOpen className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Courses Catalog</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{courses.length} curriculum tracks</p>
@@ -1885,9 +1847,8 @@ export function AdminDashboardClient({
                       enrollments.map((e) => [e.id, e.student.name, e.student.email, e.course.title, e.status, String(e.enrolledAt), String(e.completedAt || "")])
                     )
                   }
-                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <PiMedal className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Enrollments Ledger</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{enrollments.length} student registrations</p>
@@ -1902,9 +1863,8 @@ export function AdminDashboardClient({
                       submissions.map((s) => [s.id, s.student.name, s.assignment.lesson.module.course.title, s.assignment.title, s.score ?? "Pending", s.assignment.maxScore, s.status, String(s.submittedAt)])
                     )
                   }
-                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <PiPulse className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Submissions Ledger</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{submissions.length} evaluated tasks</p>

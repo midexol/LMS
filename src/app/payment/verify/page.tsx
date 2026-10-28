@@ -169,7 +169,7 @@ export default function PaymentVerifyPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-neutral-900 flex items-center justify-center text-white">
+        <div className="min-h-screen bg-[#2D0F2A] flex items-center justify-center text-white">
           <div className="animate-spin">
             <PiSpinner className="w-8 h-8" />
           </div>

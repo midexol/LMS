@@ -17,7 +17,7 @@ html, body {
   min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading, .teachable-display {
+.font-heading, .teachable-display {
   font-family: var(--font-family--heading);
   letter-spacing: -0.01em;
 }

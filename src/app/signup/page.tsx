@@ -67,7 +67,7 @@ export default function SignupPage() {
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-neutral-900">Check Your Inbox</h2>
             <p className="text-sm text-neutral-600">We sent a verification link to</p>
-            <p className="text-sm font-bold text-[#4A1A45] break-all bg-neutral-50 py-2 px-3 rounded-xl border border-neutral-200">{registeredEmail}</p>
+            <p className="text-sm font-bold text-[#4A1A45] break-all bg-[#F7F2F6] py-2 px-3 rounded-xl border border-rule">{registeredEmail}</p>
             <p className="text-xs text-neutral-500 leading-relaxed">
               {needsVerification
                 ? "Open the link in that email to activate your account, then sign in."
@@ -83,7 +83,7 @@ export default function SignupPage() {
       ) : (
         <div className="space-y-6">
           <div>
-            <h1 className="font-bold text-2xl text-black">Create an account</h1>
+            <h1 className="font-heading font-semibold text-2xl text-black">Create an account</h1>
             <p className="text-sm text-neutral-500 mt-1">Create your student account. It takes about a minute.</p>
           </div>
 
@@ -164,7 +164,7 @@ export default function SignupPage() {
             <Link href="/privacy" className="font-semibold text-[#4A1A45] hover:underline">Privacy Policy</Link>.
           </p>
 
-          <p className="pt-4 border-t border-neutral-200 text-sm text-neutral-600 text-center">
+          <p className="pt-4 border-t border-rule text-sm text-neutral-600 text-center">
             Already have an account?{" "}
             <Link href="/login" className="text-[#4A1A45] font-bold hover:underline">Sign in</Link>
           </p>

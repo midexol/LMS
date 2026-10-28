@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { PiArrowLeft, PiCheckCircle, PiEnvelopeSimple, PiPhone, PiWarningCircle } from "react-icons/pi";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDate, formatNgn } from "@/lib/utils";
@@ -25,7 +24,7 @@ function StatusPill({ status }: { status: string }) {
   return (
     <span
       className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
-        styles[status] || "bg-neutral-100 text-neutral-700 border-neutral-200"
+        styles[status] || "bg-[#F3EAF2] text-neutral-700 border-rule"
       }`}
     >
       {status}
@@ -35,7 +34,7 @@ function StatusPill({ status }: { status: string }) {
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-lg border border-neutral-200 p-5">
+    <div className="bg-white rounded-lg border border-rule p-5">
       <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{label}</p>
       <p className="mt-1 text-2xl font-bold text-black tracking-tight">{value}</p>
     </div>
@@ -113,34 +112,32 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             href="/admin?tab=users"
             className="flex items-center gap-1.5 text-xs font-bold text-neutral-200 hover:text-white"
           >
-            <PiArrowLeft className="w-3.5 h-3.5" /> Back to users
+            Back to users
           </Link>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-6">
         {/* Profile */}
-        <section className="bg-white rounded-lg border border-neutral-200 p-6 sm:p-8">
+        <section className="bg-white rounded-lg border border-rule p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="min-w-0">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#4A1A45]">{user.role}</span>
               <h1 className="text-2xl font-bold text-black tracking-tight">{user.name}</h1>
               <div className="mt-2 space-y-1 text-sm text-neutral-600">
                 <p className="flex items-center gap-2 break-all">
-                  <PiEnvelopeSimple className="w-4 h-4 text-neutral-400 shrink-0" />
                   {user.email}
                   {user.emailVerified ? (
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700">
-                      <PiCheckCircle className="w-3.5 h-3.5" /> verified
+                      verified
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700">
-                      <PiWarningCircle className="w-3.5 h-3.5" /> not verified
+                      not verified
                     </span>
                   )}
                 </p>
                 <p className="flex items-center gap-2">
-                  <PiPhone className="w-4 h-4 text-neutral-400 shrink-0" />
                   {user.phone || <span className="text-neutral-400">No phone number</span>}
                 </p>
               </div>
@@ -177,7 +174,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         </section>
 
         {/* Enrollments */}
-        <section className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+        <section className="bg-white rounded-lg border border-rule overflow-hidden">
           <h2 className="px-6 pt-6 pb-3 font-bold text-base text-black">Enrollments</h2>
           {user.enrollments.length === 0 ? (
             <p className="px-6 pb-6 text-sm text-neutral-500">Not enrolled in any course.</p>
@@ -185,14 +182,14 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-y border-neutral-200 bg-neutral-50 text-neutral-500 font-bold">
+                  <tr className="border-y border-rule bg-[#F7F2F6] text-neutral-500 font-bold">
                     <th className="p-4">Course</th>
                     <th className="p-4">Status</th>
                     <th className="p-4">Enrolled</th>
                     <th className="p-4">Completed</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody className="divide-y divide-rule">
                   {user.enrollments.map((e) => (
                     <tr key={e.id}>
                       <td className="p-4 font-semibold text-black">{e.course.title}</td>
@@ -208,7 +205,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         </section>
 
         {/* Payments */}
-        <section className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+        <section className="bg-white rounded-lg border border-rule overflow-hidden">
           <h2 className="px-6 pt-6 pb-3 font-bold text-base text-black">Payments</h2>
           {user.payments.length === 0 ? (
             <p className="px-6 pb-6 text-sm text-neutral-500">No payments yet.</p>
@@ -216,7 +213,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-y border-neutral-200 bg-neutral-50 text-neutral-500 font-bold">
+                  <tr className="border-y border-rule bg-[#F7F2F6] text-neutral-500 font-bold">
                     <th className="p-4">Reference</th>
                     <th className="p-4">Course</th>
                     <th className="p-4">Amount</th>
@@ -224,7 +221,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                     <th className="p-4">Date</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody className="divide-y divide-rule">
                   {user.payments.map((p) => (
                     <tr key={p.id}>
                       <td className="p-4 font-mono text-[11px] text-neutral-700">{p.reference}</td>
@@ -241,7 +238,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         </section>
 
         {/* Submissions */}
-        <section className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+        <section className="bg-white rounded-lg border border-rule overflow-hidden">
           <h2 className="px-6 pt-6 pb-3 font-bold text-base text-black">
             Recent submissions <span className="text-neutral-400 font-normal text-xs">(latest 50)</span>
           </h2>
@@ -251,7 +248,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-y border-neutral-200 bg-neutral-50 text-neutral-500 font-bold">
+                  <tr className="border-y border-rule bg-[#F7F2F6] text-neutral-500 font-bold">
                     <th className="p-4">Assignment</th>
                     <th className="p-4">Course</th>
                     <th className="p-4">Score</th>
@@ -259,7 +256,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                     <th className="p-4">Submitted</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody className="divide-y divide-rule">
                   {user.submissions.map((s) => (
                     <tr key={s.id}>
                       <td className="p-4 font-semibold text-black">{s.assignment.title}</td>

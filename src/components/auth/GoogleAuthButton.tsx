@@ -104,9 +104,9 @@ export function GoogleAuthButton({ dividerLabel }: { dividerLabel?: string }) {
       <GoogleAuthButtonInner clientId={clientId} />
       {dividerLabel && (
         <div className="flex items-center gap-3" role="separator">
-          <div className="border-t border-neutral-200 flex-1" />
+          <div className="border-t border-rule flex-1" />
           <span className="text-xs text-neutral-400">{dividerLabel}</span>
-          <div className="border-t border-neutral-200 flex-1" />
+          <div className="border-t border-rule flex-1" />
         </div>
       )}
     </>
