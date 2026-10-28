@@ -1269,8 +1269,8 @@ export function AdminDashboardClient({
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-rule overflow-hidden">
-              <table className="w-full text-xs text-left">
+            <div className="bg-white rounded-lg border border-rule overflow-x-auto">
+              <table className="w-full min-w-[760px] text-xs text-left">
                 <thead>
                   <tr className="border-b border-rule text-neutral-500 font-bold bg-[#F7F2F6]">
                     <th className="p-4">User</th>
@@ -1440,8 +1440,8 @@ export function AdminDashboardClient({
 
         {/* ENROLLMENTS TAB */}
         {activeTab === "enrollments" && (
-          <div className="bg-white rounded-lg border border-rule overflow-hidden">
-            <table className="w-full text-xs text-left">
+          <div className="bg-white rounded-lg border border-rule overflow-x-auto">
+            <table className="w-full min-w-[760px] text-xs text-left">
               <thead>
                 <tr className="border-b border-rule text-neutral-500 font-bold bg-[#F7F2F6]">
                   <th className="p-4">Student</th>
