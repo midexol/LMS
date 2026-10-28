@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import {
-  FiPlus, FiTrash2, FiZap, FiBookOpen, FiSave, FiCheckCircle,
-  FiFileText, FiVideo, FiHelpCircle, FiAlertCircle, FiUpload,
-  FiPaperclip, FiImage, FiX, FiLoader,
-} from "react-icons/fi";
+import { PiBookOpen, PiCheckCircle, PiFileText, PiFloppyDisk, PiImage, PiLightning, PiPaperclip, PiPlus, PiQuestion, PiSpinner, PiTrash, PiUploadSimple, PiVideoCamera, PiWarningCircle, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { formatNgn } from "@/lib/utils";
 import { getBrowserStorage } from "@/lib/storageClient";
@@ -125,7 +121,7 @@ function FilePickerButton({
         disabled={uploading}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 border border-neutral-300 text-xs font-bold text-black hover:bg-neutral-200 disabled:opacity-60 transition-all"
       >
-        {uploading ? <FiLoader className="w-3.5 h-3.5 animate-spin" /> : icon}
+        {uploading ? <PiSpinner className="w-3.5 h-3.5 animate-spin" /> : icon}
         {uploading ? "Uploading..." : label}
       </button>
     </>
@@ -363,7 +359,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             onClick={onClose}
             className="p-3 rounded-lg bg-white border border-neutral-200 hover:bg-neutral-100 text-black font-bold text-xs flex items-center gap-1.5 transition-all"
           >
-            <FiX className="w-4 h-4" /> Cancel
+            <PiX className="w-4 h-4" /> Cancel
           </button>
         )}
       </div>
@@ -373,7 +369,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
         <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
-              <FiBookOpen className="w-6 h-6 text-[#4A1A45]" />
+              <PiBookOpen className="w-6 h-6 text-[#4A1A45]" />
               {isEditing ? `Edit Course: ${title || initialCourse.title}` : "Step 1: Course Overview"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
@@ -386,7 +382,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           {/* AI Syllabus */}
           <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
             <h4 className="font-bold text-black text-sm flex items-center gap-2">
-              <FiZap className="w-4 h-4 text-[#4A1A45]" />
+              <PiLightning className="w-4 h-4 text-[#4A1A45]" />
               Curriculum Template Generator
               <span className="ml-auto text-[10px] text-[#4A1A45] font-bold uppercase tracking-wider">Optional</span>
             </h4>
@@ -405,7 +401,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                 disabled={generatingOutline || !aiTopic.trim()}
                 className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
               >
-                {generatingOutline ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiZap className="w-4 h-4" />}
+                {generatingOutline ? <PiSpinner className="w-4 h-4 animate-spin" /> : <PiLightning className="w-4 h-4" />}
                 {generatingOutline ? "Generating..." : "Generate"}
               </button>
             </div>
@@ -495,7 +491,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                     accept="image/jpeg,image/png,image/webp"
                     uploading={coverUpload.uploading}
                     label="Upload"
-                    icon={<FiImage className="w-3.5 h-3.5" />}
+                    icon={<PiImage className="w-3.5 h-3.5" />}
                     onPicked={async (file) => {
                       const result = await coverUpload.upload(file);
                       if (result) setCoverImage(result.url);
@@ -510,7 +506,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                 <div className="mt-2 flex items-center gap-2">
                   <img src={coverImage} alt="Cover preview" className="w-14 h-10 object-cover rounded-lg border border-neutral-200" />
                   <button onClick={() => setCoverImage("")} className="text-[11px] text-neutral-500 hover:text-black flex items-center gap-1">
-                    <FiX className="w-3 h-3" /> Remove
+                    <PiX className="w-3 h-3" /> Remove
                   </button>
                 </div>
               )}
@@ -548,7 +544,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
             <div>
               <h3 className="text-xl font-bold text-black flex items-center gap-2">
-                <FiFileText className="w-6 h-6 text-[#4A1A45]" />
+                <PiFileText className="w-6 h-6 text-[#4A1A45]" />
                 Step 2: Modules & Lessons
               </h3>
               <p className="text-sm text-neutral-500 mt-1">
@@ -559,7 +555,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               onClick={addModule}
               className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
-              <FiPlus className="w-4 h-4" /> Add Module
+              <PiPlus className="w-4 h-4" /> Add Module
             </button>
           </div>
 
@@ -602,7 +598,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
         <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
-              <FiCheckCircle className="w-6 h-6 text-black" />
+              <PiCheckCircle className="w-6 h-6 text-black" />
               {isEditing ? "Step 3: Review & Save Updates" : "Step 3: Final Review & Publish"}
             </h3>
             <p className="text-sm text-neutral-500 mt-1">
@@ -660,14 +656,14 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
           {saveError && (
             <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
-              <FiAlertCircle className="w-4 h-4 shrink-0" />
+              <PiWarningCircle className="w-4 h-4 shrink-0" />
               {saveError}
             </div>
           )}
 
           {successMsg && (
             <div className="p-4 rounded-xl bg-neutral-100 text-black font-bold text-sm border border-neutral-300 flex items-center gap-2">
-              <FiCheckCircle className="w-5 h-5 text-black" />
+              <PiCheckCircle className="w-5 h-5 text-black" />
               {isEditing
                 ? "Course updated successfully! Enrolled students have been notified via email."
                 : "Course published successfully. Redirecting..."}
@@ -686,7 +682,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               disabled={saving || successMsg}
               className="px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
-              <FiSave className="w-5 h-5" />
+              <PiFloppyDisk className="w-5 h-5" />
               {saving
                 ? (isEditing ? "Saving Updates..." : "Publishing...")
                 : (isEditing ? "Save Changes & Notify Students" : "Publish Course")}
@@ -738,14 +734,14 @@ function LessonModuleBlock({
             onClick={onAddLesson}
             className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-semibold text-black flex items-center gap-1 hover:border-black"
           >
-            <FiPlus className="w-3.5 h-3.5" /> Add Lesson
+            <PiPlus className="w-3.5 h-3.5" /> Add Lesson
           </button>
           {onRemoveModule && (
             <button
               onClick={onRemoveModule}
               className="p-2 rounded-lg bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 transition-all"
             >
-              <FiTrash2 className="w-4 h-4" />
+              <PiTrash className="w-4 h-4" />
             </button>
           )}
         </div>
@@ -809,7 +805,7 @@ function LessonRow({
             onClick={onRemove}
             className="p-1.5 rounded-lg bg-red-50 border border-red-200 text-red-600"
           >
-            <FiTrash2 className="w-3.5 h-3.5" />
+            <PiTrash className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
@@ -817,7 +813,7 @@ function LessonRow({
       {/* Lesson content / notes */}
       <div>
         <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
-          <FiFileText className="w-3 h-3" /> Lesson Notes / Text Content
+          <PiFileText className="w-3 h-3" /> Lesson Notes / Text Content
         </label>
         <textarea
           rows={2}
@@ -831,7 +827,7 @@ function LessonRow({
       {/* Video — URL or file upload */}
       <div>
         <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
-          <FiVideo className="w-3 h-3" /> Video
+          <PiVideoCamera className="w-3 h-3" /> Video
           <span className="text-neutral-400 font-normal normal-case">(YouTube embed, MP4 URL, or upload)</span>
         </label>
         <div className="flex items-center gap-2 min-w-0">
@@ -847,7 +843,7 @@ function LessonRow({
               accept="video/mp4,video/webm,video/ogg"
               uploading={videoUpload.uploading}
               label="Upload"
-              icon={<FiUpload className="w-3 h-3" />}
+              icon={<PiUploadSimple className="w-3 h-3" />}
               onPicked={async (file) => {
                 const result = await videoUpload.upload(file);
                 if (result) onUpdate("videoUrl", result.url);
@@ -861,7 +857,7 @@ function LessonRow({
       {/* Resource / file attachment */}
       <div>
         <label className="block text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
-          <FiPaperclip className="w-3 h-3" /> Resource File
+          <PiPaperclip className="w-3 h-3" /> Resource File
           <span className="text-neutral-400 font-normal normal-case">(PDF, slides, zip, etc.)</span>
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 min-w-0">
@@ -885,7 +881,7 @@ function LessonRow({
                 accept="application/pdf,application/zip,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
                 uploading={resourceUpload.uploading}
                 label="Upload"
-                icon={<FiUpload className="w-3 h-3" />}
+                icon={<PiUploadSimple className="w-3 h-3" />}
                 onPicked={async (file) => {
                   const result = await resourceUpload.upload(file);
                   if (result) {
@@ -921,7 +917,7 @@ function LessonRow({
       {/* Assignment (optional) */}
       <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
         <span className="text-[11px] font-bold text-[#4A1A45] flex items-center gap-1 uppercase tracking-wider">
-          <FiHelpCircle className="w-3.5 h-3.5" /> Assignment
+          <PiQuestion className="w-3.5 h-3.5" /> Assignment
           <span className="text-neutral-400 font-normal normal-case ml-1">(optional)</span>
         </span>
         <input
@@ -942,7 +938,7 @@ function LessonRow({
               disabled={!lesson.assignmentPrompt.trim()}
               className="text-[10px] px-2 py-0.5 rounded bg-[#4A1A45] text-white font-bold flex items-center gap-1 disabled:opacity-50"
             >
-              <FiZap className="w-3 h-3 text-[#D6BDD4]" /> Auto-Generate
+              <PiLightning className="w-3 h-3 text-[#D6BDD4]" /> Auto-Generate
             </button>
           </div>
           <textarea

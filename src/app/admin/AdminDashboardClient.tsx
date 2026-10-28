@@ -3,14 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { formatDate, formatNgn } from "@/lib/utils";
-import {
-  FiShield, FiUsers, FiBookOpen, FiAward, FiDollarSign,
-  FiCheckCircle, FiClock, FiTrash2, FiEdit2, FiLogOut,
-  FiSearch, FiAlertCircle, FiX, FiActivity,
-  FiToggleLeft, FiToggleRight, FiBarChart2, FiSliders,
-  FiFilter, FiLayers, FiFileText, FiPlus, FiDownload,
-  FiCompass, FiMail, FiInbox,
-} from "react-icons/fi";
+import { PiBookOpen, PiChartBar, PiCheckCircle, PiDownloadSimple, PiEnvelopeSimple, PiMagnifyingGlass, PiMedal, PiPencilSimple, PiPlus, PiPulse, PiShield, PiSignOut, PiSlidersHorizontal, PiStack, PiToggleLeft, PiToggleRight, PiTrash, PiTray, PiUsers, PiWarningCircle, PiX } from "react-icons/pi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -97,7 +90,7 @@ function ConfirmModal({ title, body, onConfirm, onCancel, loading }: {
       <div className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-4">
         <div className="flex items-start gap-3">
           <div className="p-2.5 rounded-lg bg-neutral-100 text-black">
-            <FiAlertCircle className="w-5 h-5 text-red-600" />
+            <PiWarningCircle className="w-5 h-5 text-red-600" />
           </div>
           <div>
             <h3 className="font-bold text-black text-base">{title}</h3>
@@ -148,7 +141,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Add Instructor</h3>
           <button type="button" onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
-            <FiX className="w-4 h-4" />
+            <PiX className="w-4 h-4" />
           </button>
         </div>
 
@@ -261,7 +254,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Edit User Account</h3>
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
-            <FiX className="w-4 h-4" />
+            <PiX className="w-4 h-4" />
           </button>
         </div>
 
@@ -375,7 +368,7 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Grade Override Desk</h3>
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
-            <FiX className="w-4 h-4" />
+            <PiX className="w-4 h-4" />
           </button>
         </div>
         <div className="p-3.5 rounded-lg bg-neutral-100 border border-neutral-200 space-y-1">
@@ -761,7 +754,7 @@ export function AdminDashboardClient({
                 : "bg-red-600 text-white border-red-600"
             }`}
           >
-            {t.type === "success" ? <FiCheckCircle className="w-4 h-4 text-white" /> : <FiAlertCircle className="w-4 h-4 text-white" />}
+            {t.type === "success" ? <PiCheckCircle className="w-4 h-4 text-white" /> : <PiWarningCircle className="w-4 h-4 text-white" />}
             {t.text}
           </div>
         ))}
@@ -834,28 +827,28 @@ export function AdminDashboardClient({
                   : "border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white hover:border-neutral-700"
               }`}
             >
-              <FiSliders className="w-3.5 h-3.5 text-[#D6BDD4]" />
+              <PiSlidersHorizontal className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Settings</span>
             </button>
             <Link
               href="/profile"
               className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
-              <FiShield className="w-3.5 h-3.5 text-emerald-400" />
+              <PiShield className="w-3.5 h-3.5 text-emerald-400" />
               <span>Profile</span>
             </Link>
             <Link
               href="/courses"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
-              <FiBookOpen className="w-3.5 h-3.5 text-[#D6BDD4]" />
+              <PiBookOpen className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Student Catalog</span>
             </Link>
             <Link
               href="/instructor"
               className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
-              <FiLayers className="w-3.5 h-3.5 text-[#D6BDD4]" />
+              <PiStack className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Instructor Studio</span>
             </Link>
             <button
@@ -865,7 +858,7 @@ export function AdminDashboardClient({
               }}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-colors"
             >
-              <FiLogOut className="w-3.5 h-3.5 text-neutral-700" />
+              <PiSignOut className="w-3.5 h-3.5 text-neutral-700" />
               <span className="hidden sm:inline">Log out</span>
             </button>
           </div>
@@ -874,13 +867,13 @@ export function AdminDashboardClient({
         {/* Tab Navigation */}
         <div className="max-w-7xl mx-auto px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
           {[
-            { id: "overview", label: "Dashboard & Analytics", icon: FiBarChart2 },
-            { id: "users", label: "Users & Roles", count: users.length, icon: FiUsers },
-            { id: "courses", label: "Courses Oversight", count: courses.length, icon: FiBookOpen },
-            { id: "enrollments", label: "Enrollment Audit", count: enrollments.length, icon: FiAward },
-            { id: "submissions", label: "Submissions & Grades", count: submissions.length, icon: FiActivity },
-            { id: "messages", label: "Inbox", count: unreadCount, icon: FiInbox },
-            { id: "settings", label: "System Settings", icon: FiSliders },
+            { id: "overview", label: "Dashboard & Analytics", icon: PiChartBar },
+            { id: "users", label: "Users & Roles", count: users.length, icon: PiUsers },
+            { id: "courses", label: "Courses Oversight", count: courses.length, icon: PiBookOpen },
+            { id: "enrollments", label: "Enrollment Audit", count: enrollments.length, icon: PiMedal },
+            { id: "submissions", label: "Submissions & Grades", count: submissions.length, icon: PiPulse },
+            { id: "messages", label: "Inbox", count: unreadCount, icon: PiTray },
+            { id: "settings", label: "System Settings", icon: PiSlidersHorizontal },
           ].map((tab) => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
@@ -983,7 +976,7 @@ export function AdminDashboardClient({
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                   <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
-                      <FiActivity className="w-5 h-5 text-emerald-400" />
+                      <PiPulse className="w-5 h-5 text-emerald-400" />
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Active Cohorts</span>
@@ -995,7 +988,7 @@ export function AdminDashboardClient({
 
                   <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/20 flex items-center justify-center shrink-0">
-                      <FiAward className="w-5 h-5" />
+                      <PiMedal className="w-5 h-5" />
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Certifications</span>
@@ -1007,7 +1000,7 @@ export function AdminDashboardClient({
 
                   <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-neutral-200 text-neutral-800 flex items-center justify-center shrink-0">
-                      <FiCheckCircle className="w-5 h-5" />
+                      <PiCheckCircle className="w-5 h-5" />
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Completion Velocity</span>
@@ -1150,7 +1143,7 @@ export function AdminDashboardClient({
               <div className="bg-white rounded-lg p-6 sm:p-8 border border-neutral-200/80 space-y-6 flex flex-col justify-between">
                 <div className="pb-3 border-b border-neutral-100">
                   <div className="flex items-center gap-2">
-                    <FiUsers className="w-4 h-4 text-[#4A1A45]" />
+                    <PiUsers className="w-4 h-4 text-[#4A1A45]" />
                     <h3 className="font-bold text-lg text-black tracking-tight">Platform Composition</h3>
                   </div>
                   <p className="text-xs text-neutral-500 mt-0.5">Distribution across active system accounts</p>
@@ -1227,7 +1220,7 @@ export function AdminDashboardClient({
 
                         {/* Center Statistics Capsule */}
                         <div className="absolute w-28 h-28 rounded-full bg-white shadow-xs border border-neutral-100 flex flex-col items-center justify-center text-center p-2">
-                          <FiUsers className="w-4 h-4 text-[#4A1A45] mb-0.5" />
+                          <PiUsers className="w-4 h-4 text-[#4A1A45] mb-0.5" />
                           <span className="font-bold text-2xl text-black leading-none">{total}</span>
                           <span className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Directory</span>
                         </div>
@@ -1240,7 +1233,7 @@ export function AdminDashboardClient({
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center text-[11px] font-bold">
-                                <FiBookOpen className="w-3.5 h-3.5" />
+                                <PiBookOpen className="w-3.5 h-3.5" />
                               </div>
                               <span className="font-bold text-neutral-900">Students</span>
                             </div>
@@ -1261,7 +1254,7 @@ export function AdminDashboardClient({
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-lg bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/25 flex items-center justify-center text-[11px] font-bold">
-                                <FiAward className="w-3.5 h-3.5" />
+                                <PiMedal className="w-3.5 h-3.5" />
                               </div>
                               <span className="font-bold text-neutral-900">Faculty &amp; Tutors</span>
                             </div>
@@ -1282,7 +1275,7 @@ export function AdminDashboardClient({
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-lg bg-neutral-200 text-neutral-700 flex items-center justify-center text-[11px] font-bold">
-                                <FiShield className="w-3.5 h-3.5" />
+                                <PiShield className="w-3.5 h-3.5" />
                               </div>
                               <span className="font-bold text-neutral-900">Administrators</span>
                             </div>
@@ -1311,7 +1304,7 @@ export function AdminDashboardClient({
           <div className="space-y-4">
             <div className="bg-white rounded-lg border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
-                <FiSearch className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
+                <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search users by name, email, or department..."
@@ -1327,7 +1320,7 @@ export function AdminDashboardClient({
                   onClick={() => setShowAddInstructor(true)}
                   className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-1.5"
                 >
-                  <FiPlus className="w-3.5 h-3.5" />
+                  <PiPlus className="w-3.5 h-3.5" />
                   Add instructor
                 </button>
                 <select
@@ -1419,7 +1412,7 @@ export function AdminDashboardClient({
                               className="p-1.5 rounded-lg border border-neutral-200 text-black hover:bg-neutral-100"
                               title="Edit user role / password"
                             >
-                              <FiEdit2 className="w-3.5 h-3.5" />
+                              <PiPencilSimple className="w-3.5 h-3.5" />
                             </button>
                             {!isSelf && (
                               <button
@@ -1427,7 +1420,7 @@ export function AdminDashboardClient({
                                 className="p-1.5 rounded-lg border border-neutral-200 text-black hover:text-red-600 hover:border-red-300"
                                 title="Delete user"
                               >
-                                <FiTrash2 className="w-3.5 h-3.5" />
+                                <PiTrash className="w-3.5 h-3.5" />
                               </button>
                             )}
                           </div>
@@ -1446,7 +1439,7 @@ export function AdminDashboardClient({
           <div className="space-y-4">
             <div className="bg-white rounded-lg border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
-                <FiSearch className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
+                <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search courses by title, instructor, or department..."
@@ -1510,14 +1503,14 @@ export function AdminDashboardClient({
                         c.published ? "bg-black text-white" : "bg-neutral-100 text-neutral-600 border border-neutral-200"
                       }`}
                     >
-                      {c.published ? <FiToggleRight className="w-4 h-4" /> : <FiToggleLeft className="w-4 h-4" />}
+                      {c.published ? <PiToggleRight className="w-4 h-4" /> : <PiToggleLeft className="w-4 h-4" />}
                       {c.published ? "Published" : "Draft"}
                     </button>
                     <button
                       onClick={() => setDeleteCourse(c)}
                       className="p-2 rounded-full border border-neutral-200 text-neutral-600 hover:text-red-600"
                     >
-                      <FiTrash2 className="w-3.5 h-3.5" />
+                      <PiTrash className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -1567,7 +1560,7 @@ export function AdminDashboardClient({
                           className="px-2.5 py-1 rounded-md text-[10px] font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all inline-flex items-center gap-1"
                           title="Revoke enrollment and release course lock"
                         >
-                          <FiTrash2 className="w-3 h-3" /> Revoke Lock
+                          <PiTrash className="w-3 h-3" /> Revoke Lock
                         </button>
                       )}
                     </td>
@@ -1606,7 +1599,7 @@ export function AdminDashboardClient({
                         onClick={() => setGradeOverrideSub(sub)}
                         className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5"
                       >
-                        <FiSliders className="w-3.5 h-3.5" />
+                        <PiSlidersHorizontal className="w-3.5 h-3.5" />
                         Override
                       </button>
                     </div>
@@ -1643,7 +1636,7 @@ export function AdminDashboardClient({
 
             {messages.filter((m) => messageFilter === "ALL" || m.status === "NEW").length === 0 ? (
               <div className="bg-white rounded-lg p-10 border border-neutral-200 text-center space-y-2">
-                <FiInbox className="w-8 h-8 text-neutral-300 mx-auto" />
+                <PiTray className="w-8 h-8 text-neutral-300 mx-auto" />
                 <p className="text-sm font-semibold text-neutral-600">
                   {messages.length === 0 ? "No messages yet." : "No unread messages."}
                 </p>
@@ -1678,7 +1671,7 @@ export function AdminDashboardClient({
                           onClick={() => msg.status === "NEW" && handleToggleMessageRead(msg)}
                           className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5"
                         >
-                          <FiMail className="w-3.5 h-3.5" />
+                          <PiEnvelopeSimple className="w-3.5 h-3.5" />
                           Reply
                         </a>
                         <button
@@ -1692,7 +1685,7 @@ export function AdminDashboardClient({
                           aria-label="Delete message"
                           className="p-2 rounded-full border border-neutral-200 hover:border-red-400 hover:text-red-600 text-neutral-500 transition-all"
                         >
-                          <FiTrash2 className="w-3.5 h-3.5" />
+                          <PiTrash className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
@@ -1738,7 +1731,7 @@ export function AdminDashboardClient({
               {/* Password Change Form */}
               <form onSubmit={handleUpdateAdminPassword} className="space-y-4 max-w-xl">
                 <h4 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-2">
-                  <FiSliders className="w-4 h-4 text-[#4A1A45]" /> Update Superadmin Password
+                  <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" /> Update Superadmin Password
                 </h4>
                 <div>
                   <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
@@ -1792,7 +1785,7 @@ export function AdminDashboardClient({
             {/* Academic Policies & Enrollment Rules */}
             <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <FiAward className="w-5 h-5 text-[#4A1A45]" />
+                <PiMedal className="w-5 h-5 text-[#4A1A45]" />
                 Academic Policies &amp; Lock Enforcement
               </h3>
 
@@ -1838,7 +1831,7 @@ export function AdminDashboardClient({
             {/* Audit & Data Export Center */}
             <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
-                <FiDownload className="w-5 h-5 text-[#4A1A45]" />
+                <PiDownloadSimple className="w-5 h-5 text-[#4A1A45]" />
                 Data Export Center
               </h3>
               <p className="text-xs text-neutral-500">
@@ -1860,7 +1853,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiUsers className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                  <PiUsers className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Users Directory</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{users.length} total registered accounts</p>
@@ -1877,7 +1870,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiBookOpen className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                  <PiBookOpen className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Courses Catalog</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{courses.length} curriculum tracks</p>
@@ -1894,7 +1887,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiAward className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                  <PiMedal className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Enrollments Ledger</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{enrollments.length} student registrations</p>
@@ -1911,7 +1904,7 @@ export function AdminDashboardClient({
                   }
                   className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
-                  <FiActivity className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                  <PiPulse className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Submissions Ledger</h4>
                     <p className="text-[10px] text-neutral-400 mt-0.5">{submissions.length} evaluated tasks</p>

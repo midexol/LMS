@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiX } from "react-icons/fi";
+import { PiX } from "react-icons/pi";
 import { LandingNavbar } from "@/components/ui/LandingNavbar";
 import { BrandLogo, AcademiaLogoIcon } from "@/components/ui/BrandLogo";
 import { formatNgn } from "@/lib/utils";
@@ -497,7 +497,7 @@ export function LandingPage({
               className="absolute top-4 right-4 p-2 rounded-md hover:bg-neutral-100 text-neutral-500 hover:text-ink transition-colors"
               aria-label="Close"
             >
-              <FiX className="w-5 h-5" />
+              <PiX className="w-5 h-5" />
             </button>
 
             <div>

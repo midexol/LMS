@@ -4,10 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Navbar } from "@/components/ui/Navbar";
 import { MockCheckoutModal } from "@/components/ui/MockCheckoutModal";
 import Link from "next/link";
-import {
-  FiBookOpen, FiLock, FiArrowRight, FiCheckCircle,
-  FiLogIn, FiUserPlus, FiSearch, FiX, FiCompass,
-} from "react-icons/fi";
+import { PiArrowRight, PiBookOpen, PiCheckCircle, PiLock, PiMagnifyingGlass, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { formatNgn } from "@/lib/utils";
 
@@ -89,7 +86,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             {activeEnrollment && (
               <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-white border border-neutral-200 max-w-sm">
                 <div className="p-2 rounded-xl bg-[#4A1A45] text-white shrink-0">
-                  <FiBookOpen className="w-4 h-4 text-white" />
+                  <PiBookOpen className="w-4 h-4 text-white" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-[10px] font-bold text-[#4A1A45] uppercase">Currently Registered</p>
@@ -100,7 +97,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                   className="shrink-0 p-2 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white transition-all"
                   title="Continue Course"
                 >
-                  <FiArrowRight className="w-4 h-4" />
+                  <PiArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             )}
@@ -175,7 +172,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
         {/* Search & Filters */}
         <div className="bg-white rounded-lg border border-neutral-200 p-4 flex flex-col sm:flex-row gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[240px]">
-            <FiSearch className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4" />
+            <PiMagnifyingGlass className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4" />
             <input
               type="text"
               placeholder={
@@ -192,7 +189,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                 onClick={() => setSearch("")}
                 className="absolute right-3 top-2.5 text-neutral-400 hover:text-black"
               >
-                <FiX className="w-4 h-4" />
+                <PiX className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -278,7 +275,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
         {/* Course Cards Grid */}
         {filteredCourses.length === 0 ? (
           <div className="bg-white rounded-lg border border-neutral-200 py-16 text-center space-y-2">
-            <FiSearch className="w-10 h-10 text-neutral-300 mx-auto mb-2" />
+            <PiMagnifyingGlass className="w-10 h-10 text-neutral-300 mx-auto mb-2" />
             <p className="font-bold text-neutral-700 text-base">
               {studentDepartment
                 ? `No courses currently published for ${studentDepartment}.`
@@ -365,14 +362,14 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                         href={`/student/courses/${course.id}`}
                         className="w-full py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-[#3B1537]"
                       >
-                        <FiCheckCircle className="w-3.5 h-3.5 text-white" /> Continue Learning
+                        <PiCheckCircle className="w-3.5 h-3.5 text-white" /> Continue Learning
                       </Link>
                     ) : isLocked ? (
                       <button
                         disabled
                         className="w-full py-2.5 rounded-md bg-neutral-200 text-neutral-500 font-bold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed"
                       >
-                        <FiLock className="w-3.5 h-3.5" /> Registration Locked
+                        <PiLock className="w-3.5 h-3.5" /> Registration Locked
                       </button>
                     ) : (
                       <button

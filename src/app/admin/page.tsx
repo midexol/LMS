@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { FiShield, FiAlertCircle, FiLogOut, FiArrowLeft } from "react-icons/fi";
+import {  } from "react-icons/pi";
 import { AdminDashboardClient } from "./AdminDashboardClient";
 
 export const revalidate = 0;

@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { FiLock, FiAlertCircle, FiCheck, FiArrowRight, FiEye, FiEyeOff } from "react-icons/fi";
+import { PiArrowRight, PiCheck, PiEye, PiEyeSlash, PiLock, PiWarningCircle } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 function ResetPasswordForm() {
@@ -23,7 +23,7 @@ function ResetPasswordForm() {
       <div className="space-y-6">
         <div className="p-5 rounded-lg bg-amber-50 border border-amber-200 space-y-2">
           <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
-            <FiAlertCircle className="w-4 h-4" />
+            <PiWarningCircle className="w-4 h-4" />
             Missing Reset Token
           </div>
           <p className="text-xs text-amber-700 leading-relaxed">
@@ -89,7 +89,7 @@ function ResetPasswordForm() {
 
       {error && (
         <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200">
-          <FiAlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+          <PiWarningCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
           <p className="text-xs font-semibold text-red-700">{error}</p>
         </div>
       )}
@@ -98,7 +98,7 @@ function ResetPasswordForm() {
         <div className="space-y-6">
           <div className="p-5 rounded-lg bg-emerald-50 border border-emerald-200 space-y-3">
             <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center">
-              <FiCheck className="w-5 h-5" />
+              <PiCheck className="w-5 h-5" />
             </div>
             <h3 className="font-bold text-sm text-black">Password Successfully Updated</h3>
             <p className="text-xs text-neutral-600 leading-relaxed">
@@ -110,7 +110,7 @@ function ResetPasswordForm() {
             href="/login"
             className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all"
           >
-            Sign In to Account <FiArrowRight className="w-4 h-4" />
+            Sign In to Account <PiArrowRight className="w-4 h-4" />
           </Link>
         </div>
       ) : (
@@ -120,7 +120,7 @@ function ResetPasswordForm() {
               New Password
             </label>
             <div className="relative">
-              <FiLock className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
+              <PiLock className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
               <input
                 type={showPw ? "text" : "password"}
                 required
@@ -135,7 +135,7 @@ function ResetPasswordForm() {
                 className="absolute right-3.5 top-3 text-neutral-400 hover:text-black"
                 tabIndex={-1}
               >
-                {showPw ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                {showPw ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
               </button>
             </div>
           </div>
@@ -145,7 +145,7 @@ function ResetPasswordForm() {
               Confirm New Password
             </label>
             <div className="relative">
-              <FiLock className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
+              <PiLock className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
               <input
                 type={showPw ? "text" : "password"}
                 required
@@ -162,7 +162,7 @@ function ResetPasswordForm() {
             disabled={loading || !password || !confirmPassword}
             className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50 mt-2"
           >
-            <FiCheck className="w-4 h-4" />
+            <PiCheck className="w-4 h-4" />
             {loading ? "Updating Password..." : "Save New Password"}
           </button>
         </form>

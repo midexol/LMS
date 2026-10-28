@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiBookOpen, FiMail, FiLock, FiLogIn, FiAlertCircle, FiShield } from "react-icons/fi";
+import { PiEnvelopeSimple, PiLock, PiShield, PiSignIn, PiWarningCircle } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function InstructorLoginPage() {
@@ -48,7 +48,7 @@ export default function InstructorLoginPage() {
             <BrandLogo href="/" variant="dark" size="md" />
           </div>
           <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-[#D6BDD4] mb-2 border border-[#4A1A45]/40">
-            <FiShield className="w-7 h-7" />
+            <PiShield className="w-7 h-7" />
           </div>
           <h1 className="text-2xl font-bold text-black tracking-tight">Instructor Portal</h1>
           <p className="text-xs text-neutral-500 font-medium">Sign in to manage curriculum, assignments, and analytics.</p>
@@ -56,7 +56,7 @@ export default function InstructorLoginPage() {
 
         {error && (
           <div className="p-3.5 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
-            <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+            <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" />
             <span>{error}</span>
           </div>
         )}
@@ -65,7 +65,7 @@ export default function InstructorLoginPage() {
           <div>
             <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Instructor Email</label>
             <div className="relative">
-              <FiMail className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
+              <PiEnvelopeSimple className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
               <input
                 type="email"
                 required
@@ -80,7 +80,7 @@ export default function InstructorLoginPage() {
           <div>
             <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Password</label>
             <div className="relative">
-              <FiLock className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
+              <PiLock className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
               <input
                 type="password"
                 required
@@ -97,7 +97,7 @@ export default function InstructorLoginPage() {
             disabled={loading}
             className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mt-4"
           >
-            <FiLogIn className="w-4 h-4" />
+            <PiSignIn className="w-4 h-4" />
             {loading ? "Authenticating..." : "Instructor Log In"}
           </button>
         </form>

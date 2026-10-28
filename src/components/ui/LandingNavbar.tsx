@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
+import { PiList, PiX } from "react-icons/pi";
 import { BrandLogo } from "./BrandLogo";
 
 interface LandingNavbarProps {
@@ -64,7 +64,7 @@ export function LandingNavbar({ currentUser }: LandingNavbarProps) {
             aria-label="Toggle navigation menu"
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <RiCloseLine className="w-5 h-5" /> : <RiMenu4Line className="w-5 h-5" />}
+            {mobileMenuOpen ? <PiX className="w-5 h-5" /> : <PiList className="w-5 h-5" />}
           </button>
         </div>
       </div>

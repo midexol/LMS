@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { FiHome, FiBookOpen, FiArrowLeft, FiCompass, FiShield, FiHelpCircle } from "react-icons/fi";
+import { PiBookOpen, PiCompass, PiHouse, PiQuestion, PiShield } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function NotFound() {
@@ -40,14 +40,14 @@ export default function NotFound() {
             href="/"
             className="w-full sm:w-auto px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <FiHome className="w-4 h-4" /> Return to Homepage
+            <PiHouse className="w-4 h-4" /> Return to Homepage
           </Link>
 
           <Link
             href="/courses"
             className="w-full sm:w-auto px-6 py-3 rounded-md bg-white hover:bg-[#F7F2F6] border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <FiBookOpen className="w-4 h-4 text-[#4A1A45]" /> Browse Course Catalog
+            <PiBookOpen className="w-4 h-4 text-[#4A1A45]" /> Browse Course Catalog
           </Link>
         </div>
 
@@ -63,7 +63,7 @@ export default function NotFound() {
               className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <FiCompass className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                <PiCompass className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] text-neutral-400 font-mono">STUDENT</span>
               </div>
               <h3 className="text-xs font-bold text-black group-hover:underline">My Courses</h3>
@@ -75,7 +75,7 @@ export default function NotFound() {
               className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <FiShield className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                <PiShield className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] text-neutral-400 font-mono">ACCOUNT</span>
               </div>
               <h3 className="text-xs font-bold text-black group-hover:underline">Student Profile</h3>
@@ -87,7 +87,7 @@ export default function NotFound() {
               className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <FiHelpCircle className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
+                <PiQuestion className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] text-neutral-400 font-mono">PORTAL</span>
               </div>
               <h3 className="text-xs font-bold text-black group-hover:underline">Sign In / Up</h3>

@@ -4,9 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/ui/Navbar";
-import {
-  FiBookOpen, FiUser, FiLayers, FiCheckCircle, FiLock, FiArrowRight, FiTag, FiBarChart2,
-} from "react-icons/fi";
+import { PiArrowRight, PiBookOpen, PiCheckCircle, PiLock, PiTag } from "react-icons/pi";
 import { CourseEnrollmentAction } from "@/components/course/CourseEnrollmentAction";
 import { formatNgn } from "@/lib/utils";
 
@@ -110,14 +108,14 @@ export default async function CoursePreviewPage({ params }: PageProps) {
           {/* Curriculum */}
           <div className="lg:col-span-2 p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
             <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-              <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
+              <PiBookOpen className="w-5 h-5 text-[#4A1A45]" />
               Curriculum &amp; Syllabus
             </h2>
 
             {isWrongDepartment ? (
               <div className="p-8 rounded-lg bg-neutral-50 border border-neutral-200 text-center space-y-4 my-4">
                 <div className="w-12 h-12 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto">
-                  <FiLock className="w-6 h-6" />
+                  <PiLock className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-black">Curriculum Restricted to {course.department}</h3>
@@ -130,7 +128,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                     href="/courses"
                     className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
                   >
-                    Browse Courses For {currentUser.department} <FiArrowRight className="w-4 h-4" />
+                    Browse Courses For {currentUser.department} <PiArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -148,7 +146,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                           className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-neutral-200 text-xs text-neutral-700"
                         >
                           <span className="flex items-center gap-2 font-medium">
-                            <FiLock className="w-3.5 h-3.5 text-neutral-400" />
+                            <PiLock className="w-3.5 h-3.5 text-neutral-400" />
                             {lesson.title}
                           </span>
                           {lesson.assignments.length > 0 && (
@@ -181,11 +179,11 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                     href={`/student/courses/${course.id}`}
                     className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
                   >
-                    Continue Learning <FiArrowRight className="w-4 h-4" />
+                    Continue Learning <PiArrowRight className="w-4 h-4" />
                   </Link>
                 ) : (
                   <div className="w-full py-3 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                    <FiCheckCircle className="w-4 h-4 text-white" /> Course Completed
+                    <PiCheckCircle className="w-4 h-4 text-white" /> Course Completed
                   </div>
                 )
               ) : !currentUser ? (
@@ -245,23 +243,23 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
               <div className="space-y-2.5 pt-3 border-t border-neutral-200 text-xs text-neutral-600 font-medium">
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
+                  <PiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Automated criteria evaluations with instant feedback
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
+                  <PiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Instructor grade override &amp; rubric evaluation
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
+                  <PiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Lesson Q&amp;A discussion forums
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
+                  <PiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Supplementary resource downloads
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
+                  <PiCheckCircle className="w-4 h-4 text-[#4A1A45] shrink-0" />
                   Progress and grades saved to your profile
                 </div>
               </div>
@@ -271,7 +269,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
               href="/courses"
               className="flex items-center gap-2 text-xs text-neutral-500 hover:text-black font-semibold transition-all px-2"
             >
-              <FiTag className="w-3.5 h-3.5" /> Return to Course Catalog
+              <PiTag className="w-3.5 h-3.5" /> Return to Course Catalog
             </Link>
           </div>
         </div>

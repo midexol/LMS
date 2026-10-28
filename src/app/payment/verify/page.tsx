@@ -3,7 +3,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { FiCheckCircle, FiAlertCircle, FiLoader, FiArrowRight, FiBookOpen } from "react-icons/fi";
+import { PiArrowRight, PiBookOpen, PiCheckCircle, PiSpinner, PiWarningCircle } from "react-icons/pi";
 
 function PaymentVerifyContent() {
   const searchParams = useSearchParams();
@@ -71,7 +71,7 @@ function PaymentVerifyContent() {
         {loading ? (
           <div className="py-10 space-y-4">
             <div className="w-16 h-16 rounded-full bg-[#3B1537] border border-[#4A1A45]/40 mx-auto flex items-center justify-center animate-spin">
-              <FiLoader className="w-8 h-8 text-white" />
+              <PiSpinner className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-xl font-bold tracking-tight">Verifying Payment</h2>
             <p className="text-xs text-neutral-400">
@@ -84,7 +84,7 @@ function PaymentVerifyContent() {
         ) : error ? (
           <div className="py-8 space-y-5">
             <div className="w-16 h-16 rounded-full bg-red-950/60 border border-red-800 mx-auto flex items-center justify-center text-red-500">
-              <FiAlertCircle className="w-8 h-8" />
+              <PiWarningCircle className="w-8 h-8" />
             </div>
             {conflict && (
               <span className="inline-block px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase bg-amber-950 text-amber-300 border border-amber-800">
@@ -118,7 +118,7 @@ function PaymentVerifyContent() {
         ) : (
           <div className="py-8 space-y-5">
             <div className="w-16 h-16 rounded-full bg-emerald-950/60 border border-emerald-700 mx-auto flex items-center justify-center text-emerald-400 animate-bounce">
-              <FiCheckCircle className="w-8 h-8" />
+              <PiCheckCircle className="w-8 h-8" />
             </div>
             <div className="space-y-1">
               <span className="px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase bg-emerald-950 text-emerald-300 border border-emerald-800">
@@ -152,7 +152,7 @@ function PaymentVerifyContent() {
                 href={`/student/courses/${courseInfo?.id}`}
                 className="w-full py-3.5 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
               >
-                <FiBookOpen className="w-4 h-4" /> Start Learning Now <FiArrowRight className="w-4 h-4" />
+                <PiBookOpen className="w-4 h-4" /> Start Learning Now <PiArrowRight className="w-4 h-4" />
               </Link>
               <p className="text-[10px] text-neutral-500 mt-2">
                 Redirecting automatically in a moment...
@@ -171,7 +171,7 @@ export default function PaymentVerifyPage() {
       fallback={
         <div className="min-h-screen bg-neutral-900 flex items-center justify-center text-white">
           <div className="animate-spin">
-            <FiLoader className="w-8 h-8" />
+            <PiSpinner className="w-8 h-8" />
           </div>
         </div>
       }

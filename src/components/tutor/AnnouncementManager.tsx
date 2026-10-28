@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDate } from "@/lib/utils";
-import { FiBell, FiPlus, FiTrash2, FiAlertCircle, FiCheck } from "react-icons/fi";
+import { PiBell, PiCheck, PiPlus, PiTrash, PiWarningCircle } from "react-icons/pi";
 
 interface Announcement {
   id: string;
@@ -88,7 +88,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
   return (
     <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <FiBell className="w-5 h-5 text-[#4A1A45]" />
+        <PiBell className="w-5 h-5 text-[#4A1A45]" />
         Course Announcements Manager
       </h2>
 
@@ -114,14 +114,14 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
 
         {error && (
           <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
-            <FiAlertCircle className="w-4 h-4 shrink-0" />
+            <PiWarningCircle className="w-4 h-4 shrink-0" />
             {error}
           </div>
         )}
 
         {success && (
           <div className="p-3 rounded-xl bg-neutral-100 border border-neutral-300 text-black text-xs font-bold flex items-center gap-2">
-            <FiCheck className="w-4 h-4" />
+            <PiCheck className="w-4 h-4" />
             Announcement posted successfully.
           </div>
         )}
@@ -145,7 +145,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
           disabled={posting || !newTitle.trim() || !newContent.trim()}
           className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
         >
-          <FiPlus className="w-4 h-4" />
+          <PiPlus className="w-4 h-4" />
           {posting ? "Posting..." : "Post Announcement"}
         </button>
       </div>
@@ -181,7 +181,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
                 className="p-2 rounded-lg bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 transition-all shrink-0 disabled:opacity-50"
                 title="Delete announcement"
               >
-                <FiTrash2 className="w-4 h-4" />
+                <PiTrash className="w-4 h-4" />
               </button>
             </div>
           ))

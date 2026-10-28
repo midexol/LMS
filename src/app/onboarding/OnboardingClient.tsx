@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FiAlertCircle, FiArrowRight } from "react-icons/fi";
+import { PiArrowRight, PiWarningCircle } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
@@ -61,7 +61,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
 
         {error && (
           <div role="alert" className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200">
-            <FiAlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+            <PiWarningCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             <p className="text-xs font-semibold text-red-700">{error}</p>
           </div>
         )}
@@ -107,7 +107,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
           className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50"
         >
           {saving ? "Saving..." : "Continue to my courses"}
-          {!saving && <FiArrowRight className="w-4 h-4" />}
+          {!saving && <PiArrowRight className="w-4 h-4" />}
         </button>
       </form>
     </div>

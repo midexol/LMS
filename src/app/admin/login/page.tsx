@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiShield, FiMail, FiLock, FiLogIn, FiAlertCircle } from "react-icons/fi";
+import { PiEnvelopeSimple, PiLock, PiShield, PiSignIn, PiWarningCircle } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function AdminLoginPage() {
@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
             <BrandLogo href="/" variant="dark" size="md" />
           </div>
           <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-white border border-[#4A1A45]/40">
-            <FiShield className="w-7 h-7 text-[#D6BDD4]" />
+            <PiShield className="w-7 h-7 text-[#D6BDD4]" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-black">Superadmin Control Panel</h1>
           <p className="text-xs text-neutral-500 font-medium">
@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
         <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
-              <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+              <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" />
               <span>{error}</span>
             </div>
           )}
@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
                 Admin Email
               </label>
               <div className="relative">
-                <FiMail className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
+                <PiEnvelopeSimple className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
                 <input
                   type="email"
                   required
@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
                 Password
               </label>
               <div className="relative">
-                <FiLock className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
+                <PiLock className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
                 <input
                   type="password"
                   required
@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
               disabled={loading}
               className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-2"
             >
-              <FiLogIn className="w-4 h-4" />
+              <PiSignIn className="w-4 h-4" />
               {loading ? "Authenticating..." : "Enter Admin Console"}
             </button>
           </form>

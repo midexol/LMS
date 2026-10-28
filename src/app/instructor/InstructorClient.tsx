@@ -5,12 +5,7 @@ import Link from "next/link";
 import { CourseBuilderWizard } from "@/components/tutor/CourseBuilderWizard";
 import { TutorSubmissionsReviewer } from "@/components/tutor/TutorSubmissionsReviewer";
 import { AnnouncementManager } from "@/components/tutor/AnnouncementManager";
-import {
-  FiGrid, FiBook, FiAward, FiFileText, FiUsers, FiMessageSquare,
-  FiPieChart, FiSettings, FiBell, FiSearch, FiPlus, FiDownload,
-  FiCheckCircle, FiClock, FiAlertCircle, FiLogOut, FiMenu, FiX,
-  FiCompass, FiShield, FiActivity,
-} from "react-icons/fi";
+import { PiBook, PiChatCircle, PiCheckCircle, PiDownloadSimple, PiFileText, PiGear, PiList, PiMedal, PiPlus, PiSignOut, PiSquaresFour, PiUsers } from "react-icons/pi";
 import { formatNgn } from "@/lib/utils";
 import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -98,12 +93,12 @@ export function InstructorClient({
           <div className="space-y-1">
             <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Teaching</p>
             {[
-              { id: "dashboard", label: "Dashboard", icon: FiGrid },
-              { id: "classes", label: "My Classes", icon: FiBook },
-              { id: "submissions", label: "Assignments", icon: FiFileText },
-              { id: "students", label: "Students", icon: FiUsers },
-              { id: "announcements", label: "Announcements", icon: FiMessageSquare },
-              { id: "settings", label: "Settings", icon: FiSettings },
+              { id: "dashboard", label: "Dashboard", icon: PiSquaresFour },
+              { id: "classes", label: "My Classes", icon: PiBook },
+              { id: "submissions", label: "Assignments", icon: PiFileText },
+              { id: "students", label: "Students", icon: PiUsers },
+              { id: "announcements", label: "Announcements", icon: PiChatCircle },
+              { id: "settings", label: "Settings", icon: PiGear },
             ].map((item) => {
               const Icon = item.icon;
               const active = activeTab === item.id;
@@ -131,7 +126,7 @@ export function InstructorClient({
               href="/courses"
               className="w-full flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all"
             >
-              <FiBook className="w-4 h-4 text-[#D6BDD4]" />
+              <PiBook className="w-4 h-4 text-[#D6BDD4]" />
               <span>Course Catalog</span>
             </Link>
           </div>
@@ -191,7 +186,7 @@ export function InstructorClient({
               className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors shrink-0"
               title="Sign Out"
             >
-              <FiLogOut className="w-4 h-4" />
+              <PiSignOut className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -214,7 +209,7 @@ export function InstructorClient({
               className="lg:hidden p-2 rounded-xl border border-neutral-200 text-black"
               onClick={() => setSidebarOpen(true)}
             >
-              <FiMenu className="w-5 h-5" />
+              <PiList className="w-5 h-5" />
             </button>
             <div>
               <h1 className="font-bold text-2xl text-black leading-tight">Dashboard</h1>
@@ -228,7 +223,7 @@ export function InstructorClient({
               href="/courses"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-300 text-xs font-bold text-black hover:border-black transition-all"
             >
-              <FiBook className="w-3.5 h-3.5 text-[#4A1A45]" />
+              <PiBook className="w-3.5 h-3.5 text-[#4A1A45]" />
               <span>Course Catalog</span>
             </Link>
             <button
@@ -236,7 +231,7 @@ export function InstructorClient({
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-[#4A1A45] text-white hover:bg-[#3B1537] text-xs font-bold transition-all"
               title="Sign Out"
             >
-              <FiLogOut className="w-3.5 h-3.5 text-neutral-300" />
+              <PiSignOut className="w-3.5 h-3.5 text-neutral-300" />
               <span>Sign Out</span>
             </button>
           </div>
@@ -277,13 +272,13 @@ export function InstructorClient({
                       onClick={() => setActiveTab("classes")}
                       className="px-5 py-2.5 rounded-md bg-white text-[#4A1A45] hover:bg-[#F7F2F6] font-bold text-xs transition-all flex items-center gap-1.5"
                     >
-                      <FiPlus className="w-3.5 h-3.5" /> Create assignment
+                      <PiPlus className="w-3.5 h-3.5" /> Create assignment
                     </button>
                     <button
                       onClick={() => setActiveTab("submissions")}
                       className="px-5 py-2.5 rounded-md border border-white/40 hover:bg-white/10 text-white font-bold text-xs transition-all flex items-center gap-1.5"
                     >
-                      <FiDownload className="w-3.5 h-3.5" /> Download report
+                      <PiDownloadSimple className="w-3.5 h-3.5" /> Download report
                     </button>
                   </div>
                 </div>
@@ -351,7 +346,7 @@ export function InstructorClient({
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                     <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                       <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <FiUsers className="w-5 h-5 text-emerald-400" />
+                        <PiUsers className="w-5 h-5 text-emerald-400" />
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Total Learners</span>
@@ -363,7 +358,7 @@ export function InstructorClient({
 
                     <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                       <div className="w-10 h-10 rounded-xl bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/20 flex items-center justify-center shrink-0">
-                        <FiAward className="w-5 h-5" />
+                        <PiMedal className="w-5 h-5" />
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Submissions Logged</span>
@@ -375,7 +370,7 @@ export function InstructorClient({
 
                     <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                       <div className="w-10 h-10 rounded-xl bg-neutral-200 text-neutral-800 flex items-center justify-center shrink-0">
-                        <FiCheckCircle className="w-5 h-5" />
+                        <PiCheckCircle className="w-5 h-5" />
                       </div>
                       <div>
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Cohort Mean Score</span>
@@ -835,7 +830,7 @@ export function InstructorClient({
                     onClick={handleLogout}
                     className="px-6 py-2.5 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
                   >
-                    <FiLogOut className="w-4 h-4" />
+                    <PiSignOut className="w-4 h-4" />
                     <span>Sign Out of Instructor Studio</span>
                   </button>
                 </div>

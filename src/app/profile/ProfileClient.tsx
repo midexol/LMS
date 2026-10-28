@@ -4,11 +4,7 @@ import React, { useState } from "react";
 import { formatDate, formatNgn } from "@/lib/utils";
 import { Navbar } from "@/components/ui/Navbar";
 import Link from "next/link";
-import {
-  FiUser, FiMail, FiBookOpen, FiAward, FiCheckCircle, FiArrowRight,
-  FiSave, FiLock, FiCheck, FiAlertCircle, FiEye, FiEyeOff, FiCompass,
-  FiTrash2, FiPrinter, FiX, FiCreditCard, FiShield, FiFileText, FiSliders,
-} from "react-icons/fi";
+import { PiArrowRight, PiBookOpen, PiCheck, PiCheckCircle, PiCreditCard, PiEnvelopeSimple, PiEye, PiEyeSlash, PiFileText, PiFloppyDisk, PiLock, PiMedal, PiPrinter, PiShield, PiSlidersHorizontal, PiTrash, PiUser, PiWarningCircle, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { AcademiaLogoIcon } from "@/components/ui/BrandLogo";
 
@@ -175,7 +171,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 </span>
               </div>
               <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1.5">
-                <FiMail className="w-3.5 h-3.5 text-[#4A1A45]" /> {currentUser.email}
+                <PiEnvelopeSimple className="w-3.5 h-3.5 text-[#4A1A45]" /> {currentUser.email}
               </p>
               {currentUser.department && (
                 <div className="flex items-center gap-2 mt-2">
@@ -196,14 +192,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 href="/admin"
                 className="px-5 py-2.5 rounded-md bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all flex items-center gap-2"
               >
-                <FiShield className="w-4 h-4 text-emerald-400" />
+                <PiShield className="w-4 h-4 text-emerald-400" />
                 <span>Superadmin Console</span>
               </Link>
               <Link
                 href="/admin?tab=settings"
                 className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all flex items-center gap-2"
               >
-                <FiSliders className="w-4 h-4 text-[#4A1A45]" />
+                <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                 <span>System Settings</span>
               </Link>
             </div>
@@ -213,14 +209,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 href="/instructor"
                 className="px-5 py-2.5 rounded-md bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all flex items-center gap-2"
               >
-                <FiBookOpen className="w-4 h-4 text-[#D6BDD4]" />
+                <PiBookOpen className="w-4 h-4 text-[#D6BDD4]" />
                 <span>Instructor Studio</span>
               </Link>
               <Link
                 href="/instructor?tab=settings"
                 className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all flex items-center gap-2"
               >
-                <FiSliders className="w-4 h-4 text-[#4A1A45]" />
+                <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                 <span>Studio Settings</span>
               </Link>
             </div>
@@ -252,9 +248,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             }`}
           >
             {dropMsg.type === "success" ? (
-              <FiCheck className="w-4 h-4 text-emerald-600" />
+              <PiCheck className="w-4 h-4 text-emerald-600" />
             ) : (
-              <FiAlertCircle className="w-4 h-4 text-red-600" />
+              <PiWarningCircle className="w-4 h-4 text-red-600" />
             )}
             <span>{dropMsg.text}</span>
           </div>
@@ -283,13 +279,13 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   className="px-4 py-2.5 rounded-md border border-neutral-300 text-neutral-700 hover:text-red-600 hover:border-red-300 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all"
                   title="Drop course to unlock new enrollment"
                 >
-                  <FiTrash2 className="w-3.5 h-3.5" /> Drop Track
+                  <PiTrash className="w-3.5 h-3.5" /> Drop Track
                 </button>
                 <Link
                   href={`/student/courses/${activeEnrollment.course.id}`}
                   className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
                 >
-                  Go to Course <FiArrowRight className="w-4 h-4" />
+                  Go to Course <PiArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
@@ -301,13 +297,13 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           <>
             <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-            <FiAward className="w-5 h-5 text-[#4A1A45]" />
+            <PiMedal className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
           </h2>
 
           {enrollments.length === 0 ? (
             <div className="text-center py-8 space-y-3">
-              <FiBookOpen className="w-10 h-10 text-neutral-300 mx-auto" />
+              <PiBookOpen className="w-10 h-10 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No course enrollments registered yet.</p>
               <Link href="/courses" className="text-xs text-[#4A1A45] font-bold hover:underline">
                 Browse course catalog
@@ -353,17 +349,17 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         <div id="receipts" className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
             <h2 className="font-bold text-xl text-black flex items-center gap-2">
-              <FiCreditCard className="w-5 h-5 text-black" />
+              <PiCreditCard className="w-5 h-5 text-black" />
               Tuition Receipts &amp; Payment History
             </h2>
             <span className="text-[11px] text-neutral-500 font-semibold flex items-center gap-1.5">
-              <FiShield className="w-3.5 h-3.5 text-emerald-600" /> Secured by Paystack
+              <PiShield className="w-3.5 h-3.5 text-emerald-600" /> Secured by Paystack
             </span>
           </div>
 
           {payments.length === 0 ? (
             <div className="text-center py-8 space-y-2">
-              <FiFileText className="w-8 h-8 text-neutral-300 mx-auto" />
+              <PiFileText className="w-8 h-8 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No payment transactions recorded for this account.</p>
             </div>
           ) : (
@@ -404,7 +400,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                           onClick={() => setSelectedReceipt(p)}
                           className="px-3 py-1 rounded-md text-[11px] font-bold bg-neutral-100 hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
                         >
-                          <FiPrinter className="w-3 h-3" /> View Receipt
+                          <PiPrinter className="w-3 h-3" /> View Receipt
                         </button>
                       </td>
                     </tr>
@@ -420,19 +416,19 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* ACCOUNT SETTINGS */}
         <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6 max-w-2xl">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-            <FiUser className="w-5 h-5 text-black" />
+            <PiUser className="w-5 h-5 text-black" />
             Account Settings
           </h2>
 
           {successMsg && (
             <div className="p-3.5 rounded-lg bg-neutral-100 text-black text-xs font-bold border border-neutral-300 flex items-center gap-2">
-              <FiCheck className="w-4 h-4 text-black" /> Profile updated successfully!
+              <PiCheck className="w-4 h-4 text-black" /> Profile updated successfully!
             </div>
           )}
 
           {errorMsg && (
             <div className="p-3.5 rounded-lg bg-red-50 text-red-700 text-xs font-bold border border-red-200 flex items-center gap-2">
-              <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" /> {errorMsg}
+              <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" /> {errorMsg}
             </div>
           )}
 
@@ -505,7 +501,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
             <div className="pt-4 border-t border-neutral-200 space-y-4">
               <h3 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-1.5">
-                <FiLock className="w-4 h-4 text-[#4A1A45]" /> Security &amp; Password
+                <PiLock className="w-4 h-4 text-[#4A1A45]" /> Security &amp; Password
               </h3>
 
               <div>
@@ -524,7 +520,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-3 text-neutral-400 hover:text-black"
                   >
-                    {showPassword ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                    {showPassword ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
@@ -571,7 +567,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               disabled={saving || (password.length > 0 && password !== confirmPassword)}
               className="px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
-              <FiSave className="w-4 h-4" />
+              <PiFloppyDisk className="w-4 h-4" />
               {saving ? "Saving..." : "Save Profile Updates"}
             </button>
           </form>
@@ -584,7 +580,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           <div className="w-full max-w-md bg-white rounded-lg p-7 border border-neutral-200 space-y-4">
             <div className="flex items-start gap-3">
               <div className="p-3 rounded-lg bg-red-50 text-red-600">
-                <FiAlertCircle className="w-6 h-6" />
+                <PiWarningCircle className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-bold text-black text-lg">Drop Active Course?</h3>
@@ -610,7 +606,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 disabled={dropLoading}
                 className="px-5 py-2.5 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-50"
               >
-                <FiTrash2 className="w-3.5 h-3.5" />
+                <PiTrash className="w-3.5 h-3.5" />
                 {dropLoading ? "Dropping..." : "Confirm Drop"}
               </button>
             </div>
@@ -625,14 +621,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             {/* Modal Header */}
             <div className="bg-[#2D0F2A] text-white px-7 py-5 flex justify-between items-center border-b border-[#3B1537] print:hidden">
               <div className="flex items-center gap-2">
-                <FiFileText className="w-5 h-5" />
+                <PiFileText className="w-5 h-5" />
                 <span className="font-bold text-sm tracking-wide">E-Receipt</span>
               </div>
               <button
                 onClick={() => setSelectedReceipt(null)}
                 className="p-1.5 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white"
               >
-                <FiX className="w-4 h-4" />
+                <PiX className="w-4 h-4" />
               </button>
             </div>
 
@@ -728,7 +724,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               <div className="flex justify-between items-center pt-2 border-t border-neutral-200 text-xs">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[11px]">
-                    <FiCheckCircle className="w-4 h-4 text-emerald-600" />
+                    <PiCheckCircle className="w-4 h-4 text-emerald-600" />
                     <span>PAYMENT CONFIRMED</span>
                   </div>
                   <p className="text-[10px] text-neutral-500">
@@ -753,7 +749,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 onClick={() => window.print()}
                 className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2"
               >
-                <FiPrinter className="w-4 h-4" /> Print / Save PDF
+                <PiPrinter className="w-4 h-4" /> Print / Save PDF
               </button>
             </div>
           </div>

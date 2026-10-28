@@ -3,8 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RiMenu4Line, RiCloseLine } from "react-icons/ri";
-import { FiLogOut, FiUser, FiBookOpen, FiCreditCard, FiChevronDown, FiShield, FiSliders } from "react-icons/fi";
+import { PiBookOpen, PiCaretDown, PiCreditCard, PiList, PiShield, PiSignOut, PiSlidersHorizontal, PiUser, PiX } from "react-icons/pi";
 import { BrandLogo } from "./BrandLogo";
 
 interface NavbarProps {
@@ -112,7 +111,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     {currentUser.role}
                   </span>
                 </div>
-                <FiChevronDown
+                <PiCaretDown
                   className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${
                     userMenuOpen ? "rotate-180" : ""
                   }`}
@@ -144,7 +143,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-black transition-colors"
                         >
-                          <FiShield className="w-4 h-4 text-emerald-600" />
+                          <PiShield className="w-4 h-4 text-emerald-600" />
                           Superadmin Console
                         </Link>
                         <Link
@@ -152,7 +151,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiSliders className="w-4 h-4 text-[#4A1A45]" />
+                          <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                           System Settings
                         </Link>
                         <Link
@@ -160,7 +159,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiUser className="w-4 h-4 text-neutral-500" />
+                          <PiUser className="w-4 h-4 text-neutral-500" />
                           Account Security &amp; Profile
                         </Link>
                       </>
@@ -171,7 +170,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
+                          <PiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                           Instructor Studio
                         </Link>
                         <Link
@@ -179,7 +178,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiSliders className="w-4 h-4 text-[#4A1A45]" />
+                          <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                           Studio Settings
                         </Link>
                         <Link
@@ -187,7 +186,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiUser className="w-4 h-4 text-neutral-500" />
+                          <PiUser className="w-4 h-4 text-neutral-500" />
                           Account Profile
                         </Link>
                       </>
@@ -198,7 +197,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiUser className="w-4 h-4 text-[#4A1A45]" />
+                          <PiUser className="w-4 h-4 text-[#4A1A45]" />
                           Profile &amp; Academic Records
                         </Link>
                         <Link
@@ -206,7 +205,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiBookOpen className="w-4 h-4 text-neutral-500" />
+                          <PiBookOpen className="w-4 h-4 text-neutral-500" />
                           My Learning Workspace
                         </Link>
                         <Link
@@ -214,7 +213,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
                         >
-                          <FiCreditCard className="w-4 h-4 text-neutral-500" />
+                          <PiCreditCard className="w-4 h-4 text-neutral-500" />
                           Tuition &amp; Payment Receipts
                         </Link>
                       </>
@@ -230,7 +229,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                       }}
                       className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors text-left"
                     >
-                      <FiLogOut className="w-4 h-4" />
+                      <PiSignOut className="w-4 h-4" />
                       Sign Out
                     </button>
                   </div>
@@ -260,7 +259,7 @@ export function Navbar({ currentUser }: NavbarProps) {
             className="md:hidden w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-700 transition-colors"
             aria-label="Toggle navigation"
           >
-            {mobileOpen ? <RiCloseLine className="w-5 h-5" /> : <RiMenu4Line className="w-5 h-5" />}
+            {mobileOpen ? <PiX className="w-5 h-5" /> : <PiList className="w-5 h-5" />}
           </button>
         </div>
       </div>
@@ -294,7 +293,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiShield className="w-4 h-4 text-emerald-600" />
+                    <PiShield className="w-4 h-4 text-emerald-600" />
                     Superadmin Console
                   </Link>
                   <Link
@@ -302,7 +301,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiSliders className="w-4 h-4 text-[#4A1A45]" />
+                    <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                     System Settings
                   </Link>
                   <Link
@@ -310,7 +309,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiUser className="w-4 h-4 text-neutral-500" />
+                    <PiUser className="w-4 h-4 text-neutral-500" />
                     Account Security &amp; Profile
                   </Link>
                 </>
@@ -321,7 +320,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
+                    <PiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                     Instructor Studio
                   </Link>
                   <Link
@@ -329,7 +328,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiSliders className="w-4 h-4 text-[#4A1A45]" />
+                    <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
                     Studio Settings
                   </Link>
                   <Link
@@ -337,7 +336,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiUser className="w-4 h-4 text-neutral-500" />
+                    <PiUser className="w-4 h-4 text-neutral-500" />
                     Account Profile
                   </Link>
                 </>
@@ -348,7 +347,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiUser className="w-4 h-4 text-[#4A1A45]" />
+                    <PiUser className="w-4 h-4 text-[#4A1A45]" />
                     Profile &amp; Academic Records
                   </Link>
                   <Link
@@ -356,7 +355,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiBookOpen className="w-4 h-4 text-neutral-500" />
+                    <PiBookOpen className="w-4 h-4 text-neutral-500" />
                     My Learning Workspace
                   </Link>
                   <Link
@@ -364,7 +363,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
                   >
-                    <FiCreditCard className="w-4 h-4 text-neutral-500" />
+                    <PiCreditCard className="w-4 h-4 text-neutral-500" />
                     Tuition &amp; Payment Receipts
                   </Link>
                 </>
@@ -373,7 +372,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 text-left"
               >
-                <FiLogOut className="w-4 h-4" />
+                <PiSignOut className="w-4 h-4" />
                 Sign Out
               </button>
             </>

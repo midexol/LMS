@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiMail, FiArrowLeft, FiAlertCircle, FiCheck, FiSend } from "react-icons/fi";
+import { PiArrowLeft, PiCheck, PiEnvelopeSimple, PiPaperPlaneTilt, PiWarningCircle } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function ForgotPasswordPage() {
@@ -64,7 +64,7 @@ export default function ForgotPasswordPage() {
               href="/login"
               className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-[#4A1A45] transition-colors mb-6"
             >
-              <FiArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
+              <PiArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
             </Link>
             <h1 className="font-extrabold text-2xl tracking-tight text-black">
               Forgot Your Password?
@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
 
           {error && (
             <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200">
-              <FiAlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+              <PiWarningCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <p className="text-xs font-semibold text-red-700">{error}</p>
             </div>
           )}
@@ -85,7 +85,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-6">
               <div className="p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
                 <div className="w-10 h-10 rounded-full bg-[#4A1A45] text-white flex items-center justify-center">
-                  <FiCheck className="w-5 h-5" />
+                  <PiCheck className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Reset Link Dispatched</h3>
                 <p className="text-xs text-neutral-600 leading-relaxed">
@@ -112,7 +112,7 @@ export default function ForgotPasswordPage() {
                   Registered Email Address
                 </label>
                 <div className="relative">
-                  <FiMail className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
+                  <PiEnvelopeSimple className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4 pointer-events-none" />
                   <input
                     type="email"
                     required
@@ -130,7 +130,7 @@ export default function ForgotPasswordPage() {
                 disabled={loading || !email}
                 className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50"
               >
-                <FiSend className="w-4 h-4" />
+                <PiPaperPlaneTilt className="w-4 h-4" />
                 {loading ? "Sending Instructions..." : "Send Reset Link"}
               </button>
             </form>

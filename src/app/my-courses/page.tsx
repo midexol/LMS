@@ -6,9 +6,7 @@ import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { Navbar } from "@/components/ui/Navbar";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import {
-  FiBookOpen, FiArrowRight, FiCheckCircle, FiClock, FiAward, FiLayers,
-} from "react-icons/fi";
+import { PiArrowRight, PiBookOpen, PiCheckCircle, PiClock, PiMedal, PiStack } from "react-icons/pi";
 
 export const revalidate = 0;
 
@@ -66,7 +64,7 @@ export default async function MyCoursesPage() {
         {/* Active Course */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <FiClock className="w-4 h-4 text-[#4A1A45]" />
+            <PiClock className="w-4 h-4 text-[#4A1A45]" />
             <h2 className="font-bold text-lg text-black">Active Course Enrollment</h2>
           </div>
 
@@ -95,7 +93,7 @@ export default async function MyCoursesPage() {
                       href={`/student/courses/${activeEnrollment.courseId}`}
                       className="shrink-0 flex items-center gap-2 px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
                     >
-                      Continue Learning <FiArrowRight className="w-4 h-4" />
+                      Continue Learning <PiArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
 
@@ -116,15 +114,15 @@ export default async function MyCoursesPage() {
                   {/* Stats Row */}
                   <div className="pt-4 border-t border-neutral-200 flex items-center gap-6 text-xs text-neutral-600">
                     <div className="flex items-center gap-1.5">
-                      <FiLayers className="w-3.5 h-3.5 text-[#4A1A45]" />
+                      <PiStack className="w-3.5 h-3.5 text-[#4A1A45]" />
                       <span>{activeEnrollment.course.modules.length} modules</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <FiBookOpen className="w-3.5 h-3.5 text-[#4A1A45]" />
+                      <PiBookOpen className="w-3.5 h-3.5 text-[#4A1A45]" />
                       <span>{lessonCount} lessons total</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <FiCheckCircle className="w-3.5 h-3.5 text-[#4A1A45]" />
+                      <PiCheckCircle className="w-3.5 h-3.5 text-[#4A1A45]" />
                       <span>{completed} completed</span>
                     </div>
                   </div>
@@ -134,7 +132,7 @@ export default async function MyCoursesPage() {
           })() : (
             <div className="bg-white rounded-lg border border-neutral-200 py-14 text-center space-y-4">
               <div className="w-14 h-14 rounded-lg bg-[#F7F2F6] flex items-center justify-center mx-auto text-neutral-400">
-                <FiBookOpen className="w-7 h-7 text-[#4A1A45]" />
+                <PiBookOpen className="w-7 h-7 text-[#4A1A45]" />
               </div>
               <div>
                 <p className="font-bold text-base text-black">No Active Course Enrollment</p>
@@ -144,7 +142,7 @@ export default async function MyCoursesPage() {
                 href="/courses"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
               >
-                Browse Course Catalog <FiArrowRight className="w-3.5 h-3.5" />
+                Browse Course Catalog <PiArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           )}
@@ -153,7 +151,7 @@ export default async function MyCoursesPage() {
         {/* Completed Courses */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <FiAward className="w-4 h-4 text-[#4A1A45]" />
+            <PiMedal className="w-4 h-4 text-[#4A1A45]" />
             <h2 className="font-bold text-lg text-black">
               Completed Curriculum ({completedEnrollments.length})
             </h2>
@@ -182,7 +180,7 @@ export default async function MyCoursesPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-black font-semibold">
-                      <FiCheckCircle className="w-3.5 h-3.5 text-[#4A1A45]" /> Completed {formatDate(e.completedAt)}
+                      <PiCheckCircle className="w-3.5 h-3.5 text-[#4A1A45]" /> Completed {formatDate(e.completedAt)}
                     </div>
                     <p className="text-[11px] text-neutral-500">{completed}/{total} lessons · Instructor: {e.course.tutor?.name}</p>
                     <div className="flex items-center justify-between pt-2 border-t border-neutral-100">
@@ -190,13 +188,13 @@ export default async function MyCoursesPage() {
                         href={`/student/courses/${e.courseId}`}
                         className="text-xs text-black font-bold hover:underline inline-flex items-center gap-1"
                       >
-                        <FiAward className="w-3.5 h-3.5 text-[#4A1A45]" /> View Course &amp; Certificate
+                        <PiMedal className="w-3.5 h-3.5 text-[#4A1A45]" /> View Course &amp; Certificate
                       </Link>
                       <Link
                         href={`/courses/${e.courseId}`}
                         className="text-xs text-[#4A1A45] font-bold hover:underline inline-flex items-center gap-1"
                       >
-                        Syllabus <FiArrowRight className="w-3 h-3" />
+                        Syllabus <PiArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
                   </div>

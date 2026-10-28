@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { FiArrowLeft, FiMail, FiPhone, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import { PiArrowLeft, PiCheckCircle, PiEnvelopeSimple, PiPhone, PiWarningCircle } from "react-icons/pi";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDate, formatNgn } from "@/lib/utils";
@@ -113,7 +113,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             href="/admin?tab=users"
             className="flex items-center gap-1.5 text-xs font-bold text-neutral-200 hover:text-white"
           >
-            <FiArrowLeft className="w-3.5 h-3.5" /> Back to users
+            <PiArrowLeft className="w-3.5 h-3.5" /> Back to users
           </Link>
         </div>
       </header>
@@ -127,20 +127,20 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               <h1 className="text-2xl font-bold text-black tracking-tight">{user.name}</h1>
               <div className="mt-2 space-y-1 text-sm text-neutral-600">
                 <p className="flex items-center gap-2 break-all">
-                  <FiMail className="w-4 h-4 text-neutral-400 shrink-0" />
+                  <PiEnvelopeSimple className="w-4 h-4 text-neutral-400 shrink-0" />
                   {user.email}
                   {user.emailVerified ? (
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700">
-                      <FiCheckCircle className="w-3.5 h-3.5" /> verified
+                      <PiCheckCircle className="w-3.5 h-3.5" /> verified
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700">
-                      <FiAlertCircle className="w-3.5 h-3.5" /> not verified
+                      <PiWarningCircle className="w-3.5 h-3.5" /> not verified
                     </span>
                   )}
                 </p>
                 <p className="flex items-center gap-2">
-                  <FiPhone className="w-4 h-4 text-neutral-400 shrink-0" />
+                  <PiPhone className="w-4 h-4 text-neutral-400 shrink-0" />
                   {user.phone || <span className="text-neutral-400">No phone number</span>}
                 </p>
               </div>

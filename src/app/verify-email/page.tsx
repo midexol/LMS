@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FiCheckCircle, FiAlertCircle, FiLoader, FiMail, FiArrowRight } from "react-icons/fi";
+import { PiArrowRight, PiCheckCircle, PiEnvelopeSimple, PiSpinner, PiWarningCircle } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 function VerifyEmailContent() {
@@ -92,7 +92,7 @@ function VerifyEmailContent() {
         {status === "loading" && (
           <div className="text-center py-8 space-y-4">
             <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto animate-spin">
-              <FiLoader className="w-7 h-7" />
+              <PiSpinner className="w-7 h-7" />
             </div>
             <div className="space-y-1">
               <h2 className="text-xl font-bold text-neutral-900">Verifying Your Email</h2>
@@ -104,7 +104,7 @@ function VerifyEmailContent() {
         {status === "success" && (
           <div className="space-y-6 text-center">
             <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-100">
-              <FiCheckCircle className="w-8 h-8" />
+              <PiCheckCircle className="w-8 h-8" />
             </div>
             <div className="space-y-2">
               <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md uppercase tracking-wider">
@@ -126,7 +126,7 @@ function VerifyEmailContent() {
               href="/my-courses"
               className="w-full py-3.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all"
             >
-              Continue to My Courses <FiArrowRight className="w-4 h-4" />
+              Continue to My Courses <PiArrowRight className="w-4 h-4" />
             </Link>
           </div>
         )}
@@ -135,7 +135,7 @@ function VerifyEmailContent() {
           <div className="space-y-6">
             <div className="text-center space-y-3">
               <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-100">
-                <FiAlertCircle className="w-7 h-7" />
+                <PiWarningCircle className="w-7 h-7" />
               </div>
               <h2 className="text-xl font-bold text-neutral-900">Verification Link Issue</h2>
               <p className="text-xs text-neutral-500 leading-relaxed">
@@ -159,7 +159,7 @@ function VerifyEmailContent() {
 
               <form onSubmit={handleResend} className="space-y-3">
                 <div className="relative">
-                  <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
+                  <PiEnvelopeSimple className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="email"
                     required
@@ -174,7 +174,7 @@ function VerifyEmailContent() {
                   disabled={resendLoading}
                   className="w-full py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                 >
-                  {resendLoading ? <FiLoader className="w-4 h-4 animate-spin" /> : "Send New Link"}
+                  {resendLoading ? <PiSpinner className="w-4 h-4 animate-spin" /> : "Send New Link"}
                 </button>
               </form>
             </div>
@@ -201,7 +201,7 @@ export default function VerifyEmailPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-paper flex items-center justify-center">
-          <FiLoader className="w-8 h-8 animate-spin text-[#4A1A45]" />
+          <PiSpinner className="w-8 h-8 animate-spin text-[#4A1A45]" />
         </div>
       }
     >

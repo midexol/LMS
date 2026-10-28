@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { isPass } from "@/lib/grading";
 import { formatDate } from "@/lib/utils";
-import { FiAward, FiEdit2, FiSave, FiUser, FiAlertCircle, FiCheck } from "react-icons/fi";
+import { PiCheck, PiFloppyDisk, PiMedal, PiPencilSimple, PiUser, PiWarningCircle } from "react-icons/pi";
 
 interface TutorSubmissionsReviewerProps {
   initialSubmissions: any[];
@@ -67,13 +67,13 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
   return (
     <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-        <FiAward className="w-5 h-5 text-[#4A1A45]" />
+        <PiMedal className="w-5 h-5 text-[#4A1A45]" />
         Student Submissions &amp; Grade Override Reviewer
       </h2>
 
       {saveError && (
         <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
-          <FiAlertCircle className="w-4 h-4 shrink-0" />
+          <PiWarningCircle className="w-4 h-4 shrink-0" />
           {saveError}
         </div>
       )}
@@ -104,7 +104,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                       {sub.assignment?.title || "Assignment"}
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-neutral-500 mt-1">
-                      <FiUser className="w-3.5 h-3.5" />
+                      <PiUser className="w-3.5 h-3.5" />
                       <span>
                         Student: <strong className="text-black">{sub.student?.name || sub.studentId}</strong>
                       </span>
@@ -116,7 +116,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                   <div className="flex items-center gap-3 shrink-0">
                     {saveSuccess === sub.id && (
                       <span className="text-xs text-black font-bold flex items-center gap-1">
-                        <FiCheck className="w-3.5 h-3.5" /> Saved
+                        <PiCheck className="w-3.5 h-3.5" /> Saved
                       </span>
                     )}
                     <span
@@ -136,7 +136,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                         onClick={() => handleStartEdit(sub)}
                         className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-bold text-black flex items-center gap-1.5 hover:bg-neutral-100 transition-all"
                       >
-                        <FiEdit2 className="w-3.5 h-3.5" /> Override
+                        <PiPencilSimple className="w-3.5 h-3.5" /> Override
                       </button>
                     )}
                   </div>
@@ -172,7 +172,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                 {isEditing && (
                   <div className="p-5 rounded-xl bg-white border-2 border-[#4A1A45] space-y-3 mt-2">
                     <h4 className="font-bold text-black text-xs flex items-center gap-1.5">
-                      <FiEdit2 className="w-3.5 h-3.5 text-[#4A1A45]" />
+                      <PiPencilSimple className="w-3.5 h-3.5 text-[#4A1A45]" />
                       Tutor Grade Override
                     </h4>
                     <div className="flex gap-4 flex-wrap">
@@ -214,7 +214,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                         disabled={saving}
                         className="px-4 py-1.5 rounded-lg bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-60"
                       >
-                        <FiSave className="w-3.5 h-3.5" />
+                        <PiFloppyDisk className="w-3.5 h-3.5" />
                         {saving ? "Saving..." : "Save Override"}
                       </button>
                     </div>

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { FiArrowLeft, FiLogOut } from "react-icons/fi";
+import { PiArrowLeft, PiSignOut } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 interface StudentPlayerNavbarProps {
@@ -30,7 +30,7 @@ export function StudentPlayerNavbar({ courseTitle, category, studentName }: Stud
             href="/my-courses"
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#2D0F2A] hover:bg-[#4A1A45] text-neutral-200 hover:text-white text-xs font-semibold transition-colors shrink-0 border border-[#4A1A45]/40"
           >
-            <FiArrowLeft className="w-3.5 h-3.5" />
+            <PiArrowLeft className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Back to My Courses</span>
             <span className="sm:hidden">Back</span>
           </Link>
@@ -62,7 +62,7 @@ export function StudentPlayerNavbar({ courseTitle, category, studentName }: Stud
             className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-white px-2.5 py-1.5 rounded-lg hover:bg-[#2D0F2A] transition-colors"
             title="Sign Out"
           >
-            <FiLogOut className="w-3.5 h-3.5" />
+            <PiSignOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Sign Out</span>
           </button>
         </div>

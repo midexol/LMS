@@ -1,19 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  FiX,
-  FiCreditCard,
-  FiLock,
-  FiAlertCircle,
-  FiCheck,
-  FiArrowRight,
-  FiLogIn,
-  FiUserPlus,
-  FiShield,
-  FiExternalLink,
-  FiLoader,
-} from "react-icons/fi";
+import { PiArrowRight, PiArrowSquareOut, PiCheck, PiCreditCard, PiLock, PiShield, PiSignIn, PiSpinner, PiUserPlus, PiWarningCircle, PiX } from "react-icons/pi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatNgn } from "@/lib/utils";
@@ -163,13 +151,13 @@ export function MockCheckoutModal({
           onClick={onClose}
           className="absolute top-5 right-5 p-2 rounded-full border border-neutral-200 text-neutral-500 hover:text-black hover:border-black transition-all"
         >
-          <FiX className="w-4 h-4" />
+          <PiX className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
         <div className="flex items-center gap-2 mb-1">
           <div className="w-8 h-8 rounded-full bg-[#4A1A45] text-white flex items-center justify-center text-sm font-bold">
-            <FiCreditCard className="w-4 h-4" />
+            <PiCreditCard className="w-4 h-4" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-black leading-tight">
@@ -203,7 +191,7 @@ export function MockCheckoutModal({
         {!currentUser ? (
           <div className="mt-5 p-6 rounded-lg bg-neutral-50 border border-neutral-200 space-y-4">
             <div className="flex items-start gap-3">
-              <FiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
+              <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-black text-sm">Account Required</h4>
                 <p className="text-xs text-neutral-600 leading-relaxed mt-1">
@@ -217,13 +205,13 @@ export function MockCheckoutModal({
                 href="/login"
                 className="flex-1 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#3B1537] transition-all"
               >
-                <FiLogIn className="w-4 h-4" /> Sign In
+                <PiSignIn className="w-4 h-4" /> Sign In
               </Link>
               <Link
                 href="/signup"
                 className="flex-1 py-2.5 rounded-md bg-white border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#F7F2F6] transition-all"
               >
-                <FiUserPlus className="w-4 h-4" /> Sign Up Free
+                <PiUserPlus className="w-4 h-4" /> Sign Up Free
               </Link>
             </div>
           </div>
@@ -231,7 +219,7 @@ export function MockCheckoutModal({
           /* Single Active Course Restriction */
           <div className="mt-5 p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
             <div className="flex gap-3 items-start">
-              <FiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
+              <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-bold text-black text-sm">Single Active Enrollment Constraint</h4>
                 <p className="text-xs text-neutral-700 leading-relaxed mt-1">
@@ -246,7 +234,7 @@ export function MockCheckoutModal({
                     onClick={onClose}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold text-white bg-[#4A1A45] hover:bg-[#3B1537] transition-all"
                   >
-                    Go to Active Course <FiArrowRight className="w-4 h-4" />
+                    Go to Active Course <PiArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -316,7 +304,7 @@ export function MockCheckoutModal({
 
             {/* Paystack Security Notice */}
             <div className="flex items-center gap-2 px-2 text-[11px] text-neutral-500">
-              <FiShield className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
+              <PiShield className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
               <span>
                 Processed securely through <strong>Paystack</strong> with 256-bit encryption.
               </span>
@@ -324,14 +312,14 @@ export function MockCheckoutModal({
 
             {error && (
               <div className="p-3 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
-                <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" />
                 <span>{error}</span>
               </div>
             )}
 
             {success ? (
               <div className="p-4 rounded-lg bg-emerald-50 text-emerald-900 text-sm font-bold border border-emerald-200 flex items-center justify-center gap-2">
-                <FiCheck className="w-5 h-5 text-emerald-600" />
+                <PiCheck className="w-5 h-5 text-emerald-600" />
                 {course.price <= 0 ? "You are enrolled! Opening your course..." : "Payment Confirmed! Enrolling in Course..."}
               </div>
             ) : (
@@ -342,14 +330,14 @@ export function MockCheckoutModal({
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
-                    <FiLoader className="w-4 h-4 animate-spin" />
+                    <PiSpinner className="w-4 h-4 animate-spin" />
                     <span>{statusText}</span>
                   </span>
                 ) : (
                   <>
-                    <FiLock className="w-4 h-4" />
+                    <PiLock className="w-4 h-4" />
                     {course.price <= 0 ? "Enroll for free" : quote ? <>Pay {formatNgn(quote.totalNgn)} &amp; Enroll</> : quoteFailed ? "Continue to payment" : "Calculating total..."}
-                    <FiExternalLink className="w-3.5 h-3.5 ml-1 opacity-70" />
+                    <PiArrowSquareOut className="w-3.5 h-3.5 ml-1 opacity-70" />
                   </>
                 )}
               </button>

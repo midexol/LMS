@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { PiEye, PiEyeSlash } from "react-icons/pi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { AuthShell, AuthError, authInputClass, authLabelClass, authButtonClass } from "@/components/auth/AuthShell";
@@ -119,7 +119,7 @@ export default function SignupPage() {
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute right-3.5 top-3 text-neutral-400 hover:text-black"
                 >
-                  {showPassword ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                  {showPassword ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
                 </button>
               </div>
               {passwordTooShort && <p className="text-xs text-red-600 mt-1">Use at least {MIN_PASSWORD} characters.</p>}

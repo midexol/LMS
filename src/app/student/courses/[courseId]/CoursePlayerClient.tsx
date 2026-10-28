@@ -4,27 +4,7 @@ import React, { useState, useEffect } from "react";
 import { formatDate } from "@/lib/utils";
 import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { Badge } from "@/components/ui/Badge";
-import {
-  FiPlayCircle,
-  FiCheckCircle,
-  FiSend,
-  FiAward,
-  FiBookOpen,
-  FiLock,
-  FiCheck,
-  FiMessageSquare,
-  FiRefreshCw,
-  FiAlertCircle,
-  FiDownload,
-  FiBell,
-  FiChevronDown,
-  FiChevronUp,
-  FiChevronLeft,
-  FiChevronRight,
-  FiList,
-  FiPrinter,
-  FiX,
-} from "react-icons/fi";
+import { PiArrowsClockwise, PiBell, PiBookOpen, PiCaretDown, PiCaretLeft, PiCaretRight, PiCaretUp, PiChatCircle, PiCheck, PiCheckCircle, PiDownloadSimple, PiListBullets, PiLock, PiMedal, PiPaperPlaneTilt, PiPlayCircle, PiPrinter, PiWarningCircle, PiX } from "react-icons/pi";
 
 interface CoursePlayerClientProps {
   course: any;
@@ -235,20 +215,20 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               disabled={completingCourse}
               className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-2 transition-all"
             >
-              <FiCheckCircle className="w-4 h-4" />
+              <PiCheckCircle className="w-4 h-4" />
               {completingCourse ? "Checking Criteria..." : "Complete Course & Release Lock"}
             </button>
           ) : (
             <div className="flex flex-wrap items-center gap-3">
               <div className="px-4 py-2.5 rounded-xl bg-neutral-100 border border-neutral-300 text-black text-xs font-bold flex items-center gap-2">
-                <FiCheck className="w-4 h-4 text-black" />
+                <PiCheck className="w-4 h-4 text-black" />
                 Course Completed
               </div>
               <button
                 onClick={() => setShowCertificate(true)}
                 className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-2 transition-all"
               >
-                <FiAward className="w-4 h-4 text-[#D6BDD4]" />
+                <PiMedal className="w-4 h-4 text-[#D6BDD4]" />
                 Certificate
               </button>
             </div>
@@ -257,7 +237,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
 
         {completionError && (
           <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold flex items-center gap-2">
-            <FiAlertCircle className="w-5 h-5 shrink-0 text-amber-700" />
+            <PiWarningCircle className="w-5 h-5 shrink-0 text-amber-700" />
             <span>{completionError}</span>
           </div>
         )}
@@ -287,16 +267,16 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             className="w-full flex items-center justify-between"
           >
             <h3 className="text-base font-bold text-black flex items-center gap-2">
-              <FiBell className="w-4 h-4 text-[#4A1A45]" />
+              <PiBell className="w-4 h-4 text-[#4A1A45]" />
               Course Announcements
               <span className="px-2 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] text-[10px] font-bold">
                 {announcements.length}
               </span>
             </h3>
             {announcementsExpanded ? (
-              <FiChevronUp className="w-4 h-4 text-neutral-400" />
+              <PiCaretUp className="w-4 h-4 text-neutral-400" />
             ) : (
-              <FiChevronDown className="w-4 h-4 text-neutral-400" />
+              <PiCaretDown className="w-4 h-4 text-neutral-400" />
             )}
           </button>
 
@@ -324,7 +304,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           onClick={() => setMobileCurriculumOpen(true)}
           className="flex items-center gap-2 text-xs font-bold text-black hover:text-[#4A1A45] transition-colors"
         >
-          <FiList className="w-4 h-4 text-[#4A1A45]" />
+          <PiListBullets className="w-4 h-4 text-[#4A1A45]" />
           <span>Curriculum Syllabus ({completedLessonIds.length}/{allLessons.length})</span>
         </button>
         <span className="text-[11px] font-semibold text-neutral-500">
@@ -336,7 +316,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         {/* Left Sidebar Navigator (Desktop) */}
         <div className="hidden lg:block lg:col-span-1 p-6 rounded-lg bg-white border border-neutral-200 space-y-4 h-fit sticky top-24">
           <h3 className="font-bold text-black text-base flex items-center gap-2 border-b border-neutral-200 pb-3">
-            <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
+            <PiBookOpen className="w-5 h-5 text-[#4A1A45]" />
             Curriculum Navigator
           </h3>
 
@@ -369,11 +349,11 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                       >
                         <div className="flex items-center gap-2 truncate">
                           {isLocked ? (
-                            <FiLock className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <PiLock className="w-4 h-4 text-neutral-400 shrink-0" />
                           ) : isDone ? (
-                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
+                            <PiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           ) : (
-                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
+                            <PiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           )}
                           <span className="truncate">{lesson.title}</span>
                         </div>
@@ -402,7 +382,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                         : "bg-white border-neutral-300 text-black hover:bg-neutral-50 "
                     }`}
                   >
-                    <FiCheckCircle className="w-4 h-4" />
+                    <PiCheckCircle className="w-4 h-4" />
                     {completedLessonIds.includes(activeLesson.id)
                       ? "Lesson Completed"
                       : "Mark as Completed"}
@@ -452,7 +432,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     className="flex items-center gap-3 p-4 rounded-xl bg-white border border-neutral-200 hover:border-black hover:bg-neutral-50 transition-all group"
                   >
                     <div className="p-2 rounded-lg bg-neutral-100 border border-neutral-200 group-hover:bg-neutral-200 transition-all">
-                      <FiDownload className="w-4 h-4 text-[#4A1A45]" />
+                      <PiDownloadSimple className="w-4 h-4 text-[#4A1A45]" />
                     </div>
                     <div>
                       <p className="text-xs font-bold text-black">{activeLesson.resourceName}</p>
@@ -487,7 +467,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     <div className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-4">
                       <div className="flex justify-between items-center">
                         <h4 className="font-bold text-black text-sm flex items-center gap-2">
-                          <FiAward className="w-5 h-5 text-[#4A1A45]" />
+                          <PiMedal className="w-5 h-5 text-[#4A1A45]" />
                           Evaluation Details
                         </h4>
                         <div className="flex items-center gap-3">
@@ -502,7 +482,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                             }}
                             className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-bold text-black flex items-center gap-1 hover:bg-neutral-100"
                           >
-                            <FiRefreshCw className="w-3.5 h-3.5" /> Revise Answer
+                            <PiArrowsClockwise className="w-3.5 h-3.5" /> Revise Answer
                           </button>
                         </div>
                       </div>
@@ -551,7 +531,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                           disabled={submitting || !submissionText.trim()}
                           className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-sm flex items-center gap-2 transition-all"
                         >
-                          <FiSend className="w-4 h-4" />
+                          <PiPaperPlaneTilt className="w-4 h-4" />
                           {submitting
                             ? "Evaluating Submission..."
                             : isResubmitting
@@ -578,7 +558,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               {/* Discussion Forum */}
               <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
                 <h3 className="text-lg font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
-                  <FiMessageSquare className="w-5 h-5 text-[#4A1A45]" />
+                  <PiChatCircle className="w-5 h-5 text-[#4A1A45]" />
                   Lesson Discussion &amp; Q&A Forum
                 </h3>
 
@@ -595,7 +575,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                     disabled={!newPostContent.trim()}
                     className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
                   >
-                    <FiSend className="w-3.5 h-3.5" /> Post Question
+                    <PiPaperPlaneTilt className="w-3.5 h-3.5" /> Post Question
                   </button>
                 </div>
 
@@ -678,7 +658,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             {/* Modal Controls (Hidden in print) */}
             <div className="flex items-center justify-between p-4 bg-neutral-950 text-white print:hidden">
               <div className="flex items-center gap-2 text-xs font-bold">
-                <FiAward className="w-4 h-4 text-[#D6BDD4]" />
+                <PiMedal className="w-4 h-4 text-[#D6BDD4]" />
                 Certificate of Completion
               </div>
               <div className="flex items-center gap-2">
@@ -686,13 +666,13 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                   onClick={() => window.print()}
                   className="px-4 py-1.5 rounded-xl bg-white text-[#4A1A45] hover:bg-[#F7F2F6] text-xs font-bold flex items-center gap-1.5 transition-all"
                 >
-                  <FiPrinter className="w-3.5 h-3.5" /> Print / Save as PDF
+                  <PiPrinter className="w-3.5 h-3.5" /> Print / Save as PDF
                 </button>
                 <button
                   onClick={() => setShowCertificate(false)}
                   className="p-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-all"
                 >
-                  <FiX className="w-4 h-4" />
+                  <PiX className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -760,7 +740,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             className="px-3 py-2.5 rounded-xl border border-neutral-200 bg-white text-xs font-bold text-black flex items-center gap-1.5 transition-all duration-150 active:scale-95 disabled:opacity-40 disabled:pointer-events-none hover:bg-neutral-50 shadow-xs"
             title="Previous Lesson"
           >
-            <FiChevronLeft className="w-4 h-4" />
+            <PiCaretLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Prev</span>
           </button>
 
@@ -769,7 +749,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             onClick={() => setMobileCurriculumOpen(true)}
             className="flex-1 py-2.5 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 text-xs font-bold text-black flex items-center justify-center gap-2 transition-all duration-150 active:scale-95 shadow-xs"
           >
-            <FiList className="w-4 h-4 text-[#4A1A45]" />
+            <PiListBullets className="w-4 h-4 text-[#4A1A45]" />
             <span className="truncate">
               Syllabus ({completedLessonIds.length}/{allLessons.length})
             </span>
@@ -783,7 +763,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               title="Next Lesson"
             >
               <span>{completedLessonIds.includes(activeLesson?.id) ? "Next" : "Next"}</span>
-              <FiChevronRight className="w-4 h-4" />
+              <PiCaretRight className="w-4 h-4" />
             </button>
           ) : !isCompleted ? (
             <button
@@ -791,7 +771,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               disabled={completingCourse}
               className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95"
             >
-              <FiCheckCircle className="w-4 h-4" />
+              <PiCheckCircle className="w-4 h-4" />
               <span>Finish</span>
             </button>
           ) : (
@@ -799,7 +779,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               onClick={() => setShowCertificate(true)}
               className="px-3.5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all duration-150 active:scale-95"
             >
-              <FiAward className="w-4 h-4 text-[#D6BDD4]" />
+              <PiMedal className="w-4 h-4 text-[#D6BDD4]" />
               <span>Cert</span>
             </button>
           )}
@@ -833,7 +813,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           <div className="px-6 py-3 border-b border-neutral-200 flex items-center justify-between">
             <div>
               <h3 className="font-bold text-base text-black flex items-center gap-2">
-                <FiBookOpen className="w-4 h-4 text-[#4A1A45]" />
+                <PiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                 Course Curriculum
               </h3>
               <p className="text-[11px] text-neutral-500 font-semibold mt-0.5">
@@ -845,7 +825,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               className="p-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-600 transition-all active:scale-95"
               aria-label="Close Curriculum Drawer"
             >
-              <FiX className="w-4 h-4" />
+              <PiX className="w-4 h-4" />
             </button>
           </div>
 
@@ -879,11 +859,11 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                       >
                         <div className="flex items-center gap-2 truncate">
                           {isLocked ? (
-                            <FiLock className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <PiLock className="w-4 h-4 text-neutral-400 shrink-0" />
                           ) : isDone ? (
-                            <FiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
+                            <PiCheckCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           ) : (
-                            <FiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
+                            <PiPlayCircle className={`w-4 h-4 shrink-0 ${isSelected ? "text-white" : "text-[#4A1A45]"}`} />
                           )}
                           <span className="truncate">{lesson.title}</span>
                         </div>

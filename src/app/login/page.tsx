@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { PiEye, PiEyeSlash } from "react-icons/pi";
 
 import { AuthShell, AuthError, authInputClass, authLabelClass, authButtonClass } from "@/components/auth/AuthShell";
 import { homePathForRole } from "@/lib/roles";
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 aria-label={showPw ? "Hide password" : "Show password"}
                 className="absolute right-3.5 top-3 text-neutral-400 hover:text-black"
               >
-                {showPw ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                {showPw ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
               </button>
             </div>
           </div>
