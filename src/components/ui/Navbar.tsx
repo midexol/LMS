@@ -97,7 +97,7 @@ export function Navbar({ currentUser }: NavbarProps) {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-full border border-neutral-200 hover:border-[#4A1A45]/40 hover:bg-[#F7F2F6]/50 transition-all text-left"
+                className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-md border border-neutral-200 hover:border-[#4A1A45]/40 hover:bg-[#F7F2F6]/50 transition-all text-left"
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
@@ -121,7 +121,7 @@ export function Navbar({ currentUser }: NavbarProps) {
 
               {/* User Dropdown Menu */}
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white border border-neutral-200 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-64 rounded-lg bg-white border border-neutral-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   {/* Account Summary Header */}
                   <div className="px-4 py-3 border-b border-neutral-100">
                     <p className="text-xs font-bold text-neutral-900 truncate">
@@ -130,7 +130,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                     <p className="text-[11px] text-neutral-500 truncate mt-0.5">
                       {currentUser.email}
                     </p>
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/25">
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/25">
                       {currentUser.role} Account
                     </span>
                   </div>
@@ -247,7 +247,7 @@ export function Navbar({ currentUser }: NavbarProps) {
               </Link>
               <Link
                 href="/signup"
-                className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all shadow-sm"
+                className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-semibold transition-all"
               >
                 Get Started
               </Link>

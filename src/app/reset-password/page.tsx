@@ -21,7 +21,7 @@ function ResetPasswordForm() {
   if (!token) {
     return (
       <div className="space-y-6">
-        <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
+        <div className="p-5 rounded-lg bg-amber-50 border border-amber-200 space-y-2">
           <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
             <FiAlertCircle className="w-4 h-4" />
             Missing Reset Token
@@ -32,7 +32,7 @@ function ResetPasswordForm() {
         </div>
         <Link
           href="/forgot-password"
-          className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+          className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all"
         >
           Request Reset Link
         </Link>
@@ -88,7 +88,7 @@ function ResetPasswordForm() {
       </div>
 
       {error && (
-        <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-red-50 border border-red-200">
+        <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200">
           <FiAlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
           <p className="text-xs font-semibold text-red-700">{error}</p>
         </div>
@@ -96,7 +96,7 @@ function ResetPasswordForm() {
 
       {success ? (
         <div className="space-y-6">
-          <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-3">
+          <div className="p-5 rounded-lg bg-emerald-50 border border-emerald-200 space-y-3">
             <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center">
               <FiCheck className="w-5 h-5" />
             </div>
@@ -108,7 +108,7 @@ function ResetPasswordForm() {
 
           <Link
             href="/login"
-            className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+            className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all"
           >
             Sign In to Account <FiArrowRight className="w-4 h-4" />
           </Link>
@@ -160,7 +160,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading || !password || !confirmPassword}
-            className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50 mt-2"
+            className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50 mt-2"
           >
             <FiCheck className="w-4 h-4" />
             {loading ? "Updating Password..." : "Save New Password"}

@@ -342,13 +342,13 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ── Step Navigator ── */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex-1 p-3 rounded-2xl bg-white border border-neutral-200 shadow-sm flex items-center justify-around">
+        <div className="flex-1 p-3 rounded-lg bg-white border border-neutral-200 flex items-center justify-around">
           {([1, 2, 3] as const).map((s) => (
             <button
               key={s}
               onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                step === s ? "bg-[#4A1A45] text-white shadow-sm" : "text-neutral-500 hover:text-[#4A1A45]"
+                step === s ? "bg-[#4A1A45] text-white " : "text-neutral-500 hover:text-[#4A1A45]"
               }`}
             >
               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -361,7 +361,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
         {onClose && (
           <button
             onClick={onClose}
-            className="p-3 rounded-2xl bg-white border border-neutral-200 hover:bg-neutral-100 text-black font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all"
+            className="p-3 rounded-lg bg-white border border-neutral-200 hover:bg-neutral-100 text-black font-bold text-xs flex items-center gap-1.5 transition-all"
           >
             <FiX className="w-4 h-4" /> Cancel
           </button>
@@ -370,7 +370,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 1 ══════════════════════════════ */}
       {step === 1 && (
-        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               <FiBookOpen className="w-6 h-6 text-[#4A1A45]" />
@@ -534,7 +534,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             <button
               onClick={() => step1Valid && setStep(2)}
               disabled={!step1Valid}
-              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider transition-all"
             >
               Continue to Modules & Lessons
             </button>
@@ -544,7 +544,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 2 ══════════════════════════════ */}
       {step === 2 && (
-        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
             <div>
               <h3 className="text-xl font-bold text-black flex items-center gap-2">
@@ -557,7 +557,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </div>
             <button
               onClick={addModule}
-              className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+              className="px-4 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
               <FiPlus className="w-4 h-4" /> Add Module
             </button>
@@ -589,7 +589,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </button>
             <button
               onClick={() => setStep(3)}
-              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
             >
               Review & Publish
             </button>
@@ -599,7 +599,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 3 ══════════════════════════════ */}
       {step === 3 && (
-        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="border-b border-neutral-200 pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               <FiCheckCircle className="w-6 h-6 text-black" />
@@ -626,7 +626,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               <div className="flex flex-wrap gap-2 mb-2 items-center">
                 <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">{faculty}</span>
                 <span className="text-[11px] font-bold text-neutral-400">·</span>
-                <span className="text-[11px] font-bold text-black bg-neutral-200 px-2 py-0.5 rounded-full">{department}</span>
+                <span className="text-[11px] font-bold text-black bg-neutral-200 px-2 py-0.5 rounded-md">{department}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
                 <span className="text-[11px] font-bold text-neutral-500">{level}</span>
                 <span className="text-[11px] font-bold text-neutral-400">|</span>
@@ -684,7 +684,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             <button
               onClick={handleSaveCourse}
               disabled={saving || successMsg}
-              className="px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+              className="px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
               <FiSave className="w-5 h-5" />
               {saving
@@ -736,7 +736,7 @@ function LessonModuleBlock({
         <div className="flex items-center gap-2">
           <button
             onClick={onAddLesson}
-            className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-semibold text-black flex items-center gap-1 hover:border-black shadow-sm"
+            className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-semibold text-black flex items-center gap-1 hover:border-black"
           >
             <FiPlus className="w-3.5 h-3.5" /> Add Lesson
           </button>
@@ -794,7 +794,7 @@ function LessonRow({
   const videoUpload    = useFileUpload();
 
   return (
-    <div className="p-5 rounded-xl bg-white border border-neutral-200 space-y-4 shadow-sm">
+    <div className="p-5 rounded-xl bg-white border border-neutral-200 space-y-4">
       {/* Lesson title row */}
       <div className="flex items-center justify-between gap-3">
         <input
@@ -940,7 +940,7 @@ function LessonRow({
               type="button"
               onClick={onGenerateRubric}
               disabled={!lesson.assignmentPrompt.trim()}
-              className="text-[10px] px-2 py-0.5 rounded bg-[#4A1A45] text-white font-bold flex items-center gap-1 disabled:opacity-50 shadow-sm"
+              className="text-[10px] px-2 py-0.5 rounded bg-[#4A1A45] text-white font-bold flex items-center gap-1 disabled:opacity-50"
             >
               <FiZap className="w-3 h-3 text-[#D6BDD4]" /> Auto-Generate
             </button>

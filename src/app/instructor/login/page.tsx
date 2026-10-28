@@ -41,13 +41,13 @@ export default function InstructorLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-6">
+      <div className="w-full max-w-md bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-2">
             <BrandLogo href="/" variant="dark" size="md" />
           </div>
-          <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-[#D6BDD4] mb-2 shadow-sm border border-[#4A1A45]/40">
+          <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-[#D6BDD4] mb-2 border border-[#4A1A45]/40">
             <FiShield className="w-7 h-7" />
           </div>
           <h1 className="text-2xl font-bold text-black tracking-tight">Instructor Portal</h1>
@@ -95,7 +95,7 @@ export default function InstructorLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mt-4 shadow-sm"
+            className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mt-4"
           >
             <FiLogIn className="w-4 h-4" />
             {loading ? "Authenticating..." : "Instructor Log In"}

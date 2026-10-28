@@ -42,14 +42,14 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-6">
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="flex justify-center mb-2">
             <BrandLogo href="/" variant="dark" size="md" />
           </div>
-          <div className="inline-flex p-3 rounded-2xl bg-[#2D0F2A] text-white shadow-md border border-[#4A1A45]/40">
+          <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-white border border-[#4A1A45]/40">
             <FiShield className="w-7 h-7 text-[#D6BDD4]" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-black">Superadmin Control Panel</h1>
@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
+        <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
               <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" />
@@ -105,7 +105,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-2 shadow-sm"
+              className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-2"
             >
               <FiLogIn className="w-4 h-4" />
               {loading ? "Authenticating..." : "Enter Admin Console"}

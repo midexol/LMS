@@ -56,7 +56,7 @@ export function SignupsChart({ createdAt, days = 30 }: SignupsChartProps) {
   const hovered = hover !== null ? series[hover] : null;
 
   return (
-    <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-4">
+    <div className="bg-white rounded-lg p-6 sm:p-8 border border-neutral-200/80 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
           <h3 className="font-bold text-lg text-black tracking-tight">New Accounts, Last {days} Days</h3>
@@ -136,7 +136,7 @@ export function SignupsChart({ createdAt, days = 30 }: SignupsChartProps) {
 
         {hovered && (
           <div
-            className="pointer-events-none absolute -top-1 px-3 py-1.5 rounded-xl bg-neutral-900 text-white text-[11px] font-semibold shadow-lg whitespace-nowrap"
+            className="pointer-events-none absolute -top-1 px-3 py-1.5 rounded-xl bg-neutral-900 text-white text-[11px] font-semibold whitespace-nowrap"
             style={{
               left: `${((PAD.left + (hover as number) * slot + slot / 2) / W) * 100}%`,
               transform: "translateX(-50%)",

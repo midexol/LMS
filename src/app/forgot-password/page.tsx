@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
           </div>
 
           {error && (
-            <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-red-50 border border-red-200">
+            <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200">
               <FiAlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <p className="text-xs font-semibold text-red-700">{error}</p>
             </div>
@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
 
           {submitted ? (
             <div className="space-y-6">
-              <div className="p-5 rounded-2xl bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
+              <div className="p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
                 <div className="w-10 h-10 rounded-full bg-[#4A1A45] text-white flex items-center justify-center">
                   <FiCheck className="w-5 h-5" />
                 </div>
@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
               <div className="pt-2 text-center">
                 <Link
                   href="/login"
-                  className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+                  className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all"
                 >
                   Return to Sign In
                 </Link>
@@ -128,7 +128,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
+                className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50"
               >
                 <FiSend className="w-4 h-4" />
                 {loading ? "Sending Instructions..." : "Send Reset Link"}

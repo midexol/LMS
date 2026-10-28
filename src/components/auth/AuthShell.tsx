@@ -32,7 +32,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
         <div className="lg:hidden mb-6">
           <BrandLogo href="/" variant="dark" size="md" />
         </div>
-        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-2xl border border-neutral-200 shadow-sm">{children}</div>
+        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-lg border border-neutral-200">{children}</div>
       </main>
     </div>
   );
@@ -40,7 +40,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
 
 export function AuthError({ message }: { message: string }) {
   return (
-    <div role="alert" className="p-3 rounded-2xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
+    <div role="alert" className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
       {message}
     </div>
   );

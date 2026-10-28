@@ -157,20 +157,20 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-black pb-20 font-sans">
+    <div className="min-h-screen bg-paper text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* STUDENT HEADER */}
-        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="p-8 rounded-lg bg-white border border-neutral-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-[#4A1A45] text-white flex items-center justify-center font-bold text-2xl shadow-sm">
+            <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center font-bold text-2xl">
               {currentUser.name.charAt(0).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="font-bold text-2xl text-black">{currentUser.name}</h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 text-[10px] font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 text-[10px] font-bold uppercase tracking-wider">
                   {currentUser.role}
                 </span>
               </div>
@@ -179,7 +179,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </p>
               {currentUser.department && (
                 <div className="flex items-center gap-2 mt-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-neutral-100 text-black text-[11px] font-bold border border-neutral-300">
+                  <span className="px-2.5 py-0.5 rounded-md bg-neutral-100 text-black text-[11px] font-bold border border-neutral-300">
                     {currentUser.department}
                   </span>
                   <span className="text-[11px] text-neutral-400">
@@ -194,14 +194,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="flex items-center gap-3 text-xs font-semibold flex-wrap">
               <Link
                 href="/admin"
-                className="px-5 py-2.5 rounded-full bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all shadow-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all flex items-center gap-2"
               >
                 <FiShield className="w-4 h-4 text-emerald-400" />
                 <span>Superadmin Console</span>
               </Link>
               <Link
                 href="/admin?tab=settings"
-                className="px-5 py-2.5 rounded-full bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all shadow-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all flex items-center gap-2"
               >
                 <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                 <span>System Settings</span>
@@ -211,14 +211,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="flex items-center gap-3 text-xs font-semibold flex-wrap">
               <Link
                 href="/instructor"
-                className="px-5 py-2.5 rounded-full bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all shadow-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-[#4A1A45] text-white hover:bg-[#3B1537] font-bold transition-all flex items-center gap-2"
               >
                 <FiBookOpen className="w-4 h-4 text-[#D6BDD4]" />
                 <span>Instructor Studio</span>
               </Link>
               <Link
                 href="/instructor?tab=settings"
-                className="px-5 py-2.5 rounded-full bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all shadow-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-white border border-neutral-300 text-black hover:bg-neutral-100 font-bold transition-all flex items-center gap-2"
               >
                 <FiSliders className="w-4 h-4 text-[#4A1A45]" />
                 <span>Studio Settings</span>
@@ -226,15 +226,15 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
           ) : (
             <div className="flex items-center gap-4 text-xs font-semibold flex-wrap">
-              <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
+              <div className="px-4 py-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Assignments Submitted</span>
                 <span className="text-xl font-bold text-black">{totalSubmissions}</span>
               </div>
-              <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
+              <div className="px-4 py-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Courses Completed</span>
                 <span className="text-xl font-bold text-black">{completedEnrollments.length}</span>
               </div>
-              <div className="px-4 py-2.5 rounded-2xl bg-neutral-50 border border-neutral-200 text-center">
+              <div className="px-4 py-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-center">
                 <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
                 <span className="text-xl font-bold text-[#4A1A45]">{averagePercentage}%</span>
               </div>
@@ -245,7 +245,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* FEEDBACK NOTICE */}
         {dropMsg && (
           <div
-            className={`p-4 rounded-2xl text-xs font-bold border flex items-center gap-2 ${
+            className={`p-4 rounded-lg text-xs font-bold border flex items-center gap-2 ${
               dropMsg.type === "success"
                 ? "bg-emerald-50 text-emerald-900 border-emerald-200"
                 : "bg-red-50 text-red-900 border-red-200"
@@ -262,11 +262,11 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
         {/* ACTIVE COURSE BANNER (WITH DROP COURSE ACTION) */}
         {activeEnrollment && (
-          <div className="p-6 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-3">
+          <div className="p-6 rounded-lg bg-white border border-neutral-200 space-y-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 uppercase tracking-wider">
                     Current Active Track
                   </span>
                   <span className="text-xs text-neutral-500">{activeEnrollment.course.category}</span>
@@ -280,14 +280,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               <div className="flex items-center gap-3 shrink-0">
                 <button
                   onClick={() => setDropModalOpen(true)}
-                  className="px-4 py-2.5 rounded-full border border-neutral-300 text-neutral-700 hover:text-red-600 hover:border-red-300 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all"
+                  className="px-4 py-2.5 rounded-md border border-neutral-300 text-neutral-700 hover:text-red-600 hover:border-red-300 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all"
                   title="Drop course to unlock new enrollment"
                 >
                   <FiTrash2 className="w-3.5 h-3.5" /> Drop Track
                 </button>
                 <Link
                   href={`/student/courses/${activeEnrollment.course.id}`}
-                  className="px-6 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+                  className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
                 >
                   Go to Course <FiArrowRight className="w-4 h-4" />
                 </Link>
@@ -299,7 +299,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* ACADEMIC TRANSCRIPT & RECEIPTS (STUDENTS ONLY) */}
         {currentUser.role === "STUDENT" && (
           <>
-            <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+            <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiAward className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
@@ -350,7 +350,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         </div>
 
         {/* TUITION RECEIPTS & PAYMENT HISTORY */}
-        <div id="receipts" className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+        <div id="receipts" className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
           <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
             <h2 className="font-bold text-xl text-black flex items-center gap-2">
               <FiCreditCard className="w-5 h-5 text-black" />
@@ -402,7 +402,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       <td className="p-3.5 text-right">
                         <button
                           onClick={() => setSelectedReceipt(p)}
-                          className="px-3 py-1 rounded-full text-[11px] font-bold bg-neutral-100 hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-md text-[11px] font-bold bg-neutral-100 hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
                         >
                           <FiPrinter className="w-3 h-3" /> View Receipt
                         </button>
@@ -418,20 +418,20 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     )}
 
         {/* ACCOUNT SETTINGS */}
-        <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6 max-w-2xl">
+        <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6 max-w-2xl">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
             <FiUser className="w-5 h-5 text-black" />
             Account Settings
           </h2>
 
           {successMsg && (
-            <div className="p-3.5 rounded-2xl bg-neutral-100 text-black text-xs font-bold border border-neutral-300 flex items-center gap-2">
+            <div className="p-3.5 rounded-lg bg-neutral-100 text-black text-xs font-bold border border-neutral-300 flex items-center gap-2">
               <FiCheck className="w-4 h-4 text-black" /> Profile updated successfully!
             </div>
           )}
 
           {errorMsg && (
-            <div className="p-3.5 rounded-2xl bg-red-50 text-red-700 text-xs font-bold border border-red-200 flex items-center gap-2">
+            <div className="p-3.5 rounded-lg bg-red-50 text-red-700 text-xs font-bold border border-red-200 flex items-center gap-2">
               <FiAlertCircle className="w-4 h-4 shrink-0 text-red-600" /> {errorMsg}
             </div>
           )}
@@ -569,7 +569,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <button
               type="submit"
               disabled={saving || (password.length > 0 && password !== confirmPassword)}
-              className="px-6 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+              className="px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
               <FiSave className="w-4 h-4" />
               {saving ? "Saving..." : "Save Profile Updates"}
@@ -581,9 +581,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
       {/* DROP COURSE CONFIRMATION MODAL */}
       {dropModalOpen && activeEnrollment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
-          <div className="w-full max-w-md bg-white rounded-2xl p-7 shadow-2xl border border-neutral-200 space-y-4">
+          <div className="w-full max-w-md bg-white rounded-lg p-7 border border-neutral-200 space-y-4">
             <div className="flex items-start gap-3">
-              <div className="p-3 rounded-2xl bg-red-50 text-red-600">
+              <div className="p-3 rounded-lg bg-red-50 text-red-600">
                 <FiAlertCircle className="w-6 h-6" />
               </div>
               <div>
@@ -601,14 +601,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               <button
                 onClick={() => setDropModalOpen(false)}
                 disabled={dropLoading}
-                className="px-5 py-2.5 rounded-full border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+                className="px-5 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDropCourse}
                 disabled={dropLoading}
-                className="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-50 shadow-sm"
+                className="px-5 py-2.5 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-50"
               >
                 <FiTrash2 className="w-3.5 h-3.5" />
                 {dropLoading ? "Dropping..." : "Confirm Drop"}
@@ -621,7 +621,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
       {/* OFFICIAL ELECTRONIC RECEIPT MODAL */}
       {selectedReceipt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
-          <div className="w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-neutral-300 overflow-hidden relative print:border-none print:shadow-none print:w-full print:max-w-none">
+          <div className="w-full max-w-xl bg-white rounded-lg border border-neutral-300 overflow-hidden relative print:border-none print:shadow-none print:w-full print:max-w-none">
             {/* Modal Header */}
             <div className="bg-[#2D0F2A] text-white px-7 py-5 flex justify-between items-center border-b border-[#3B1537] print:hidden">
               <div className="flex items-center gap-2">
@@ -643,7 +643,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 <div className="flex justify-center mb-2">
                   <AcademiaLogoIcon className="w-11 h-11" />
                 </div>
-                <div className="inline-block px-3 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-bold uppercase tracking-widest mb-1">
+                <div className="inline-block px-3 py-0.5 rounded-md bg-[#4A1A45] text-white text-[10px] font-bold uppercase tracking-widest mb-1">
                   Payment Receipt
                 </div>
                 <h2 className="text-xl font-bold uppercase tracking-tight">
@@ -658,7 +658,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
 
               {/* Receipt Details Grid */}
-              <div className="grid grid-cols-2 gap-4 text-xs bg-neutral-50 p-4 rounded-2xl border border-neutral-200">
+              <div className="grid grid-cols-2 gap-4 text-xs bg-neutral-50 p-4 rounded-lg border border-neutral-200">
                 <div>
                   <span className="text-neutral-500 font-semibold block text-[10px] uppercase">Student Name</span>
                   <span className="font-bold text-black text-sm">{currentUser.name}</span>
@@ -678,7 +678,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </div>
 
               {/* Itemized Line Items */}
-              <div className="border border-neutral-200 rounded-2xl overflow-hidden">
+              <div className="border border-neutral-200 rounded-lg overflow-hidden">
                 <table className="w-full text-xs">
                   <thead className="bg-neutral-100 text-neutral-700 font-bold border-b border-neutral-200">
                     <tr>
@@ -745,13 +745,13 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="bg-neutral-50 px-7 py-4 border-t border-neutral-200 flex justify-between items-center print:hidden">
               <button
                 onClick={() => setSelectedReceipt(null)}
-                className="px-5 py-2.5 rounded-full border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+                className="px-5 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
               >
                 Close
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-6 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md"
+                className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2"
               >
                 <FiPrinter className="w-4 h-4" /> Print / Save PDF
               </button>

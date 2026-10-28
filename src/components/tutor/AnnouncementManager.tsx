@@ -86,7 +86,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
   };
 
   return (
-    <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+    <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
         <FiBell className="w-5 h-5 text-[#4A1A45]" />
         Course Announcements Manager
@@ -143,7 +143,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
         <button
           onClick={handlePost}
           disabled={posting || !newTitle.trim() || !newContent.trim()}
-          className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all"
+          className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
         >
           <FiPlus className="w-4 h-4" />
           {posting ? "Posting..." : "Post Announcement"}

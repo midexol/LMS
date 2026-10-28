@@ -68,7 +68,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
     course.department !== currentUser.department;
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-black pb-20 font-sans">
+    <div className="min-h-screen bg-paper text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
 
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
@@ -108,15 +108,15 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Curriculum */}
-          <div className="lg:col-span-2 p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+          <div className="lg:col-span-2 p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
             <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
               <FiBookOpen className="w-5 h-5 text-[#4A1A45]" />
               Curriculum &amp; Syllabus
             </h2>
 
             {isWrongDepartment ? (
-              <div className="p-8 rounded-2xl bg-neutral-50 border border-neutral-200 text-center space-y-4 my-4">
-                <div className="w-12 h-12 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto shadow-sm">
+              <div className="p-8 rounded-lg bg-neutral-50 border border-neutral-200 text-center space-y-4 my-4">
+                <div className="w-12 h-12 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto">
                   <FiLock className="w-6 h-6" />
                 </div>
                 <div>
@@ -128,7 +128,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="pt-2">
                   <Link
                     href="/courses"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     Browse Courses For {currentUser.department} <FiArrowRight className="w-4 h-4" />
                   </Link>
@@ -138,7 +138,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
               <div className="space-y-4">
                 {course.modules.map((module) => (
                   <div key={module.id} className="space-y-2">
-                    <h3 className="text-sm font-bold text-black bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-2.5">
+                    <h3 className="text-sm font-bold text-black bg-neutral-50 border border-neutral-200 rounded-lg px-4 py-2.5">
                       {module.title}
                     </h3>
                     <div className="pl-4 space-y-1.5 border-l-2 border-neutral-200">
@@ -152,7 +152,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                             {lesson.title}
                           </span>
                           {lesson.assignments.length > 0 && (
-                            <span className="px-2 py-0.5 rounded-full bg-[#4A1A45]/10 text-[#4A1A45] text-[10px] font-bold border border-[#4A1A45]/30">
+                            <span className="px-2 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] text-[10px] font-bold border border-[#4A1A45]/30">
                               Assignment
                             </span>
                           )}
@@ -167,7 +167,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
 
           {/* Enrollment Card */}
           <div className="space-y-4">
-            <div className="p-7 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-5 sticky top-24">
+            <div className="p-7 rounded-lg bg-white border border-neutral-200 space-y-5 sticky top-24">
               <div className="text-center">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Tuition Fee</span>
                 <span className="font-bold text-3xl text-black">
@@ -179,12 +179,12 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 enrollment.status === "ACTIVE" ? (
                   <Link
                     href={`/student/courses/${course.id}`}
-                    className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
+                    className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
                   >
                     Continue Learning <FiArrowRight className="w-4 h-4" />
                   </Link>
                 ) : (
-                  <div className="w-full py-3 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                  <div className="w-full py-3 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
                     <FiCheckCircle className="w-4 h-4 text-white" /> Course Completed
                   </div>
                 )
@@ -192,37 +192,37 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="space-y-2.5">
                   <Link
                     href="/login"
-                    className="w-full py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
+                    className="w-full py-3 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
                   >
                     Sign In to Enroll
                   </Link>
                   <Link
                     href="/signup"
-                    className="w-full py-3 rounded-full border border-neutral-300 bg-white text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-neutral-50 transition-all"
+                    className="w-full py-3 rounded-md border border-neutral-300 bg-white text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-neutral-50 transition-all"
                   >
                     Create Free Account
                   </Link>
                 </div>
               ) : isWrongDepartment ? (
-                <div className="p-4 rounded-2xl bg-neutral-100 border border-neutral-200 text-black text-xs font-semibold space-y-2">
+                <div className="p-4 rounded-lg bg-neutral-100 border border-neutral-200 text-black text-xs font-semibold space-y-2">
                   <p className="font-bold">Department Restricted Course</p>
                   <p className="text-neutral-600">
                     This course is designated exclusively for <strong>{course.department}</strong>. You are currently registered under <strong>{currentUser.department}</strong>.
                   </p>
                   <Link
                     href="/courses"
-                    className="block text-center py-2.5 rounded-full bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
+                    className="block text-center py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     View Your Department Courses
                   </Link>
                 </div>
               ) : activeEnrollment && activeEnrollment.courseId !== course.id ? (
-                <div className="p-4 rounded-2xl bg-neutral-100 border border-neutral-200 text-black text-xs font-semibold space-y-2">
+                <div className="p-4 rounded-lg bg-neutral-100 border border-neutral-200 text-black text-xs font-semibold space-y-2">
                   <p className="font-bold">Single Course Lock Active</p>
                   <p className="text-neutral-600">Complete your currently active course before registering for another course.</p>
                   <Link
                     href={`/student/courses/${activeEnrollment.courseId}`}
-                    className="block text-center py-2.5 rounded-full bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all"
+                    className="block text-center py-2.5 rounded-md bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all"
                   >
                     Go to Active Course
                   </Link>

@@ -67,7 +67,7 @@ function PaymentVerifyContent() {
 
   return (
     <div className="min-h-screen bg-[#1E0A1C] flex items-center justify-center p-6 text-white">
-      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-2xl p-8 shadow-2xl text-center">
+      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-lg p-8 text-center">
         {loading ? (
           <div className="py-10 space-y-4">
             <div className="w-16 h-16 rounded-full bg-[#3B1537] border border-[#4A1A45]/40 mx-auto flex items-center justify-center animate-spin">
@@ -87,7 +87,7 @@ function PaymentVerifyContent() {
               <FiAlertCircle className="w-8 h-8" />
             </div>
             {conflict && (
-              <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-950 text-amber-300 border border-amber-800">
+              <span className="inline-block px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase bg-amber-950 text-amber-300 border border-amber-800">
                 Payment Received
               </span>
             )}
@@ -103,13 +103,13 @@ function PaymentVerifyContent() {
             <div className="pt-4 flex flex-col gap-3">
               <Link
                 href="/courses"
-                className="w-full py-3 px-6 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
+                className="w-full py-3 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
               >
                 Browse Course Catalog
               </Link>
               <Link
                 href="/my-courses"
-                className="w-full py-3 px-6 rounded-full bg-[#1E0A1C] text-neutral-300 font-bold text-xs hover:bg-[#3B1537] transition-all"
+                className="w-full py-3 px-6 rounded-md bg-[#1E0A1C] text-neutral-300 font-bold text-xs hover:bg-[#3B1537] transition-all"
               >
                 Go to My Courses
               </Link>
@@ -121,7 +121,7 @@ function PaymentVerifyContent() {
               <FiCheckCircle className="w-8 h-8" />
             </div>
             <div className="space-y-1">
-              <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-950 text-emerald-300 border border-emerald-800">
+              <span className="px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase bg-emerald-950 text-emerald-300 border border-emerald-800">
                 Payment Confirmed
               </span>
               <h2 className="text-2xl font-bold text-white tracking-tight pt-2">
@@ -132,7 +132,7 @@ function PaymentVerifyContent() {
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-[#1E0A1C] border border-[#3B1537] text-left space-y-1.5">
+            <div className="p-4 rounded-lg bg-[#1E0A1C] border border-[#3B1537] text-left space-y-1.5">
               <div className="text-[11px] text-neutral-500 flex justify-between">
                 <span>Transaction Ref</span>
                 <span className="font-mono text-neutral-300">{reference}</span>
@@ -150,7 +150,7 @@ function PaymentVerifyContent() {
             <div className="pt-2">
               <Link
                 href={`/student/courses/${courseInfo?.id}`}
-                className="w-full py-3.5 px-6 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg border border-white/20"
+                className="w-full py-3.5 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
               >
                 <FiBookOpen className="w-4 h-4" /> Start Learning Now <FiArrowRight className="w-4 h-4" />
               </Link>

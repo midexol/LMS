@@ -38,14 +38,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link
             href="/"
-            className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <FiHome className="w-4 h-4" /> Return to Homepage
           </Link>
 
           <Link
             href="/courses"
-            className="w-full sm:w-auto px-6 py-3 rounded-full bg-white hover:bg-[#F7F2F6] border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-6 py-3 rounded-md bg-white hover:bg-[#F7F2F6] border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <FiBookOpen className="w-4 h-4 text-[#4A1A45]" /> Browse Course Catalog
           </Link>
@@ -60,7 +60,7 @@ export default function NotFound() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
             <Link
               href="/my-courses"
-              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group shadow-sm"
+              className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <FiCompass className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
@@ -72,7 +72,7 @@ export default function NotFound() {
 
             <Link
               href="/profile"
-              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group shadow-sm"
+              className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <FiShield className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />
@@ -84,7 +84,7 @@ export default function NotFound() {
 
             <Link
               href="/login"
-              className="p-3.5 rounded-2xl bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group shadow-sm"
+              className="p-3.5 rounded-lg bg-white border border-neutral-200 hover:border-[#4A1A45] transition-all group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <FiHelpCircle className="w-4 h-4 text-[#4A1A45] group-hover:scale-110 transition-transform" />

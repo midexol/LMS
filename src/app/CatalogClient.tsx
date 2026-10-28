@@ -87,7 +87,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
             {/* Active enrollment indicator */}
             {activeEnrollment && (
-              <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white border border-neutral-200 max-w-sm shadow-sm">
+              <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-white border border-neutral-200 max-w-sm">
                 <div className="p-2 rounded-xl bg-[#4A1A45] text-white shrink-0">
                   <FiBookOpen className="w-4 h-4 text-white" />
                 </div>
@@ -97,7 +97,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                 </div>
                 <Link
                   href={`/student/courses/${activeEnrollment.course.id}`}
-                  className="shrink-0 p-2 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white transition-all shadow-sm"
+                  className="shrink-0 p-2 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white transition-all"
                   title="Continue Course"
                 >
                   <FiArrowRight className="w-4 h-4" />
@@ -115,7 +115,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                 </Link>
                 <Link
                   href="/signup"
-                  className="px-5 py-2.5 rounded-md bg-[#4A1A45] text-white text-xs font-bold shadow-sm transition-all hover:bg-[#3B1537]"
+                  className="px-5 py-2.5 rounded-md bg-[#4A1A45] text-white text-xs font-bold transition-all hover:bg-[#3B1537]"
                 >
                   Join Free
                 </Link>
@@ -128,7 +128,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
         {/* Student Department Identity Banner */}
         {isStudent && studentDepartment && (
-          <div className="bg-[#2D0F2A] border border-[#3B1537] text-white p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+          <div className="bg-[#2D0F2A] border border-[#3B1537] text-white p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <span className="text-[10px] font-bold text-[#D6BDD4] uppercase tracking-widest block">
                 Exclusive Departmental Curriculum
@@ -142,7 +142,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             </div>
             <Link
               href="/profile"
-              className="px-5 py-2.5 rounded-md bg-[#4A1A45] border border-white/20 text-xs font-bold text-white hover:bg-[#3B1537] transition-all shrink-0 shadow-sm"
+              className="px-5 py-2.5 rounded-md bg-[#4A1A45] border border-white/20 text-xs font-bold text-white hover:bg-[#3B1537] transition-all shrink-0"
             >
               Update Department
             </Link>
@@ -151,7 +151,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
         {/* Student Missing Department Warning Banner */}
         {isStudent && !studentDepartment && (
-          <div className="bg-[#2D0F2A] text-white p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-[#3B1537] shadow-sm">
+          <div className="bg-[#2D0F2A] text-white p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-[#3B1537]">
             <div>
               <span className="text-[10px] font-bold text-[#D6BDD4] uppercase tracking-widest block">
                 Department Assignment Required
@@ -165,7 +165,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             </div>
             <Link
               href="/profile"
-              className="px-5 py-2.5 rounded-md bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all shrink-0 shadow-sm"
+              className="px-5 py-2.5 rounded-md bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all shrink-0"
             >
               Set Department in Profile
             </Link>
@@ -173,7 +173,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
         )}
 
         {/* Search & Filters */}
-        <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-4 flex flex-col sm:flex-row gap-3 flex-wrap">
+        <div className="bg-white rounded-lg border border-neutral-200 p-4 flex flex-col sm:flex-row gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[240px]">
             <FiSearch className="absolute left-3.5 top-3 text-neutral-400 w-4 h-4" />
             <input
@@ -277,7 +277,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
         {/* Course Cards Grid */}
         {filteredCourses.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-neutral-200 py-16 text-center shadow-sm space-y-2">
+          <div className="bg-white rounded-lg border border-neutral-200 py-16 text-center space-y-2">
             <FiSearch className="w-10 h-10 text-neutral-300 mx-auto mb-2" />
             <p className="font-bold text-neutral-700 text-base">
               {studentDepartment
@@ -355,7 +355,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                   <div className="p-5 bg-neutral-50 border-t border-neutral-200 space-y-2">
                     <Link
                       href={`/courses/${course.id}`}
-                      className="w-full py-2 rounded-md border border-neutral-300 bg-white text-xs font-bold text-black flex items-center justify-center hover:border-black transition-all shadow-sm"
+                      className="w-full py-2 rounded-md border border-neutral-300 bg-white text-xs font-bold text-black flex items-center justify-center hover:border-black transition-all"
                     >
                       View Syllabus Details
                     </Link>
@@ -363,7 +363,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     {isEnrolledInThis ? (
                       <Link
                         href={`/student/courses/${course.id}`}
-                        className="w-full py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm hover:bg-[#3B1537]"
+                        className="w-full py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-[#3B1537]"
                       >
                         <FiCheckCircle className="w-3.5 h-3.5 text-white" /> Continue Learning
                       </Link>
@@ -377,7 +377,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     ) : (
                       <button
                         onClick={() => handleOpenCheckout(course)}
-                        className="w-full py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                        className="w-full py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
                       >
                         {!currentUser ? "Sign In to Enroll" : "Enroll in Course"}
                       </button>

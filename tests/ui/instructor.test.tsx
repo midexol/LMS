@@ -47,7 +47,7 @@ describe("TutorSubmissionsReviewer", () => {
     { id: "s1", courseTitle: "Biology 101", assignment: { title: "Quiz 1", maxScore: 100 }, student: { name: "Ada Student" }, submittedAt: "2026-05-01T10:00:00Z", content: "Plants make food from light.", score: 62, aiFeedback: "Mentions light but not chlorophyll.", tutorFeedback: null },
     { id: "s2", courseTitle: "Biology 101", assignment: { title: "Quiz 2", maxScore: 50 }, student: { name: "Bola Student" }, submittedAt: "2026-05-02T10:00:00Z", content: "No idea.", score: null, aiFeedback: null, tutorFeedback: "Please resubmit." },
   ];
-  const card = (name: string) => screen.getByText(name).closest("div.shadow-sm") as HTMLElement;
+  const card = (name: string) => screen.getByText(name).closest('[data-testid="submission-card"]') as HTMLElement;
 
   it("tells the instructor when there is nothing to review", () => {
     render(<TutorSubmissionsReviewer initialSubmissions={[]} />);

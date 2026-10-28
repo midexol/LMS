@@ -36,13 +36,13 @@ export default function ErrorPage({
         <button
           type="button"
           onClick={() => reset()}
-          className="px-8 py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+          className="px-8 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
         >
           Try again
         </button>
         <Link
           href="/"
-          className="px-8 py-3 rounded-full border border-neutral-300 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs uppercase tracking-wider transition-all"
+          className="px-8 py-3 rounded-md border border-neutral-300 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs uppercase tracking-wider transition-all"
         >
           Back to home
         </Link>

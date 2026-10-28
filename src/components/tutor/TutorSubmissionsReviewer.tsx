@@ -65,7 +65,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
   };
 
   return (
-    <div className="p-8 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-6">
+    <div className="p-8 rounded-lg bg-white border border-neutral-200 space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-neutral-200 pb-3">
         <FiAward className="w-5 h-5 text-[#4A1A45]" />
         Student Submissions &amp; Grade Override Reviewer
@@ -92,7 +92,8 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
             return (
               <div
                 key={sub.id}
-                className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3 shadow-sm"
+                data-testid="submission-card"
+                className="p-6 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3"
               >
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                   <div>
@@ -133,7 +134,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                     {!isEditing && (
                       <button
                         onClick={() => handleStartEdit(sub)}
-                        className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 shadow-sm text-xs font-bold text-black flex items-center gap-1.5 hover:bg-neutral-100 transition-all"
+                        className="px-3 py-1.5 rounded-lg bg-white border border-neutral-300 text-xs font-bold text-black flex items-center gap-1.5 hover:bg-neutral-100 transition-all"
                       >
                         <FiEdit2 className="w-3.5 h-3.5" /> Override
                       </button>
@@ -211,7 +212,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                       <button
                         onClick={() => handleSaveGradeOverride(sub.id)}
                         disabled={saving}
-                        className="px-4 py-1.5 rounded-lg bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm disabled:opacity-60"
+                        className="px-4 py-1.5 rounded-lg bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-60"
                       >
                         <FiSave className="w-3.5 h-3.5" />
                         {saving ? "Saving..." : "Save Override"}

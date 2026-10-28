@@ -94,9 +94,9 @@ function ConfirmModal({ title, body, onConfirm, onCancel, loading }: {
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl border border-neutral-200 shadow-2xl p-7 space-y-4">
+      <div className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-4">
         <div className="flex items-start gap-3">
-          <div className="p-2.5 rounded-2xl bg-neutral-100 text-black">
+          <div className="p-2.5 rounded-lg bg-neutral-100 text-black">
             <FiAlertCircle className="w-5 h-5 text-red-600" />
           </div>
           <div>
@@ -105,10 +105,10 @@ function ConfirmModal({ title, body, onConfirm, onCancel, loading }: {
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-2">
-          <button onClick={onCancel} className="px-4 py-2 rounded-full border border-neutral-200 text-neutral-600 font-bold text-xs hover:bg-neutral-100">
+          <button onClick={onCancel} className="px-4 py-2 rounded-md border border-neutral-200 text-neutral-600 font-bold text-xs hover:bg-neutral-100">
             Cancel
           </button>
-          <button onClick={onConfirm} disabled={loading} className="px-4 py-2 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50">
+          <button onClick={onConfirm} disabled={loading} className="px-4 py-2 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50">
             {loading ? "Deleting..." : "Confirm Delete"}
           </button>
         </div>
@@ -144,7 +144,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white rounded-2xl border border-neutral-200 shadow-2xl p-7 space-y-5">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Add Instructor</h3>
           <button type="button" onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
@@ -213,14 +213,14 @@ function AddInstructorModal({ onSubmit, onClose }: {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-full border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
+            className="flex-1 py-2.5 rounded-md border border-neutral-300 text-neutral-700 font-bold text-xs hover:bg-neutral-100"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs"
+            className="flex-1 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs"
           >
             {saving ? "Adding..." : "Add instructor"}
           </button>
@@ -257,7 +257,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl border border-neutral-200 shadow-2xl p-7 space-y-5">
+      <div className="w-full max-w-sm bg-white rounded-lg border border-neutral-200 p-7 space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Edit User Account</h3>
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
@@ -265,7 +265,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
           </button>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-neutral-100 border border-neutral-200">
+        <div className="p-3.5 rounded-lg bg-neutral-100 border border-neutral-200">
           <p className="font-bold text-black text-sm">{user.name}</p>
           <p className="text-xs text-neutral-500">{user.email}</p>
         </div>
@@ -337,13 +337,13 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
         </div>
 
         <div className="flex justify-end gap-2 pt-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-full border border-neutral-200 text-neutral-600 text-xs font-bold hover:bg-neutral-100">
+          <button onClick={onClose} className="px-4 py-2 rounded-md border border-neutral-200 text-neutral-600 text-xs font-bold hover:bg-neutral-100">
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={saving || (!!password && password.length < 6)}
-            className="px-5 py-2 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50"
+            className="px-5 py-2 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>
@@ -371,14 +371,14 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl border border-neutral-200 shadow-2xl p-7 space-y-5">
+      <div className="w-full max-w-md bg-white rounded-lg border border-neutral-200 p-7 space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg text-black">Grade Override Desk</h3>
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500">
             <FiX className="w-4 h-4" />
           </button>
         </div>
-        <div className="p-3.5 rounded-2xl bg-neutral-100 border border-neutral-200 space-y-1">
+        <div className="p-3.5 rounded-lg bg-neutral-100 border border-neutral-200 space-y-1">
           <p className="text-[10px] font-bold text-[#4A1A45] uppercase">{sub.assignment.lesson.module.course.title}</p>
           <p className="font-bold text-black text-sm">{sub.assignment.title}</p>
           <p className="text-xs text-neutral-500">Student: {sub.student.name}</p>
@@ -418,8 +418,8 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-1">
-          <button onClick={onClose} className="px-4 py-2 rounded-full border border-neutral-200 text-neutral-600 text-xs font-bold hover:bg-neutral-100">Cancel</button>
-          <button onClick={handleSave} disabled={saving} className="px-5 py-2 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50">
+          <button onClick={onClose} className="px-4 py-2 rounded-md border border-neutral-200 text-neutral-600 text-xs font-bold hover:bg-neutral-100">Cancel</button>
+          <button onClick={handleSave} disabled={saving} className="px-5 py-2 rounded-md bg-black hover:bg-neutral-800 text-white font-bold text-xs disabled:opacity-50">
             {saving ? "Saving..." : "Apply Override"}
           </button>
         </div>
@@ -755,7 +755,7 @@ export function AdminDashboardClient({
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`pointer-events-auto px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2 border ${
+            className={`pointer-events-auto px-4 py-3 rounded-lg  text-xs font-bold flex items-center gap-2 border ${
               t.type === "success"
                 ? "bg-black text-white border-black"
                 : "bg-red-600 text-white border-red-600"
@@ -830,7 +830,7 @@ export function AdminDashboardClient({
               onClick={() => switchTab("settings")}
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all ${
                 activeTab === "settings"
-                  ? "bg-white text-black border-white shadow-sm"
+                  ? "bg-white text-black border-white "
                   : "border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white hover:border-neutral-700"
               }`}
             >
@@ -839,21 +839,21 @@ export function AdminDashboardClient({
             </button>
             <Link
               href="/profile"
-              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
               <FiShield className="w-3.5 h-3.5 text-emerald-400" />
               <span>Profile</span>
             </Link>
             <Link
               href="/courses"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
               <FiBookOpen className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Student Catalog</span>
             </Link>
             <Link
               href="/instructor"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-neutral-800 bg-neutral-900 text-xs font-bold text-neutral-300 hover:text-white hover:border-neutral-700 transition-all"
             >
               <FiLayers className="w-3.5 h-3.5 text-[#D6BDD4]" />
               <span>Instructor Studio</span>
@@ -863,7 +863,7 @@ export function AdminDashboardClient({
                 await fetch("/api/auth/logout", { method: "POST" });
                 window.location.href = "/login";
               }}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-colors"
             >
               <FiLogOut className="w-3.5 h-3.5 text-neutral-700" />
               <span className="hidden sm:inline">Log out</span>
@@ -890,7 +890,7 @@ export function AdminDashboardClient({
                 onClick={() => switchTab(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
                   active
-                    ? "bg-white text-[#4A1A45] shadow-sm font-bold"
+                    ? "bg-white text-[#4A1A45]  font-bold"
                     : "text-neutral-300 hover:text-white hover:bg-[#3B1537]"
                 }`}
               >
@@ -916,7 +916,7 @@ export function AdminDashboardClient({
           <div className="space-y-6">
             {/* Banner - Pure Jet Black with Brown Accent */}
             <div
-              className="rounded-2xl p-8 text-white relative overflow-hidden shadow-md"
+              className="rounded-lg p-8 text-white relative overflow-hidden"
               style={{
                 background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
               }}
@@ -928,7 +928,7 @@ export function AdminDashboardClient({
                   Real-time analytics covering platform enrollments, revenue, completion ratios, and assignment throughput.
                 </p>
                 <div className="pt-3 flex items-center gap-4 text-xs">
-                  <span className="px-4 py-2 rounded-full bg-white text-[#4A1A45] font-bold">
+                  <span className="px-4 py-2 rounded-md bg-white text-[#4A1A45] font-bold">
                     Revenue: {formatNgn(metrics.totalRevenue)}
                   </span>
                   <span className="text-neutral-300">
@@ -946,7 +946,7 @@ export function AdminDashboardClient({
                 { label: "Active Enrollments", value: metrics.activeEnrollmentsCount, sub: `${metrics.completedEnrollmentsCount} completed` },
                 { label: "Submissions Logged", value: metrics.totalSubmissions, sub: "Automated & faculty reviews" },
               ].map((c, i) => (
-                <div key={i} className="bg-[#2D0F2A] text-white rounded-2xl p-6 border border-[#3B1537] shadow-md flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
+                <div key={i} className="bg-[#2D0F2A] text-white rounded-lg p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
                   <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{c.label}</p>
                   <div>
                     <div className="text-2xl font-bold text-white tracking-tight">{c.value}</div>
@@ -961,7 +961,7 @@ export function AdminDashboardClient({
             {/* Visual Analytics Row: Modern Dual Bar & SVG Ring Distribution (CLEAR & READABLE) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Category Throughput Dual Comparison */}
-              <div className="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6">
+              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-neutral-200/80 space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                   <div>
                     <h3 className="font-bold text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
@@ -981,7 +981,7 @@ export function AdminDashboardClient({
 
                 {/* 3 Executive KPI Capsules */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                  <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
                       <FiActivity className="w-5 h-5 text-emerald-400" />
                     </div>
@@ -993,7 +993,7 @@ export function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                  <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/20 flex items-center justify-center shrink-0">
                       <FiAward className="w-5 h-5" />
                     </div>
@@ -1005,7 +1005,7 @@ export function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
+                  <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-neutral-200 text-neutral-800 flex items-center justify-center shrink-0">
                       <FiCheckCircle className="w-5 h-5" />
                     </div>
@@ -1048,7 +1048,7 @@ export function AdminDashboardClient({
                   const displayTracks = tracks;
                   if (displayTracks.length === 0) {
                     return (
-                      <div className="p-8 text-center bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
+                      <div className="p-8 text-center bg-neutral-50 rounded-lg border border-dashed border-neutral-200">
                         <p className="text-xs text-neutral-500">No courses or enrollments yet. Activity by subject appears here once courses are created.</p>
                       </div>
                     );
@@ -1066,7 +1066,7 @@ export function AdminDashboardClient({
                           return (
                             <div
                               key={track.cat}
-                              className="p-4 rounded-2xl bg-neutral-50/70 hover:bg-neutral-50 border border-neutral-100 hover:border-neutral-200 transition-all space-y-2.5 group"
+                              className="p-4 rounded-lg bg-neutral-50/70 hover:bg-neutral-50 border border-neutral-100 hover:border-neutral-200 transition-all space-y-2.5 group"
                             >
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                                 <div className="flex items-center gap-2">
@@ -1147,7 +1147,7 @@ export function AdminDashboardClient({
               </div>
 
               {/* Platform Composition Breakdown */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-6 flex flex-col justify-between">
+              <div className="bg-white rounded-lg p-6 sm:p-8 border border-neutral-200/80 space-y-6 flex flex-col justify-between">
                 <div className="pb-3 border-b border-neutral-100">
                   <div className="flex items-center gap-2">
                     <FiUsers className="w-4 h-4 text-[#4A1A45]" />
@@ -1236,7 +1236,7 @@ export function AdminDashboardClient({
                       {/* 3 Executive Role Breakdown Cards */}
                       <div className="space-y-2.5 pt-2 border-t border-neutral-100">
                         {/* Students Card */}
-                        <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
+                        <div className="p-3 rounded-lg bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center text-[11px] font-bold">
@@ -1246,7 +1246,7 @@ export function AdminDashboardClient({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-black">{sCount}</span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 text-neutral-800">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 text-neutral-800">
                                 {sPct}%
                               </span>
                             </div>
@@ -1257,7 +1257,7 @@ export function AdminDashboardClient({
                         </div>
 
                         {/* Faculty & Tutors Card */}
-                        <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
+                        <div className="p-3 rounded-lg bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-lg bg-[#4A1A45]/15 text-[#4A1A45] border border-[#4A1A45]/25 flex items-center justify-center text-[11px] font-bold">
@@ -1267,7 +1267,7 @@ export function AdminDashboardClient({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-[#4A1A45]">{tCount}</span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45]">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45]">
                                 {tPct}%
                               </span>
                             </div>
@@ -1278,7 +1278,7 @@ export function AdminDashboardClient({
                         </div>
 
                         {/* Administrators Card */}
-                        <div className="p-3 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1.5">
+                        <div className="p-3 rounded-lg bg-neutral-50/80 border border-neutral-100 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-lg bg-neutral-200 text-neutral-700 flex items-center justify-center text-[11px] font-bold">
@@ -1288,7 +1288,7 @@ export function AdminDashboardClient({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-neutral-800">{aCount}</span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 text-neutral-700">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 text-neutral-700">
                                 {aPct}%
                               </span>
                             </div>
@@ -1309,7 +1309,7 @@ export function AdminDashboardClient({
         {/* USERS TAB */}
         {activeTab === "users" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-sm flex-wrap">
+            <div className="bg-white rounded-lg border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <FiSearch className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1317,7 +1317,7 @@ export function AdminDashboardClient({
                   placeholder="Search users by name, email, or department..."
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+                  className="w-full pl-10 pr-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
                 />
               </div>
 
@@ -1325,7 +1325,7 @@ export function AdminDashboardClient({
                 <button
                   type="button"
                   onClick={() => setShowAddInstructor(true)}
-                  className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                  className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white text-xs font-bold flex items-center gap-1.5"
                 >
                   <FiPlus className="w-3.5 h-3.5" />
                   Add instructor
@@ -1333,7 +1333,7 @@ export function AdminDashboardClient({
                 <select
                   value={userRoleFilter}
                   onChange={(e) => setUserRoleFilter(e.target.value)}
-                  className="px-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
+                  className="px-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
                 >
                   <option value="ALL">All Roles ({users.length})</option>
                   <option value="STUDENT">Students ({users.filter((u) => u.role === "STUDENT").length})</option>
@@ -1344,7 +1344,7 @@ export function AdminDashboardClient({
                 <select
                   value={userDeptFilter}
                   onChange={(e) => setUserDeptFilter(e.target.value)}
-                  className="px-3.5 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
+                  className="px-3.5 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
                 >
                   <option value="ALL">All Departments</option>
                   {ACADEMIC_STRUCTURE.flatMap((f) => f.departments).map((d) => (
@@ -1356,7 +1356,7 @@ export function AdminDashboardClient({
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
               <table className="w-full text-xs text-left">
                 <thead>
                   <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
@@ -1386,7 +1386,7 @@ export function AdminDashboardClient({
                         <td className="p-4">
                           {u.department ? (
                             <div>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200 inline-block truncate max-w-[190px]">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-neutral-100 text-black border border-neutral-200 inline-block truncate max-w-[190px]">
                                 {u.department}
                               </span>
                               <span className="text-[10px] text-neutral-400 block truncate max-w-[190px] mt-0.5">
@@ -1444,7 +1444,7 @@ export function AdminDashboardClient({
         {/* COURSES TAB */}
         {activeTab === "courses" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-sm flex-wrap">
+            <div className="bg-white rounded-lg border border-neutral-200 p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <FiSearch className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1452,7 +1452,7 @@ export function AdminDashboardClient({
                   placeholder="Search courses by title, instructor, or department..."
                   value={courseSearch}
                   onChange={(e) => setCourseSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
+                  className="w-full pl-10 pr-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs text-black outline-none focus:border-[#4A1A45]"
                 />
               </div>
 
@@ -1460,7 +1460,7 @@ export function AdminDashboardClient({
                 <select
                   value={coursePublishedFilter}
                   onChange={(e) => setCoursePublishedFilter(e.target.value)}
-                  className="px-4 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
+                  className="px-4 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none"
                 >
                   <option value="ALL">All Status ({courses.length})</option>
                   <option value="PUBLISHED">Published ({metrics.publishedCourses})</option>
@@ -1470,7 +1470,7 @@ export function AdminDashboardClient({
                 <select
                   value={courseDeptFilter}
                   onChange={(e) => setCourseDeptFilter(e.target.value)}
-                  className="px-3.5 py-2 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
+                  className="px-3.5 py-2 rounded-md bg-neutral-50 border border-neutral-200 text-xs font-bold text-black outline-none max-w-[210px]"
                 >
                   <option value="ALL">All Departments</option>
                   {ACADEMIC_STRUCTURE.flatMap((f) => f.departments).map((d) => (
@@ -1484,12 +1484,12 @@ export function AdminDashboardClient({
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredCourses.map((c) => (
-                <div key={c.id} className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm space-y-4 flex flex-col justify-between">
+                <div key={c.id} className="bg-white rounded-lg p-6 border border-neutral-200 space-y-4 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-start justify-between flex-wrap gap-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {c.department && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-black text-white">
                             {c.department}
                           </span>
                         )}
@@ -1528,7 +1528,7 @@ export function AdminDashboardClient({
 
         {/* ENROLLMENTS TAB */}
         {activeTab === "enrollments" && (
-          <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
             <table className="w-full text-xs text-left">
               <thead>
                 <tr className="border-b border-neutral-200 text-neutral-500 font-bold bg-neutral-50">
@@ -1556,7 +1556,7 @@ export function AdminDashboardClient({
                     </td>
                     <td className="p-4 text-neutral-500">{formatDate(e.enrolledAt)}</td>
                     <td className="p-4">
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white">
+                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-black text-white">
                         {e.status}
                       </span>
                     </td>
@@ -1564,7 +1564,7 @@ export function AdminDashboardClient({
                       {e.status === "ACTIVE" && (
                         <button
                           onClick={() => setRevokeEnrollment(e)}
-                          className="px-2.5 py-1 rounded-full text-[10px] font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all inline-flex items-center gap-1"
+                          className="px-2.5 py-1 rounded-md text-[10px] font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all inline-flex items-center gap-1"
                           title="Revoke enrollment and release course lock"
                         >
                           <FiTrash2 className="w-3 h-3" /> Revoke Lock
@@ -1585,7 +1585,7 @@ export function AdminDashboardClient({
               const max = sub.assignment.maxScore || 100;
               const isPass = sub.score !== null && isPassingPercent((sub.score / max) * 100);
               return (
-                <div key={sub.id} className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm space-y-4">
+                <div key={sub.id} className="bg-white rounded-lg p-6 border border-neutral-200 space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
                       <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
@@ -1604,7 +1604,7 @@ export function AdminDashboardClient({
                       </div>
                       <button
                         onClick={() => setGradeOverrideSub(sub)}
-                        className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                        className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5"
                       >
                         <FiSliders className="w-3.5 h-3.5" />
                         Override
@@ -1612,7 +1612,7 @@ export function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-neutral-100 text-xs space-y-1">
+                  <div className="p-4 rounded-lg bg-neutral-100 text-xs space-y-1">
                     <span className="text-[10px] font-bold text-neutral-500 uppercase block">Student Submission:</span>
                     <p className="text-neutral-800 leading-relaxed">{sub.content}</p>
                   </div>
@@ -1642,7 +1642,7 @@ export function AdminDashboardClient({
             </div>
 
             {messages.filter((m) => messageFilter === "ALL" || m.status === "NEW").length === 0 ? (
-              <div className="bg-white rounded-2xl p-10 border border-neutral-200 text-center space-y-2">
+              <div className="bg-white rounded-lg p-10 border border-neutral-200 text-center space-y-2">
                 <FiInbox className="w-8 h-8 text-neutral-300 mx-auto" />
                 <p className="text-sm font-semibold text-neutral-600">
                   {messages.length === 0 ? "No messages yet." : "No unread messages."}
@@ -1655,7 +1655,7 @@ export function AdminDashboardClient({
                 .map((msg) => (
                   <div
                     key={msg.id}
-                    className={`bg-white rounded-2xl p-6 border shadow-sm space-y-3 ${
+                    className={`bg-white rounded-lg p-6 border  space-y-3 ${
                       msg.status === "NEW" ? "border-[#4A1A45]/40" : "border-neutral-200"
                     }`}
                   >
@@ -1663,7 +1663,7 @@ export function AdminDashboardClient({
                       <div className="space-y-0.5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           {msg.status === "NEW" && (
-                            <span className="px-2 py-0.5 rounded-full bg-[#4A1A45] text-white text-[10px] font-bold uppercase">New</span>
+                            <span className="px-2 py-0.5 rounded-md bg-[#4A1A45] text-white text-[10px] font-bold uppercase">New</span>
                           )}
                           <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{msg.subject}</span>
                         </div>
@@ -1676,14 +1676,14 @@ export function AdminDashboardClient({
                         <a
                           href={`mailto:${msg.email}?subject=${encodeURIComponent("Re: " + msg.subject)}`}
                           onClick={() => msg.status === "NEW" && handleToggleMessageRead(msg)}
-                          className="px-4 py-2 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                          className="px-4 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-1.5"
                         >
                           <FiMail className="w-3.5 h-3.5" />
                           Reply
                         </a>
                         <button
                           onClick={() => handleToggleMessageRead(msg)}
-                          className="px-4 py-2 rounded-full border border-neutral-200 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs transition-all"
+                          className="px-4 py-2 rounded-md border border-neutral-200 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs transition-all"
                         >
                           {msg.status === "NEW" ? "Mark read" : "Mark unread"}
                         </button>
@@ -1696,7 +1696,7 @@ export function AdminDashboardClient({
                         </button>
                       </div>
                     </div>
-                    <p className="p-4 rounded-2xl bg-neutral-100 text-xs text-neutral-800 leading-relaxed whitespace-pre-wrap break-words">
+                    <p className="p-4 rounded-lg bg-neutral-100 text-xs text-neutral-800 leading-relaxed whitespace-pre-wrap break-words">
                       {msg.message}
                     </p>
                   </div>
@@ -1714,22 +1714,22 @@ export function AdminDashboardClient({
             </div>
 
             {/* Superadmin Security & Profile Card */}
-            <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neutral-100">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl font-bold shadow-md">
+                  <div className="w-16 h-16 rounded-lg bg-black text-white flex items-center justify-center text-2xl font-bold">
                     {currentUser.name.charAt(0)}
                   </div>
                   <div>
                     <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
                     <p className="text-xs text-neutral-500">{currentUser.email}</p>
-                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black text-white">
+                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-black text-white">
                       Superadministrator
                     </span>
                   </div>
                 </div>
 
-                <div className="text-xs text-neutral-500 bg-neutral-50 px-4 py-3 rounded-2xl border border-neutral-200">
+                <div className="text-xs text-neutral-500 bg-neutral-50 px-4 py-3 rounded-lg border border-neutral-200">
                   <span className="font-bold text-black block">System Authority Level: Highest</span>
                   <span>Full access to database, user records, course publishing, and grade ledgers.</span>
                 </div>
@@ -1782,7 +1782,7 @@ export function AdminDashboardClient({
                 <button
                   type="submit"
                   disabled={adminPasswordLoading || !adminNewPassword}
-                  className="px-6 py-2.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs shadow-sm transition-all"
+                  className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs transition-all"
                 >
                   {adminPasswordLoading ? "Updating..." : "Save New Password"}
                 </button>
@@ -1790,45 +1790,45 @@ export function AdminDashboardClient({
             </div>
 
             {/* Academic Policies & Enrollment Rules */}
-            <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
                 <FiAward className="w-5 h-5 text-[#4A1A45]" />
                 Academic Policies &amp; Lock Enforcement
               </h3>
 
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <h4 className="font-bold text-sm text-black">1:1 Single Course Active Enrollment Rule</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
                       Ensures focused student learning by locking concurrent registrations until current course is completed or dropped.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-black text-white">
+                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-black text-white">
                     Strictly Active
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <h4 className="font-bold text-sm text-black">Certificate Completion Threshold</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
                       Minimum average grade required to complete a course and unlock the completion certificate.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#4A1A45] text-white">
+                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-[#4A1A45] text-white">
                     {PASS_MARK_PERCENT}% Pass Score
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <h4 className="font-bold text-sm text-black">Automated Evaluation Engine</h4>
                     <p className="text-xs text-neutral-500 mt-0.5">
                       Instant evaluation feedback on student assignment submissions with superadmin grade override capability.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-black text-white">
+                  <span className="px-3 py-1 rounded-md text-xs font-bold bg-black text-white">
                     Enabled
                   </span>
                 </div>
@@ -1836,7 +1836,7 @@ export function AdminDashboardClient({
             </div>
 
             {/* Audit & Data Export Center */}
-            <div className="bg-white rounded-2xl p-8 border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white rounded-lg p-8 border border-neutral-200 space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-neutral-100 pb-3 flex items-center gap-2">
                 <FiDownload className="w-5 h-5 text-[#4A1A45]" />
                 Data Export Center
@@ -1858,7 +1858,7 @@ export function AdminDashboardClient({
                       ])
                     )
                   }
-                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <FiUsers className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
@@ -1875,7 +1875,7 @@ export function AdminDashboardClient({
                       courses.map((c) => [c.id, c.title, c.category, c.faculty || "", c.department || "", c.price, c.published ? "Yes" : "No", c.tutor.name])
                     )
                   }
-                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <FiBookOpen className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
@@ -1892,7 +1892,7 @@ export function AdminDashboardClient({
                       enrollments.map((e) => [e.id, e.student.name, e.student.email, e.course.title, e.status, String(e.enrolledAt), String(e.completedAt || "")])
                     )
                   }
-                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <FiAward className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>
@@ -1909,7 +1909,7 @@ export function AdminDashboardClient({
                       submissions.map((s) => [s.id, s.student.name, s.assignment.lesson.module.course.title, s.assignment.title, s.score ?? "Pending", s.assignment.maxScore, s.status, String(s.submittedAt)])
                     )
                   }
-                  className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <FiActivity className="w-5 h-5 text-[#4A1A45] group-hover:scale-110 transition-transform" />
                   <div>

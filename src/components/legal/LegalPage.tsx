@@ -61,7 +61,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
           ))}
         </div>
 
-        <div className="mt-12 p-5 rounded-2xl bg-neutral-50 border border-neutral-200 text-sm text-neutral-700 leading-relaxed">
+        <div className="mt-12 p-5 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700 leading-relaxed">
           Questions about this page? {" "}
           {supportEmail ? (
             <>

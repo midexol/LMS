@@ -157,7 +157,7 @@ export function MockCheckoutModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-fadeIn">
-      <div className="w-full max-w-lg bg-white rounded-2xl p-7 shadow-2xl border border-neutral-200 relative">
+      <div className="w-full max-w-lg bg-white rounded-lg p-7 border border-neutral-200 relative">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -182,10 +182,10 @@ export function MockCheckoutModal({
         </div>
 
         {/* Course Card Summary */}
-        <div className="mt-5 p-4 rounded-2xl bg-[#F7F2F6]/60 border border-[#4A1A45]/15 space-y-2">
+        <div className="mt-5 p-4 rounded-lg bg-[#F7F2F6]/60 border border-[#4A1A45]/15 space-y-2">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#4A1A45] bg-[#4A1A45]/10 px-2 py-0.5 rounded-full border border-[#4A1A45]/20">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#4A1A45] bg-[#4A1A45]/10 px-2 py-0.5 rounded-md border border-[#4A1A45]/20">
                 {course.department || course.faculty || "Course"}
               </span>
               <h4 className="font-bold text-black text-sm mt-1">{course.title}</h4>
@@ -201,7 +201,7 @@ export function MockCheckoutModal({
 
         {/* UNAUTHENTICATED USER CHECK */}
         {!currentUser ? (
-          <div className="mt-5 p-6 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-4">
+          <div className="mt-5 p-6 rounded-lg bg-neutral-50 border border-neutral-200 space-y-4">
             <div className="flex items-start gap-3">
               <FiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -215,13 +215,13 @@ export function MockCheckoutModal({
             <div className="flex gap-3 pt-2">
               <Link
                 href="/login"
-                className="flex-1 py-2.5 rounded-full bg-[#4A1A45] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#3B1537] transition-all shadow-sm"
+                className="flex-1 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#3B1537] transition-all"
               >
                 <FiLogIn className="w-4 h-4" /> Sign In
               </Link>
               <Link
                 href="/signup"
-                className="flex-1 py-2.5 rounded-full bg-white border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#F7F2F6] transition-all shadow-sm"
+                className="flex-1 py-2.5 rounded-md bg-white border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#F7F2F6] transition-all"
               >
                 <FiUserPlus className="w-4 h-4" /> Sign Up Free
               </Link>
@@ -229,7 +229,7 @@ export function MockCheckoutModal({
           </div>
         ) : activeEnrollment && activeEnrollment.courseId !== course.id ? (
           /* Single Active Course Restriction */
-          <div className="mt-5 p-5 rounded-2xl bg-[#F7F2F6] border border-[#4A1A45]/20 shadow-sm space-y-3">
+          <div className="mt-5 p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
             <div className="flex gap-3 items-start">
               <FiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -244,7 +244,7 @@ export function MockCheckoutModal({
                   <Link
                     href={`/student/courses/${activeEnrollment.courseId}`}
                     onClick={onClose}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold text-white bg-[#4A1A45] hover:bg-[#3B1537] shadow-sm transition-all"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold text-white bg-[#4A1A45] hover:bg-[#3B1537] transition-all"
                   >
                     Go to Active Course <FiArrowRight className="w-4 h-4" />
                   </Link>
@@ -330,7 +330,7 @@ export function MockCheckoutModal({
             )}
 
             {success ? (
-              <div className="p-4 rounded-2xl bg-emerald-50 text-emerald-900 text-sm font-bold border border-emerald-200 flex items-center justify-center gap-2">
+              <div className="p-4 rounded-lg bg-emerald-50 text-emerald-900 text-sm font-bold border border-emerald-200 flex items-center justify-center gap-2">
                 <FiCheck className="w-5 h-5 text-emerald-600" />
                 {course.price <= 0 ? "You are enrolled! Opening your course..." : "Payment Confirmed! Enrolling in Course..."}
               </div>
@@ -338,7 +338,7 @@ export function MockCheckoutModal({
               <button
                 onClick={handlePaystackCheckout}
                 disabled={loading || (course.price > 0 && !quote && !quoteFailed)}
-                className="w-full py-3.5 px-6 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

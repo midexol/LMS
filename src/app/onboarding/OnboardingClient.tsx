@@ -51,7 +51,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-2xl border border-neutral-200 shadow-sm">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-lg border border-neutral-200">
         <div>
           <h1 className="font-bold text-2xl text-black">One last step</h1>
           <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
@@ -60,7 +60,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
         </div>
 
         {error && (
-          <div role="alert" className="flex items-start gap-2.5 p-3 rounded-2xl bg-red-50 border border-red-200">
+          <div role="alert" className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200">
             <FiAlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             <p className="text-xs font-semibold text-red-700">{error}</p>
           </div>
@@ -104,7 +104,7 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
         <button
           type="submit"
           disabled={saving || !faculty || !department}
-          className="w-full py-3 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
+          className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50"
         >
           {saving ? "Saving..." : "Continue to my courses"}
           {!saving && <FiArrowRight className="w-4 h-4" />}

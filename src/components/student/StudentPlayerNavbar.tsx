@@ -18,7 +18,7 @@ export function StudentPlayerNavbar({ courseTitle, category, studentName }: Stud
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#1E0A1C] text-white border-b border-[#3B1537] shadow-sm">
+    <header className="sticky top-0 z-40 bg-[#1E0A1C] text-white border-b border-[#3B1537]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         {/* Left: Brand Logo + Back to Curriculum + Course Title */}
         <div className="flex items-center gap-3 sm:gap-4 min-w-0">
@@ -52,7 +52,7 @@ export function StudentPlayerNavbar({ courseTitle, category, studentName }: Stud
         <div className="flex items-center gap-3 shrink-0">
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-xs font-medium text-neutral-300">{studentName}</span>
-            <span className="text-[10px] font-mono uppercase text-[#D6BDD4] px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
+            <span className="text-[10px] font-mono uppercase text-[#D6BDD4] px-2 py-0.5 rounded-md bg-white/5 border border-white/10">
               Student
             </span>
           </div>

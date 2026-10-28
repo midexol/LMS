@@ -81,14 +81,14 @@ function VerifyEmailContent() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col justify-between p-4 sm:p-8">
+    <div className="min-h-screen bg-paper flex flex-col justify-between p-4 sm:p-8">
       {/* Top Header */}
       <div className="max-w-md mx-auto w-full flex justify-center py-6">
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
       {/* Main Card */}
-      <div className="max-w-md mx-auto w-full bg-white rounded-2xl border border-neutral-200/80 shadow-sm p-8 sm:p-10 space-y-6">
+      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-neutral-200/80 p-8 sm:p-10 space-y-6">
         {status === "loading" && (
           <div className="text-center py-8 space-y-4">
             <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto animate-spin">
@@ -107,7 +107,7 @@ function VerifyEmailContent() {
               <FiCheckCircle className="w-8 h-8" />
             </div>
             <div className="space-y-2">
-              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md uppercase tracking-wider">
                 Account Activated
               </span>
               <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">Email Verified!</h2>
@@ -116,7 +116,7 @@ function VerifyEmailContent() {
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 text-left text-xs text-neutral-600 space-y-1">
+            <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-100 text-left text-xs text-neutral-600 space-y-1">
               <p className="font-bold text-neutral-900">Next Steps:</p>
               <p>• Explore approved faculty and departmental courses.</p>
               <p>• Submit assignments to receive immediate automated rubric feedback.</p>
@@ -124,7 +124,7 @@ function VerifyEmailContent() {
 
             <Link
               href="/my-courses"
-              className="w-full py-3.5 rounded-full bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all"
+              className="w-full py-3.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all"
             >
               Continue to My Courses <FiArrowRight className="w-4 h-4" />
             </Link>
@@ -172,7 +172,7 @@ function VerifyEmailContent() {
                 <button
                   type="submit"
                   disabled={resendLoading}
-                  className="w-full py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
+                  className="w-full py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                 >
                   {resendLoading ? <FiLoader className="w-4 h-4 animate-spin" /> : "Send New Link"}
                 </button>
@@ -200,7 +200,7 @@ export default function VerifyEmailPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+        <div className="min-h-screen bg-paper flex items-center justify-center">
           <FiLoader className="w-8 h-8 animate-spin text-[#4A1A45]" />
         </div>
       }
