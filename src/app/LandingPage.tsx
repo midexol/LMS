@@ -265,21 +265,15 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* Figures */}
-      <section className="px-6 max-w-7xl mx-auto py-14 sm:py-20">
-        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-8">
-          <div>
-            <dt className="font-heading text-8xl sm:text-9xl font-medium text-[#4A1A45] leading-none">{PASS_MARK_PERCENT}%</dt>
-            <dd className="mt-4 text-lg text-ink-soft">Pass mark on assignments</dd>
-          </div>
-          <div>
-            <dt className="font-heading text-8xl sm:text-9xl font-medium text-[#4A1A45] leading-none">1</dt>
-            <dd className="mt-4 text-lg text-ink-soft">Active course at a time</dd>
-          </div>
-        </dl>
-
+      {/* Wordmark */}
+      <section className="border-b border-rule overflow-hidden bg-paper">
+        <div className="max-w-7xl mx-auto px-6 pt-12 sm:pt-20">
+          <p className="font-heading font-medium text-[#4A1A45] text-[clamp(4.25rem,19.5vw,17.5rem)] leading-[0.8] tracking-[-0.035em] pb-3 sm:pb-5 select-none">
+            Academia
+          </p>
+        </div>
         {categoryCounts.length > 0 && (
-          <div className="mt-12 pt-5 border-t border-rule flex flex-wrap items-baseline gap-x-6 gap-y-2 text-sm">
+          <div className="max-w-7xl mx-auto px-6 py-5 border-t border-rule flex flex-wrap items-baseline gap-x-6 gap-y-2 text-sm">
             <span className="text-ink-soft">Subjects</span>
             {categoryCounts.map((cat) => (
               <Link key={cat.category} href="/courses" className="text-ink hover:text-[#4A1A45] hover:underline underline-offset-4">
