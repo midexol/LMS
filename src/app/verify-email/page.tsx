@@ -83,14 +83,14 @@ function VerifyEmailContent() {
   return (
     <div className="min-h-screen bg-paper flex flex-col justify-between p-4 sm:p-8">
       {/* Top Header */}
-      <div className="max-w-md mx-auto w-full flex justify-center py-6">
+      <div className="max-w-md mx-auto w-full flex justify-center py-4 sm:py-6">
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
       {/* Main Card */}
-      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-rule p-8 sm:p-10 space-y-6">
+      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-rule p-8 sm:p-10 space-y-4 sm:space-y-6">
         {status === "loading" && (
-          <div className="text-center py-8 space-y-4">
+          <div className="text-center py-6 sm:py-8 space-y-4">
             <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto animate-spin">
               <PiSpinner className="w-7 h-7" />
             </div>
@@ -102,7 +102,7 @@ function VerifyEmailContent() {
         )}
 
         {status === "success" && (
-          <div className="space-y-6 text-center">
+          <div className="space-y-4 sm:space-y-6 text-center">
             <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-100">
               <PiCheckCircle className="w-8 h-8" />
             </div>
@@ -132,7 +132,7 @@ function VerifyEmailContent() {
         )}
 
         {status === "error" && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="text-center space-y-3">
               <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-100">
                 <PiWarningCircle className="w-7 h-7" />

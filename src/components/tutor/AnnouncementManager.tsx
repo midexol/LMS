@@ -86,7 +86,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
   };
 
   return (
-    <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+    <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
         Course Announcements Manager
       </h2>
@@ -108,7 +108,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
       </div>
 
       {/* New Announcement Form */}
-      <div className="p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
+      <div className="p-4 sm:p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
         <h3 className="text-sm font-bold text-black">Post New Announcement</h3>
 
         {error && (

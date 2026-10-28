@@ -68,8 +68,8 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
       {/* Hero Header */}
       <div className="bg-[#F7F2F6] border-b border-rule">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
             <div>
               <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-widest">
                 Academic Curriculum
@@ -122,10 +122,10 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
         {/* Student Department Identity Banner */}
         {isStudent && studentDepartment && (
-          <div className="bg-[#2D0F2A] border border-[#3B1537] text-white p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-[#2D0F2A] border border-[#3B1537] text-white p-4 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <span className="text-[10px] font-bold text-[#D6BDD4] uppercase tracking-widest block">
                 Exclusive Departmental Curriculum
@@ -148,7 +148,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
         {/* Student Missing Department Warning Banner */}
         {isStudent && !studentDepartment && (
-          <div className="bg-[#2D0F2A] text-white p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-[#3B1537]">
+          <div className="bg-[#2D0F2A] text-white p-4 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-[#3B1537]">
             <div>
               <span className="text-[10px] font-bold text-[#D6BDD4] uppercase tracking-widest block">
                 Department Assignment Required
@@ -301,7 +301,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredCourses.map((course, idx) => {
               const isEnrolledInThis = activeEnrollment?.courseId === course.id;
               const isLocked = activeEnrollment && !isEnrolledInThis;
@@ -320,7 +320,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     />
                   )}
 
-                  <div className="p-6 space-y-3 flex-1 flex flex-col">
+                  <div className="p-4 sm:p-6 space-y-3 flex-1 flex flex-col">
                     <p className="text-xs text-neutral-500 flex items-center justify-between gap-3">
                       <span>{course.category}</span>
                       <span className="font-semibold text-black">{course.price === 0 ? "Free" : formatNgn(course.price)}</span>
@@ -349,7 +349,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     </div>
                   </div>
 
-                  <div className="p-5 bg-[#F7F2F6] border-t border-rule space-y-2">
+                  <div className="p-4 sm:p-5 bg-[#F7F2F6] border-t border-rule space-y-2">
                     <Link
                       href={`/courses/${course.id}`}
                       className="w-full py-2 rounded-md border border-neutral-300 bg-white text-xs font-bold text-black flex items-center justify-center hover:border-black transition-all"

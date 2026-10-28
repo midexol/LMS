@@ -41,8 +41,8 @@ export default function InstructorLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-paper flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white rounded-lg p-8 border border-rule space-y-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-2">
             <BrandLogo href="/" variant="dark" size="md" />

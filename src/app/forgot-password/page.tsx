@@ -42,8 +42,8 @@ export default function ForgotPasswordPage() {
       <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#2D0F2A] border-r border-[#3B1537] text-white p-12 relative overflow-hidden">
         <BrandLogo href="/" variant="light" size="lg" />
 
-        <div className="relative space-y-6 max-w-md">
-          <h2 className="font-bold text-4xl leading-tight">
+        <div className="relative space-y-4 sm:space-y-6 max-w-md">
+          <h2 className="font-bold text-3xl sm:text-4xl leading-tight">
             Account Recovery & Security.
           </h2>
           <p className="text-[#D6BDD4] text-sm leading-relaxed">
@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
 
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-md space-y-8">
+        <div className="w-full max-w-md space-y-5 sm:space-y-8">
           <div>
             <Link
               href="/login"
@@ -82,8 +82,8 @@ export default function ForgotPasswordPage() {
           )}
 
           {submitted ? (
-            <div className="space-y-6">
-              <div className="p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="p-4 sm:p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
                 <div className="w-10 h-10 rounded-full bg-[#4A1A45] text-white flex items-center justify-center">
                   <PiCheck className="w-5 h-5" />
                 </div>

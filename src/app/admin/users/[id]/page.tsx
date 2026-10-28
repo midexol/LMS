@@ -34,7 +34,7 @@ function StatusPill({ status }: { status: string }) {
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-lg border border-rule p-5">
+    <div className="bg-white rounded-lg border border-rule p-4 sm:p-5">
       <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{label}</p>
       <p className="mt-1 text-2xl font-bold text-black tracking-tight">{value}</p>
     </div>
@@ -106,7 +106,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-paper text-neutral-900">
       <header className="bg-[#2D0F2A] border-b border-[#3B1537]">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <BrandLogo href="/admin" variant="light" size="sm" />
           <Link
             href="/admin?tab=users"
@@ -117,7 +117,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
         {/* Profile */}
         <section className="bg-white rounded-lg border border-rule p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -175,9 +175,9 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
         {/* Enrollments */}
         <section className="bg-white rounded-lg border border-rule overflow-hidden">
-          <h2 className="px-6 pt-6 pb-3 font-bold text-base text-black">Enrollments</h2>
+          <h2 className="px-4 sm:px-6 pt-6 pb-3 font-bold text-base text-black">Enrollments</h2>
           {user.enrollments.length === 0 ? (
-            <p className="px-6 pb-6 text-sm text-neutral-500">Not enrolled in any course.</p>
+            <p className="px-4 sm:px-6 pb-6 text-sm text-neutral-500">Not enrolled in any course.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -206,9 +206,9 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
         {/* Payments */}
         <section className="bg-white rounded-lg border border-rule overflow-hidden">
-          <h2 className="px-6 pt-6 pb-3 font-bold text-base text-black">Payments</h2>
+          <h2 className="px-4 sm:px-6 pt-6 pb-3 font-bold text-base text-black">Payments</h2>
           {user.payments.length === 0 ? (
-            <p className="px-6 pb-6 text-sm text-neutral-500">No payments yet.</p>
+            <p className="px-4 sm:px-6 pb-6 text-sm text-neutral-500">No payments yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -239,11 +239,11 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
         {/* Submissions */}
         <section className="bg-white rounded-lg border border-rule overflow-hidden">
-          <h2 className="px-6 pt-6 pb-3 font-bold text-base text-black">
+          <h2 className="px-4 sm:px-6 pt-6 pb-3 font-bold text-base text-black">
             Recent submissions <span className="text-neutral-400 font-normal text-xs">(latest 50)</span>
           </h2>
           {user.submissions.length === 0 ? (
-            <p className="px-6 pb-6 text-sm text-neutral-500">No submissions yet.</p>
+            <p className="px-4 sm:px-6 pb-6 text-sm text-neutral-500">No submissions yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">

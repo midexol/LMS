@@ -55,7 +55,7 @@ describe("SignupsChart", () => {
   it("counts accounts per day, shows the total and the busiest day", () => {
     const { container } = render(<SignupsChart createdAt={[daysAgo(0), daysAgo(0), daysAgo(1), daysAgo(5)]} />);
     expect(screen.getByText("New Accounts, Last 30 Days")).toBeTruthy();
-    expect(container.querySelector("span.text-3xl")!.textContent).toBe("4"); // the headline total
+    expect(screen.getByTestId("signups-total").textContent).toBe("4"); // the headline total
     expect(screen.getByText(/peak 2\/day/)).toBeTruthy();
     expect(container.querySelectorAll("svg path").length).toBe(3); // one bar per day that had sign-ups
   });

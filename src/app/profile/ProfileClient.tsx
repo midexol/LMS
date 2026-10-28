@@ -156,9 +156,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     <div className="min-h-screen bg-paper text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
 
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-8">
         {/* STUDENT HEADER */}
-        <div className="p-8 rounded-lg bg-white border border-rule flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center font-bold text-2xl">
               {currentUser.name.charAt(0).toUpperCase()}
@@ -258,7 +258,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
         {/* ACTIVE COURSE BANNER (WITH DROP COURSE ACTION) */}
         {activeEnrollment && (
-          <div className="p-6 rounded-lg bg-white border border-rule space-y-3">
+          <div className="p-4 sm:p-6 rounded-lg bg-white border border-rule space-y-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
@@ -283,7 +283,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 </button>
                 <Link
                   href={`/student/courses/${activeEnrollment.course.id}`}
-                  className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+                  className="px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
                 >
                   Go to Course <PiArrowRight className="w-4 h-4" />
                 </Link>
@@ -295,14 +295,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* ACADEMIC TRANSCRIPT & RECEIPTS (STUDENTS ONLY) */}
         {currentUser.role === "STUDENT" && (
           <>
-            <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+            <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
             <PiMedal className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
           </h2>
 
           {enrollments.length === 0 ? (
-            <div className="text-center py-8 space-y-3">
+            <div className="text-center py-6 sm:py-8 space-y-3">
               <PiBookOpen className="w-10 h-10 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No course enrollments registered yet.</p>
               <Link href="/courses" className="text-xs text-[#4A1A45] font-bold hover:underline">
@@ -346,7 +346,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         </div>
 
         {/* TUITION RECEIPTS & PAYMENT HISTORY */}
-        <div id="receipts" className="p-8 rounded-lg bg-white border border-rule space-y-6">
+        <div id="receipts" className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
           <div className="flex justify-between items-center border-b border-rule pb-3">
             <h2 className="font-bold text-xl text-black flex items-center gap-2">
               <PiCreditCard className="w-5 h-5 text-black" />
@@ -358,7 +358,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           </div>
 
           {payments.length === 0 ? (
-            <div className="text-center py-8 space-y-2">
+            <div className="text-center py-6 sm:py-8 space-y-2">
               <PiFileText className="w-8 h-8 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No payment transactions recorded for this account.</p>
             </div>
@@ -414,7 +414,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     )}
 
         {/* ACCOUNT SETTINGS */}
-        <div className="p-8 rounded-lg bg-white border border-rule space-y-6 max-w-2xl">
+        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6 max-w-2xl">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
             <PiUser className="w-5 h-5 text-black" />
             Account Settings
@@ -565,7 +565,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <button
               type="submit"
               disabled={saving || (password.length > 0 && password !== confirmPassword)}
-              className="px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+              className="px-4 sm:px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
               <PiFloppyDisk className="w-4 h-4" />
               {saving ? "Saving..." : "Save Profile Updates"}
@@ -633,7 +633,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
 
             {/* Receipt Printable Canvas */}
-            <div className="p-8 space-y-6 text-black" id="printable-receipt">
+            <div className="p-5 sm:p-8 space-y-4 sm:space-y-6 text-black" id="printable-receipt">
               {/* Institutional Header */}
               <div className="text-center border-b-2 border-[#4A1A45] pb-5 space-y-1">
                 <div className="flex justify-center mb-2">
@@ -747,7 +747,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                className="px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2"
               >
                 <PiPrinter className="w-4 h-4" /> Print / Save PDF
               </button>

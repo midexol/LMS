@@ -198,9 +198,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6 pb-28 lg:pb-8">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 space-y-4 sm:space-y-6 pb-28 lg:pb-8">
       {/* Course Top Header */}
-      <div className="p-6 rounded-lg bg-white shadow-[6px_6px_20px_#e2e8f0,-6px_-6px_20px_#ffffff] border border-slate-200 space-y-4">
+      <div className="p-4 sm:p-6 rounded-lg bg-white shadow-[6px_6px_20px_#e2e8f0,-6px_-6px_20px_#ffffff] border border-slate-200 space-y-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -214,7 +214,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
             <button
               onClick={handleCompleteCourse}
               disabled={completingCourse}
-              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-2 transition-all"
+              className="px-4 sm:px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs flex items-center gap-2 transition-all"
             >
               <PiCheckCircle className="w-4 h-4" />
               {completingCourse ? "Checking Criteria..." : "Complete Course & Release Lock"}
@@ -262,7 +262,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
 
       {/* Announcements */}
       {announcements.length > 0 && (
-        <div className="p-5 rounded-lg bg-white border border-rule">
+        <div className="p-4 sm:p-5 rounded-lg bg-white border border-rule">
           <button
             onClick={() => setAnnouncementsExpanded(!announcementsExpanded)}
             className="w-full flex items-center justify-between"
@@ -313,9 +313,9 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
         {/* Left Sidebar Navigator (Desktop) */}
-        <div className="hidden lg:block lg:col-span-1 p-6 rounded-lg bg-white border border-rule space-y-4 h-fit sticky top-24">
+        <div className="hidden lg:block lg:col-span-1 p-4 sm:p-6 rounded-lg bg-white border border-rule space-y-4 h-fit sticky top-24">
           <h3 className="font-bold text-black text-base flex items-center gap-2 border-b border-rule pb-3">
             <PiBookOpen className="w-5 h-5 text-[#4A1A45]" />
             Curriculum Navigator
@@ -368,11 +368,11 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
         </div>
 
         {/* Right Content Area */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
           {activeLesson ? (
             <>
               {/* Lesson Card */}
-              <div className="p-8 rounded-lg bg-white border border-rule space-y-4">
+              <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4">
                 <div className="flex justify-between items-center border-b border-rule pb-3">
                   <h2 className="text-xl font-bold text-black">{activeLesson.title}</h2>
                   <button
@@ -415,7 +415,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                 )}
 
                 {/* Lesson Content */}
-                <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-700 leading-relaxed space-y-3">
+                <div className="p-4 sm:p-6 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-700 leading-relaxed space-y-3">
                   <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider">
                     Lesson Materials
                   </h4>
@@ -445,7 +445,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
 
               {/* Assignment & Automated Assessment */}
               {currentAssignment && (
-                <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+                <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
                   <div className="border-b border-rule pb-3 flex justify-between items-center">
                     <div>
                       <span className="text-xs font-bold text-[#4A1A45] uppercase tracking-wider">
@@ -465,7 +465,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                   </div>
 
                   {previousSubmission && !isResubmitting ? (
-                    <div className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
+                    <div className="p-4 sm:p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
                       <div className="flex justify-between items-center">
                         <h4 className="font-bold text-black text-sm flex items-center gap-2">
                           <PiMedal className="w-5 h-5 text-[#4A1A45]" />
@@ -530,7 +530,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                         <button
                           onClick={handleSubmitAssignment}
                           disabled={submitting || !submissionText.trim()}
-                          className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-sm flex items-center gap-2 transition-all"
+                          className="px-4 sm:px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-sm flex items-center gap-2 transition-all"
                         >
                           <PiPaperPlaneTilt className="w-4 h-4" />
                           {submitting
@@ -557,7 +557,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
               )}
 
               {/* Discussion Forum */}
-              <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+              <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
                 <h3 className="text-lg font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
                   <PiChatCircle className="w-5 h-5 text-[#4A1A45]" />
                   Lesson Discussion &amp; Q&A Forum
@@ -680,7 +680,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
 
             {/* Certificate Canvas */}
             <div className="p-10 sm:p-14 text-center bg-white border-8 border-double border-neutral-900 m-4 rounded-lg relative">
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#4A1A45] block mb-1">
                     Academia LMS
@@ -811,7 +811,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           </div>
 
           {/* Sheet Header */}
-          <div className="px-6 py-3 border-b border-rule flex items-center justify-between">
+          <div className="px-4 sm:px-6 py-3 border-b border-rule flex items-center justify-between">
             <div>
               <h3 className="font-bold text-base text-black flex items-center gap-2">
                 <PiBookOpen className="w-4 h-4 text-[#4A1A45]" />
@@ -831,7 +831,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
           </div>
 
           {/* Sheet Body: Scrollable Modules & Lessons */}
-          <div className="p-6 overflow-y-auto space-y-5 flex-1">
+          <div className="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1">
             {course.modules.map((moduleItem: any) => (
               <div key={moduleItem.id} className="space-y-2">
                 <h4 className="text-xs font-bold text-neutral-700 uppercase tracking-wider">

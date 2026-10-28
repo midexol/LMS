@@ -46,12 +46,12 @@ export function OnboardingClient({ name, email }: { name: string; email: string 
     "w-full px-4 py-3 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all";
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 sm:px-6 py-12">
       <div className="mb-8">
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 bg-white p-8 rounded-lg border border-rule">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4 sm:space-y-6 bg-white p-5 sm:p-8 rounded-lg border border-rule">
         <div>
           <h1 className="font-heading font-semibold text-2xl text-black">One last step</h1>
           <p className="text-xs text-neutral-500 mt-1 leading-relaxed">

@@ -35,7 +35,7 @@ export function CourseEnrollmentAction({
     <>
       <button
         onClick={() => setCheckoutOpen(true)}
-        className="w-full py-3.5 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+        className="w-full py-3.5 px-4 sm:px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
       >
         <PiLock className="w-4 h-4" />{" "}
         {course.price <= 0 ? "Enroll for free" : <>Enroll with Paystack · {formattedNgn}</>}

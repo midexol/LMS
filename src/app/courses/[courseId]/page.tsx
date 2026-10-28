@@ -69,7 +69,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
     <div className="min-h-screen bg-paper text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
 
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-8">
         {/* Course header */}
         <div className="rounded-lg bg-white border border-rule overflow-hidden">
           {course.coverImage && (
@@ -104,16 +104,16 @@ export default async function CoursePreviewPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
           {/* Curriculum */}
-          <div className="lg:col-span-2 p-8 rounded-lg bg-white border border-rule space-y-6">
+          <div className="lg:col-span-2 p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
             <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
               <PiBookOpen className="w-5 h-5 text-[#4A1A45]" />
               Curriculum &amp; Syllabus
             </h2>
 
             {isWrongDepartment ? (
-              <div className="p-8 rounded-lg bg-[#F7F2F6] border border-rule text-center space-y-4 my-4">
+              <div className="p-5 sm:p-8 rounded-lg bg-[#F7F2F6] border border-rule text-center space-y-4 my-4">
                 <div className="w-12 h-12 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto">
                   <PiLock className="w-6 h-6" />
                 </div>
@@ -126,7 +126,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="pt-2">
                   <Link
                     href="/courses"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
+                    className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     Browse Courses For {currentUser.department} <PiArrowRight className="w-4 h-4" />
                   </Link>
@@ -168,7 +168,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
             <div className="p-7 rounded-lg bg-white border border-rule space-y-5 sticky top-24">
               <div className="text-center">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Tuition Fee</span>
-                <span className="font-bold text-3xl text-black">
+                <span className="font-bold text-2xl sm:text-3xl text-black">
                   {course.price === 0 ? "Free" : formatNgn(course.price)}
                 </span>
               </div>

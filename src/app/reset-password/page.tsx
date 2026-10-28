@@ -20,8 +20,8 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div className="space-y-6">
-        <div className="p-5 rounded-lg bg-amber-50 border border-amber-200 space-y-2">
+      <div className="space-y-4 sm:space-y-6">
+        <div className="p-4 sm:p-5 rounded-lg bg-amber-50 border border-amber-200 space-y-2">
           <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
             <PiWarningCircle className="w-4 h-4" />
             Missing Reset Token
@@ -77,7 +77,7 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="w-full max-w-md space-y-8">
+    <div className="w-full max-w-md space-y-5 sm:space-y-8">
       <div>
         <h1 className="font-heading font-semibold text-2xl tracking-tight text-black">
           Set New Password
@@ -95,8 +95,8 @@ function ResetPasswordForm() {
       )}
 
       {success ? (
-        <div className="space-y-6">
-          <div className="p-5 rounded-lg bg-emerald-50 border border-emerald-200 space-y-3">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="p-4 sm:p-5 rounded-lg bg-emerald-50 border border-emerald-200 space-y-3">
             <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center">
               <PiCheck className="w-5 h-5" />
             </div>
@@ -178,8 +178,8 @@ export default function ResetPasswordPage() {
       <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#2D0F2A] border-r border-[#3B1537] text-white p-12 relative overflow-hidden">
         <BrandLogo href="/" variant="light" size="lg" />
 
-        <div className="relative space-y-6 max-w-md">
-          <h2 className="font-bold text-4xl leading-tight">
+        <div className="relative space-y-4 sm:space-y-6 max-w-md">
+          <h2 className="font-bold text-3xl sm:text-4xl leading-tight">
             Security & Credential Update.
           </h2>
           <p className="text-[#D6BDD4] text-sm leading-relaxed">

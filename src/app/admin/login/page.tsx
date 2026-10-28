@@ -42,8 +42,8 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-paper flex items-center justify-center p-6">
-      <div className="w-full max-w-md space-y-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md space-y-4 sm:space-y-6">
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="flex justify-center mb-2">
@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
+        <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
               <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" />

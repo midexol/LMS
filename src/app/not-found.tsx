@@ -7,13 +7,13 @@ import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#faf9f6] flex flex-col items-center justify-center p-6 text-black select-none">
+    <div className="min-h-screen bg-[#faf9f6] flex flex-col items-center justify-center p-4 sm:p-6 text-black select-none">
       {/* Background radial accent glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
         <div className="w-[600px] h-[600px] bg-[#4A1A45]/10 rounded-full blur-3xl -translate-y-12"></div>
       </div>
 
-      <div className="relative z-10 max-w-xl w-full text-center space-y-8">
+      <div className="relative z-10 max-w-xl w-full text-center space-y-5 sm:space-y-8">
         <div className="flex justify-center">
           <BrandLogo href="/" size="md" />
         </div>
@@ -38,14 +38,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link
             href="/"
-            className="w-full sm:w-auto px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <PiHouse className="w-4 h-4" /> Return to Homepage
           </Link>
 
           <Link
             href="/courses"
-            className="w-full sm:w-auto px-6 py-3 rounded-md bg-white hover:bg-[#F7F2F6] border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-md bg-white hover:bg-[#F7F2F6] border border-[#4A1A45]/30 text-[#4A1A45] font-bold text-xs inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <PiBookOpen className="w-4 h-4 text-[#4A1A45]" /> Browse Course Catalog
           </Link>

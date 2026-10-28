@@ -768,7 +768,7 @@ export function AdminDashboardClient({
 
       {/* ───────────────── HEADER (RICH COMMAND CENTER BLACK) ───────────────── */}
       <header className="bg-[#1E0A1C] text-white border-b border-[#3B1537] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-18 py-3.5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <BrandLogo href="/admin" variant="light" size="sm" />
             <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#3B1537] text-[11px]">
@@ -809,7 +809,7 @@ export function AdminDashboardClient({
         </div>
 
         {/* Tab Navigation */}
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
           {[
             { id: "overview", label: "Overview" },
             { id: "users", label: "Users", count: users.length },
@@ -844,20 +844,20 @@ export function AdminDashboardClient({
       </header>
 
       {/* ───────────────── CANVAS ───────────────── */}
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
         {/* OVERVIEW / ANALYTICS TAB */}
         {activeTab === "overview" && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Banner - Pure Jet Black with Brown Accent */}
             <div
-              className="rounded-lg p-8 text-white relative overflow-hidden"
+              className="rounded-lg p-5 sm:p-8 text-white relative overflow-hidden"
               style={{
                 background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
               }}
             >
               <div className="max-w-xl space-y-2 relative">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">System Intelligence</span>
-                <h2 className="font-bold text-3xl">Platform Performance Overview</h2>
+                <h2 className="font-bold text-2xl sm:text-3xl">Platform Performance Overview</h2>
                 <p className="text-xs text-neutral-300 leading-relaxed">
                   Real-time analytics covering platform enrollments, revenue, completion ratios, and assignment throughput.
                 </p>
@@ -880,7 +880,7 @@ export function AdminDashboardClient({
                 { label: "Active Enrollments", value: metrics.activeEnrollmentsCount, sub: `${metrics.completedEnrollmentsCount} completed` },
                 { label: "Submissions Logged", value: metrics.totalSubmissions, sub: "Automated & faculty reviews" },
               ].map((c, i) => (
-                <div key={i} className="bg-[#2D0F2A] text-white rounded-lg p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
+                <div key={i} className="bg-[#2D0F2A] text-white rounded-lg p-4 sm:p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
                   <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{c.label}</p>
                   <div>
                     <div className="text-2xl font-bold text-white tracking-tight">{c.value}</div>
@@ -893,9 +893,9 @@ export function AdminDashboardClient({
             <SignupsChart createdAt={users.map((u) => u.createdAt)} />
 
             {/* Visual Analytics Row: Modern Dual Bar & SVG Ring Distribution (CLEAR & READABLE) */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Category Throughput Dual Comparison */}
-              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-6">
+              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-rule">
                   <div>
                     <h3 className="font-bold text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
@@ -973,7 +973,7 @@ export function AdminDashboardClient({
                   const displayTracks = tracks;
                   if (displayTracks.length === 0) {
                     return (
-                      <div className="p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
+                      <div className="p-5 sm:p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
                         <p className="text-xs text-neutral-500">No courses or enrollments yet. Activity by subject appears here once courses are created.</p>
                       </div>
                     );
@@ -1072,7 +1072,7 @@ export function AdminDashboardClient({
               </div>
 
               {/* Platform Composition Breakdown */}
-              <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-6 flex flex-col justify-between">
+              <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4 sm:space-y-6 flex flex-col justify-between">
                 <div className="pb-3 border-b border-rule">
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-lg text-black tracking-tight">Platform Composition</h3>
@@ -1223,7 +1223,7 @@ export function AdminDashboardClient({
         {/* USERS TAB */}
         {activeTab === "users" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-rule p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
+            <div className="bg-white rounded-lg border border-rule p-4 sm:p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1357,7 +1357,7 @@ export function AdminDashboardClient({
         {/* COURSES TAB */}
         {activeTab === "courses" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-rule p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
+            <div className="bg-white rounded-lg border border-rule p-4 sm:p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1397,7 +1397,7 @@ export function AdminDashboardClient({
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredCourses.map((c) => (
-                <div key={c.id} className="bg-white rounded-lg p-6 border border-rule space-y-4 flex flex-col justify-between">
+                <div key={c.id} className="bg-white rounded-lg p-4 sm:p-6 border border-rule space-y-4 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-start justify-between flex-wrap gap-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
@@ -1497,7 +1497,7 @@ export function AdminDashboardClient({
               const max = sub.assignment.maxScore || 100;
               const isPass = sub.score !== null && isPassingPercent((sub.score / max) * 100);
               return (
-                <div key={sub.id} className="bg-white rounded-lg p-6 border border-rule space-y-4">
+                <div key={sub.id} className="bg-white rounded-lg p-4 sm:p-6 border border-rule space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
                       <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
@@ -1565,7 +1565,7 @@ export function AdminDashboardClient({
                 .map((msg) => (
                   <div
                     key={msg.id}
-                    className={`bg-white rounded-lg p-6 border  space-y-3 ${
+                    className={`bg-white rounded-lg p-4 sm:p-6 border  space-y-3 ${
                       msg.status === "NEW" ? "border-[#4A1A45]/40" : "border-rule"
                     }`}
                   >
@@ -1616,7 +1616,7 @@ export function AdminDashboardClient({
 
         {/* SETTINGS & SYSTEM CONTROLS TAB */}
         {activeTab === "settings" && (
-          <div className="space-y-6 max-w-5xl">
+          <div className="space-y-4 sm:space-y-6 max-w-5xl">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <h2 className="font-bold text-2xl text-black">Settings</h2>
@@ -1628,7 +1628,7 @@ export function AdminDashboardClient({
             </div>
 
             {/* Academic Policies & Enrollment Rules */}
-            <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
+            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-rule pb-3 flex items-center gap-2">
                 Academic Policies &amp; Lock Enforcement
               </h3>
@@ -1673,7 +1673,7 @@ export function AdminDashboardClient({
             </div>
 
             {/* Audit & Data Export Center */}
-            <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
+            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-rule pb-3 flex items-center gap-2">
                 Data Export Center
               </h3>
@@ -1694,7 +1694,7 @@ export function AdminDashboardClient({
                       ])
                     )
                   }
-                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Users Directory</h4>
@@ -1710,7 +1710,7 @@ export function AdminDashboardClient({
                       courses.map((c) => [c.id, c.title, c.category, c.faculty || "", c.department || "", c.price, c.published ? "Yes" : "No", c.tutor.name])
                     )
                   }
-                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Courses Catalog</h4>
@@ -1726,7 +1726,7 @@ export function AdminDashboardClient({
                       enrollments.map((e) => [e.id, e.student.name, e.student.email, e.course.title, e.status, String(e.enrolledAt), String(e.completedAt || "")])
                     )
                   }
-                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Enrollments Ledger</h4>
@@ -1742,7 +1742,7 @@ export function AdminDashboardClient({
                       submissions.map((s) => [s.id, s.student.name, s.assignment.lesson.module.course.title, s.assignment.title, s.score ?? "Pending", s.assignment.maxScore, s.status, String(s.submittedAt)])
                     )
                   }
-                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Submissions Ledger</h4>

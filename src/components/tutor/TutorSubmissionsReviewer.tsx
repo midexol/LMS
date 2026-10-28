@@ -65,7 +65,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
   };
 
   return (
-    <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+    <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
         Student Submissions &amp; Grade Override Reviewer
       </h2>
@@ -77,7 +77,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
       )}
 
       {submissions.length === 0 ? (
-        <p className="text-xs text-neutral-500 italic text-center py-8">
+        <p className="text-xs text-neutral-500 italic text-center py-6 sm:py-8">
           No student submissions yet. They will appear here once students submit assignments.
         </p>
       ) : (
@@ -91,7 +91,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
               <div
                 key={sub.id}
                 data-testid="submission-card"
-                className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-3"
+                className="p-4 sm:p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-3"
               >
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                   <div>
@@ -167,7 +167,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
 
                 {/* Override Form */}
                 {isEditing && (
-                  <div className="p-5 rounded-xl bg-white border-2 border-[#4A1A45] space-y-3 mt-2">
+                  <div className="p-4 sm:p-5 rounded-xl bg-white border-2 border-[#4A1A45] space-y-3 mt-2">
                     <h4 className="font-bold text-black text-xs flex items-center gap-1.5">
                       <PiPencilSimple className="w-3.5 h-3.5 text-[#4A1A45]" />
                       Tutor Grade Override

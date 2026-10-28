@@ -335,7 +335,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
   // Render
   // ─────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
 
       {/* ── Step Navigator ── */}
       <div className="flex items-center justify-between gap-4">
@@ -367,7 +367,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 1 ══════════════════════════════ */}
       {step === 1 && (
-        <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
           <div className="border-b border-rule pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               {isEditing ? `Edit Course: ${title || initialCourse.title}` : "Step 1: Course Overview"}
@@ -380,7 +380,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           </div>
 
           {/* AI Syllabus */}
-          <div className="p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
+          <div className="p-4 sm:p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
             <h4 className="font-bold text-black text-sm flex items-center gap-2">
               Curriculum Template Generator
               <span className="ml-auto text-[10px] text-[#4A1A45] font-bold uppercase tracking-wider">Optional</span>
@@ -528,7 +528,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             <button
               onClick={() => step1Valid && setStep(2)}
               disabled={!step1Valid}
-              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider transition-all"
+              className="px-4 sm:px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider transition-all"
             >
               Continue to Modules & Lessons
             </button>
@@ -538,7 +538,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 2 ══════════════════════════════ */}
       {step === 2 && (
-        <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
           <div className="flex items-center justify-between border-b border-rule pb-4">
             <div>
               <h3 className="text-xl font-bold text-black flex items-center gap-2">
@@ -556,7 +556,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </button>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {modules.map((mod, mIdx) => (
               <LessonModuleBlock
                 key={mIdx}
@@ -576,13 +576,13 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="flex justify-between pt-2">
             <button
               onClick={() => setStep(1)}
-              className="px-6 py-3 rounded-xl bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-[#E4D5E2] transition-all"
+              className="px-4 sm:px-6 py-3 rounded-xl bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-[#E4D5E2] transition-all"
             >
               Back
             </button>
             <button
               onClick={() => setStep(3)}
-              className="px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+              className="px-4 sm:px-6 py-3 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
             >
               Review & Publish
             </button>
@@ -592,7 +592,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
 
       {/* ══════════════════════════════ STEP 3 ══════════════════════════════ */}
       {step === 3 && (
-        <div className="p-8 rounded-lg bg-white border border-rule space-y-6">
+        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
           <div className="border-b border-rule pb-4">
             <h3 className="text-xl font-bold text-black flex items-center gap-2">
               {isEditing ? "Step 3: Review & Save Updates" : "Step 3: Final Review & Publish"}
@@ -604,7 +604,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
             </p>
           </div>
 
-          <div className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
+          <div className="p-4 sm:p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
             {/* Cover preview if set */}
             {coverImage && (
               <img
@@ -667,14 +667,14 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
           <div className="flex justify-between pt-2">
             <button
               onClick={() => setStep(2)}
-              className="px-6 py-3 rounded-xl bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-[#E4D5E2] transition-all"
+              className="px-4 sm:px-6 py-3 rounded-xl bg-[#F3EAF2] border border-rule text-neutral-700 font-bold text-xs uppercase tracking-wider hover:bg-[#E4D5E2] transition-all"
             >
               Back
             </button>
             <button
               onClick={handleSaveCourse}
               disabled={saving || successMsg}
-              className="px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+              className="px-5 sm:px-8 py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
             >
               {saving
                 ? (isEditing ? "Saving Updates..." : "Publishing...")
@@ -712,7 +712,7 @@ function LessonModuleBlock({
   smallInputCls: string;
 }) {
   return (
-    <div className="p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
+    <div className="p-4 sm:p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-4">
       {/* Module header */}
       <div className="flex items-center justify-between gap-4">
         <input
@@ -783,7 +783,7 @@ function LessonRow({
   const videoUpload    = useFileUpload();
 
   return (
-    <div className="p-5 rounded-xl bg-white border border-rule space-y-4">
+    <div className="p-4 sm:p-5 rounded-xl bg-white border border-rule space-y-4">
       {/* Lesson title row */}
       <div className="flex items-center justify-between gap-3">
         <input

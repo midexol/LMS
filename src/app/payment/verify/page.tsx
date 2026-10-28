@@ -66,10 +66,10 @@ function PaymentVerifyContent() {
   }, [reference, mode, router]);
 
   return (
-    <div className="min-h-screen bg-[#1E0A1C] flex items-center justify-center p-6 text-white">
-      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-lg p-8 text-center">
+    <div className="min-h-screen bg-[#1E0A1C] flex items-center justify-center p-4 sm:p-6 text-white">
+      <div className="w-full max-w-md bg-[#2D0F2A] border border-[#3B1537] rounded-lg p-5 sm:p-8 text-center">
         {loading ? (
-          <div className="py-10 space-y-4">
+          <div className="py-6 sm:py-10 space-y-4">
             <div className="w-16 h-16 rounded-full bg-[#3B1537] border border-[#4A1A45]/40 mx-auto flex items-center justify-center animate-spin">
               <PiSpinner className="w-8 h-8 text-white" />
             </div>
@@ -82,7 +82,7 @@ function PaymentVerifyContent() {
             </div>
           </div>
         ) : error ? (
-          <div className="py-8 space-y-5">
+          <div className="py-6 sm:py-8 space-y-5">
             <div className="w-16 h-16 rounded-full bg-red-950/60 border border-red-800 mx-auto flex items-center justify-center text-red-500">
               <PiWarningCircle className="w-8 h-8" />
             </div>
@@ -103,20 +103,20 @@ function PaymentVerifyContent() {
             <div className="pt-4 flex flex-col gap-3">
               <Link
                 href="/courses"
-                className="w-full py-3 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
+                className="w-full py-3 px-4 sm:px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
               >
                 Browse Course Catalog
               </Link>
               <Link
                 href="/my-courses"
-                className="w-full py-3 px-6 rounded-md bg-[#1E0A1C] text-neutral-300 font-bold text-xs hover:bg-[#3B1537] transition-all"
+                className="w-full py-3 px-4 sm:px-6 rounded-md bg-[#1E0A1C] text-neutral-300 font-bold text-xs hover:bg-[#3B1537] transition-all"
               >
                 Go to My Courses
               </Link>
             </div>
           </div>
         ) : (
-          <div className="py-8 space-y-5">
+          <div className="py-6 sm:py-8 space-y-5">
             <div className="w-16 h-16 rounded-full bg-emerald-950/60 border border-emerald-700 mx-auto flex items-center justify-center text-emerald-400 animate-bounce">
               <PiCheckCircle className="w-8 h-8" />
             </div>
@@ -150,7 +150,7 @@ function PaymentVerifyContent() {
             <div className="pt-2">
               <Link
                 href={`/student/courses/${courseInfo?.id}`}
-                className="w-full py-3.5 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
+                className="w-full py-3.5 px-4 sm:px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 border border-white/20"
               >
                 <PiBookOpen className="w-4 h-4" /> Start Learning Now <PiArrowRight className="w-4 h-4" />
               </Link>

@@ -189,7 +189,7 @@ export function MockCheckoutModal({
 
         {/* UNAUTHENTICATED USER CHECK */}
         {!currentUser ? (
-          <div className="mt-5 p-6 rounded-lg bg-[#F7F2F6] border border-rule space-y-4">
+          <div className="mt-5 p-4 sm:p-6 rounded-lg bg-[#F7F2F6] border border-rule space-y-4">
             <div className="flex items-start gap-3">
               <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -217,7 +217,7 @@ export function MockCheckoutModal({
           </div>
         ) : activeEnrollment && activeEnrollment.courseId !== course.id ? (
           /* Single Active Course Restriction */
-          <div className="mt-5 p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
+          <div className="mt-5 p-4 sm:p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
             <div className="flex gap-3 items-start">
               <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -326,7 +326,7 @@ export function MockCheckoutModal({
               <button
                 onClick={handlePaystackCheckout}
                 disabled={loading || (course.price > 0 && !quote && !quoteFailed)}
-                className="w-full py-3.5 px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 px-4 sm:px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

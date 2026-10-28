@@ -63,7 +63,7 @@ export function SignupsChart({ createdAt, days = 30 }: SignupsChartProps) {
           <p className="text-xs text-neutral-500 mt-0.5">Daily sign-ups across students, tutors and admins.</p>
         </div>
         <div className="text-right">
-          <span className="text-3xl font-bold text-black tracking-tight">{total}</span>
+          <span data-testid="signups-total" className="text-2xl sm:text-3xl font-bold text-black tracking-tight">{total}</span>
           <span className="text-xs text-neutral-500 ml-1.5">
             {total === 1 ? "account" : "accounts"} · peak {peak}/day
           </span>
