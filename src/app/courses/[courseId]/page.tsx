@@ -69,7 +69,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
     <div className="min-h-screen bg-paper text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-8">
+      <main className="max-w-5xl mx-auto px-5 sm:px-6 py-7 sm:py-8 space-y-6 sm:space-y-8">
         {/* Course header */}
         <div className="rounded-lg bg-white border border-rule overflow-hidden">
           {course.coverImage && (
@@ -104,16 +104,16 @@ export default async function CoursePreviewPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Curriculum */}
-          <div className="lg:col-span-2 p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
+          <div className="lg:col-span-2 p-6 sm:p-8 rounded-lg bg-white border border-rule space-y-5 sm:space-y-6">
             <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
               <PiBookOpen className="w-5 h-5 text-[#4A1A45]" />
               Curriculum &amp; Syllabus
             </h2>
 
             {isWrongDepartment ? (
-              <div className="p-5 sm:p-8 rounded-lg bg-[#F7F2F6] border border-rule text-center space-y-4 my-4">
+              <div className="p-6 sm:p-8 rounded-lg bg-[#F7F2F6] border border-rule text-center space-y-4 my-4">
                 <div className="w-12 h-12 rounded-full bg-[#4A1A45] text-white flex items-center justify-center mx-auto">
                   <PiLock className="w-6 h-6" />
                 </div>
@@ -126,7 +126,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="pt-2">
                   <Link
                     href="/courses"
-                    className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     Browse Courses For {currentUser.department} <PiArrowRight className="w-4 h-4" />
                   </Link>
@@ -150,7 +150,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                             {lesson.title}
                           </span>
                           {lesson.assignments.length > 0 && (
-                            <span className="px-2 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] text-[10px] font-bold border border-[#4A1A45]/30">
+                            <span className="px-2 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] text-xs sm:text-[10px] font-bold border border-[#4A1A45]/30">
                               Assignment
                             </span>
                           )}
@@ -167,7 +167,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
           <div className="space-y-4">
             <div className="p-7 rounded-lg bg-white border border-rule space-y-5 sticky top-24">
               <div className="text-center">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Tuition Fee</span>
+                <span className="text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest text-neutral-400 block mb-1">Tuition Fee</span>
                 <span className="font-bold text-2xl sm:text-3xl text-black">
                   {course.price === 0 ? "Free" : formatNgn(course.price)}
                 </span>
@@ -177,12 +177,12 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 enrollment.status === "ACTIVE" ? (
                   <Link
                     href={`/student/courses/${course.id}`}
-                    className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+                    className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-2 transition-all"
                   >
                     Continue Learning <PiArrowRight className="w-4 h-4" />
                   </Link>
                 ) : (
-                  <div className="w-full py-3 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                  <div className="w-full py-3 rounded-md bg-[#4A1A45] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-2">
                     <PiCheckCircle className="w-4 h-4 text-white" /> Course Completed
                   </div>
                 )
@@ -190,13 +190,13 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                 <div className="space-y-2.5">
                   <Link
                     href="/login"
-                    className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+                    className="w-full py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-2 transition-all"
                   >
                     Sign In to Enroll
                   </Link>
                   <Link
                     href="/signup"
-                    className="w-full py-3 rounded-md border border-neutral-300 bg-white text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#F7F2F6] transition-all"
+                    className="w-full py-3 rounded-md border border-neutral-300 bg-white text-black font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-2 hover:bg-[#F7F2F6] transition-all"
                   >
                     Create Free Account
                   </Link>
@@ -209,7 +209,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                   </p>
                   <Link
                     href="/courses"
-                    className="block text-center py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
+                    className="block text-center py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     View Your Department Courses
                   </Link>
@@ -220,7 +220,7 @@ export default async function CoursePreviewPage({ params }: PageProps) {
                   <p className="text-neutral-600">Complete your currently active course before registering for another course.</p>
                   <Link
                     href={`/student/courses/${activeEnrollment.courseId}`}
-                    className="block text-center py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#3B1537] transition-all"
+                    className="block text-center py-2.5 rounded-md bg-[#4A1A45] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider hover:bg-[#3B1537] transition-all"
                   >
                     Go to Active Course
                   </Link>

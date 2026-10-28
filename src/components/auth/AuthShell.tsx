@@ -14,7 +14,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
     <div className="min-h-screen bg-white flex">
       <aside className="hidden lg:flex flex-col justify-between w-[42%] bg-[#2D0F2A] text-white p-12">
         <BrandLogo href="/" variant="light" size="lg" />
-        <div className="space-y-4 sm:space-y-6 max-w-md">
+        <div className="space-y-5 sm:space-y-6 max-w-md">
           <h2 className="font-bold text-3xl sm:text-4xl leading-tight">{headline}</h2>
           <p className="text-[#D6BDD4] text-sm leading-relaxed">{blurb}</p>
           <ul className="space-y-3 pt-2">
@@ -28,7 +28,7 @@ export function AuthShell({ headline, blurb, points, children }: AuthShellProps)
         <p className="text-neutral-400 text-xs">&copy; {new Date().getFullYear()} Academia LMS</p>
       </aside>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-6 sm:py-10">
+      <main className="flex-1 flex flex-col items-center justify-center px-5 sm:px-6 py-8 sm:py-10">
         <div className="lg:hidden mb-6">
           <BrandLogo href="/" variant="dark" size="md" />
         </div>

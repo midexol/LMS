@@ -53,14 +53,14 @@ export default async function MyCoursesPage() {
 
       {/* Page Header */}
       <div className="bg-white border-b border-rule">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">Student Academic Record</span>
+        <div className="max-w-5xl mx-auto px-5 sm:px-6 py-7 sm:py-8">
+          <span className="text-xs sm:text-[11px] font-bold text-[#4A1A45] normal-case sm:uppercase tracking-normal sm:tracking-wider">Student Academic Record</span>
           <h1 className="font-bold text-2xl sm:text-3xl text-black mt-1">My Enrolled Courses</h1>
           <p className="text-xs text-neutral-500 mt-1">Track your active course learning trajectory and review completed curriculum milestones.</p>
         </div>
       </div>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-8">
+      <main className="max-w-5xl mx-auto px-5 sm:px-6 py-7 sm:py-8 space-y-6 sm:space-y-8">
         {/* Active Course */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
@@ -75,11 +75,11 @@ export default async function MyCoursesPage() {
 
             return (
               <div className="bg-white rounded-lg border border-rule overflow-hidden">
-                <div className="p-5 sm:p-8 space-y-4 sm:space-y-6">
+                <div className="p-6 sm:p-8 space-y-5 sm:space-y-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 uppercase">
+                        <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 normal-case sm:uppercase">
                           In Progress
                         </span>
                         <span className="text-xs text-neutral-500">{activeEnrollment.course.category}</span>
@@ -91,7 +91,7 @@ export default async function MyCoursesPage() {
                     </div>
                     <Link
                       href={`/student/courses/${activeEnrollment.courseId}`}
-                      className="shrink-0 flex items-center gap-2 px-4 sm:px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+                      className="shrink-0 flex items-center gap-2 px-5 sm:px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all"
                     >
                       Continue Learning <PiArrowRight className="w-4 h-4" />
                     </Link>
@@ -112,7 +112,7 @@ export default async function MyCoursesPage() {
                   </div>
 
                   {/* Stats Row */}
-                  <div className="pt-4 border-t border-rule flex items-center gap-4 sm:gap-6 text-xs text-neutral-600">
+                  <div className="pt-4 border-t border-rule flex items-center gap-5 sm:gap-6 text-xs text-neutral-600">
                     <div className="flex items-center gap-1.5">
                       <PiStack className="w-3.5 h-3.5 text-[#4A1A45]" />
                       <span>{activeEnrollment.course.modules.length} modules</span>
@@ -140,7 +140,7 @@ export default async function MyCoursesPage() {
               </div>
               <Link
                 href="/courses"
-                className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all"
               >
                 Browse Course Catalog <PiArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -158,7 +158,7 @@ export default async function MyCoursesPage() {
           </div>
 
           {completedEnrollments.length === 0 ? (
-            <div className="bg-white rounded-lg border border-rule py-6 sm:py-10 text-center">
+            <div className="bg-white rounded-lg border border-rule py-8 sm:py-10 text-center">
               <p className="text-xs text-neutral-500 italic">No completed courses yet. Keep working towards your {PASS_MARK_PERCENT}% average pass mark!</p>
             </div>
           ) : (
@@ -168,21 +168,21 @@ export default async function MyCoursesPage() {
                 return (
                   <div
                     key={e.id}
-                    className="bg-white rounded-lg border border-rule p-4 sm:p-6 space-y-3"
+                    className="bg-white rounded-lg border border-rule p-5 sm:p-6 space-y-3"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{e.course.category}</span>
+                        <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">{e.course.category}</span>
                         <h3 className="font-bold text-base text-black mt-0.5">{e.course.title}</h3>
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white shrink-0">
+                      <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45] text-white shrink-0">
                         Completed
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-black font-semibold">
                       <PiCheckCircle className="w-3.5 h-3.5 text-[#4A1A45]" /> Completed {formatDate(e.completedAt)}
                     </div>
-                    <p className="text-[11px] text-neutral-500">{completed}/{total} lessons · Instructor: {e.course.tutor?.name}</p>
+                    <p className="text-xs sm:text-[11px] text-neutral-500">{completed}/{total} lessons · Instructor: {e.course.tutor?.name}</p>
                     <div className="flex items-center justify-between pt-2 border-t border-rule">
                       <Link
                         href={`/student/courses/${e.courseId}`}

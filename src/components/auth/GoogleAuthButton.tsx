@@ -89,8 +89,8 @@ function GoogleAuthButtonInner({ clientId }: { clientId: string }) {
   return (
     <div className="w-full space-y-2">
       <div ref={buttonRef} className="flex justify-center min-h-[44px]" aria-busy={busy} />
-      {busy && <p className="text-[11px] text-center text-neutral-500 font-semibold">Signing you in...</p>}
-      {error && <p className="text-[11px] text-red-600 font-semibold text-center">{error}</p>}
+      {busy && <p className="text-xs sm:text-[11px] text-center text-neutral-500 font-semibold">Signing you in...</p>}
+      {error && <p className="text-xs sm:text-[11px] text-red-600 font-semibold text-center">{error}</p>}
     </div>
   );
 }

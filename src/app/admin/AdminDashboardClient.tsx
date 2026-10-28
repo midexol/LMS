@@ -149,7 +149,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
 
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Full name</label>
+            <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Full name</label>
             <input
               required
               value={name}
@@ -158,7 +158,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Email</label>
+            <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Email</label>
             <input
               required
               type="email"
@@ -168,7 +168,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">
+            <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">
               Faculty <span className="text-neutral-400 normal-case font-normal">(optional)</span>
             </label>
             <select
@@ -184,7 +184,7 @@ function AddInstructorModal({ onSubmit, onClose }: {
           </div>
           {faculty && (
             <div>
-              <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Department</label>
+              <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Department</label>
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
@@ -262,7 +262,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
 
         <div className="space-y-3">
           <div>
-            <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">Assign Role</label>
+            <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Assign Role</label>
             <div className="grid grid-cols-3 gap-2">
               {["STUDENT", "TUTOR", "ADMIN"].map((r) => (
                 <button
@@ -281,12 +281,12 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
               ))}
             </div>
             {user.id === currentAdminId && (
-              <p className="text-[10px] text-[#4A1A45] font-bold mt-1">You cannot change your own admin role.</p>
+              <p className="text-xs sm:text-[10px] text-[#4A1A45] font-bold mt-1">You cannot change your own admin role.</p>
             )}
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">Faculty / School</label>
+            <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Faculty / School</label>
             <select
               value={faculty}
               onChange={(e) => handleFacultyChange(e.target.value)}
@@ -299,7 +299,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-neutral-600 mb-1 uppercase tracking-wider">Department</label>
+            <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Department</label>
             <select
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
@@ -312,7 +312,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">Reset Password (optional)</label>
+            <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Reset Password (optional)</label>
             <input
               type="password"
               placeholder="Leave blank to preserve current"
@@ -321,7 +321,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
               className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
             />
             {password && password.length < 6 && (
-              <p className="text-[10px] text-red-600 font-bold mt-1">Min 6 characters required.</p>
+              <p className="text-xs sm:text-[10px] text-red-600 font-bold mt-1">Min 6 characters required.</p>
             )}
           </div>
         </div>
@@ -369,13 +369,13 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
           </button>
         </div>
         <div className="p-3.5 rounded-lg bg-[#F3EAF2] border border-rule space-y-1">
-          <p className="text-[10px] font-bold text-[#4A1A45] uppercase">{sub.assignment.lesson.module.course.title}</p>
+          <p className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">{sub.assignment.lesson.module.course.title}</p>
           <p className="font-bold text-black text-sm">{sub.assignment.title}</p>
           <p className="text-xs text-neutral-500">Student: {sub.student.name}</p>
         </div>
         <div className="space-y-3">
           <div>
-            <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
+            <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">
               Adjusted Score (0 to {sub.assignment.maxScore})
             </label>
             <div className="flex items-center gap-3">
@@ -391,13 +391,13 @@ function GradeOverrideModal({ sub, onSave, onClose }: {
                 {score}
               </span>
             </div>
-            <div className="flex justify-between text-[10px] text-neutral-500 mt-0.5">
+            <div className="flex justify-between text-xs sm:text-[10px] text-neutral-500 mt-0.5">
               <span>0</span>
               <span>{sub.assignment.maxScore}</span>
             </div>
           </div>
           <div>
-            <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">Superadmin Feedback Note</label>
+            <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Superadmin Feedback Note</label>
             <textarea
               rows={3}
               placeholder="Reason for this grade adjustment..."
@@ -426,7 +426,7 @@ function RoleBadge({ role }: { role: string }) {
     STUDENT: "bg-[#F3EAF2] text-neutral-800 border-rule",
   };
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${map[role] || map.STUDENT}`}>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs sm:text-[10px] font-bold normal-case sm:uppercase border ${map[role] || map.STUDENT}`}>
       {role}
     </span>
   );
@@ -768,10 +768,10 @@ export function AdminDashboardClient({
 
       {/* ───────────────── HEADER (RICH COMMAND CENTER BLACK) ───────────────── */}
       <header className="bg-[#1E0A1C] text-white border-b border-[#3B1537] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 h-18 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <BrandLogo href="/admin" variant="light" size="sm" />
-            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#3B1537] text-[11px]">
+            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#3B1537] text-xs sm:text-[11px]">
               <span className="font-bold text-[#D6BDD4]">Superadmin Console</span>
               <span className="text-neutral-500">· System Command &amp; Analytics</span>
             </div>
@@ -809,7 +809,7 @@ export function AdminDashboardClient({
         </div>
 
         {/* Tab Navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
           {[
             { id: "overview", label: "Overview" },
             { id: "users", label: "Users", count: users.length },
@@ -831,7 +831,7 @@ export function AdminDashboardClient({
               >
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
-                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                  <span className={`px-1.5 py-0.2 rounded-full text-xs sm:text-[10px] font-bold ${
                     active ? "bg-[#4A1A45] text-white" : "bg-white/10 text-neutral-300"
                   }`}>
                     {tab.count}
@@ -844,19 +844,19 @@ export function AdminDashboardClient({
       </header>
 
       {/* ───────────────── CANVAS ───────────────── */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
+      <main className="max-w-7xl mx-auto px-5 sm:px-6 py-7 sm:py-8 space-y-5 sm:space-y-6">
         {/* OVERVIEW / ANALYTICS TAB */}
         {activeTab === "overview" && (
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             {/* Banner - Pure Jet Black with Brown Accent */}
             <div
-              className="rounded-lg p-5 sm:p-8 text-white relative overflow-hidden"
+              className="rounded-lg p-6 sm:p-8 text-white relative overflow-hidden"
               style={{
                 background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
               }}
             >
               <div className="max-w-xl space-y-2 relative">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">System Intelligence</span>
+                <span className="text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest text-[#D6BDD4]">System Intelligence</span>
                 <h2 className="font-bold text-2xl sm:text-3xl">Platform Performance Overview</h2>
                 <p className="text-xs text-neutral-300 leading-relaxed">
                   Real-time analytics covering platform enrollments, revenue, completion ratios, and assignment throughput.
@@ -880,11 +880,11 @@ export function AdminDashboardClient({
                 { label: "Active Enrollments", value: metrics.activeEnrollmentsCount, sub: `${metrics.completedEnrollmentsCount} completed` },
                 { label: "Submissions Logged", value: metrics.totalSubmissions, sub: "Automated & faculty reviews" },
               ].map((c, i) => (
-                <div key={i} className="bg-[#2D0F2A] text-white rounded-lg p-4 sm:p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
-                  <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{c.label}</p>
+                <div key={i} className="bg-[#2D0F2A] text-white rounded-lg p-5 sm:p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45]/60 transition-all">
+                  <p className="text-xs text-neutral-400 font-semibold tracking-wide normal-case sm:uppercase">{c.label}</p>
                   <div>
                     <div className="text-2xl font-bold text-white tracking-tight">{c.value}</div>
-                    <p className="text-[11px] text-neutral-400 mt-1">{c.sub}</p>
+                    <p className="text-xs sm:text-[11px] text-neutral-400 mt-1">{c.sub}</p>
                   </div>
                 </div>
               ))}
@@ -893,9 +893,9 @@ export function AdminDashboardClient({
             <SignupsChart createdAt={users.map((u) => u.createdAt)} />
 
             {/* Visual Analytics Row: Modern Dual Bar & SVG Ring Distribution (CLEAR & READABLE) */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
               {/* Category Throughput Dual Comparison */}
-              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+              <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-rule">
                   <div>
                     <h3 className="font-bold text-lg text-black tracking-tight">Enrollment Throughput by Academic Track</h3>
@@ -917,7 +917,7 @@ export function AdminDashboardClient({
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                   <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                     <div>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Active Cohorts</span>
+                      <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider block">Active Cohorts</span>
                       <span className="text-lg font-bold text-neutral-900 leading-tight">
                         {metrics.activeEnrollmentsCount} <span className="text-xs font-semibold text-neutral-500">enrolled</span>
                       </span>
@@ -926,7 +926,7 @@ export function AdminDashboardClient({
 
                   <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                     <div>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Certifications</span>
+                      <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider block">Certifications</span>
                       <span className="text-lg font-bold text-[#4A1A45] leading-tight">
                         {metrics.completedEnrollmentsCount} <span className="text-xs font-semibold text-neutral-500">completed</span>
                       </span>
@@ -935,7 +935,7 @@ export function AdminDashboardClient({
 
                   <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                     <div>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Completion Velocity</span>
+                      <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider block">Completion Velocity</span>
                       <span className="text-lg font-bold text-neutral-900 leading-tight">
                         {metrics.activeEnrollmentsCount + metrics.completedEnrollmentsCount > 0
                           ? Math.round((metrics.completedEnrollmentsCount / (metrics.activeEnrollmentsCount + metrics.completedEnrollmentsCount)) * 100)
@@ -973,7 +973,7 @@ export function AdminDashboardClient({
                   const displayTracks = tracks;
                   if (displayTracks.length === 0) {
                     return (
-                      <div className="p-5 sm:p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
+                      <div className="p-6 sm:p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
                         <p className="text-xs text-neutral-500">No courses or enrollments yet. Activity by subject appears here once courses are created.</p>
                       </div>
                     );
@@ -999,20 +999,20 @@ export function AdminDashboardClient({
                                   <span className="font-bold text-xs sm:text-sm text-neutral-900">
                                     {track.cat}
                                   </span>
-                                  <span className="text-[10px] text-neutral-400 font-semibold">
+                                  <span className="text-xs sm:text-[10px] text-neutral-400 font-semibold">
                                     ({track.courses} {track.courses === 1 ? "course" : "courses"})
                                   </span>
                                 </div>
 
                                 <div className="flex items-center gap-2 text-xs">
-                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                  <span className={`px-2 py-0.5 rounded-full text-xs sm:text-[10px] font-bold ${
                                     track.active > 0
                                       ? "bg-[#4A1A45] text-white"
                                       : "bg-[#E4D5E2]/70 text-neutral-500"
                                   }`}>
                                     {track.active} active
                                   </span>
-                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                  <span className={`px-2 py-0.5 rounded-full text-xs sm:text-[10px] font-bold ${
                                     track.comp > 0
                                       ? "bg-[#4A1A45] text-white"
                                       : "bg-[#E4D5E2]/70 text-neutral-500"
@@ -1025,7 +1025,7 @@ export function AdminDashboardClient({
                               {/* Dual Gradient Progress Tracks */}
                               <div className="space-y-1.5">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-14 shrink-0">
+                                  <span className="text-[9px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider w-14 shrink-0">
                                     Enrolled
                                   </span>
                                   <div className="w-full h-2.5 bg-[#E4D5E2]/60 rounded-full overflow-hidden relative">
@@ -1038,13 +1038,13 @@ export function AdminDashboardClient({
                                       <div className="h-full w-2 rounded-full bg-neutral-300 opacity-40" />
                                     )}
                                   </div>
-                                  <span className="text-[10px] font-mono font-bold text-neutral-700 w-6 text-right shrink-0">
+                                  <span className="text-xs sm:text-[10px] font-mono font-bold text-neutral-700 w-6 text-right shrink-0">
                                     {track.active}
                                   </span>
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                  <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-14 shrink-0">
+                                  <span className="text-[9px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider w-14 shrink-0">
                                     Certified
                                   </span>
                                   <div className="w-full h-2.5 bg-[#E4D5E2]/60 rounded-full overflow-hidden relative">
@@ -1057,7 +1057,7 @@ export function AdminDashboardClient({
                                       <div className="h-full w-2 rounded-full bg-neutral-300 opacity-40" />
                                     )}
                                   </div>
-                                  <span className="text-[10px] font-mono font-bold text-[#4A1A45] w-6 text-right shrink-0">
+                                  <span className="text-xs sm:text-[10px] font-mono font-bold text-[#4A1A45] w-6 text-right shrink-0">
                                     {track.comp}
                                   </span>
                                 </div>
@@ -1072,7 +1072,7 @@ export function AdminDashboardClient({
               </div>
 
               {/* Platform Composition Breakdown */}
-              <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4 sm:space-y-6 flex flex-col justify-between">
+              <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6 flex flex-col justify-between">
                 <div className="pb-3 border-b border-rule">
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-lg text-black tracking-tight">Platform Composition</h3>
@@ -1152,7 +1152,7 @@ export function AdminDashboardClient({
                         {/* Center Statistics Capsule */}
                         <div className="absolute w-28 h-28 rounded-full bg-white shadow-xs border border-rule flex flex-col items-center justify-center text-center p-2">
                           <span className="font-bold text-2xl text-black leading-none">{total}</span>
-                          <span className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Directory</span>
+                          <span className="text-[9px] text-neutral-400 font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest mt-1">Directory</span>
                         </div>
                       </div>
 
@@ -1166,7 +1166,7 @@ export function AdminDashboardClient({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-black">{sCount}</span>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#E4D5E2] text-neutral-800">
+                              <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#E4D5E2] text-neutral-800">
                                 {sPct}%
                               </span>
                             </div>
@@ -1184,7 +1184,7 @@ export function AdminDashboardClient({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-[#4A1A45]">{tCount}</span>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45]">
+                              <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45]">
                                 {tPct}%
                               </span>
                             </div>
@@ -1202,7 +1202,7 @@ export function AdminDashboardClient({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-bold text-neutral-800">{aCount}</span>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#E4D5E2] text-neutral-700">
+                              <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#E4D5E2] text-neutral-700">
                                 {aPct}%
                               </span>
                             </div>
@@ -1223,7 +1223,7 @@ export function AdminDashboardClient({
         {/* USERS TAB */}
         {activeTab === "users" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-rule p-4 sm:p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
+            <div className="bg-white rounded-lg border border-rule p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1289,32 +1289,32 @@ export function AdminDashboardClient({
                       <tr key={u.id} className="hover:bg-[#F7F2F6]">
                         <td className="p-4">
                           <p className="font-bold text-black">{u.name}</p>
-                          <p className="text-[10px] text-neutral-500">
+                          <p className="text-xs sm:text-[10px] text-neutral-500">
                             {u.email}
                             {u.emailVerified === false && <span className="ml-1 text-amber-600 font-semibold">(unverified)</span>}
                           </p>
-                          {u.phone && <p className="text-[10px] text-neutral-500">{u.phone}</p>}
+                          {u.phone && <p className="text-xs sm:text-[10px] text-neutral-500">{u.phone}</p>}
                         </td>
                         <td className="p-4"><RoleBadge role={u.role} /></td>
                         <td className="p-4">
                           {u.department ? (
                             <div>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#F3EAF2] text-black border border-rule inline-block truncate max-w-[190px]">
+                              <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#F3EAF2] text-black border border-rule inline-block truncate max-w-[190px]">
                                 {u.department}
                               </span>
-                              <span className="text-[10px] text-neutral-400 block truncate max-w-[190px] mt-0.5">
+                              <span className="text-xs sm:text-[10px] text-neutral-400 block truncate max-w-[190px] mt-0.5">
                                 {u.faculty}
                               </span>
                             </div>
                           ) : (
-                            <span className="text-neutral-400 italic text-[11px]">Unassigned</span>
+                            <span className="text-neutral-400 italic text-xs sm:text-[11px]">Unassigned</span>
                           )}
                         </td>
                         <td className="p-4 text-black font-bold">{u._count.enrollments}</td>
                         <td className="p-4 text-black font-bold">{u._count.submissions}</td>
                         <td className="p-4 text-neutral-500">
                           <p>{formatDate(u.createdAt)}</p>
-                          <p className="text-[10px] text-neutral-400">
+                          <p className="text-xs sm:text-[10px] text-neutral-400">
                             Last login: {u.lastLoginAt ? formatDate(u.lastLoginAt) : "never"}
                           </p>
                         </td>
@@ -1322,7 +1322,7 @@ export function AdminDashboardClient({
                           <div className="flex items-center gap-2">
                             <Link
                               href={`/admin/users/${u.id}`}
-                              className="px-2.5 py-1.5 rounded-lg border border-rule text-[11px] font-bold text-black hover:bg-[#F3EAF2]"
+                              className="px-2.5 py-1.5 rounded-lg border border-rule text-xs sm:text-[11px] font-bold text-black hover:bg-[#F3EAF2]"
                               title="View full profile, payments and progress"
                             >
                               View
@@ -1357,7 +1357,7 @@ export function AdminDashboardClient({
         {/* COURSES TAB */}
         {activeTab === "courses" && (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-rule p-4 sm:p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
+            <div className="bg-white rounded-lg border border-rule p-5 flex flex-col sm:flex-row gap-3 items-center justify-between flex-wrap">
               <div className="relative flex-1 min-w-[220px] w-full">
                 <PiMagnifyingGlass className="absolute left-3.5 top-2.5 text-neutral-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -1397,16 +1397,16 @@ export function AdminDashboardClient({
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredCourses.map((c) => (
-                <div key={c.id} className="bg-white rounded-lg p-4 sm:p-6 border border-rule space-y-4 flex flex-col justify-between">
+                <div key={c.id} className="bg-white rounded-lg p-5 sm:p-6 border border-rule space-y-4 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-start justify-between flex-wrap gap-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {c.department && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
+                          <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45] text-white">
                             {c.department}
                           </span>
                         )}
-                        <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{c.faculty || c.category} · {c.level}</span>
+                        <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">{c.faculty || c.category} · {c.level}</span>
                       </div>
                       <span className="font-bold text-base text-black">
                         {c.price === 0 ? "Free" : formatNgn(c.price)}
@@ -1457,18 +1457,18 @@ export function AdminDashboardClient({
                   <tr key={e.id} className="hover:bg-[#F7F2F6]">
                     <td className="p-4">
                       <p className="font-bold text-black">{e.student.name}</p>
-                      <p className="text-[10px] text-neutral-500">{e.student.department || e.student.email}</p>
+                      <p className="text-xs sm:text-[10px] text-neutral-500">{e.student.department || e.student.email}</p>
                     </td>
                     <td className="p-4">
                       <p className="text-[#4A1A45] font-bold">{e.course.title}</p>
-                      <p className="text-[10px] text-neutral-500">{e.course.department || e.course.category}</p>
+                      <p className="text-xs sm:text-[10px] text-neutral-500">{e.course.department || e.course.category}</p>
                     </td>
                     <td className="p-4 font-bold text-black">
                       {e.course.price === 0 ? "Free" : formatNgn(e.course.price)}
                     </td>
                     <td className="p-4 text-neutral-500">{formatDate(e.enrolledAt)}</td>
                     <td className="p-4">
-                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
+                      <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45] text-white">
                         {e.status}
                       </span>
                     </td>
@@ -1476,7 +1476,7 @@ export function AdminDashboardClient({
                       {e.status === "ACTIVE" && (
                         <button
                           onClick={() => setRevokeEnrollment(e)}
-                          className="px-2.5 py-1 rounded-md text-[10px] font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all inline-flex items-center gap-1"
+                          className="px-2.5 py-1 rounded-md text-xs sm:text-[10px] font-bold border border-red-200 text-red-600 hover:bg-red-50 transition-all inline-flex items-center gap-1"
                           title="Revoke enrollment and release course lock"
                         >
                           <PiTrash className="w-3 h-3" /> Revoke Lock
@@ -1497,10 +1497,10 @@ export function AdminDashboardClient({
               const max = sub.assignment.maxScore || 100;
               const isPass = sub.score !== null && isPassingPercent((sub.score / max) * 100);
               return (
-                <div key={sub.id} className="bg-white rounded-lg p-4 sm:p-6 border border-rule space-y-4">
+                <div key={sub.id} className="bg-white rounded-lg p-5 sm:p-6 border border-rule space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
-                      <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
+                      <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">
                         {sub.assignment.lesson.module.course.title}
                       </span>
                       <h4 className="font-bold text-base text-black">{sub.assignment.title}</h4>
@@ -1509,7 +1509,7 @@ export function AdminDashboardClient({
 
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase block">Grade</span>
+                        <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase block">Grade</span>
                         <span className={`font-bold text-xl ${isPass ? "text-black" : "text-[#4A1A45]"}`}>
                           {sub.score !== null ? `${sub.score} / ${max}` : "Pending"}
                         </span>
@@ -1524,7 +1524,7 @@ export function AdminDashboardClient({
                   </div>
 
                   <div className="p-4 rounded-lg bg-[#F3EAF2] text-xs space-y-1">
-                    <span className="text-[10px] font-bold text-neutral-500 uppercase block">Student Submission:</span>
+                    <span className="text-xs sm:text-[10px] font-bold text-neutral-500 normal-case sm:uppercase block">Student Submission:</span>
                     <p className="text-neutral-800 leading-relaxed">{sub.content}</p>
                   </div>
                 </div>
@@ -1565,7 +1565,7 @@ export function AdminDashboardClient({
                 .map((msg) => (
                   <div
                     key={msg.id}
-                    className={`bg-white rounded-lg p-4 sm:p-6 border  space-y-3 ${
+                    className={`bg-white rounded-lg p-5 sm:p-6 border  space-y-3 ${
                       msg.status === "NEW" ? "border-[#4A1A45]/40" : "border-rule"
                     }`}
                   >
@@ -1573,9 +1573,9 @@ export function AdminDashboardClient({
                       <div className="space-y-0.5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           {msg.status === "NEW" && (
-                            <span className="px-2 py-0.5 rounded-md bg-[#4A1A45] text-white text-[10px] font-bold uppercase">New</span>
+                            <span className="px-2 py-0.5 rounded-md bg-[#4A1A45] text-white text-xs sm:text-[10px] font-bold normal-case sm:uppercase">New</span>
                           )}
-                          <span className="text-[10px] font-bold text-[#4A1A45] uppercase">{msg.subject}</span>
+                          <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">{msg.subject}</span>
                         </div>
                         <h4 className="font-bold text-base text-black">{msg.name}</h4>
                         <p className="text-xs text-neutral-500 break-all">
@@ -1616,7 +1616,7 @@ export function AdminDashboardClient({
 
         {/* SETTINGS & SYSTEM CONTROLS TAB */}
         {activeTab === "settings" && (
-          <div className="space-y-4 sm:space-y-6 max-w-5xl">
+          <div className="space-y-5 sm:space-y-6 max-w-5xl">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <h2 className="font-bold text-2xl text-black">Settings</h2>
@@ -1628,7 +1628,7 @@ export function AdminDashboardClient({
             </div>
 
             {/* Academic Policies & Enrollment Rules */}
-            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-rule pb-3 flex items-center gap-2">
                 Academic Policies &amp; Lock Enforcement
               </h3>
@@ -1673,7 +1673,7 @@ export function AdminDashboardClient({
             </div>
 
             {/* Audit & Data Export Center */}
-            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
               <h3 className="font-bold text-lg text-black border-b border-rule pb-3 flex items-center gap-2">
                 Data Export Center
               </h3>
@@ -1694,11 +1694,11 @@ export function AdminDashboardClient({
                       ])
                     )
                   }
-                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Users Directory</h4>
-                    <p className="text-[10px] text-neutral-400 mt-0.5">{users.length} total registered accounts</p>
+                    <p className="text-xs sm:text-[10px] text-neutral-400 mt-0.5">{users.length} total registered accounts</p>
                   </div>
                 </button>
 
@@ -1710,11 +1710,11 @@ export function AdminDashboardClient({
                       courses.map((c) => [c.id, c.title, c.category, c.faculty || "", c.department || "", c.price, c.published ? "Yes" : "No", c.tutor.name])
                     )
                   }
-                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Courses Catalog</h4>
-                    <p className="text-[10px] text-neutral-400 mt-0.5">{courses.length} curriculum tracks</p>
+                    <p className="text-xs sm:text-[10px] text-neutral-400 mt-0.5">{courses.length} curriculum tracks</p>
                   </div>
                 </button>
 
@@ -1726,11 +1726,11 @@ export function AdminDashboardClient({
                       enrollments.map((e) => [e.id, e.student.name, e.student.email, e.course.title, e.status, String(e.enrolledAt), String(e.completedAt || "")])
                     )
                   }
-                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Enrollments Ledger</h4>
-                    <p className="text-[10px] text-neutral-400 mt-0.5">{enrollments.length} student registrations</p>
+                    <p className="text-xs sm:text-[10px] text-neutral-400 mt-0.5">{enrollments.length} student registrations</p>
                   </div>
                 </button>
 
@@ -1742,11 +1742,11 @@ export function AdminDashboardClient({
                       submissions.map((s) => [s.id, s.student.name, s.assignment.lesson.module.course.title, s.assignment.title, s.score ?? "Pending", s.assignment.maxScore, s.status, String(s.submittedAt)])
                     )
                   }
-                  className="p-4 sm:p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
+                  className="p-5 rounded-lg border border-rule bg-[#F7F2F6] hover:bg-[#F3EAF2] hover:border-black transition-all text-left space-y-2 group shadow-xs"
                 >
                   <div>
                     <h4 className="font-bold text-xs text-black">Export Submissions Ledger</h4>
-                    <p className="text-[10px] text-neutral-400 mt-0.5">{submissions.length} evaluated tasks</p>
+                    <p className="text-xs sm:text-[10px] text-neutral-400 mt-0.5">{submissions.length} evaluated tasks</p>
                   </div>
                 </button>
               </div>

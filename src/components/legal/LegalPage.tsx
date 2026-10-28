@@ -25,7 +25,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       <header className="border-b border-rule">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
           <BrandLogo href="/" variant="dark" size="sm" />
           <Link href="/" className="text-xs font-bold text-[#4A1A45] hover:underline">
             Back to home
@@ -33,8 +33,8 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-[#4A1A45]">Legal</p>
+      <main className="max-w-3xl mx-auto px-5 sm:px-6 py-12">
+        <p className="text-xs sm:text-[11px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest text-[#4A1A45]">Legal</p>
         <h1 className="font-heading mt-1 text-3xl sm:text-4xl font-semibold tracking-tight text-black">{title}</h1>
         <p className="mt-2 text-xs text-neutral-500">Last updated: {lastUpdated}</p>
         <p className="mt-6 text-sm leading-relaxed text-neutral-700">{intro}</p>
@@ -61,7 +61,7 @@ export function LegalPage({ title, intro, lastUpdated, sections }: LegalPageProp
           ))}
         </div>
 
-        <div className="mt-12 p-4 sm:p-5 rounded-lg bg-[#F7F2F6] border border-rule text-sm text-neutral-700 leading-relaxed">
+        <div className="mt-12 p-5 rounded-lg bg-[#F7F2F6] border border-rule text-sm text-neutral-700 leading-relaxed">
           Questions about this page? {" "}
           {supportEmail ? (
             <>

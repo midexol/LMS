@@ -42,8 +42,8 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-paper flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-md space-y-4 sm:space-y-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-5 sm:p-6">
+      <div className="w-full max-w-md space-y-5 sm:space-y-6">
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="flex justify-center mb-2">
@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+        <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200 flex items-center gap-2">
               <PiWarningCircle className="w-4 h-4 shrink-0 text-red-600" />
@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">
                 Admin Email
               </label>
               <div className="relative">
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">
                 Password
               </label>
               <div className="relative">
@@ -102,7 +102,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-2"
+              className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs tracking-normal sm:tracking-wider normal-case sm:uppercase transition-all flex items-center justify-center gap-2 mt-2"
             >
               <PiSignIn className="w-4 h-4" />
               {loading ? "Authenticating..." : "Enter Admin Console"}

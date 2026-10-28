@@ -1,5 +1,6 @@
 "use client";
 
+import { PiList, PiSignOut } from "react-icons/pi";
 import React, { useState } from "react";
 import Link from "next/link";
 import { CourseBuilderWizard } from "@/components/tutor/CourseBuilderWizard";
@@ -77,20 +78,20 @@ export function InstructorClient({
       <aside
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#1E0A1C] text-white border-r border-[#3B1537] p-4 sm:p-5 flex flex-col justify-between transition-transform duration-300  lg:shadow-none`}
+        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#1E0A1C] text-white border-r border-[#3B1537] p-5 flex flex-col justify-between transition-transform duration-300  lg:shadow-none`}
       >
-        <div className="space-y-4 sm:space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           {/* Logo & School Header */}
           <div className="px-1">
             <BrandLogo href="/instructor" variant="light" size="sm" />
-            <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1.5 pl-9">
+            <p className="text-xs sm:text-[10px] text-neutral-400 font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest mt-1.5 pl-9">
               Instructor Studio
             </p>
           </div>
 
           {/* TEACHING Section */}
           <div className="space-y-1">
-            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Teaching</p>
+            <p className="text-xs sm:text-[10px] font-bold text-neutral-500 normal-case sm:uppercase tracking-normal sm:tracking-wider px-3 mb-2">Teaching</p>
             {[
               { id: "dashboard", label: "Dashboard" },
               { id: "classes", label: "My Classes" },
@@ -117,7 +118,7 @@ export function InstructorClient({
 
           {/* PLATFORM Section */}
           <div className="space-y-1">
-            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Platform</p>
+            <p className="text-xs sm:text-[10px] font-bold text-neutral-500 normal-case sm:uppercase tracking-normal sm:tracking-wider px-3 mb-2">Platform</p>
             <Link
               href="/courses"
               className="w-full flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white hover:bg-[#2D0F2A] transition-all"
@@ -133,7 +134,7 @@ export function InstructorClient({
           <div className="bg-neutral-900/90 rounded-lg p-4 border border-[#3B1537] space-y-2.5">
             <div className="flex items-center justify-between text-xs">
               <span className="font-bold text-white">Active Learners</span>
-              <span className="text-[10px] text-[#D6BDD4] font-semibold">{metrics.totalEnrollments} enrolled</span>
+              <span className="text-xs sm:text-[10px] text-[#D6BDD4] font-semibold">{metrics.totalEnrollments} enrolled</span>
             </div>
             <div className="flex items-center gap-1.5">
               {tutorCourses.flatMap((c) => c.enrollments.map((e: any) => e.student?.name || "Student")).slice(0, 3).map((name: string, i: number) => (
@@ -157,7 +158,7 @@ export function InstructorClient({
                   style={{ width: `${allSubmissions.length > 0 ? Math.min(100, Math.round((gradedSubmissions.length / allSubmissions.length) * 100)) : 100}%` }}
                 />
               </div>
-              <p className="text-[10px] text-neutral-400">
+              <p className="text-xs sm:text-[10px] text-neutral-400">
                 {allSubmissions.length > 0
                   ? `${Math.round((gradedSubmissions.length / allSubmissions.length) * 100)}% submission review rate`
                   : "All assignments up to date"}
@@ -173,14 +174,16 @@ export function InstructorClient({
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-white truncate">{currentUser.name}</p>
-                <p className="text-[10px] text-neutral-400 truncate">Instructor</p>
+                <p className="text-xs sm:text-[10px] text-neutral-400 truncate">Instructor</p>
               </div>
             </div>
             <button
               onClick={handleLogout}
               className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-[#3B1537] transition-colors shrink-0"
               title="Sign Out"
+              aria-label="Sign out"
             >
+              <PiSignOut className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -197,12 +200,14 @@ export function InstructorClient({
       {/* ───────────────── MAIN CANVAS ───────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Top Header */}
-        <header className="px-5 sm:px-8 py-5 flex items-center justify-between gap-4 bg-white border-b border-rule">
+        <header className="px-6 sm:px-8 py-5 flex items-center justify-between gap-4 bg-white border-b border-rule">
           <div className="flex items-center gap-4">
             <button
               className="lg:hidden p-2 rounded-xl border border-rule text-black"
               onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
             >
+              <PiList className="w-5 h-5" />
             </button>
             <div>
               <h1 className="font-bold text-2xl text-black leading-tight">Dashboard</h1>
@@ -229,18 +234,18 @@ export function InstructorClient({
         </header>
 
         {/* Content Body */}
-        <main className="px-5 sm:px-8 py-6 sm:py-8 space-y-4 sm:space-y-6">
+        <main className="px-6 sm:px-8 py-7 sm:py-8 space-y-5 sm:space-y-6">
           {activeTab === "dashboard" && (
             <>
               {/* 1. HERO BANNER - PURE JET BLACK WITH BROWN GRADIENT ACCENT */}
               <div
-                className="rounded-lg p-5 sm:p-8 text-white relative overflow-hidden"
+                className="rounded-lg p-6 sm:p-8 text-white relative overflow-hidden"
                 style={{
                   background: "linear-gradient(115deg, #1E0A1C 0%, #2D0F2A 55%, #4A1A45 85%, #6B2764 100%)",
                 }}
               >
                 <div className="relative max-w-xl space-y-3">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#D6BDD4]">Your Studio</p>
+                  <p className="text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest text-[#D6BDD4]">Your Studio</p>
                   <h2 className="font-bold text-2xl sm:text-3xl leading-snug">
                     Welcome back, {currentUser.name.split(" ")[0]}
                   </h2>
@@ -301,21 +306,21 @@ export function InstructorClient({
                 ].map((stat, i) => (
                   <div
                     key={i}
-                    className="bg-[#1E0A1C] text-white rounded-lg p-4 sm:p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45] transition-all"
+                    className="bg-[#1E0A1C] text-white rounded-lg p-5 sm:p-6 border border-[#3B1537] flex flex-col justify-between space-y-4 hover:border-[#4A1A45] transition-all"
                   >
-                    <p className="text-xs text-neutral-400 font-semibold tracking-wide uppercase">{stat.label}</p>
+                    <p className="text-xs text-neutral-400 font-semibold tracking-wide normal-case sm:uppercase">{stat.label}</p>
                     <div>
                       <div className="text-2xl font-bold text-white tracking-tight">{stat.value}</div>
-                      <p className="text-[11px] text-neutral-400 mt-1">{stat.sub}</p>
+                      <p className="text-xs sm:text-[11px] text-neutral-400 mt-1">{stat.sub}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* 3. VISUALIZATION ROW: MODERN COURSE THROUGHPUT & GRADE DISTRIBUTION */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
                 {/* Left: Course Performance & Cohort Engagement */}
-                <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+                <div className="lg:col-span-2 bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-rule">
                     <div>
                       <h3 className="font-bold text-lg text-black tracking-tight">Course Enrollment &amp; Evaluation Throughput</h3>
@@ -337,7 +342,7 @@ export function InstructorClient({
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                     <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                       <div>
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Total Learners</span>
+                        <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider block">Total Learners</span>
                         <span className="text-lg font-bold text-neutral-900 leading-tight">
                           {metrics.totalEnrollments} <span className="text-xs font-semibold text-neutral-500">enrolled</span>
                         </span>
@@ -346,7 +351,7 @@ export function InstructorClient({
 
                     <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                       <div>
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Submissions Logged</span>
+                        <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider block">Submissions Logged</span>
                         <span className="text-lg font-bold text-[#4A1A45] leading-tight">
                           {allSubmissions.length} <span className="text-xs font-semibold text-neutral-500">total</span>
                         </span>
@@ -355,7 +360,7 @@ export function InstructorClient({
 
                     <div className="p-4 rounded-lg bg-[#F7F2F6] border border-rule flex items-center gap-3.5">
                       <div>
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Cohort Mean Score</span>
+                        <span className="text-xs sm:text-[10px] font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-wider block">Cohort Mean Score</span>
                         <span className="text-lg font-bold text-neutral-900 leading-tight">
                           {avgScore === null ? (
                             <span className="text-sm font-semibold text-neutral-500">No grades yet</span>
@@ -371,9 +376,9 @@ export function InstructorClient({
 
                   {/* Course-by-Course Comparative Dual Bar Tracks */}
                   <div className="space-y-4 pt-2">
-                    <p className="text-xs font-bold text-neutral-700 uppercase tracking-wider">Course Performance Breakdown</p>
+                    <p className="text-xs font-bold text-neutral-700 normal-case sm:uppercase tracking-normal sm:tracking-wider">Course Performance Breakdown</p>
                     {tutorCourses.length === 0 ? (
-                      <div className="p-5 sm:p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
+                      <div className="p-6 sm:p-8 text-center bg-[#F7F2F6] rounded-lg border border-dashed border-rule">
                         <p className="text-xs text-neutral-500">No courses created yet. Use the Course Builder tab to publish your first course.</p>
                       </div>
                     ) : (
@@ -397,12 +402,12 @@ export function InstructorClient({
                                 <div className="flex items-center gap-2">
                                   <span className="font-bold text-neutral-900 truncate max-w-xs">{c.title}</span>
                                   {c.department && (
-                                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-white border border-rule text-neutral-600 font-semibold">
+                                    <span className="text-xs sm:text-[10px] px-2 py-0.5 rounded-md bg-white border border-rule text-neutral-600 font-semibold">
                                       {c.department}
                                     </span>
                                   )}
                                 </div>
-                                <div className="flex items-center gap-3 text-[11px] font-bold text-neutral-500">
+                                <div className="flex items-center gap-3 text-xs sm:text-[11px] font-bold text-neutral-500">
                                   <span className="text-black">{c.enrollments.length} enrolled</span>
                                   <span>·</span>
                                   <span className="text-[#4A1A45]">{courseSubs.length} submissions</span>
@@ -437,7 +442,7 @@ export function InstructorClient({
                 </div>
 
                 {/* Right: Grade Distribution Breakdown */}
-                <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4 sm:space-y-6 flex flex-col justify-between">
+                <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6 flex flex-col justify-between">
                   <div className="pb-3 border-b border-rule">
                     <div className="flex items-center justify-between">
                       <h3 className="font-bold text-lg text-black tracking-tight">Grade Distribution</h3>
@@ -494,8 +499,8 @@ export function InstructorClient({
                     })()}
                     <div className="absolute flex flex-col items-center justify-center text-center">
                       <span className="font-bold text-2xl sm:text-3xl text-black">{avgGradeLetter ?? "—"}</span>
-                      <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Cohort Avg</span>
-                      <span className="text-[10px] font-bold text-[#4A1A45] mt-0.5">{avgScore === null ? "No grades yet" : `${avgScore}% Mean`}</span>
+                      <span className="text-xs sm:text-[10px] text-neutral-500 font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider">Cohort Avg</span>
+                      <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] mt-0.5">{avgScore === null ? "No grades yet" : `${avgScore}% Mean`}</span>
                     </div>
                   </div>
 
@@ -547,12 +552,12 @@ export function InstructorClient({
 
           {/* ──────────────── MY CLASSES TAB ──────────────── */}
           {activeTab === "classes" && (
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               {editingCourse ? (
-                <div className="bg-white rounded-lg p-5 sm:p-8 border-2 border-[#4A1A45] space-y-4 sm:space-y-6">
+                <div className="bg-white rounded-lg p-6 sm:p-8 border-2 border-[#4A1A45] space-y-5 sm:space-y-6">
                   <div className="flex items-center justify-between pb-4 border-b border-rule">
                     <div>
-                      <span className="text-[10px] font-bold text-[#4A1A45] uppercase tracking-wider">Editing Mode</span>
+                      <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase tracking-normal sm:tracking-wider">Editing Mode</span>
                       <h2 className="font-bold text-2xl text-black">Update Course: {editingCourse.title}</h2>
                     </div>
                     <button
@@ -572,7 +577,7 @@ export function InstructorClient({
                   />
                 </div>
               ) : (
-                <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+                <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
                   <div>
                     <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
                     <p className="text-xs text-neutral-500">Create new course modules, integrate automated grading rubrics, and upload lecture content.</p>
@@ -585,16 +590,16 @@ export function InstructorClient({
                 <h3 className="font-bold text-xl text-black">Existing Courses ({tutorCourses.length})</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {tutorCourses.map((c) => (
-                    <div key={c.id} className="bg-white rounded-lg p-4 sm:p-6 border border-rule space-y-3 flex flex-col justify-between">
+                    <div key={c.id} className="bg-white rounded-lg p-5 sm:p-6 border border-rule space-y-3 flex flex-col justify-between">
                       <div className="space-y-3">
                         <div className="flex items-start justify-between flex-wrap gap-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             {c.department && (
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
+                              <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45] text-white">
                                 {c.department}
                               </span>
                             )}
-                            <span className="text-[10px] font-bold text-[#4A1A45] uppercase">
+                            <span className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">
                               {c.faculty || c.category} · {c.level}
                             </span>
                           </div>
@@ -617,7 +622,7 @@ export function InstructorClient({
                             setEditingCourse(c);
                             window.scrollTo({ top: 0, behavior: "smooth" });
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-[11px] transition-all"
+                          className="px-3 py-1.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs sm:text-[11px] transition-all"
                         >
                           Edit Course
                         </button>
@@ -631,7 +636,7 @@ export function InstructorClient({
 
           {/* ──────────────── SUBMISSIONS TAB ──────────────── */}
           {activeTab === "submissions" && (
-            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Student Submissions &amp; Grading Queue</h2>
                 <p className="text-xs text-neutral-500">Review automated rubric evaluations, verify benchmark accuracy, and issue manual score overrides.</p>
@@ -642,7 +647,7 @@ export function InstructorClient({
 
           {/* ──────────────── STUDENTS TAB ──────────────── */}
           {activeTab === "students" && (
-            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Enrolled Students</h2>
                 <p className="text-xs text-neutral-500">Student roster across all your classes.</p>
@@ -665,13 +670,13 @@ export function InstructorClient({
                           <td className="p-3 font-bold text-black">{e.student.name}</td>
                           <td className="p-3 text-neutral-600">{e.student.email}</td>
                           <td className="p-3">
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#F3EAF2] text-black border border-rule">
+                            <span className="px-2 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#F3EAF2] text-black border border-rule">
                               {e.student.department || "General"}
                             </span>
                           </td>
                           <td className="p-3 text-[#4A1A45] font-bold">{c.title}</td>
                           <td className="p-3">
-                            <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
+                            <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45] text-white">
                               {e.status}
                             </span>
                           </td>
@@ -686,7 +691,7 @@ export function InstructorClient({
 
           {/* ──────────────── ANNOUNCEMENTS TAB ──────────────── */}
           {activeTab === "announcements" && (
-            <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Class Announcements</h2>
                 <p className="text-xs text-neutral-500">Broadcast updates, exam guidelines, and reminders to your active classes.</p>
@@ -703,7 +708,7 @@ export function InstructorClient({
 
           {/* ──────────────── SETTINGS & PROFILE TAB ──────────────── */}
           {activeTab === "settings" && (
-            <div className="space-y-4 sm:space-y-6 max-w-4xl">
+            <div className="space-y-5 sm:space-y-6 max-w-4xl">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <h2 className="font-bold text-2xl text-black">Studio settings</h2>
@@ -715,35 +720,35 @@ export function InstructorClient({
               </div>
 
               {/* Studio Preferences */}
-              <div className="bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4">
+              <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-4">
                 <h3 className="font-bold text-base text-black">Studio Preferences</h3>
                 <div className="divide-y divide-rule text-xs">
                   <div className="py-3 flex items-center justify-between">
                     <div>
                       <p className="font-bold text-black">Rubric Evaluation Sensitivity</p>
-                      <p className="text-neutral-500 text-[11px]">Courses are completed at an average of {PASS_MARK_PERCENT}% or more</p>
+                      <p className="text-neutral-500 text-xs sm:text-[11px]">Courses are completed at an average of {PASS_MARK_PERCENT}% or more</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-md bg-[#F3EAF2] text-neutral-700 font-bold text-[10px]">Pass mark {PASS_MARK_PERCENT}%</span>
+                    <span className="px-2.5 py-1 rounded-md bg-[#F3EAF2] text-neutral-700 font-bold text-xs sm:text-[10px]">Pass mark {PASS_MARK_PERCENT}%</span>
                   </div>
                   <div className="py-3 flex items-center justify-between">
                     <div>
                       <p className="font-bold text-black">Single Course Immersion Lock</p>
-                      <p className="text-neutral-500 text-[11px]">Restrict students to one active course at a time</p>
+                      <p className="text-neutral-500 text-xs sm:text-[11px]">Restrict students to one active course at a time</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-md bg-[#4A1A45] text-white font-bold text-[10px]">Enforced</span>
+                    <span className="px-2.5 py-1 rounded-md bg-[#4A1A45] text-white font-bold text-xs sm:text-[10px]">Enforced</span>
                   </div>
                   <div className="py-3 flex items-center justify-between">
                     <div>
                       <p className="font-bold text-black">Email Submission Alerts</p>
-                      <p className="text-neutral-500 text-[11px]">Receive digests when students submit assignments</p>
+                      <p className="text-neutral-500 text-xs sm:text-[11px]">Receive digests when students submit assignments</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-md bg-[#F3EAF2] text-neutral-700 font-bold text-[10px]">Enabled</span>
+                    <span className="px-2.5 py-1 rounded-md bg-[#F3EAF2] text-neutral-700 font-bold text-xs sm:text-[10px]">Enabled</span>
                   </div>
                 </div>
               </div>
 
               {/* Session Management & Logout */}
-              <div className="bg-white rounded-lg p-5 sm:p-8 border border-red-100 space-y-4">
+              <div className="bg-white rounded-lg p-6 sm:p-8 border border-red-100 space-y-4">
                 <div>
                   <h3 className="font-bold text-base text-black">Session &amp; Security</h3>
                   <p className="text-xs text-neutral-500">Sign out of your active instructor session on this device.</p>
@@ -752,12 +757,12 @@ export function InstructorClient({
                 <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="text-xs text-neutral-600">
                     <p className="font-semibold">Active Faculty Session</p>
-                    <p className="text-[11px] text-neutral-400">Authenticated via secure session cookie</p>
+                    <p className="text-xs sm:text-[11px] text-neutral-400">Authenticated via secure session cookie</p>
                   </div>
 
                   <button
                     onClick={handleLogout}
-                    className="px-4 sm:px-6 py-2.5 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
+                    className="px-5 sm:px-6 py-2.5 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all flex items-center gap-2"
                   >
                     <span>Sign Out of Instructor Studio</span>
                   </button>

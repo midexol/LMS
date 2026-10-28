@@ -23,7 +23,7 @@ function StatusPill({ status }: { status: string }) {
   };
   return (
     <span
-      className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+      className={`inline-block px-2 py-0.5 rounded-full text-xs sm:text-[10px] font-bold normal-case sm:uppercase border ${
         styles[status] || "bg-[#F3EAF2] text-neutral-700 border-rule"
       }`}
     >
@@ -34,8 +34,8 @@ function StatusPill({ status }: { status: string }) {
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-lg border border-rule p-4 sm:p-5">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{label}</p>
+    <div className="bg-white rounded-lg border border-rule p-5">
+      <p className="text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-neutral-400">{label}</p>
       <p className="mt-1 text-2xl font-bold text-black tracking-tight">{value}</p>
     </div>
   );
@@ -106,7 +106,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-paper text-neutral-900">
       <header className="bg-[#2D0F2A] border-b border-[#3B1537]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 py-4 flex items-center justify-between">
           <BrandLogo href="/admin" variant="light" size="sm" />
           <Link
             href="/admin?tab=users"
@@ -117,22 +117,22 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
+      <main className="max-w-6xl mx-auto px-5 sm:px-6 py-7 sm:py-8 space-y-5 sm:space-y-6">
         {/* Profile */}
         <section className="bg-white rounded-lg border border-rule p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="min-w-0">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#4A1A45]">{user.role}</span>
+              <span className="text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-[#4A1A45]">{user.role}</span>
               <h1 className="text-2xl font-bold text-black tracking-tight">{user.name}</h1>
               <div className="mt-2 space-y-1 text-sm text-neutral-600">
                 <p className="flex items-center gap-2 break-all">
                   {user.email}
                   {user.emailVerified ? (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700">
+                    <span className="inline-flex items-center gap-1 text-xs sm:text-[11px] font-semibold text-emerald-700">
                       verified
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700">
+                    <span className="inline-flex items-center gap-1 text-xs sm:text-[11px] font-semibold text-amber-700">
                       not verified
                     </span>
                   )}
@@ -144,19 +144,19 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             </div>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-3 text-xs">
               <div>
-                <dt className="font-bold uppercase tracking-wider text-neutral-400 text-[10px]">Faculty</dt>
+                <dt className="font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-neutral-400 text-xs sm:text-[10px]">Faculty</dt>
                 <dd className="text-neutral-800 font-semibold">{user.faculty || "—"}</dd>
               </div>
               <div>
-                <dt className="font-bold uppercase tracking-wider text-neutral-400 text-[10px]">Department</dt>
+                <dt className="font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-neutral-400 text-xs sm:text-[10px]">Department</dt>
                 <dd className="text-neutral-800 font-semibold">{user.department || "—"}</dd>
               </div>
               <div>
-                <dt className="font-bold uppercase tracking-wider text-neutral-400 text-[10px]">Registered</dt>
+                <dt className="font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-neutral-400 text-xs sm:text-[10px]">Registered</dt>
                 <dd className="text-neutral-800 font-semibold">{formatDate(user.createdAt)}</dd>
               </div>
               <div>
-                <dt className="font-bold uppercase tracking-wider text-neutral-400 text-[10px]">Last login</dt>
+                <dt className="font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-neutral-400 text-xs sm:text-[10px]">Last login</dt>
                 <dd className="text-neutral-800 font-semibold">
                   {user.lastLoginAt ? formatDate(user.lastLoginAt) : "Never"}
                 </dd>
@@ -175,9 +175,9 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
         {/* Enrollments */}
         <section className="bg-white rounded-lg border border-rule overflow-hidden">
-          <h2 className="px-4 sm:px-6 pt-6 pb-3 font-bold text-base text-black">Enrollments</h2>
+          <h2 className="px-5 sm:px-6 pt-6 pb-3 font-bold text-base text-black">Enrollments</h2>
           {user.enrollments.length === 0 ? (
-            <p className="px-4 sm:px-6 pb-6 text-sm text-neutral-500">Not enrolled in any course.</p>
+            <p className="px-5 sm:px-6 pb-6 text-sm text-neutral-500">Not enrolled in any course.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -206,9 +206,9 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
         {/* Payments */}
         <section className="bg-white rounded-lg border border-rule overflow-hidden">
-          <h2 className="px-4 sm:px-6 pt-6 pb-3 font-bold text-base text-black">Payments</h2>
+          <h2 className="px-5 sm:px-6 pt-6 pb-3 font-bold text-base text-black">Payments</h2>
           {user.payments.length === 0 ? (
-            <p className="px-4 sm:px-6 pb-6 text-sm text-neutral-500">No payments yet.</p>
+            <p className="px-5 sm:px-6 pb-6 text-sm text-neutral-500">No payments yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -224,7 +224,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                 <tbody className="divide-y divide-rule">
                   {user.payments.map((p) => (
                     <tr key={p.id}>
-                      <td className="p-4 font-mono text-[11px] text-neutral-700">{p.reference}</td>
+                      <td className="p-4 font-mono text-xs sm:text-[11px] text-neutral-700">{p.reference}</td>
                       <td className="p-4 text-black">{p.course.title}</td>
                       <td className="p-4 font-semibold text-black">{formatNgn(p.amount)}</td>
                       <td className="p-4"><StatusPill status={p.status} /></td>
@@ -239,11 +239,11 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
         {/* Submissions */}
         <section className="bg-white rounded-lg border border-rule overflow-hidden">
-          <h2 className="px-4 sm:px-6 pt-6 pb-3 font-bold text-base text-black">
+          <h2 className="px-5 sm:px-6 pt-6 pb-3 font-bold text-base text-black">
             Recent submissions <span className="text-neutral-400 font-normal text-xs">(latest 50)</span>
           </h2>
           {user.submissions.length === 0 ? (
-            <p className="px-4 sm:px-6 pb-6 text-sm text-neutral-500">No submissions yet.</p>
+            <p className="px-5 sm:px-6 pb-6 text-sm text-neutral-500">No submissions yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">

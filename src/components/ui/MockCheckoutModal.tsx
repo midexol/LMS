@@ -163,7 +163,7 @@ export function MockCheckoutModal({
             <h3 className="text-lg font-bold text-black leading-tight">
               Course Checkout
             </h3>
-            <p className="text-[11px] text-neutral-500">
+            <p className="text-xs sm:text-[11px] text-neutral-500">
               Secure payment by Paystack
             </p>
           </div>
@@ -173,7 +173,7 @@ export function MockCheckoutModal({
         <div className="mt-5 p-4 rounded-lg bg-[#F7F2F6]/60 border border-[#4A1A45]/15 space-y-2">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#4A1A45] bg-[#4A1A45]/10 px-2 py-0.5 rounded-md border border-[#4A1A45]/20">
+              <span className="text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider text-[#4A1A45] bg-[#4A1A45]/10 px-2 py-0.5 rounded-md border border-[#4A1A45]/20">
                 {course.department || course.faculty || "Course"}
               </span>
               <h4 className="font-bold text-black text-sm mt-1">{course.title}</h4>
@@ -189,7 +189,7 @@ export function MockCheckoutModal({
 
         {/* UNAUTHENTICATED USER CHECK */}
         {!currentUser ? (
-          <div className="mt-5 p-4 sm:p-6 rounded-lg bg-[#F7F2F6] border border-rule space-y-4">
+          <div className="mt-5 p-5 sm:p-6 rounded-lg bg-[#F7F2F6] border border-rule space-y-4">
             <div className="flex items-start gap-3">
               <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -217,7 +217,7 @@ export function MockCheckoutModal({
           </div>
         ) : activeEnrollment && activeEnrollment.courseId !== course.id ? (
           /* Single Active Course Restriction */
-          <div className="mt-5 p-4 sm:p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
+          <div className="mt-5 p-5 rounded-lg bg-[#F7F2F6] border border-[#4A1A45]/20 space-y-3">
             <div className="flex gap-3 items-start">
               <PiLock className="w-5 h-5 text-[#4A1A45] shrink-0 mt-0.5" />
               <div>
@@ -256,7 +256,7 @@ export function MockCheckoutModal({
               )}
               <div className="flex justify-between items-center text-neutral-600 border-t border-rule pt-2">
                 <span>Payment Channels:</span>
-                <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px]">
+                <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-xs sm:text-[11px]">
                   Mastercard, Visa, Verve &amp; Transfer
                 </span>
               </div>
@@ -303,7 +303,7 @@ export function MockCheckoutModal({
             )}
 
             {/* Paystack Security Notice */}
-            <div className="flex items-center gap-2 px-2 text-[11px] text-neutral-500">
+            <div className="flex items-center gap-2 px-2 text-xs sm:text-[11px] text-neutral-500">
               <PiShield className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
               <span>
                 Processed securely through <strong>Paystack</strong> with 256-bit encryption.
@@ -326,7 +326,7 @@ export function MockCheckoutModal({
               <button
                 onClick={handlePaystackCheckout}
                 disabled={loading || (course.price > 0 && !quote && !quoteFailed)}
-                className="w-full py-3.5 px-4 sm:px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 px-5 sm:px-6 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

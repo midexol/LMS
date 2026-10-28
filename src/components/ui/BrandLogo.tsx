@@ -65,7 +65,7 @@ export function BrandLogo({
           ACADEMIA
         </span>
         {showSubtitle && (
-          <span className={`font-medium tracking-wider uppercase text-[#896A86] mt-0.5 ${subSize}`}>
+          <span className={`font-medium tracking-normal sm:tracking-wider normal-case sm:uppercase text-[#896A86] mt-0.5 ${subSize}`}>
             LMS Portal
           </span>
         )}

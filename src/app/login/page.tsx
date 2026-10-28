@@ -43,7 +43,7 @@ export default function LoginPage() {
       blurb="Pick up your course where you left off."
       points={["Your progress is saved lesson by lesson", "Assignments are graded as soon as you submit", "Your instructor can review and adjust any grade"]}
     >
-      <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-5 sm:space-y-6">
         <div>
           <h1 className="font-heading font-semibold text-2xl text-black">Sign in</h1>
           <p className="text-sm text-neutral-500 mt-1">Use the email and password you registered with.</p>

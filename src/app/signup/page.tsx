@@ -81,7 +81,7 @@ export default function SignupPage() {
           )}
         </div>
       ) : (
-        <div className="space-y-4 sm:space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           <div>
             <h1 className="font-heading font-semibold text-2xl text-black">Create an account</h1>
             <p className="text-sm text-neutral-500 mt-1">Create your student account. It takes about a minute.</p>

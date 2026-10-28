@@ -136,7 +136,7 @@ export function SignupsChart({ createdAt, days = 30 }: SignupsChartProps) {
 
         {hovered && (
           <div
-            className="pointer-events-none absolute -top-1 px-3 py-1.5 rounded-xl bg-[#2D0F2A] text-white text-[11px] font-semibold whitespace-nowrap"
+            className="pointer-events-none absolute -top-1 px-3 py-1.5 rounded-xl bg-[#2D0F2A] text-white text-xs sm:text-[11px] font-semibold whitespace-nowrap"
             style={{
               left: `${((PAD.left + (hover as number) * slot + slot / 2) / W) * 100}%`,
               transform: "translateX(-50%)",

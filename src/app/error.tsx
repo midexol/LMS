@@ -20,10 +20,10 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 sm:px-6 text-center">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-5 sm:px-6 text-center">
       <BrandLogo href="/" size="md" />
 
-      <p className="mt-12 text-xs font-bold text-neutral-400 uppercase tracking-widest">Something went wrong</p>
+      <p className="mt-12 text-xs font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-widest">Something went wrong</p>
       <h1 className="font-heading mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900">
         We couldn&apos;t load this page
       </h1>
@@ -36,20 +36,20 @@ export default function ErrorPage({
         <button
           type="button"
           onClick={() => reset()}
-          className="px-5 sm:px-8 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+          className="px-6 sm:px-8 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all"
         >
           Try again
         </button>
         <Link
           href="/"
-          className="px-5 sm:px-8 py-3 rounded-md border border-neutral-300 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs uppercase tracking-wider transition-all"
+          className="px-6 sm:px-8 py-3 rounded-md border border-neutral-300 hover:border-[#4A1A45] text-neutral-700 font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all"
         >
           Back to home
         </Link>
       </div>
 
       {error.digest && (
-        <p className="mt-8 text-[11px] font-mono text-neutral-400">
+        <p className="mt-8 text-xs sm:text-[11px] font-mono text-neutral-400">
           Reference for support: {error.digest}
         </p>
       )}

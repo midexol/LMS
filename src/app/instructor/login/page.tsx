@@ -41,8 +41,8 @@ export default function InstructorLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-paper flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-md bg-white rounded-lg p-5 sm:p-8 border border-rule space-y-4 sm:space-y-6">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-5 sm:p-6">
+      <div className="w-full max-w-md bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-2">
             <BrandLogo href="/" variant="dark" size="md" />
@@ -60,7 +60,7 @@ export default function InstructorLoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Instructor Email</label>
+            <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Instructor Email</label>
             <div className="relative">
               <PiEnvelopeSimple className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
               <input
@@ -75,7 +75,7 @@ export default function InstructorLoginPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Password</label>
+            <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Password</label>
             <div className="relative">
               <PiLock className="absolute left-4 top-3.5 text-neutral-400 w-4 h-4" />
               <input
@@ -92,7 +92,7 @@ export default function InstructorLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mt-4"
+            className="w-full py-3.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all flex items-center justify-center gap-2 mt-4"
           >
             <PiSignIn className="w-4 h-4" />
             {loading ? "Authenticating..." : "Instructor Log In"}

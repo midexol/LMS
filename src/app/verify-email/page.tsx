@@ -83,14 +83,14 @@ function VerifyEmailContent() {
   return (
     <div className="min-h-screen bg-paper flex flex-col justify-between p-4 sm:p-8">
       {/* Top Header */}
-      <div className="max-w-md mx-auto w-full flex justify-center py-4 sm:py-6">
+      <div className="max-w-md mx-auto w-full flex justify-center py-5 sm:py-6">
         <BrandLogo href="/" variant="dark" size="md" />
       </div>
 
       {/* Main Card */}
-      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-rule p-8 sm:p-10 space-y-4 sm:space-y-6">
+      <div className="max-w-md mx-auto w-full bg-white rounded-lg border border-rule p-6 sm:p-10 space-y-5 sm:space-y-6">
         {status === "loading" && (
-          <div className="text-center py-6 sm:py-8 space-y-4">
+          <div className="text-center py-7 sm:py-8 space-y-4">
             <div className="w-14 h-14 rounded-full bg-purple-50 text-[#4A1A45] flex items-center justify-center mx-auto animate-spin">
               <PiSpinner className="w-7 h-7" />
             </div>
@@ -102,12 +102,12 @@ function VerifyEmailContent() {
         )}
 
         {status === "success" && (
-          <div className="space-y-4 sm:space-y-6 text-center">
+          <div className="space-y-5 sm:space-y-6 text-center">
             <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-100">
               <PiCheckCircle className="w-8 h-8" />
             </div>
             <div className="space-y-2">
-              <span className="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md uppercase tracking-wider">
+              <span className="inline-block text-xs sm:text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md normal-case sm:uppercase tracking-normal sm:tracking-wider">
                 Account Activated
               </span>
               <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">Email Verified!</h2>
@@ -132,7 +132,7 @@ function VerifyEmailContent() {
         )}
 
         {status === "error" && (
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             <div className="text-center space-y-3">
               <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-100">
                 <PiWarningCircle className="w-7 h-7" />
@@ -146,7 +146,7 @@ function VerifyEmailContent() {
             <div className="border-t border-rule pt-6 space-y-4">
               <div className="space-y-1">
                 <h3 className="text-xs font-bold text-neutral-900">Need a new verification link?</h3>
-                <p className="text-[11px] text-neutral-500">
+                <p className="text-xs sm:text-[11px] text-neutral-500">
                   Enter your email address and we&apos;ll send you a fresh link.
                 </p>
               </div>
@@ -189,7 +189,7 @@ function VerifyEmailContent() {
       </div>
 
       {/* Footer */}
-      <div className="text-center py-4 text-[11px] text-neutral-400">
+      <div className="text-center py-4 text-xs sm:text-[11px] text-neutral-400">
         &copy; {new Date().getFullYear()} ACADEMIA LMS. All rights reserved.
       </div>
     </div>

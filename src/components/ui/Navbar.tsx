@@ -61,9 +61,9 @@ export function Navbar({ currentUser }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-40 bg-white text-black border-b border-rule">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between gap-4">
         {/* Left: Brand & Navigation */}
-        <div className="flex items-center gap-5 sm:gap-8">
+        <div className="flex items-center gap-6 sm:gap-8">
           <BrandLogo
             href={brandHomeHref}
             size="sm"
@@ -107,7 +107,7 @@ export function Navbar({ currentUser }: NavbarProps) {
                   <span className="text-xs font-bold text-neutral-900 leading-tight">
                     {currentUser.name}
                   </span>
-                  <span className="text-[10px] text-[#4A1A45] font-semibold leading-none">
+                  <span className="text-xs sm:text-[10px] text-[#4A1A45] font-semibold leading-none">
                     {currentUser.role}
                   </span>
                 </div>
@@ -126,10 +126,10 @@ export function Navbar({ currentUser }: NavbarProps) {
                     <p className="text-xs font-bold text-neutral-900 truncate">
                       {currentUser.name}
                     </p>
-                    <p className="text-[11px] text-neutral-500 truncate mt-0.5">
+                    <p className="text-xs sm:text-[11px] text-neutral-500 truncate mt-0.5">
                       {currentUser.email}
                     </p>
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/25">
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded-md text-[9px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/25">
                       {currentUser.role} Account
                     </span>
                   </div>

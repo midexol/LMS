@@ -65,7 +65,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
   };
 
   return (
-    <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
+    <div className="p-6 sm:p-8 rounded-lg bg-white border border-rule space-y-5 sm:space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
         Student Submissions &amp; Grade Override Reviewer
       </h2>
@@ -77,7 +77,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
       )}
 
       {submissions.length === 0 ? (
-        <p className="text-xs text-neutral-500 italic text-center py-6 sm:py-8">
+        <p className="text-xs text-neutral-500 italic text-center py-7 sm:py-8">
           No student submissions yet. They will appear here once students submit assignments.
         </p>
       ) : (
@@ -91,11 +91,11 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
               <div
                 key={sub.id}
                 data-testid="submission-card"
-                className="p-4 sm:p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-3"
+                className="p-5 sm:p-6 rounded-xl bg-[#F7F2F6] border border-rule space-y-3"
               >
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                   <div>
-                    <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-wider">
+                    <span className="text-xs sm:text-[11px] font-bold text-[#4A1A45] normal-case sm:uppercase tracking-normal sm:tracking-wider">
                       {sub.courseTitle}
                     </span>
                     <h3 className="font-bold text-black text-sm mt-0.5">
@@ -141,7 +141,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
 
                 {/* Student answer */}
                 <div className="p-4 rounded-xl bg-white border border-rule">
-                  <p className="text-[11px] font-bold text-neutral-500 mb-1 uppercase tracking-wider">Student Answer:</p>
+                  <p className="text-xs sm:text-[11px] font-bold text-neutral-500 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Student Answer:</p>
                   <p className="text-xs text-neutral-800 whitespace-pre-wrap leading-relaxed">
                     {sub.content}
                   </p>
@@ -150,7 +150,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                 {/* AI Feedback */}
                 {sub.aiFeedback && (
                   <div className="p-4 rounded-xl bg-white border border-rule">
-                    <p className="text-[11px] font-bold text-[#4A1A45] mb-1 uppercase tracking-wider">Automated Evaluation Feedback:</p>
+                    <p className="text-xs sm:text-[11px] font-bold text-[#4A1A45] mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Automated Evaluation Feedback:</p>
                     <p className="text-xs text-neutral-700 whitespace-pre-wrap leading-relaxed">
                       {sub.aiFeedback}
                     </p>
@@ -160,21 +160,21 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                 {/* Tutor Feedback (existing) */}
                 {sub.tutorFeedback && !isEditing && (
                   <div className="p-4 rounded-xl bg-[#F3EAF2] border border-neutral-300">
-                    <p className="text-[11px] font-bold text-black mb-1 uppercase tracking-wider">Your Override Note:</p>
+                    <p className="text-xs sm:text-[11px] font-bold text-black mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Your Override Note:</p>
                     <p className="text-xs text-neutral-800 leading-relaxed">{sub.tutorFeedback}</p>
                   </div>
                 )}
 
                 {/* Override Form */}
                 {isEditing && (
-                  <div className="p-4 sm:p-5 rounded-xl bg-white border-2 border-[#4A1A45] space-y-3 mt-2">
+                  <div className="p-5 rounded-xl bg-white border-2 border-[#4A1A45] space-y-3 mt-2">
                     <h4 className="font-bold text-black text-xs flex items-center gap-1.5">
                       <PiPencilSimple className="w-3.5 h-3.5 text-[#4A1A45]" />
                       Tutor Grade Override
                     </h4>
                     <div className="flex gap-4 flex-wrap">
                       <div>
-                        <label className="block text-[11px] font-bold text-neutral-700 mb-1 uppercase tracking-wider">
+                        <label className="block text-xs sm:text-[11px] font-bold text-neutral-700 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">
                           Adjusted Score (max {maxScore})
                         </label>
                         <input
@@ -187,7 +187,7 @@ export function TutorSubmissionsReviewer({ initialSubmissions }: TutorSubmission
                         />
                       </div>
                       <div className="flex-1 min-w-[200px]">
-                        <label className="block text-[11px] font-bold text-neutral-700 mb-1 uppercase tracking-wider">
+                        <label className="block text-xs sm:text-[11px] font-bold text-neutral-700 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">
                           Tutor Feedback Note
                         </label>
                         <input

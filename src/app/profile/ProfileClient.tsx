@@ -156,9 +156,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     <div className="min-h-screen bg-paper text-black pb-20 font-sans">
       <Navbar currentUser={currentUser} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-8">
+      <main className="max-w-7xl mx-auto px-5 sm:px-6 py-7 sm:py-8 space-y-6 sm:space-y-8">
         {/* STUDENT HEADER */}
-        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
+        <div className="p-6 sm:p-8 rounded-lg bg-white border border-rule flex flex-col md:flex-row justify-between items-start md:items-center gap-5 sm:gap-6">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center font-bold text-2xl">
               {currentUser.name.charAt(0).toUpperCase()}
@@ -166,7 +166,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="font-bold text-2xl text-black">{currentUser.name}</h1>
-                <span className="px-2.5 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 text-[10px] font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider">
                   {currentUser.role}
                 </span>
               </div>
@@ -175,10 +175,10 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </p>
               {currentUser.department && (
                 <div className="flex items-center gap-2 mt-2">
-                  <span className="px-2.5 py-0.5 rounded-md bg-[#F3EAF2] text-black text-[11px] font-bold border border-neutral-300">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#F3EAF2] text-black text-xs sm:text-[11px] font-bold border border-neutral-300">
                     {currentUser.department}
                   </span>
-                  <span className="text-[11px] text-neutral-400">
+                  <span className="text-xs sm:text-[11px] text-neutral-400">
                     ({currentUser.faculty})
                   </span>
                 </div>
@@ -223,15 +223,15 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
           ) : (
             <div className="flex items-center gap-4 text-xs font-semibold flex-wrap">
               <div className="px-4 py-2.5 rounded-lg bg-[#F7F2F6] border border-rule text-center">
-                <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Assignments Submitted</span>
+                <span className="block text-neutral-500 text-xs sm:text-[10px] normal-case sm:uppercase font-bold tracking-normal sm:tracking-wider">Assignments Submitted</span>
                 <span className="text-xl font-bold text-black">{totalSubmissions}</span>
               </div>
               <div className="px-4 py-2.5 rounded-lg bg-[#F7F2F6] border border-rule text-center">
-                <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Courses Completed</span>
+                <span className="block text-neutral-500 text-xs sm:text-[10px] normal-case sm:uppercase font-bold tracking-normal sm:tracking-wider">Courses Completed</span>
                 <span className="text-xl font-bold text-black">{completedEnrollments.length}</span>
               </div>
               <div className="px-4 py-2.5 rounded-lg bg-[#F7F2F6] border border-rule text-center">
-                <span className="block text-neutral-500 text-[10px] uppercase font-bold tracking-wider">Grade Average</span>
+                <span className="block text-neutral-500 text-xs sm:text-[10px] normal-case sm:uppercase font-bold tracking-normal sm:tracking-wider">Grade Average</span>
                 <span className="text-xl font-bold text-[#4A1A45]">{averagePercentage}%</span>
               </div>
             </div>
@@ -258,11 +258,11 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
         {/* ACTIVE COURSE BANNER (WITH DROP COURSE ACTION) */}
         {activeEnrollment && (
-          <div className="p-4 sm:p-6 rounded-lg bg-white border border-rule space-y-3">
+          <div className="p-5 sm:p-6 rounded-lg bg-white border border-rule space-y-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30 normal-case sm:uppercase tracking-normal sm:tracking-wider">
                     Current Active Track
                   </span>
                   <span className="text-xs text-neutral-500">{activeEnrollment.course.category}</span>
@@ -276,14 +276,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               <div className="flex items-center gap-3 shrink-0">
                 <button
                   onClick={() => setDropModalOpen(true)}
-                  className="px-4 py-2.5 rounded-md border border-neutral-300 text-neutral-700 hover:text-red-600 hover:border-red-300 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all"
+                  className="px-4 py-2.5 rounded-md border border-neutral-300 text-neutral-700 hover:text-red-600 hover:border-red-300 font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-1.5 transition-all"
                   title="Drop course to unlock new enrollment"
                 >
                   <PiTrash className="w-3.5 h-3.5" /> Drop Track
                 </button>
                 <Link
                   href={`/student/courses/${activeEnrollment.course.id}`}
-                  className="px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+                  className="px-5 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-2 transition-all"
                 >
                   Go to Course <PiArrowRight className="w-4 h-4" />
                 </Link>
@@ -295,14 +295,14 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         {/* ACADEMIC TRANSCRIPT & RECEIPTS (STUDENTS ONLY) */}
         {currentUser.role === "STUDENT" && (
           <>
-            <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
+            <div className="p-6 sm:p-8 rounded-lg bg-white border border-rule space-y-5 sm:space-y-6">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
             <PiMedal className="w-5 h-5 text-[#4A1A45]" />
             Academic Records &amp; Course History
           </h2>
 
           {enrollments.length === 0 ? (
-            <div className="text-center py-6 sm:py-8 space-y-3">
+            <div className="text-center py-7 sm:py-8 space-y-3">
               <PiBookOpen className="w-10 h-10 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No course enrollments registered yet.</p>
               <Link href="/courses" className="text-xs text-[#4A1A45] font-bold hover:underline">
@@ -313,7 +313,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-rule text-neutral-500 uppercase font-bold tracking-wider bg-[#F7F2F6]">
+                  <tr className="border-b border-rule text-neutral-500 normal-case sm:uppercase font-bold tracking-normal sm:tracking-wider bg-[#F7F2F6]">
                     <th className="p-3.5">Course Title</th>
                     <th className="p-3.5">Category</th>
                     <th className="p-3.5">Status</th>
@@ -327,7 +327,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       <td className="p-3.5 font-bold text-black">{e.course.title}</td>
                       <td className="p-3.5 font-semibold text-[#4A1A45]">{e.course.category}</td>
                       <td className="p-3.5">
-                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                        <span className={`px-2.5 py-0.5 rounded-full text-xs sm:text-[10px] font-bold normal-case sm:uppercase ${
                           e.status === "ACTIVE"
                             ? "bg-[#4A1A45]/10 text-[#4A1A45] border border-[#4A1A45]/30"
                             : "bg-[#4A1A45] text-white"
@@ -346,19 +346,19 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
         </div>
 
         {/* TUITION RECEIPTS & PAYMENT HISTORY */}
-        <div id="receipts" className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
+        <div id="receipts" className="p-6 sm:p-8 rounded-lg bg-white border border-rule space-y-5 sm:space-y-6">
           <div className="flex justify-between items-center border-b border-rule pb-3">
             <h2 className="font-bold text-xl text-black flex items-center gap-2">
               <PiCreditCard className="w-5 h-5 text-black" />
               Tuition Receipts &amp; Payment History
             </h2>
-            <span className="text-[11px] text-neutral-500 font-semibold flex items-center gap-1.5">
+            <span className="text-xs sm:text-[11px] text-neutral-500 font-semibold flex items-center gap-1.5">
               <PiShield className="w-3.5 h-3.5 text-emerald-600" /> Secured by Paystack
             </span>
           </div>
 
           {payments.length === 0 ? (
-            <div className="text-center py-6 sm:py-8 space-y-2">
+            <div className="text-center py-7 sm:py-8 space-y-2">
               <PiFileText className="w-8 h-8 text-neutral-300 mx-auto" />
               <p className="text-xs text-neutral-500 italic">No payment transactions recorded for this account.</p>
             </div>
@@ -366,7 +366,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-rule text-neutral-500 uppercase font-bold tracking-wider bg-[#F7F2F6]">
+                  <tr className="border-b border-rule text-neutral-500 normal-case sm:uppercase font-bold tracking-normal sm:tracking-wider bg-[#F7F2F6]">
                     <th className="p-3.5">Reference</th>
                     <th className="p-3.5">Course Item</th>
                     <th className="p-3.5">Amount</th>
@@ -378,13 +378,13 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 <tbody className="divide-y divide-rule">
                   {payments.map((p) => (
                     <tr key={p.id} className="hover:bg-[#F7F2F6] transition-colors">
-                      <td className="p-3.5 font-mono text-[11px] font-bold text-neutral-800">{p.reference}</td>
+                      <td className="p-3.5 font-mono text-xs sm:text-[11px] font-bold text-neutral-800">{p.reference}</td>
                       <td className="p-3.5 font-bold text-black">{p.course?.title || "Course Tuition"}</td>
                       <td className="p-3.5 font-bold text-black">{formatNgn(p.amount)}</td>
                       <td className="p-3.5 text-neutral-500">{formatDate(p.createdAt)}</td>
                       <td className="p-3.5">
                         <span
-                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                          className={`px-2.5 py-0.5 rounded-full text-xs sm:text-[10px] font-bold normal-case sm:uppercase ${
                             p.status === "SUCCESS"
                               ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                               : p.status === "PENDING"
@@ -398,7 +398,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                       <td className="p-3.5 text-right">
                         <button
                           onClick={() => setSelectedReceipt(p)}
-                          className="px-3 py-1 rounded-md text-[11px] font-bold bg-[#F3EAF2] hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-md text-xs sm:text-[11px] font-bold bg-[#F3EAF2] hover:bg-[#4A1A45] hover:text-white border border-neutral-300 transition-all inline-flex items-center gap-1.5"
                         >
                           <PiPrinter className="w-3 h-3" /> View Receipt
                         </button>
@@ -414,7 +414,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     )}
 
         {/* ACCOUNT SETTINGS */}
-        <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6 max-w-2xl">
+        <div className="p-6 sm:p-8 rounded-lg bg-white border border-rule space-y-5 sm:space-y-6 max-w-2xl">
           <h2 className="font-bold text-xl text-black flex items-center gap-2 border-b border-rule pb-3">
             <PiUser className="w-5 h-5 text-black" />
             Account Settings
@@ -434,7 +434,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Full Name</label>
+              <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Full Name</label>
               <input
                 type="text"
                 required
@@ -445,18 +445,18 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Email Address</label>
+              <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Email Address</label>
               <input
                 type="email"
                 disabled
                 value={currentUser.email}
                 className="w-full px-4 py-2.5 rounded-xl bg-[#F3EAF2] border border-rule text-sm text-neutral-500 cursor-not-allowed outline-none"
               />
-              <span className="text-[10px] text-neutral-400 mt-1 block">Your login email cannot be changed here.</span>
+              <span className="text-xs sm:text-[10px] text-neutral-400 mt-1 block">Your login email cannot be changed here.</span>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">
                 Phone Number <span className="text-neutral-400 normal-case font-normal">(optional)</span>
               </label>
               <input
@@ -472,7 +472,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             {currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">School / Faculty</label>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">School / Faculty</label>
                   <select
                     value={faculty}
                     onChange={(e) => handleFacultyChange(e.target.value)}
@@ -485,7 +485,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-neutral-700 mb-1.5 uppercase tracking-wider">Department</label>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1.5 normal-case sm:uppercase tracking-normal sm:tracking-wider">Department</label>
                   <select
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
@@ -500,12 +500,12 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             )}
 
             <div className="pt-4 border-t border-rule space-y-4">
-              <h3 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-1.5">
+              <h3 className="font-bold text-sm text-black normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-1.5">
                 <PiLock className="w-4 h-4 text-[#4A1A45]" /> Security &amp; Password
               </h3>
 
               <div>
-                <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">New Password</label>
+                <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">New Password</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -527,7 +527,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
               {password && (
                 <div>
-                  <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Current Password</label>
+                  <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Current Password</label>
                   <input
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
@@ -541,7 +541,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
 
               {password && (
                 <div>
-                  <label className="block text-xs font-bold text-neutral-600 mb-1 uppercase tracking-wider">Confirm New Password</label>
+                  <label className="block text-xs font-bold text-neutral-600 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Confirm New Password</label>
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Re-enter your new password"
@@ -556,7 +556,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     }`}
                   />
                   {confirmPassword && confirmPassword !== password && (
-                    <p className="text-[11px] text-red-600 mt-1 font-medium">Passwords do not match.</p>
+                    <p className="text-xs sm:text-[11px] text-red-600 mt-1 font-medium">Passwords do not match.</p>
                   )}
                 </div>
               )}
@@ -565,7 +565,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             <button
               type="submit"
               disabled={saving || (password.length > 0 && password !== confirmPassword)}
-              className="px-4 sm:px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+              className="px-5 sm:px-6 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-2 transition-all"
             >
               <PiFloppyDisk className="w-4 h-4" />
               {saving ? "Saving..." : "Save Profile Updates"}
@@ -633,22 +633,22 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </div>
 
             {/* Receipt Printable Canvas */}
-            <div className="p-5 sm:p-8 space-y-4 sm:space-y-6 text-black" id="printable-receipt">
+            <div className="p-6 sm:p-8 space-y-5 sm:space-y-6 text-black" id="printable-receipt">
               {/* Institutional Header */}
               <div className="text-center border-b-2 border-[#4A1A45] pb-5 space-y-1">
                 <div className="flex justify-center mb-2">
                   <AcademiaLogoIcon className="w-11 h-11" />
                 </div>
-                <div className="inline-block px-3 py-0.5 rounded-md bg-[#4A1A45] text-white text-[10px] font-bold uppercase tracking-widest mb-1">
+                <div className="inline-block px-3 py-0.5 rounded-md bg-[#4A1A45] text-white text-xs sm:text-[10px] font-bold normal-case sm:uppercase tracking-normal sm:tracking-widest mb-1">
                   Payment Receipt
                 </div>
-                <h2 className="text-xl font-bold uppercase tracking-tight">
+                <h2 className="text-xl font-bold normal-case sm:uppercase tracking-tight">
                   Academia LMS
                 </h2>
-                <p className="text-[11px] text-neutral-600 font-medium">
+                <p className="text-xs sm:text-[11px] text-neutral-600 font-medium">
                   Course enrolment payment, processed by Paystack
                 </p>
-                <div className="text-[10px] font-mono text-neutral-500 pt-1">
+                <div className="text-xs sm:text-[10px] font-mono text-neutral-500 pt-1">
                   Receipt No: REC-{selectedReceipt.reference}
                 </div>
               </div>
@@ -656,19 +656,19 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               {/* Receipt Details Grid */}
               <div className="grid grid-cols-2 gap-4 text-xs bg-[#F7F2F6] p-4 rounded-lg border border-rule">
                 <div>
-                  <span className="text-neutral-500 font-semibold block text-[10px] uppercase">Student Name</span>
+                  <span className="text-neutral-500 font-semibold block text-xs sm:text-[10px] normal-case sm:uppercase">Student Name</span>
                   <span className="font-bold text-black text-sm">{currentUser.name}</span>
                 </div>
                 <div>
-                  <span className="text-neutral-500 font-semibold block text-[10px] uppercase">Student Email</span>
+                  <span className="text-neutral-500 font-semibold block text-xs sm:text-[10px] normal-case sm:uppercase">Student Email</span>
                   <span className="font-bold text-black">{currentUser.email}</span>
                 </div>
                 <div>
-                  <span className="text-neutral-500 font-semibold block text-[10px] uppercase">Department / Faculty</span>
+                  <span className="text-neutral-500 font-semibold block text-xs sm:text-[10px] normal-case sm:uppercase">Department / Faculty</span>
                   <span className="font-bold text-black">{currentUser.department || "General"} ({currentUser.faculty || "N/A"})</span>
                 </div>
                 <div>
-                  <span className="text-neutral-500 font-semibold block text-[10px] uppercase">Payment Date &amp; Time</span>
+                  <span className="text-neutral-500 font-semibold block text-xs sm:text-[10px] normal-case sm:uppercase">Payment Date &amp; Time</span>
                   <span className="font-bold text-black">{new Date(selectedReceipt.paidAt || selectedReceipt.createdAt).toLocaleString()}</span>
                 </div>
               </div>
@@ -687,7 +687,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     <tr>
                       <td className="p-3.5">
                         <span className="font-bold text-black block">{selectedReceipt.course?.title || "Course Tuition"}</span>
-                        <span className="text-[10px] text-neutral-500 font-mono">Ref: {selectedReceipt.reference}</span>
+                        <span className="text-xs sm:text-[10px] text-neutral-500 font-mono">Ref: {selectedReceipt.reference}</span>
                       </td>
                       <td className="p-3.5 text-center text-neutral-600 font-medium">
                         Paystack ({selectedReceipt.channel || "card"})
@@ -713,7 +713,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                   </tbody>
                   <tfoot className="border-t-2 border-[#4A1A45] bg-[#F7F2F6] font-bold">
                     <tr>
-                      <td colSpan={2} className="p-3.5 uppercase tracking-wider text-xs">Total Remittance (NGN):</td>
+                      <td colSpan={2} className="p-3.5 normal-case sm:uppercase tracking-normal sm:tracking-wider text-xs">Total Remittance (NGN):</td>
                       <td className="p-3.5 text-right text-base text-black">{formatNgn(selectedReceipt.amount)}</td>
                     </tr>
                   </tfoot>
@@ -723,16 +723,16 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               {/* Security Seal & Verification Footer */}
               <div className="flex justify-between items-center pt-2 border-t border-rule text-xs">
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[11px]">
+                  <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-xs sm:text-[11px]">
                     <PiCheckCircle className="w-4 h-4 text-emerald-600" />
                     <span>PAYMENT CONFIRMED</span>
                   </div>
-                  <p className="text-[10px] text-neutral-500">
+                  <p className="text-xs sm:text-[10px] text-neutral-500">
                     Paystack Ref: {selectedReceipt.paystackRef || selectedReceipt.reference}
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-bold text-neutral-800">Issued by Academia LMS</span>
+                  <span className="text-xs sm:text-[10px] font-bold text-neutral-800">Issued by Academia LMS</span>
                 </div>
               </div>
             </div>
@@ -747,7 +747,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-4 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                className="px-5 sm:px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-2"
               >
                 <PiPrinter className="w-4 h-4" /> Print / Save PDF
               </button>

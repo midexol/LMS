@@ -21,8 +21,8 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body className="bg-white text-zinc-950 antialiased min-h-screen font-sans">
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 text-center">
-          <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Academia LMS</p>
+        <div className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-6 text-center">
+          <p className="text-xs font-bold text-neutral-400 normal-case sm:uppercase tracking-normal sm:tracking-widest">Academia LMS</p>
           <h1 className="font-heading mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900">
             Something went wrong
           </h1>
@@ -32,12 +32,12 @@ export default function GlobalError({
           <button
             type="button"
             onClick={() => reset()}
-            className="mt-8 px-5 sm:px-8 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs uppercase tracking-wider transition-all"
+            className="mt-8 px-6 sm:px-8 py-3 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider transition-all"
           >
             Try again
           </button>
           {error.digest && (
-            <p className="mt-8 text-[11px] font-mono text-neutral-400">Reference for support: {error.digest}</p>
+            <p className="mt-8 text-xs sm:text-[11px] font-mono text-neutral-400">Reference for support: {error.digest}</p>
           )}
         </div>
       </body>

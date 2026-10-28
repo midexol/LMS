@@ -86,14 +86,14 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
   };
 
   return (
-    <div className="p-5 sm:p-8 rounded-lg bg-white border border-rule space-y-4 sm:space-y-6">
+    <div className="p-6 sm:p-8 rounded-lg bg-white border border-rule space-y-5 sm:space-y-6">
       <h2 className="text-xl font-bold text-black flex items-center gap-2 border-b border-rule pb-3">
         Course Announcements Manager
       </h2>
 
       {/* Course Selector */}
       <div>
-        <label className="block text-xs font-bold text-neutral-700 mb-1 uppercase tracking-wider">Select Course</label>
+        <label className="block text-xs font-bold text-neutral-700 mb-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">Select Course</label>
         <select
           value={selectedCourseId}
           onChange={(e) => setSelectedCourseId(e.target.value)}
@@ -108,7 +108,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
       </div>
 
       {/* New Announcement Form */}
-      <div className="p-4 sm:p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
+      <div className="p-5 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
         <h3 className="text-sm font-bold text-black">Post New Announcement</h3>
 
         {error && (
@@ -140,7 +140,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
         <button
           onClick={handlePost}
           disabled={posting || !newTitle.trim() || !newContent.trim()}
-          className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
+          className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-60 text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-2 transition-all"
         >
           {posting ? "Posting..." : "Post Announcement"}
         </button>
@@ -165,7 +165,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
               <div className="space-y-1 flex-1">
                 <div className="flex items-center gap-3">
                   <h4 className="font-bold text-slate-900 text-sm">{a.title}</h4>
-                  <span className="text-[10px] text-slate-400 font-semibold">
+                  <span className="text-xs sm:text-[10px] text-slate-400 font-semibold">
                     {formatDate(a.createdAt)}
                   </span>
                 </div>

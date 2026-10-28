@@ -68,10 +68,10 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
       {/* Hero Header */}
       <div className="bg-[#F7F2F6] border-b border-rule">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 py-12">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
             <div>
-              <span className="text-[11px] font-bold text-[#4A1A45] uppercase tracking-widest">
+              <span className="text-xs sm:text-[11px] font-bold text-[#4A1A45] normal-case sm:uppercase tracking-normal sm:tracking-widest">
                 Academic Curriculum
               </span>
               <h1 className="font-heading font-semibold text-3xl sm:text-4xl text-black mt-1 leading-tight">
@@ -89,7 +89,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                   <PiBookOpen className="w-4 h-4 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-bold text-[#4A1A45] uppercase">Currently Registered</p>
+                  <p className="text-xs sm:text-[10px] font-bold text-[#4A1A45] normal-case sm:uppercase">Currently Registered</p>
                   <p className="text-sm font-bold text-black truncate">{activeEnrollment.course.title}</p>
                 </div>
                 <Link
@@ -122,12 +122,12 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
+      <main className="max-w-7xl mx-auto px-5 sm:px-6 py-7 sm:py-8 space-y-5 sm:space-y-6">
         {/* Student Department Identity Banner */}
         {isStudent && studentDepartment && (
-          <div className="bg-[#2D0F2A] border border-[#3B1537] text-white p-4 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-[#2D0F2A] border border-[#3B1537] text-white p-5 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <span className="text-[10px] font-bold text-[#D6BDD4] uppercase tracking-widest block">
+              <span className="text-xs sm:text-[10px] font-bold text-[#D6BDD4] normal-case sm:uppercase tracking-normal sm:tracking-widest block">
                 Exclusive Departmental Curriculum
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
@@ -148,9 +148,9 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
         {/* Student Missing Department Warning Banner */}
         {isStudent && !studentDepartment && (
-          <div className="bg-[#2D0F2A] text-white p-4 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-[#3B1537]">
+          <div className="bg-[#2D0F2A] text-white p-5 sm:p-6 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-[#3B1537]">
             <div>
-              <span className="text-[10px] font-bold text-[#D6BDD4] uppercase tracking-widest block">
+              <span className="text-xs sm:text-[10px] font-bold text-[#D6BDD4] normal-case sm:uppercase tracking-normal sm:tracking-widest block">
                 Department Assignment Required
               </span>
               <h2 className="text-lg font-bold text-white mt-1">
@@ -301,7 +301,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {filteredCourses.map((course, idx) => {
               const isEnrolledInThis = activeEnrollment?.courseId === course.id;
               const isLocked = activeEnrollment && !isEnrolledInThis;
@@ -320,7 +320,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     />
                   )}
 
-                  <div className="p-4 sm:p-6 space-y-3 flex-1 flex flex-col">
+                  <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col">
                     <p className="text-xs text-neutral-500 flex items-center justify-between gap-3">
                       <span>{course.category}</span>
                       <span className="font-semibold text-black">{course.price === 0 ? "Free" : formatNgn(course.price)}</span>
@@ -330,18 +330,18 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
 
                     <div className="flex items-center gap-2 flex-wrap pt-2">
                       {course.department && (
-                        <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#4A1A45] text-white">
+                        <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold bg-[#4A1A45] text-white">
                           {course.department}
                         </span>
                       )}
-                      <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold border bg-[#F7F2F6] text-neutral-800 border-rule">
+                      <span className="px-2.5 py-0.5 rounded-md text-xs sm:text-[10px] font-bold border bg-[#F7F2F6] text-neutral-800 border-rule">
                         {course.level}
                       </span>
-                      <span className="text-[11px] text-neutral-500">
+                      <span className="text-xs sm:text-[11px] text-neutral-500">
                         {course.modules?.length || 0} modules
                       </span>
-                      <span className="text-[11px] text-neutral-400">·</span>
-                      <span className="text-[11px] text-neutral-500">{lessonCount} lessons</span>
+                      <span className="text-xs sm:text-[11px] text-neutral-400">·</span>
+                      <span className="text-xs sm:text-[11px] text-neutral-500">{lessonCount} lessons</span>
                     </div>
 
                     <div className="pt-3 border-t border-rule flex items-center gap-2 text-xs text-neutral-600">
@@ -349,7 +349,7 @@ export function CatalogClient({ currentUser, courses, activeEnrollment, initialS
                     </div>
                   </div>
 
-                  <div className="p-4 sm:p-5 bg-[#F7F2F6] border-t border-rule space-y-2">
+                  <div className="p-5 bg-[#F7F2F6] border-t border-rule space-y-2">
                     <Link
                       href={`/courses/${course.id}`}
                       className="w-full py-2 rounded-md border border-neutral-300 bg-white text-xs font-bold text-black flex items-center justify-center hover:border-black transition-all"

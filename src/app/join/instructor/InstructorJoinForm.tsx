@@ -47,7 +47,7 @@ export function InstructorJoinForm({ accessKey }: { accessKey: string }) {
       blurb="Create your instructor account and build your first course."
       points={["Build courses with lessons and assignments", "Scores and feedback in seconds", "See every student's progress"]}
     >
-      <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-5 sm:space-y-6">
         <div>
           <h1 className="font-heading font-semibold text-2xl text-black">Instructor sign-up</h1>
           <p className="text-sm text-neutral-500 mt-1">This page is private to people with the link.</p>
