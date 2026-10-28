@@ -185,6 +185,19 @@ describe("InstructorClient (instructor studio)", () => {
     expect(screen.getByText(/Student Submissions & Grading Queue/)).toBeTruthy();
   });
 
+  it("keeps account settings under the profile: no Settings item in the studio menu, no repeated account card", () => {
+    studio();
+    expect(screen.queryByRole("button", { name: /^Settings$/ })).toBeNull();
+  });
+
+  it("the studio settings screen (opened from the profile) has no account card and links back to the profile", () => {
+    studio("settings");
+    expect(screen.getByText("Studio settings")).toBeTruthy();
+    expect(screen.queryByText("Full Legal Name")).toBeNull();
+    expect(screen.queryByText("Students Taught")).toBeNull();
+    expect(screen.getByText("Back to profile").closest("a")!.getAttribute("href")).toBe("/profile");
+  });
+
   it("shows honest empty states, not invented averages, when nothing has been graded", () => {
     const { container } = studio();
     const text = container.textContent!;

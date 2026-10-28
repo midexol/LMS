@@ -704,67 +704,14 @@ export function InstructorClient({
           {/* ──────────────── SETTINGS & PROFILE TAB ──────────────── */}
           {activeTab === "settings" && (
             <div className="space-y-6 max-w-4xl">
-              <div>
-                <h2 className="font-bold text-2xl text-black">Studio settings</h2>
-                <p className="text-xs text-neutral-500">Manage your faculty account, studio preferences, and session security.</p>
-              </div>
-
-              {/* Profile Card */}
-              <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-rule">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center text-2xl font-bold">
-                      {currentUser.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
-                      <p className="text-xs text-neutral-500">{currentUser.email}</p>
-                      <div className="flex items-center gap-2 mt-1 flex-wrap">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#F3EAF2] border border-rule text-[#4A1A45]">
-                          {currentUser.role === "ADMIN" ? "Administrator & Faculty" : "Faculty Instructor"}
-                        </span>
-                        {currentUser.department && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#4A1A45] text-white">
-                            {currentUser.department}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-6 text-xs text-neutral-600 bg-[#F7F2F6] p-4 rounded-lg border border-rule">
-                    <div>
-                      <span className="block font-bold text-base text-black">{tutorCourses.length}</span>
-                      <span className="text-[11px] text-neutral-500">Active Courses</span>
-                    </div>
-                    <div className="w-[1px] h-8 bg-[#E4D5E2]" />
-                    <div>
-                      <span className="block font-bold text-base text-black">{metrics.totalEnrollments || 0}</span>
-                      <span className="text-[11px] text-neutral-500">Students Taught</span>
-                    </div>
-                  </div>
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <h2 className="font-bold text-2xl text-black">Studio settings</h2>
+                  <p className="text-xs text-neutral-500">Studio rules and your session. Your account and password are on your profile.</p>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Full Legal Name</label>
-                    <input
-                      type="text"
-                      readOnly
-                      value={currentUser.name}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Email</label>
-                    <input
-                      type="email"
-                      readOnly
-                      value={currentUser.email}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs font-semibold text-black outline-none"
-                    />
-                  </div>
-                </div>
+                <Link href="/profile" className="text-xs font-semibold text-[#4A1A45] underline underline-offset-4 hover:no-underline">
+                  Back to profile
+                </Link>
               </div>
 
               {/* Studio Preferences */}
