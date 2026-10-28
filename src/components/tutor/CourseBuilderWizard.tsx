@@ -338,27 +338,34 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
     <div className="max-w-5xl mx-auto space-y-5 sm:space-y-6">
 
       {/* ── Step Navigator ── */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex-1 p-3 rounded-lg bg-white border border-rule flex items-center justify-around">
-          {([1, 2, 3] as const).map((s) => (
-            <button
-              key={s}
-              onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                step === s ? "bg-[#4A1A45] text-white " : "text-neutral-500 hover:text-[#4A1A45]"
-              }`}
-            >
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                step === s ? "bg-white text-[#4A1A45]" : "bg-[#F3EAF2] text-neutral-800"
-              }`}>{s}</span>
-              {s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : isEditing ? "Review & Update" : "Review & Publish"}
-            </button>
-          ))}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="flex-1 min-w-0 p-2 sm:p-3 rounded-lg bg-white border border-rule flex items-center gap-1 sm:justify-around">
+          {([1, 2, 3] as const).map((s) => {
+            const long = s === 1 ? "Course Info" : s === 2 ? "Modules & Lessons" : isEditing ? "Review & Update" : "Review & Publish";
+            const short = s === 1 ? "Info" : s === 2 ? "Lessons" : isEditing ? "Update" : "Publish";
+            return (
+              <button
+                key={s}
+                onClick={() => { if (s > 1 && !step1Valid) return; setStep(s); }}
+                aria-label={long}
+                aria-current={step === s ? "step" : undefined}
+                className={`flex-1 sm:flex-none min-w-0 flex items-center justify-center gap-2 px-2 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+                  step === s ? "bg-[#4A1A45] text-white " : "text-neutral-500 hover:text-[#4A1A45]"
+                }`}
+              >
+                <span className={`w-6 h-6 shrink-0 rounded-full flex items-center justify-center text-xs font-bold ${
+                  step === s ? "bg-white text-[#4A1A45]" : "bg-[#F3EAF2] text-neutral-800"
+                }`}>{s}</span>
+                <span className="truncate sm:hidden" aria-hidden="true">{short}</span>
+                <span className="hidden sm:inline" aria-hidden="true">{long}</span>
+              </button>
+            );
+          })}
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="p-3 rounded-lg bg-white border border-rule hover:bg-[#F3EAF2] text-black font-bold text-xs flex items-center gap-1.5 transition-all"
+            className="self-end sm:self-auto p-3 rounded-lg bg-white border border-rule hover:bg-[#F3EAF2] text-black font-bold text-xs flex items-center gap-1.5 transition-all"
           >
             <PiX className="w-4 h-4" /> Cancel
           </button>
@@ -385,20 +392,20 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
               Curriculum Template Generator
               <span className="ml-auto text-xs sm:text-[10px] text-[#4A1A45] font-bold normal-case sm:uppercase tracking-normal sm:tracking-wider">Optional</span>
             </h4>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 placeholder="Enter a topic to auto-build modules and lessons (e.g. React + TypeScript for Production)"
                 value={aiTopic}
                 onChange={(e) => setAiTopic(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleGenerateOutlineAI()}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
+                className="w-full min-w-0 sm:flex-1 px-4 py-2.5 rounded-xl bg-white border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
               />
               <button
                 type="button"
                 onClick={handleGenerateOutlineAI}
                 disabled={generatingOutline || !aiTopic.trim()}
-                className="px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-2 transition-all"
+                className="w-full sm:w-auto justify-center px-5 py-2.5 rounded-xl bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs normal-case sm:uppercase tracking-normal sm:tracking-wider flex items-center gap-2 transition-all"
               >
                 {generatingOutline && <PiSpinner className="w-4 h-4 animate-spin" />}
                 {generatingOutline ? "Generating..." : "Generate"}

@@ -97,7 +97,7 @@ export function AnnouncementManager({ courses }: AnnouncementManagerProps) {
         <select
           value={selectedCourseId}
           onChange={(e) => setSelectedCourseId(e.target.value)}
-          className="px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
+          className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
         >
           {courses.map((c) => (
             <option key={c.id} value={c.id}>

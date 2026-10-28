@@ -28,6 +28,15 @@ interface InstructorClientProps {
   initialTab?: "dashboard" | "classes" | "submissions" | "students" | "announcements" | "settings";
 }
 
+const TAB_TITLES: Record<string, string> = {
+  dashboard: "Dashboard",
+  classes: "My Classes",
+  submissions: "Assignments",
+  students: "Students",
+  announcements: "Announcements",
+  settings: "Studio settings",
+};
+
 export function InstructorClient({
   currentUser,
   tutorCourses,
@@ -210,7 +219,7 @@ export function InstructorClient({
               <PiList className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="font-bold text-2xl text-black leading-tight">Dashboard</h1>
+              <h1 className="font-bold text-2xl text-black leading-tight">{TAB_TITLES[activeTab] ?? "Dashboard"}</h1>
               <p className="text-xs text-neutral-500 font-medium">{currentDateStr}</p>
             </div>
           </div>
@@ -577,7 +586,7 @@ export function InstructorClient({
                   />
                 </div>
               ) : (
-                <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
+                <div className="rounded-lg sm:bg-white p-0 sm:p-8 sm:border sm:border-rule space-y-5 sm:space-y-6">
                   <div>
                     <h2 className="font-bold text-2xl text-black">Curriculum &amp; Course Builder</h2>
                     <p className="text-xs text-neutral-500">Create new course modules, integrate automated grading rubrics, and upload lecture content.</p>
@@ -636,7 +645,7 @@ export function InstructorClient({
 
           {/* ──────────────── SUBMISSIONS TAB ──────────────── */}
           {activeTab === "submissions" && (
-            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
+            <div className="rounded-lg sm:bg-white p-0 sm:p-8 sm:border sm:border-rule space-y-5 sm:space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Student Submissions &amp; Grading Queue</h2>
                 <p className="text-xs text-neutral-500">Review automated rubric evaluations, verify benchmark accuracy, and issue manual score overrides.</p>
@@ -691,7 +700,7 @@ export function InstructorClient({
 
           {/* ──────────────── ANNOUNCEMENTS TAB ──────────────── */}
           {activeTab === "announcements" && (
-            <div className="bg-white rounded-lg p-6 sm:p-8 border border-rule space-y-5 sm:space-y-6">
+            <div className="rounded-lg sm:bg-white p-0 sm:p-8 sm:border sm:border-rule space-y-5 sm:space-y-6">
               <div>
                 <h2 className="font-bold text-2xl text-black">Class Announcements</h2>
                 <p className="text-xs text-neutral-500">Broadcast updates, exam guidelines, and reminders to your active classes.</p>
@@ -711,7 +720,7 @@ export function InstructorClient({
             <div className="space-y-5 sm:space-y-6 max-w-4xl">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <h2 className="font-bold text-2xl text-black">Studio settings</h2>
+                  <h2 className="font-bold text-2xl text-black">Rules and session</h2>
                   <p className="text-xs text-neutral-500">Studio rules and your session. Your account and password are on your profile.</p>
                 </div>
                 <Link href="/profile" className="text-xs font-semibold text-[#4A1A45] underline underline-offset-4 hover:no-underline">

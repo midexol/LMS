@@ -809,7 +809,7 @@ export function AdminDashboardClient({
         </div>
 
         {/* Tab Navigation */}
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 flex flex-wrap sm:flex-nowrap items-center gap-2 sm:overflow-x-auto border-t border-[#3B1537] py-2.5">
           {[
             { id: "overview", label: "Overview" },
             { id: "users", label: "Users", count: users.length },

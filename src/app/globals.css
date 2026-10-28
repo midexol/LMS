@@ -22,3 +22,12 @@ html, body {
   letter-spacing: -0.01em;
 }
 
+/* A form control or a long word must never push its box wider than the screen */
+select,
+textarea,
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) {
+  max-width: 100%;
+}
+p, h1, h2, h3, h4, li, dt, dd, label {
+  overflow-wrap: anywhere;
+}
