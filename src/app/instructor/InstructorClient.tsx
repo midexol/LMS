@@ -5,7 +5,6 @@ import Link from "next/link";
 import { CourseBuilderWizard } from "@/components/tutor/CourseBuilderWizard";
 import { TutorSubmissionsReviewer } from "@/components/tutor/TutorSubmissionsReviewer";
 import { AnnouncementManager } from "@/components/tutor/AnnouncementManager";
-import { PiBook, PiChatCircle, PiFileText, PiGear, PiSquaresFour, PiUsers } from "react-icons/pi";
 import { formatNgn } from "@/lib/utils";
 import { PASS_MARK_PERCENT } from "@/lib/grading";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -93,14 +92,12 @@ export function InstructorClient({
           <div className="space-y-1">
             <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider px-3 mb-2">Teaching</p>
             {[
-              { id: "dashboard", label: "Dashboard", icon: PiSquaresFour },
-              { id: "classes", label: "My Classes", icon: PiBook },
-              { id: "submissions", label: "Assignments", icon: PiFileText },
-              { id: "students", label: "Students", icon: PiUsers },
-              { id: "announcements", label: "Announcements", icon: PiChatCircle },
-              { id: "settings", label: "Settings", icon: PiGear },
+              { id: "dashboard", label: "Dashboard" },
+              { id: "classes", label: "My Classes" },
+              { id: "submissions", label: "Assignments" },
+              { id: "students", label: "Students" },
+              { id: "announcements", label: "Announcements" },
             ].map((item) => {
-              const Icon = item.icon;
               const active = activeTab === item.id;
               return (
                 <button
@@ -112,7 +109,6 @@ export function InstructorClient({
                       : "text-neutral-400 hover:text-white hover:bg-[#2D0F2A]"
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
                   <span>{item.label}</span>
                 </button>
               );
@@ -709,7 +705,7 @@ export function InstructorClient({
           {activeTab === "settings" && (
             <div className="space-y-6 max-w-4xl">
               <div>
-                <h2 className="font-bold text-2xl text-black">Instructor Profile &amp; Settings</h2>
+                <h2 className="font-bold text-2xl text-black">Studio settings</h2>
                 <p className="text-xs text-neutral-500">Manage your faculty account, studio preferences, and session security.</p>
               </div>
 

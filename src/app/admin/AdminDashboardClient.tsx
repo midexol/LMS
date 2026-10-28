@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { formatDate, formatNgn } from "@/lib/utils";
-import { PiBookOpen, PiChartBar, PiMagnifyingGlass, PiMedal, PiPencilSimple, PiPulse, PiSlidersHorizontal, PiTrash, PiTray, PiUsers, PiX } from "react-icons/pi";
+import { PiMagnifyingGlass, PiPencilSimple, PiTrash, PiX } from "react-icons/pi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -472,10 +472,6 @@ export function AdminDashboardClient({
   const [actionLoading, setActionLoading] = useState(false);
 
   // Settings & Security state
-  const [adminCurrentPassword, setAdminCurrentPassword] = useState("");
-  const [adminNewPassword, setAdminNewPassword] = useState("");
-  const [adminConfirmPassword, setAdminConfirmPassword] = useState("");
-  const [adminPasswordLoading, setAdminPasswordLoading] = useState(false);
 
   // Check URL query parameters for ?tab=
   useEffect(() => {
@@ -538,39 +534,6 @@ export function AdminDashboardClient({
     }
   };
 
-  const handleUpdateAdminPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!adminNewPassword || adminNewPassword.length < 6) {
-      error("Password must be at least 6 characters.");
-      return;
-    }
-    if (!adminCurrentPassword) {
-      error("Enter your current password.");
-      return;
-    }
-    if (adminNewPassword !== adminConfirmPassword) {
-      error("Passwords do not match.");
-      return;
-    }
-    setAdminPasswordLoading(true);
-    try {
-      const res = await fetch("/api/student/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: currentUser.name, password: adminNewPassword, currentPassword: adminCurrentPassword }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to update password.");
-      success("Superadmin password updated successfully.");
-      setAdminCurrentPassword("");
-      setAdminNewPassword("");
-      setAdminConfirmPassword("");
-    } catch (e: any) {
-      error(e.message || "Failed to update password.");
-    } finally {
-      setAdminPasswordLoading(false);
-    }
-  };
 
 
   /* ─── Handlers ─────────────────────────────────────── */
@@ -815,16 +778,6 @@ export function AdminDashboardClient({
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => switchTab("settings")}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all ${
-                activeTab === "settings"
-                  ? "bg-white text-black border-white "
-                  : "border-[#3B1537] bg-[#2D0F2A] text-neutral-300 hover:text-white hover:border-[#4A1A45]"
-              }`}
-            >
-              <span>Settings</span>
-            </button>
             <Link
               href="/profile"
               className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-[#3B1537] bg-[#2D0F2A] text-xs font-bold text-neutral-300 hover:text-white hover:border-[#4A1A45] transition-all"
@@ -858,27 +811,24 @@ export function AdminDashboardClient({
         {/* Tab Navigation */}
         <div className="max-w-7xl mx-auto px-6 flex items-center gap-2 overflow-x-auto border-t border-neutral-800/80 py-2.5">
           {[
-            { id: "overview", label: "Dashboard & Analytics", icon: PiChartBar },
-            { id: "users", label: "Users & Roles", count: users.length, icon: PiUsers },
-            { id: "courses", label: "Courses Oversight", count: courses.length, icon: PiBookOpen },
-            { id: "enrollments", label: "Enrollment Audit", count: enrollments.length, icon: PiMedal },
-            { id: "submissions", label: "Submissions & Grades", count: submissions.length, icon: PiPulse },
-            { id: "messages", label: "Inbox", count: unreadCount, icon: PiTray },
-            { id: "settings", label: "System Settings", icon: PiSlidersHorizontal },
+            { id: "overview", label: "Overview" },
+            { id: "users", label: "Users", count: users.length },
+            { id: "courses", label: "Courses", count: courses.length },
+            { id: "enrollments", label: "Enrollments", count: enrollments.length },
+            { id: "submissions", label: "Submissions", count: submissions.length },
+            { id: "messages", label: "Inbox", count: unreadCount },
           ].map((tab) => {
-            const Icon = tab.icon;
             const active = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => switchTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all shrink-0 ${
                   active
                     ? "bg-white text-[#4A1A45]  font-bold"
                     : "text-neutral-300 hover:text-white hover:bg-[#3B1537]"
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
@@ -1667,85 +1617,14 @@ export function AdminDashboardClient({
         {/* SETTINGS & SYSTEM CONTROLS TAB */}
         {activeTab === "settings" && (
           <div className="space-y-6 max-w-5xl">
-            <div>
-              <h2 className="font-bold text-2xl text-black">System Settings &amp; Governance</h2>
-              <p className="text-xs text-neutral-500">Review platform policies, change your admin password, and export platform data.</p>
-            </div>
-
-            {/* Superadmin Security & Profile Card */}
-            <div className="bg-white rounded-lg p-8 border border-rule space-y-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-rule">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-lg bg-[#4A1A45] text-white flex items-center justify-center text-2xl font-bold">
-                    {currentUser.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-xl text-black">{currentUser.name}</h3>
-                    <p className="text-xs text-neutral-500">{currentUser.email}</p>
-                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[#4A1A45] text-white">
-                      Superadministrator
-                    </span>
-                  </div>
-                </div>
-
-                <div className="text-xs text-neutral-500 bg-[#F7F2F6] px-4 py-3 rounded-lg border border-rule">
-                  <span className="font-bold text-black block">System Authority Level: Highest</span>
-                  <span>Full access to database, user records, course publishing, and grade ledgers.</span>
-                </div>
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h2 className="font-bold text-2xl text-black">Settings</h2>
+                <p className="text-xs text-neutral-500">Platform rules and data exports. Your account and password are on your profile.</p>
               </div>
-
-              {/* Password Change Form */}
-              <form onSubmit={handleUpdateAdminPassword} className="space-y-4 max-w-xl">
-                <h4 className="font-bold text-sm text-black uppercase tracking-wider flex items-center gap-2">
-                  Update Superadmin Password
-                </h4>
-                <div>
-                  <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
-                    Current Password
-                  </label>
-                  <input
-                    type="password"
-                    autoComplete="current-password"
-                    placeholder="Enter your current password"
-                    value={adminCurrentPassword}
-                    onChange={(e) => setAdminCurrentPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
-                  />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
-                      New Password
-                    </label>
-                    <input
-                      type="password"
-                      placeholder="Minimum 6 characters"
-                      value={adminNewPassword}
-                      onChange={(e) => setAdminNewPassword(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-600 mb-1.5 uppercase tracking-wider">
-                      Confirm New Password
-                    </label>
-                    <input
-                      type="password"
-                      placeholder="Re-enter password"
-                      value={adminConfirmPassword}
-                      onChange={(e) => setAdminConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45] transition-all"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  disabled={adminPasswordLoading || !adminNewPassword}
-                  className="px-6 py-2.5 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] disabled:opacity-50 text-white font-bold text-xs transition-all"
-                >
-                  {adminPasswordLoading ? "Updating..." : "Save New Password"}
-                </button>
-              </form>
+              <Link href="/profile" className="text-xs font-semibold text-[#4A1A45] underline underline-offset-4 hover:no-underline">
+                Back to profile
+              </Link>
             </div>
 
             {/* Academic Policies & Enrollment Rules */}

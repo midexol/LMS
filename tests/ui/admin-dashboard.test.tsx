@@ -412,25 +412,16 @@ describe("Admin dashboard: contact inbox", () => {
 
 /* ───────────────────────────── settings & export ───────────────────────────── */
 describe("Admin dashboard: settings and CSV export", () => {
-  it("changing your password needs the current one and a confirmed new one", async () => {
+  it("keeps account settings under the profile: no password form here, and a way back to the profile", () => {
     dashboard({ initialTab: "settings" });
-    const fetchFn = mockFetch({ body: { success: true } });
-    const submit = () => fireEvent.click(screen.getByRole("button", { name: "Save New Password" }));
+    expect(screen.queryByPlaceholderText("Minimum 6 characters")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Save New Password" })).toBeNull();
+    expect(screen.getByText("Back to profile").closest("a")!.getAttribute("href")).toBe("/profile");
+  });
 
-    fireEvent.change(screen.getByPlaceholderText("Minimum 6 characters"), { target: { value: "brand-new-1" } });
-    submit();
-    expect(await screen.findByText("Enter your current password.")).toBeTruthy();
-
-    fireEvent.change(screen.getByPlaceholderText("Enter your current password"), { target: { value: "old-pass" } });
-    fireEvent.change(screen.getByPlaceholderText("Re-enter password"), { target: { value: "different" } });
-    submit();
-    expect(await screen.findByText("Passwords do not match.")).toBeTruthy();
-    expect(fetchFn).not.toHaveBeenCalled();
-
-    fireEvent.change(screen.getByPlaceholderText("Re-enter password"), { target: { value: "brand-new-1" } });
-    submit();
-    expect(await screen.findByText(/password updated successfully/i)).toBeTruthy();
-    expect(call(fetchFn)).toEqual({ url: "/api/student/profile", method: "POST", body: { name: "Boss Admin", password: "brand-new-1", currentPassword: "old-pass" } });
+  it("has no Settings button or tab in the admin navigation", () => {
+    dashboard();
+    expect(screen.queryByRole("button", { name: /^Settings$|System Settings/ })).toBeNull();
   });
 
   describe("users export", () => {

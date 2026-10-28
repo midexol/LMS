@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PiBookOpen, PiCaretDown, PiCreditCard, PiList, PiShield, PiSignOut, PiSlidersHorizontal, PiUser, PiX } from "react-icons/pi";
+import { PiBookOpen, PiCaretDown, PiCreditCard, PiList, PiShield, PiSignOut, PiUser, PiX } from "react-icons/pi";
 import { BrandLogo } from "./BrandLogo";
 
 interface NavbarProps {
@@ -147,14 +147,6 @@ export function Navbar({ currentUser }: NavbarProps) {
                           Superadmin Console
                         </Link>
                         <Link
-                          href="/admin?tab=settings"
-                          onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
-                        >
-                          <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
-                          System Settings
-                        </Link>
-                        <Link
                           href="/profile"
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
@@ -172,14 +164,6 @@ export function Navbar({ currentUser }: NavbarProps) {
                         >
                           <PiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                           Instructor Studio
-                        </Link>
-                        <Link
-                          href="/instructor?tab=settings"
-                          onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6] hover:text-[#4A1A45] transition-colors"
-                        >
-                          <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
-                          Studio Settings
                         </Link>
                         <Link
                           href="/profile"
@@ -297,14 +281,6 @@ export function Navbar({ currentUser }: NavbarProps) {
                     Superadmin Console
                   </Link>
                   <Link
-                    href="/admin?tab=settings"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
-                  >
-                    <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
-                    System Settings
-                  </Link>
-                  <Link
                     href="/profile"
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
@@ -322,14 +298,6 @@ export function Navbar({ currentUser }: NavbarProps) {
                   >
                     <PiBookOpen className="w-4 h-4 text-[#4A1A45]" />
                     Instructor Studio
-                  </Link>
-                  <Link
-                    href="/instructor?tab=settings"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-700 hover:bg-[#F7F2F6]"
-                  >
-                    <PiSlidersHorizontal className="w-4 h-4 text-[#4A1A45]" />
-                    Studio Settings
                   </Link>
                   <Link
                     href="/profile"

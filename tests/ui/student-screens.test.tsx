@@ -74,7 +74,10 @@ describe("Navbar", () => {
     unmount();
     render(<Navbar currentUser={{ ...student, role: "ADMIN" }} />);
     fireEvent.click(screen.getAllByText("Ada Student")[0].closest("button")!);
-    expect(document.querySelector('a[href="/admin?tab=settings"]')).toBeTruthy();
+    expect(document.querySelector('a[href="/admin"]')).toBeTruthy();
+    expect(document.querySelector('a[href="/profile"]')).toBeTruthy();
+    // settings are reached only from the profile page, never from the user menu
+    expect(document.querySelector('a[href="/admin?tab=settings"]')).toBeNull();
   });
 });
 
