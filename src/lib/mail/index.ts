@@ -68,7 +68,12 @@ function renderTemplate<T extends object>(
   return { subject: template(data).subject, html: template(escaped).html };
 }
 
-export async function sendEmailNotification(toEmail: string, subject: string, htmlContent: string) {
+export async function sendEmailNotification(
+  toEmail: string,
+  subject: string,
+  htmlContent: string,
+  options: { replyTo?: string } = {}
+) {
   if (!transporter) {
     console.log("==========================================");
     console.log("[MOCK MAIL DISPATCHER] To:", toEmail);
@@ -85,6 +90,7 @@ export async function sendEmailNotification(toEmail: string, subject: string, ht
       to: toEmail,
       subject: subject,
       html: htmlContent,
+      ...(options.replyTo ? { replyTo: options.replyTo } : {}),
     });
     console.log(`[EMAIL DISPATCHED] Successfully sent to ${toEmail}`);
     return true;
@@ -109,9 +115,14 @@ export async function sendGradeOverrideEmail(studentEmail: string, data: GradeOv
   return await sendEmailNotification(studentEmail, subject, html);
 }
 
-export async function sendAnnouncementEmail(studentEmail: string, data: AnnouncementEmailData) {
+/** `replyTo` is the instructor, so a student's reply reaches a person instead of the no-reply mailbox. */
+export async function sendAnnouncementEmail(
+  studentEmail: string,
+  data: AnnouncementEmailData,
+  options: { replyTo?: string } = {}
+) {
   const { subject, html } = renderTemplate(getAnnouncementEmailTemplate, data);
-  return await sendEmailNotification(studentEmail, subject, html);
+  return await sendEmailNotification(studentEmail, subject, html, options);
 }
 
 export async function sendCourseUpdateEmail(studentEmail: string, data: CourseUpdateEmailData) {

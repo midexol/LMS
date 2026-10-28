@@ -53,6 +53,22 @@ describe("email sending", () => {
     expect(smtp.sent[0].html).toContain("Chemistry");
   });
 
+  it("sets Reply-To on an announcement so a student's reply reaches the instructor", async () => {
+    const mail = await realMail();
+    await mail.sendAnnouncementEmail(
+      "ada@test.com",
+      { studentName: "Ada", courseTitle: "Chemistry", announcementTitle: "Exam", content: "Monday" },
+      { replyTo: "tutor@test.com" }
+    );
+    expect(smtp.sent[0]).toMatchObject({ to: "ada@test.com", from: "ACADEMIA <noreply@lms.test>", replyTo: "tutor@test.com" });
+  });
+
+  it("sends no Reply-To header when none is given", async () => {
+    const mail = await realMail();
+    await mail.sendEnrollmentEmail("ada@test.com", { studentName: "Ada", courseTitle: "Chemistry" });
+    expect(smtp.sent[0]).not.toHaveProperty("replyTo");
+  });
+
   it("returns false (never throws) when SMTP fails, so a mail outage cannot break a request", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const mail = await realMail();

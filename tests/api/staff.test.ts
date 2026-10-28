@@ -123,6 +123,55 @@ describe("/api/announcements", () => {
       expect(mailMock.sendAnnouncementEmail.mock.calls.map((c) => c[0])).toEqual(["a@test.com", "b@test.com"]);
     });
 
+    it("sets Reply-To to whoever posted, so replies reach a person", async () => {
+      const tutor = loginAs("TUTOR")!;
+      prismaMock.course.findUnique.mockResolvedValue({ id: "course_1", title: "Bio", tutorId: tutor.id });
+      prismaMock.enrollment.findMany.mockResolvedValue([{ student: { email: "a@test.com", name: "A" } }]);
+      await post(valid);
+      expect(mailMock.sendAnnouncementEmail.mock.calls[0][2]).toEqual({ replyTo: tutor.email });
+    });
+
+    it("finishes sending before it answers, so the host cannot cut the emails off", async () => {
+      const tutor = loginAs("TUTOR")!;
+      prismaMock.course.findUnique.mockResolvedValue({ id: "course_1", title: "Bio", tutorId: tutor.id });
+      prismaMock.enrollment.findMany.mockResolvedValue([
+        { student: { email: "a@test.com", name: "A" } },
+        { student: { email: "b@test.com", name: "B" } },
+      ]);
+      let delivered = 0;
+      mailMock.sendAnnouncementEmail.mockImplementation(async () => {
+        await new Promise((r) => setTimeout(r, 20));
+        delivered += 1;
+        return true;
+      });
+      await post(valid);
+      expect(delivered).toBe(2);
+    });
+
+    it("sends a big class in batches of ten, and one failed address does not stop the rest", async () => {
+      const tutor = loginAs("TUTOR")!;
+      prismaMock.course.findUnique.mockResolvedValue({ id: "course_1", title: "Bio", tutorId: tutor.id });
+      prismaMock.enrollment.findMany.mockResolvedValue(
+        Array.from({ length: 25 }, (_, i) => ({ student: { email: `s${i}@test.com`, name: `S${i}` } }))
+      );
+      let inFlight = 0;
+      let peak = 0;
+      const sent: string[] = [];
+      mailMock.sendAnnouncementEmail.mockImplementation(async (to: string) => {
+        inFlight += 1;
+        peak = Math.max(peak, inFlight);
+        await new Promise((r) => setTimeout(r, 5));
+        inFlight -= 1;
+        if (to === "s3@test.com") throw new Error("mailbox full");
+        sent.push(to);
+        return true;
+      });
+      expect((await post(valid)).status).toBe(200);
+      expect(mailMock.sendAnnouncementEmail).toHaveBeenCalledTimes(25);
+      expect(sent).toHaveLength(24);
+      expect(peak).toBeLessThanOrEqual(10);
+    });
+
     it("still posts the announcement if email delivery fails", async () => {
       const tutor = loginAs("TUTOR")!;
       prismaMock.course.findUnique.mockResolvedValue({ id: "course_1", title: "Bio", tutorId: tutor.id });

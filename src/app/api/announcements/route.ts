@@ -3,6 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { sendAnnouncementEmail } from "@/lib/mail";
 
+// Emailing a whole class takes a while; give the function room to finish before it is frozen
+export const maxDuration = 60;
+
+// How many emails go out at once. Small enough to stay inside the mail server's limits.
+const EMAIL_BATCH_SIZE = 10;
+
 // GET: Students fetch announcements for their enrolled course
 export async function GET(req: Request) {
   try {
@@ -93,15 +99,28 @@ export async function POST(req: Request) {
         include: { student: true },
       });
 
-      for (const e of activeEnrollments) {
-        if (e.student?.email) {
-          sendAnnouncementEmail(e.student.email, {
-            studentName: e.student.name,
-            courseTitle: course.title,
-            announcementTitle: announcement.title,
-            content: announcement.content,
-          }).catch((err) => console.error("[ANNOUNCEMENT EMAIL FAILED]", err));
-        }
+      // Wait for the sends to finish: on serverless hosting an unawaited promise can be cut off once the
+      // response is returned. One failed address must not stop the others, so every send is settled.
+      const recipients = activeEnrollments.filter((e) => e.student?.email);
+      for (let i = 0; i < recipients.length; i += EMAIL_BATCH_SIZE) {
+        const batch = recipients.slice(i, i + EMAIL_BATCH_SIZE);
+        const results = await Promise.allSettled(
+          batch.map((e) =>
+            sendAnnouncementEmail(
+              e.student.email,
+              {
+                studentName: e.student.name,
+                courseTitle: course.title,
+                announcementTitle: announcement.title,
+                content: announcement.content,
+              },
+              { replyTo: currentUser.email }
+            )
+          )
+        );
+        results.forEach((r) => {
+          if (r.status === "rejected") console.error("[ANNOUNCEMENT EMAIL FAILED]", r.reason);
+        });
       }
     } catch (emailErr) {
       console.error("[ANNOUNCEMENT DISPATCH ERROR]", emailErr);
