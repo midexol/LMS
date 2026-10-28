@@ -217,6 +217,8 @@ export const RATE_LIMIT_RULES = {
   UPLOAD: { limit: 30, windowMs: 10 * 60 * 1000 },
   // Discussion posts and replies (per user)
   DISCUSSION: { limit: 20, windowMs: 5 * 60 * 1000 },
+  // Instructor sign-up from the private link: 5 attempts per 15 minutes per IP, wrong keys included
+  INSTRUCTOR_SIGNUP: { limit: 5, windowMs: 15 * 60 * 1000 },
   // Profile / password changes (per user)
   PROFILE: { limit: 10, windowMs: 15 * 60 * 1000 },
   // Checkout price quotes (per IP): public, read-only
