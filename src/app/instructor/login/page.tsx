@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { PiEnvelopeSimple, PiLock, PiShield, PiSignIn, PiWarningCircle } from "react-icons/pi";
+import { PiEnvelopeSimple, PiLock, PiSignIn, PiWarningCircle } from "react-icons/pi";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function InstructorLoginPage() {
@@ -46,9 +46,6 @@ export default function InstructorLoginPage() {
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-2">
             <BrandLogo href="/" variant="dark" size="md" />
-          </div>
-          <div className="inline-flex p-3 rounded-lg bg-[#2D0F2A] text-[#D6BDD4] mb-2 border border-[#4A1A45]/40">
-            <PiShield className="w-7 h-7" />
           </div>
           <h1 className="font-heading text-2xl font-semibold text-black tracking-tight">Instructor Portal</h1>
           <p className="text-xs text-neutral-500 font-medium">Sign in to manage curriculum, assignments, and analytics.</p>
