@@ -68,6 +68,15 @@ describe("the secret at rest", () => {
     expect(() => decryptSecret(stored)).toThrow();
   });
 
+  it("uses its own key when one is set, so rotating the session secret does not lock anyone out", () => {
+    vi.stubEnv("TOTP_ENCRYPTION_KEY", "a-separate-encryption-key-0123456789");
+    const stored = encryptSecret("SECRETSECRETSECRETSECRETSECRET12");
+    vi.stubEnv("SESSION_SECRET", "a-rotated-session-secret-0000000000");
+    expect(decryptSecret(stored)).toBe("SECRETSECRETSECRETSECRETSECRET12");
+    vi.stubEnv("TOTP_ENCRYPTION_KEY", "");
+    expect(() => decryptSecret(stored)).toThrow(); // without its own key it falls back to the session secret, which differs
+  });
+
   it("refuses to work with no server secret at all", () => {
     vi.stubEnv("SESSION_SECRET", "");
     expect(() => encryptSecret("X")).toThrow(/SESSION_SECRET/);

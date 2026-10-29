@@ -78,8 +78,9 @@ export function otpauthUri(secret: string, account: string, issuer = "Academia")
 
 /* ───────── secrets at rest ───────── */
 function key(purpose: string): Buffer {
-  const base = process.env.SESSION_SECRET;
-  if (!base) throw new Error("SESSION_SECRET must be set to use two-step sign-in.");
+  // TOTP_ENCRYPTION_KEY lets the session secret be rotated without locking anyone out of two-step sign-in
+  const base = process.env.TOTP_ENCRYPTION_KEY || process.env.SESSION_SECRET;
+  if (!base) throw new Error("SESSION_SECRET (or TOTP_ENCRYPTION_KEY) must be set to use two-step sign-in.");
   return crypto.createHash("sha256").update(`${purpose}:${base}`).digest();
 }
 
