@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Newsreader, Public_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -20,6 +21,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Reading the request's headers makes every page render per request, which the one-time script code needs
+  headers();
   return (
     <html lang="en" className={`${headingFont.variable} ${bodyFont.variable}`}>
       <body className="bg-paper text-ink antialiased min-h-screen selection:bg-[#4A1A45] selection:text-white font-sans">

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
+import { buildContentSecurityPolicy } from "@/lib/csp";
 
 let headers: Record<string, string> = {};
 let csp: Record<string, string[]> = {};
@@ -8,7 +9,8 @@ beforeAll(async () => {
   const rules = await config.headers();
   expect(rules[0].source).toBe("/:path*"); // applies to every page and API route
   headers = Object.fromEntries(rules[0].headers.map((h: any) => [h.key, h.value]));
-  for (const part of headers["Content-Security-Policy"].split(";")) {
+  expect(headers["Content-Security-Policy"]).toBeUndefined(); // built per request in the middleware, with a fresh nonce
+  for (const part of buildContentSecurityPolicy("TESTNONCE", false).split(";")) {
     const [name, ...values] = part.trim().split(/\s+/);
     if (name) csp[name] = values;
   }
@@ -40,6 +42,18 @@ describe("Content-Security-Policy", () => {
     expect(csp["object-src"]).toEqual(["'none'"]);
     expect(csp["base-uri"]).toEqual(["'self'"]);
     expect(csp["form-action"]).toEqual(["'self'"]);
+  });
+
+  it("only runs scripts that carry this request's nonce: no inline scripts and no eval in production", () => {
+    expect(csp["script-src"]).toContain("'nonce-TESTNONCE'");
+    expect(csp["script-src"]).not.toContain("'unsafe-inline'");
+    expect(csp["script-src"]).not.toContain("'unsafe-eval'");
+    expect(csp["script-src"]).not.toContain("'strict-dynamic'");
+  });
+
+  it("allows eval only on the development server (hot reload), never in production", () => {
+    expect(buildContentSecurityPolicy("N", true)).toContain("'unsafe-eval'");
+    expect(buildContentSecurityPolicy("N", false)).not.toContain("'unsafe-eval'");
   });
 
   it("never allows scripts from arbitrary origins", () => {

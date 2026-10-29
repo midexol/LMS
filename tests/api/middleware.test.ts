@@ -14,6 +14,12 @@ function run(path: string, cookies: Record<string, string> = {}) {
   };
 }
 
+/** A page request through the middleware, returning the policy it was sent and the one it answered with. */
+function policyFor(path: string) {
+  const res = middleware(new NextRequest(`http://localhost${path}`));
+  return { response: res.headers.get("content-security-policy"), nonce: res.headers.get("x-middleware-request-x-nonce") };
+}
+
 const as = (role: string) => ({ lms_user_id: "token", lms_user_role: role });
 
 describe("route protection middleware", () => {
@@ -90,5 +96,23 @@ describe("route protection middleware", () => {
    */
   it("treats any non-empty cookie as 'logged in' (real verification happens in the pages and APIs)", () => {
     expect(run("/my-courses", { lms_user_id: "anything" }).passes).toBe(true);
+  });
+});
+
+describe("script policy (Content-Security-Policy)", () => {
+  it("gives every page request its own one-time nonce, in the policy and in the headers Next.js reads", () => {
+    const a = policyFor("/login");
+    const b = policyFor("/login");
+    expect(a.nonce).toBeTruthy();
+    expect(a.response).toContain(`'nonce-${a.nonce}'`);
+    expect(b.nonce).not.toBe(a.nonce);
+    expect(a.response).not.toContain("'unsafe-inline' https://js.paystack.co"); // scripts: no blanket inline allowance
+    expect(a.response!.match(/script-src[^;]*/)![0]).not.toContain("'unsafe-inline'");
+  });
+
+  it("does not add it to API calls or static files", () => {
+    for (const path of ["/api/courses", "/logo.svg", "/_next/static/chunk.js"]) {
+      expect(policyFor(path).response).toBeNull();
+    }
   });
 });

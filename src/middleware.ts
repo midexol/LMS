@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { buildContentSecurityPolicy, makeNonce } from "@/lib/csp";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -55,7 +56,16 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // Every page gets its own one-time script code. Next.js reads it from the request's policy and stamps it
+  // onto the scripts it renders; the browser then refuses any script that does not carry it.
+  const nonce = makeNonce();
+  const policy = buildContentSecurityPolicy(nonce, process.env.NODE_ENV !== "production");
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set("Content-Security-Policy", policy);
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  response.headers.set("Content-Security-Policy", policy);
+  return response;
 }
 
 export const config = {
