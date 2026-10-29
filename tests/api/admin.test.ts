@@ -174,7 +174,7 @@ describe("PATCH /api/admin/users", () => {
     expect(data.sessionsValidAfter).toBeInstanceOf(Date);
   });
 
-  it("rejects a password reset under 6 characters", async () => {
+  it("rejects a password reset under 10 characters", async () => {
     expect((await patch({ userId: "u1", newPassword: "123" })).status).toBe(400);
   });
 

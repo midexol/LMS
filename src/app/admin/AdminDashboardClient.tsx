@@ -1,5 +1,6 @@
 "use client";
 
+import { PasswordRules, usePasswordCheck } from "@/components/auth/PasswordRules";
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { formatDate, formatNgn } from "@/lib/utils";
@@ -231,6 +232,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
     user.department || getDepartmentsForFaculty(user.faculty || ACADEMIC_STRUCTURE[0].name)[0] || ""
   );
   const [password, setPassword] = useState("");
+  const check = usePasswordCheck(password);
   const [saving, setSaving] = useState(false);
 
   const handleFacultyChange = (newFac: string) => {
@@ -320,9 +322,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 rounded-xl bg-[#F7F2F6] border border-rule text-xs text-black outline-none focus:border-[#4A1A45]"
             />
-            {password && password.length < 6 && (
-              <p className="text-xs sm:text-[10px] text-red-600 font-bold mt-1">Min 6 characters required.</p>
-            )}
+            {password && <PasswordRules password={password} check={check} />}
           </div>
         </div>
 
@@ -332,7 +332,7 @@ function EditUserModal({ user, currentAdminId, onSave, onClose }: {
           </button>
           <button
             onClick={handleSave}
-            disabled={saving || (!!password && password.length < 6)}
+            disabled={saving || (!!password && !check.ok)}
             className="px-5 py-2 rounded-md bg-[#4A1A45] hover:bg-[#3B1537] text-white font-bold text-xs disabled:opacity-50"
           >
             {saving ? "Saving..." : "Save Changes"}

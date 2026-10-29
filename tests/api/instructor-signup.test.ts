@@ -64,7 +64,7 @@ describe("POST /api/auth/instructor-signup (private link)", () => {
     expect(prismaMock.user.create.mock.calls[0][0].data.role).toBe("TUTOR");
   });
 
-  it("checks the details: name, email, an 8-character password, and a real school and department", async () => {
+  it("checks the details: name, email, a password that meets the rules, and a real school and department", async () => {
     const cases: Array<[string, Record<string, unknown>]> = [
       ["name", { name: "A" }],
       ["email", { email: "not-an-email" }],

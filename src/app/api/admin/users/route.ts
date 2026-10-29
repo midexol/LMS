@@ -1,3 +1,4 @@
+import { checkNewPassword } from "@/lib/passwordCheck";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
@@ -81,11 +82,9 @@ export async function PATCH(req: Request) {
     }
 
     if (newPassword) {
-      if (newPassword.length < 6) {
-        return NextResponse.json(
-          { error: "Password must be at least 6 characters." },
-          { status: 400 }
-        );
+      const passwordIssue = await checkNewPassword(newPassword);
+      if (passwordIssue) {
+        return NextResponse.json({ error: passwordIssue }, { status: 400 });
       }
       updateData.password = await bcrypt.hash(newPassword, 12);
       // Revoke the user's existing sessions when an admin resets their password

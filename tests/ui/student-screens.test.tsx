@@ -217,7 +217,7 @@ describe("ProfileClient (student profile)", () => {
     it("changing the password requires the current password and a matching confirmation", async () => {
       const fetchFn = mockFetch({ body: { success: true } });
       view();
-      fireEvent.change(screen.getByPlaceholderText("Minimum 6 characters"), { target: { value: "brand-new-1" } });
+      fireEvent.change(screen.getByPlaceholderText("At least 10 characters"), { target: { value: "brand-new-1" } });
       save();
       expect(await screen.findByText("Enter your current password to set a new one.")).toBeTruthy();
       fireEvent.change(screen.getByPlaceholderText("Enter your current password"), { target: { value: "old-pass" } });
@@ -235,16 +235,16 @@ describe("ProfileClient (student profile)", () => {
     it("rejects a short new password locally", async () => {
       const fetchFn = mockFetch({ body: { success: true } });
       view();
-      fireEvent.change(screen.getByPlaceholderText("Minimum 6 characters"), { target: { value: "123" } });
+      fireEvent.change(screen.getByPlaceholderText("At least 10 characters"), { target: { value: "123" } });
       save();
-      expect(await screen.findByText(/at least 6 characters/)).toBeTruthy();
+      expect(await screen.findByText(/meets all the rules/)).toBeTruthy();
       expect(fetchFn).not.toHaveBeenCalled();
     });
 
     it("shows the server's error, for example a wrong current password", async () => {
       mockFetch({ ok: false, status: 403, body: { error: "Your current password is incorrect." } });
       view();
-      fireEvent.change(screen.getByPlaceholderText("Minimum 6 characters"), { target: { value: "brand-new-1" } });
+      fireEvent.change(screen.getByPlaceholderText("At least 10 characters"), { target: { value: "brand-new-1" } });
       fireEvent.change(screen.getByPlaceholderText("Enter your current password"), { target: { value: "wrong" } });
       fireEvent.change(screen.getByPlaceholderText("Re-enter your new password"), { target: { value: "brand-new-1" } });
       save();

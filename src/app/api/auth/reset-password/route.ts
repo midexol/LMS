@@ -1,3 +1,4 @@
+import { checkNewPassword } from "@/lib/passwordCheck";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
@@ -27,11 +28,8 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!password || typeof password !== "string" || password.length < 6) {
-      return NextResponse.json(
-        { error: "Password must be at least 6 characters long." },
-        { status: 400 }
-      );
+    if (!password || typeof password !== "string") {
+      return NextResponse.json({ error: "Password is required." }, { status: 400 });
     }
 
     // Look up user by resetToken and ensure it has not expired
@@ -49,6 +47,11 @@ export async function POST(req: Request) {
         { error: "This password reset link is invalid or has expired. Please request a new one." },
         { status: 400 }
       );
+    }
+
+    const passwordIssue = await checkNewPassword(password, { email: user.email, name: user.name });
+    if (passwordIssue) {
+      return NextResponse.json({ error: passwordIssue }, { status: 400 });
     }
 
     // Hash the new password with bcrypt

@@ -225,7 +225,7 @@ describe("Admin dashboard: users", () => {
       fireEvent.click(within(row("Ada Student")).getByTitle("Edit user role / password"));
       const pw = screen.getByPlaceholderText("Leave blank to preserve current");
       fireEvent.change(pw, { target: { value: "123" } });
-      expect(screen.getByText("Min 6 characters required.")).toBeTruthy();
+      expect(screen.getByText("At least 10 characters")).toBeTruthy();
       expect((screen.getByRole("button", { name: "Save Changes" }) as HTMLButtonElement).disabled).toBe(true);
 
       fireEvent.change(pw, { target: { value: "fresh-pass-1" } });
@@ -414,7 +414,7 @@ describe("Admin dashboard: contact inbox", () => {
 describe("Admin dashboard: settings and CSV export", () => {
   it("keeps account settings under the profile: no password form here, and a way back to the profile", () => {
     dashboard({ initialTab: "settings" });
-    expect(screen.queryByPlaceholderText("Minimum 6 characters")).toBeNull();
+    expect(screen.queryByPlaceholderText("At least 10 characters")).toBeNull();
     expect(screen.queryByRole("button", { name: "Save New Password" })).toBeNull();
     expect(screen.getByText("Back to profile").closest("a")!.getAttribute("href")).toBe("/profile");
   });

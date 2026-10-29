@@ -1,13 +1,13 @@
 "use client";
 
+import { PasswordRules, usePasswordCheck } from "@/components/auth/PasswordRules";
+import { BREACHED_MESSAGE } from "@/lib/passwordPolicy";
 import React, { useState } from "react";
 import Link from "next/link";
 import { PiEye, PiEyeSlash } from "react-icons/pi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { AuthShell, AuthError, authInputClass, authLabelClass, authButtonClass } from "@/components/auth/AuthShell";
-
-const MIN_PASSWORD = 6;
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -23,8 +23,8 @@ export default function SignupPage() {
   const [needsVerification, setNeedsVerification] = useState(false);
 
   const departments = faculty ? getDepartmentsForFaculty(faculty) : [];
-  const passwordTooShort = password.length > 0 && password.length < MIN_PASSWORD;
-  const ready = name.trim() && email && password.length >= MIN_PASSWORD && faculty && department;
+  const check = usePasswordCheck(password, { email, name });
+  const ready = name.trim() && email && check.ok && faculty && department;
 
   const handleFacultyChange = (next: string) => {
     setFaculty(next);
@@ -34,8 +34,8 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (password.length < MIN_PASSWORD) {
-      setError(`Password must be at least ${MIN_PASSWORD} characters long.`);
+    if (!check.ok) {
+      setError(check.breached ? BREACHED_MESSAGE : "Choose a password that meets all the rules below the box.");
       return;
     }
     setLoading(true);
@@ -108,7 +108,7 @@ export default function SignupPage() {
                   type={showPassword ? "text" : "password"}
                   required
                   autoComplete="new-password"
-                  placeholder="Min 6 characters"
+                  placeholder="At least 10 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={`${authInputClass} pr-11`}
@@ -122,7 +122,7 @@ export default function SignupPage() {
                   {showPassword ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
                 </button>
               </div>
-              {passwordTooShort && <p className="text-xs text-red-600 mt-1">Use at least {MIN_PASSWORD} characters.</p>}
+              <PasswordRules password={password} check={check} />
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">

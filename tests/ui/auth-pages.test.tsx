@@ -58,8 +58,8 @@ describe("Forgot password page", () => {
 });
 
 describe("Reset password page", () => {
-  const fill = (password = "newpass12", confirm = password) => {
-    fireEvent.change(screen.getByPlaceholderText("At least 6 characters"), { target: { value: password } });
+  const fill = (password = "purple-giraffe-47", confirm = password) => {
+    fireEvent.change(screen.getByPlaceholderText("At least 10 characters"), { target: { value: password } });
     fireEvent.change(screen.getByPlaceholderText("Re-enter password"), { target: { value: confirm } });
   };
   const submit = () => fireEvent.click(screen.getByRole("button", { name: "Save New Password" }));
@@ -70,8 +70,8 @@ describe("Reset password page", () => {
     render(<ResetPasswordPage />);
     fill("123", "123");
     submit();
-    expect(screen.getByText("Password must be at least 6 characters long.")).toBeTruthy();
-    fill("newpass12", "different1");
+    expect(screen.getByText(/meets all the rules/)).toBeTruthy();
+    fill("purple-giraffe-47", "different-giraffe-48");
     submit();
     expect(screen.getByText(/do not match/)).toBeTruthy();
     expect(fetchFn).not.toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe("Reset password page", () => {
     submit();
     expect(await screen.findByText("Password Successfully Updated")).toBeTruthy();
     expect(fetchFn.mock.calls[0][0]).toBe("/api/auth/reset-password");
-    expect(sentBody(fetchFn)).toEqual({ token, password: "newpass12" });
+    expect(sentBody(fetchFn)).toEqual({ token, password: "purple-giraffe-47" });
   });
 
   it("shows an expired-link error from the server and does not claim success", async () => {

@@ -23,7 +23,7 @@ beforeEach(async () => {
 
 /* ───────────────────────────── register ───────────────────────────── */
 describe("POST /api/auth/register", () => {
-  const valid = { name: "Ada Obi", email: "Ada@Test.com ", password: "secret12", faculty: "Science", department: "Chemistry", phone: "0803 123 4567" };
+  const valid = { name: "Ada Obi", email: "Ada@Test.com ", password: "purple-giraffe-47", faculty: "Science", department: "Chemistry", phone: "0803 123 4567" };
 
   beforeEach(() => {
     prismaMock.user.findUnique.mockResolvedValue(null);
@@ -53,9 +53,9 @@ describe("POST /api/auth/register", () => {
   it("stores only a bcrypt hash of the password", async () => {
     await call(register, "/api/auth/register", { body: valid });
     const stored = prismaMock.user.create.mock.calls[0][0].data.password;
-    expect(stored).not.toBe("secret12");
+    expect(stored).not.toBe("purple-giraffe-47");
     expect(stored.startsWith("$2")).toBe(true);
-    expect(await bcrypt.compare("secret12", stored)).toBe(true);
+    expect(await bcrypt.compare("purple-giraffe-47", stored)).toBe(true);
   });
 
   it("cannot be used to create an admin or tutor, whatever the request claims", async () => {
@@ -113,7 +113,7 @@ describe("POST /api/auth/register", () => {
     ["an invalid email", { email: "not-an-email" }, /valid email/],
     ["a missing email", { email: "" }, /valid email/],
     ["a missing password", { password: "" }, /Password is required/],
-    ["a short password", { password: "12345" }, /at least 6/],
+    ["a short password", { password: "12345" }, /at least 10/],
     ["a phone number with letters", { phone: "call-me-maybe" }, /phone/],
   ])("rejects %s", async (_label, patch, message) => {
     const { status, body } = await call(register, "/api/auth/register", { body: { ...valid, ...patch } });
@@ -249,7 +249,7 @@ describe("required email verification", () => {
     prismaMock.user.findUnique.mockResolvedValue(null);
     prismaMock.user.create.mockImplementation(async ({ data }: any) => ({ id: "new_user_1", createdAt: new Date(), ...data }));
     const { status, body } = await call(register, "/api/auth/register", {
-      body: { name: "Ada Obi", email: "new@test.com", password: "secret12", faculty: "Science", department: "Chemistry" },
+      body: { name: "Ada Obi", email: "new@test.com", password: "purple-giraffe-47", faculty: "Science", department: "Chemistry" },
     });
     expect(status).toBe(200);
     expect(body).toEqual({ success: true, needsVerification: true });
@@ -336,15 +336,15 @@ describe("POST /api/auth/reset-password", () => {
   const token = "a".repeat(64);
 
   it("rejects a missing or short token and a short password", async () => {
-    expect((await call(resetPassword, "/api/auth/reset-password", { body: { token: "short", password: "newpass1" } })).status).toBe(400);
-    expect((await call(resetPassword, "/api/auth/reset-password", { body: { password: "newpass1" } })).status).toBe(400);
+    expect((await call(resetPassword, "/api/auth/reset-password", { body: { token: "short", password: "purple-giraffe-47" } })).status).toBe(400);
+    expect((await call(resetPassword, "/api/auth/reset-password", { body: { password: "purple-giraffe-47" } })).status).toBe(400);
     expect((await call(resetPassword, "/api/auth/reset-password", { body: { token, password: "12345" } })).status).toBe(400);
-    expect(prismaMock.user.findFirst).not.toHaveBeenCalled();
+    expect(prismaMock.user.update).not.toHaveBeenCalled();
   });
 
   it("looks the token up with an expiry check and rejects unknown or expired tokens", async () => {
     prismaMock.user.findFirst.mockResolvedValue(null);
-    const { status, body } = await call(resetPassword, "/api/auth/reset-password", { body: { token, password: "newpass1" } });
+    const { status, body } = await call(resetPassword, "/api/auth/reset-password", { body: { token, password: "purple-giraffe-47" } });
     expect(status).toBe(400);
     expect(body.error).toMatch(/invalid or has expired/);
     const where = prismaMock.user.findFirst.mock.calls[0][0].where;
@@ -355,12 +355,12 @@ describe("POST /api/auth/reset-password", () => {
 
   it("sets the new password, burns the token and signs out every existing session", async () => {
     prismaMock.user.findFirst.mockResolvedValue({ id: "u1" });
-    const { status } = await call(resetPassword, "/api/auth/reset-password", { body: { token, password: "newpass1" } });
+    const { status } = await call(resetPassword, "/api/auth/reset-password", { body: { token, password: "purple-giraffe-47" } });
 
     expect(status).toBe(200);
     const { where, data } = prismaMock.user.update.mock.calls[0][0];
     expect(where).toEqual({ id: "u1" });
-    expect(await bcrypt.compare("newpass1", data.password)).toBe(true);
+    expect(await bcrypt.compare("purple-giraffe-47", data.password)).toBe(true);
     expect(data.resetToken).toBeNull();
     expect(data.resetTokenExpiry).toBeNull();
     expect(data.sessionsValidAfter).toBeInstanceOf(Date);

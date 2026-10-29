@@ -1,3 +1,4 @@
+import { checkNewPassword } from "@/lib/passwordCheck";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
@@ -8,8 +9,6 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { getAppUrl } from "@/lib/utils";
 import { isValidInstructorKey } from "@/lib/instructorLink";
 import { isValidFacultyAndDepartment } from "@/lib/academicStructure";
-
-const MIN_PASSWORD = 8;
 
 /** Creates an instructor account for someone who holds the private sign-up link (its key is sent in the body). */
 export async function POST(req: Request) {
@@ -39,8 +38,9 @@ export async function POST(req: Request) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
     }
-    if (password.length < MIN_PASSWORD) {
-      return NextResponse.json({ error: `Password must be at least ${MIN_PASSWORD} characters long.` }, { status: 400 });
+    const passwordIssue = await checkNewPassword(password, { email, name });
+    if (passwordIssue) {
+      return NextResponse.json({ error: passwordIssue }, { status: 400 });
     }
     if (!isValidFacultyAndDepartment(body.faculty, body.department)) {
       return NextResponse.json({ error: "Choose your school and department from the lists." }, { status: 400 });

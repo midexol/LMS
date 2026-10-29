@@ -188,11 +188,11 @@ describe("Login page", () => {
 /* ───────────────────────────── signup page ───────────────────────────── */
 describe("Signup page", () => {
   const fill = (over: Record<string, string> = {}) => {
-    const v = { name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "secret12", faculty: ACADEMIC_STRUCTURE[0].name, department: ACADEMIC_STRUCTURE[0].departments[1], ...over };
+    const v = { name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "purple-giraffe-47", faculty: ACADEMIC_STRUCTURE[0].name, department: ACADEMIC_STRUCTURE[0].departments[1], ...over };
     fireEvent.change(screen.getByPlaceholderText("e.g. Alex Rivera"), { target: { value: v.name } });
     fireEvent.change(screen.getByPlaceholderText("you@example.com"), { target: { value: v.email } });
     fireEvent.change(screen.getByPlaceholderText("e.g. 0803 123 4567"), { target: { value: v.phone } });
-    fireEvent.change(screen.getByPlaceholderText("Min 6 characters"), { target: { value: v.password } });
+    fireEvent.change(screen.getByPlaceholderText("At least 10 characters"), { target: { value: v.password } });
     if (v.faculty) fireEvent.change(screen.getByLabelText("Faculty / School"), { target: { value: v.faculty } });
     if (v.department) fireEvent.change(screen.getByLabelText("Department"), { target: { value: v.department } });
   };
@@ -232,13 +232,29 @@ describe("Signup page", () => {
     expect(fetchFn).not.toHaveBeenCalled();
   });
 
-  it("refuses passwords shorter than 6 characters without calling the server", () => {
+  it("shows which password rules are unmet, keeps Create Account off, and never calls the server for a weak password", () => {
     const fetchFn = mockFetch({ body: {} });
     render(<SignupPage />);
     fill({ password: "12345" });
-    expect(screen.getByText(/at least 6 characters/)).toBeTruthy();
+    expect(screen.getByText("At least 10 characters")).toBeTruthy();
+    expect((screen.getByRole("button", { name: "Create Account" }) as HTMLButtonElement).disabled).toBe(true);
     submit();
     expect(fetchFn).not.toHaveBeenCalled();
+  });
+
+  it("refuses a common password even when it is long enough", () => {
+    const fetchFn = mockFetch({ body: {} });
+    render(<SignupPage />);
+    fill({ password: "Password123!" });
+    expect((screen.getByRole("button", { name: "Create Account" }) as HTMLButtonElement).disabled).toBe(true);
+    submit();
+    expect(fetchFn).not.toHaveBeenCalled();
+  });
+
+  it("refuses a password that contains the person's own email name", () => {
+    render(<SignupPage />);
+    fill({ name: "Chukwuemeka Obi", email: "chukwuemeka@test.com", password: "chukwuemeka-is-47" });
+    expect((screen.getByRole("button", { name: "Create Account" }) as HTMLButtonElement).disabled).toBe(true);
   });
 
   it("sends the details (including the optional phone) and never a role", async () => {
@@ -249,7 +265,7 @@ describe("Signup page", () => {
     await waitFor(() => expect(fetchFn).toHaveBeenCalled());
     expect(fetchFn.mock.calls[0][0]).toBe("/api/auth/register");
     const body = lastBody(fetchFn);
-    expect(body).toMatchObject({ name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "secret12", faculty: ACADEMIC_STRUCTURE[0].name, department: ACADEMIC_STRUCTURE[0].departments[1] });
+    expect(body).toMatchObject({ name: "Ada Obi", email: "ada@test.com", phone: "0803 123 4567", password: "purple-giraffe-47", faculty: ACADEMIC_STRUCTURE[0].name, department: ACADEMIC_STRUCTURE[0].departments[1] });
     expect(body).not.toHaveProperty("role");
   });
 

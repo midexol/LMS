@@ -1,13 +1,13 @@
 "use client";
 
+import { PasswordRules, usePasswordCheck } from "@/components/auth/PasswordRules";
+import { BREACHED_MESSAGE } from "@/lib/passwordPolicy";
 import React, { useState } from "react";
 import Link from "next/link";
 import { PiEye, PiEyeSlash } from "react-icons/pi";
 
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { AuthShell, AuthError, authInputClass, authLabelClass, authButtonClass } from "@/components/auth/AuthShell";
-
-const MIN_PASSWORD = 8;
 
 export function InstructorJoinForm({ accessKey }: { accessKey: string }) {
   const [name, setName] = useState("");
@@ -20,7 +20,8 @@ export function InstructorJoinForm({ accessKey }: { accessKey: string }) {
   const [error, setError] = useState<string | null>(null);
 
   const departments = faculty ? getDepartmentsForFaculty(faculty) : [];
-  const ready = name.trim() && email && password.length >= MIN_PASSWORD && faculty && department;
+  const check = usePasswordCheck(password, { email, name });
+  const ready = name.trim() && email && check.ok && faculty && department;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +75,7 @@ export function InstructorJoinForm({ accessKey }: { accessKey: string }) {
                 type={showPassword ? "text" : "password"}
                 required
                 autoComplete="new-password"
-                placeholder={`At least ${MIN_PASSWORD} characters`}
+                placeholder="At least 10 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={`${authInputClass} pr-11`}
@@ -88,6 +89,7 @@ export function InstructorJoinForm({ accessKey }: { accessKey: string }) {
                 {showPassword ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
               </button>
             </div>
+            <PasswordRules password={password} check={check} />
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">

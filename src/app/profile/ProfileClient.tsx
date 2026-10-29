@@ -1,5 +1,7 @@
 "use client";
 
+import { PasswordRules, usePasswordCheck } from "@/components/auth/PasswordRules";
+import { BREACHED_MESSAGE } from "@/lib/passwordPolicy";
 import { TwoFactorCard } from "@/components/auth/TwoFactorCard";
 import React, { useState } from "react";
 import { formatDate, formatNgn } from "@/lib/utils";
@@ -39,6 +41,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const check = usePasswordCheck(password, { email: currentUser.email, name });
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -83,8 +86,8 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
     setErrorMsg(null);
     setSuccessMsg(false);
 
-    if (password && password.length < 6) {
-      setErrorMsg("New password must be at least 6 characters.");
+    if (password && !check.ok) {
+      setErrorMsg(check.breached ? BREACHED_MESSAGE : "Choose a new password that meets all the rules below the box.");
       return;
     }
 
@@ -511,10 +514,10 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Minimum 6 characters"
+                    placeholder="At least 10 characters"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    minLength={6}
+                    minLength={10}
                     className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all"
                   />
                   <button
@@ -525,6 +528,7 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
                     {showPassword ? <PiEyeSlash className="w-4 h-4" /> : <PiEye className="w-4 h-4" />}
                   </button>
                 </div>
+                <PasswordRules password={password} check={check} />
               </div>
 
               {password && (

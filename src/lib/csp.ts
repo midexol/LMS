@@ -21,7 +21,7 @@ export function buildContentSecurityPolicy(nonce: string, isDev = false): string
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style",
     "img-src 'self' blob: data: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self' https://api.paystack.co https://checkout.paystack.com https://generativelanguage.googleapis.com https://api.openai.com https://accounts.google.com/gsi/ https://*.supabase.co",
+    "connect-src 'self' https://api.paystack.co https://checkout.paystack.com https://generativelanguage.googleapis.com https://api.openai.com https://api.pwnedpasswords.com https://accounts.google.com/gsi/ https://*.supabase.co",
     "frame-src 'self' https://checkout.paystack.com https://www.youtube.com https://www.youtube-nocookie.com https://accounts.google.com/gsi/",
     "media-src 'self' blob: https://*.supabase.co",
     "object-src 'none'",

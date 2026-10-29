@@ -1,3 +1,4 @@
+import { checkNewPassword } from "@/lib/passwordCheck";
 import { getAppUrl, normalizePhone } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
@@ -42,15 +43,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Please enter a valid phone number, or leave it blank." }, { status: 400 });
     }
 
-    if (!password) {
-      return NextResponse.json({ error: "Password is required." }, { status: 400 });
-    }
-
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: "Password must be at least 6 characters long." },
-        { status: 400 }
-      );
+    const passwordIssue = await checkNewPassword(password, { email: trimmedEmail, name: trimmedName });
+    if (passwordIssue) {
+      return NextResponse.json({ error: passwordIssue }, { status: 400 });
     }
 
     const existingUser = await prisma.user.findUnique({

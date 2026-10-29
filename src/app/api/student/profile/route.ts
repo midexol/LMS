@@ -1,3 +1,4 @@
+import { checkNewPassword } from "@/lib/passwordCheck";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser, signSessionToken, SESSION_MAX_AGE_SECONDS, toPublicUser } from "@/lib/auth";
@@ -56,11 +57,9 @@ export async function POST(req: Request) {
 
     let passwordChanged = false;
     if (password && password.trim().length > 0) {
-      if (password.trim().length < 6) {
-        return NextResponse.json(
-          { error: "New password must be at least 6 characters long." },
-          { status: 400 }
-        );
+      const passwordIssue = await checkNewPassword(password.trim(), { email: currentUser.email, name: currentUser.name });
+      if (passwordIssue) {
+        return NextResponse.json({ error: passwordIssue }, { status: 400 });
       }
 
       // SECURITY: changing a password requires proving knowledge of the current one,

@@ -443,7 +443,7 @@ describe("POST /api/student/profile", () => {
       expect(prismaMock.user.update).not.toHaveBeenCalled();
     });
 
-    it("rejects a new password under 6 characters", async () => {
+    it("rejects a new password under 10 characters", async () => {
       const { status } = await call(updateProfile, "/api/student/profile", { body: { name: "A", password: "12345", currentPassword: "old-password" } });
       expect(status).toBe(400);
     });

@@ -11,6 +11,8 @@ import { prismaMock, resetPrismaMock, mailMock, resetMailMock, cookieJar, MAIL_F
 process.env.DATABASE_URL = "postgresql://test:test@127.0.0.1:1/test_never_connect";
 process.env.DIRECT_URL = process.env.DATABASE_URL;
 process.env.SESSION_SECRET = "test_session_secret_for_vitest_only";
+// the breach check calls an outside service; tests turn it off and test it separately with a fake
+process.env.DISABLE_PWNED_CHECK = "true";
 process.env.NEXT_PUBLIC_APP_URL = "https://lms.test";
 
 // Never let real keys from a developer's shell leak into tests.

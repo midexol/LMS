@@ -1,5 +1,7 @@
 "use client";
 
+import { PasswordRules, usePasswordCheck } from "@/components/auth/PasswordRules";
+import { BREACHED_MESSAGE } from "@/lib/passwordPolicy";
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -17,6 +19,7 @@ function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const check = usePasswordCheck(password);
 
   if (!token) {
     return (
@@ -44,8 +47,8 @@ function ResetPasswordForm() {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+    if (!check.ok) {
+      setError(check.breached ? BREACHED_MESSAGE : "Choose a password that meets all the rules below the box.");
       return;
     }
 
@@ -124,7 +127,7 @@ function ResetPasswordForm() {
               <input
                 type={showPw ? "text" : "password"}
                 required
-                placeholder="At least 6 characters"
+                placeholder="At least 10 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#F7F2F6] border border-rule text-sm text-black outline-none focus:border-[#4A1A45] transition-all placeholder:text-neutral-400"
@@ -139,6 +142,8 @@ function ResetPasswordForm() {
               </button>
             </div>
           </div>
+
+          <PasswordRules password={password} check={check} />
 
           <div className="space-y-1.5">
             <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 normal-case sm:uppercase tracking-normal sm:tracking-wider">
