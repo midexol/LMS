@@ -52,6 +52,13 @@ export async function POST(req: Request) {
 
     let user = await prisma.user.findUnique({ where: { email } });
 
+    if (user?.totpEnabled) {
+      return NextResponse.json(
+        { error: "This account uses two-step sign-in. Sign in with your email, password and code." },
+        { status: 403 }
+      );
+    }
+
     if (!user) {
       // Unusable random password: this account signs in with Google (or resets a password later)
       const hashedPassword = await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 12);

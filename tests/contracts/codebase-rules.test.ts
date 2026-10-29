@@ -33,6 +33,7 @@ const PUBLIC_ROUTES: Record<string, { why: string; protection: RegExp }> = {
   "auth/verify-email": { why: "using an emailed token", protection: /checkRateLimit/ },
   "auth/verify-email/resend": { why: "requesting a new verification email", protection: /checkRateLimit/ },
   "auth/instructor-signup": { why: "creating an instructor account from a private link, proven by a secret key", protection: /checkRateLimit/ },
+  "health": { why: "uptime monitors check that the app and its database are up; it reveals nothing about the data", protection: /checkRateLimit/ },
   "auth/google": { why: "Sign in with Google, proven by a Google-verified ID token", protection: /verifyIdToken/ },
   "contact": { why: "public contact form", protection: /checkRateLimit/ },
   "payment/quote": { why: "public read-only price breakdown for the checkout screen", protection: /checkRateLimit/ },

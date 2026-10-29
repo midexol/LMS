@@ -15,6 +15,8 @@ export default async function StudentProfilePage() {
 
 
 
+  const security = await prisma.user.findUnique({ where: { id: currentUser.id }, select: { totpEnabled: true } });
+
   const enrollments = await prisma.enrollment.findMany({
     where: { studentId: currentUser.id },
     include: { course: true },
@@ -39,6 +41,7 @@ export default async function StudentProfilePage() {
       enrollments={enrollments}
       submissions={submissions}
       payments={payments}
+      twoFactorEnabled={Boolean(security?.totpEnabled)}
     />
   );
 }

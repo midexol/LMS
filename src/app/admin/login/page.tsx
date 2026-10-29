@@ -1,5 +1,6 @@
 "use client";
 
+import { TwoStepField } from "@/components/auth/TwoStepField";
 import React, { useState } from "react";
 import Link from "next/link";
 import { PiEnvelopeSimple, PiLock, PiSignIn, PiWarningCircle } from "react-icons/pi";
@@ -10,6 +11,8 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [needsCode, setNeedsCode] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,10 +23,14 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, ...(needsCode ? { code } : {}) }),
       });
 
       const data = await res.json();
+      if (data.code === "TOTP_REQUIRED") {
+        setNeedsCode(true);
+        return;
+      }
       if (!res.ok) throw new Error(data.error || "Login failed.");
 
       if (data.user.role !== "ADMIN") {
@@ -98,6 +105,8 @@ export default function AdminLoginPage() {
                 />
               </div>
             </div>
+
+            <TwoStepField needsCode={needsCode} code={code} setCode={setCode} />
 
             <button
               type="submit"

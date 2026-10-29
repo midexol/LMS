@@ -28,6 +28,11 @@ model User {
   resetTokenExpiry DateTime?
   // Session tokens issued before this moment are rejected (set on password change/reset)
   sessionsValidAfter DateTime?
+  // Two-step sign-in (authenticator app)
+  totpSecret      String?            // encrypted shared secret; set at setup, used once enabled
+  totpEnabled     Boolean   @default(false)
+  totpLastStep    Int?               // last accepted 30-second step, so a code cannot be reused
+  totpBackupCodes String?            // JSON list of hashes of the unused backup codes
   createdAt        DateTime  @default(now())
 
   enrollments       Enrollment[]

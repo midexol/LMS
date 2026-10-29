@@ -1,5 +1,6 @@
 "use client";
 
+import { TwoFactorCard } from "@/components/auth/TwoFactorCard";
 import React, { useState } from "react";
 import { formatDate, formatNgn } from "@/lib/utils";
 import { Navbar } from "@/components/ui/Navbar";
@@ -13,6 +14,7 @@ interface ProfileClientProps {
   enrollments: any[];
   submissions: any[];
   payments?: any[];
+  twoFactorEnabled?: boolean;
 }
 
 /** The fee breakdown saved with a payment when it was started (older payments have none). */
@@ -26,7 +28,7 @@ function parseReceiptBreakdown(metadata?: string | null) {
   }
 }
 
-export function ProfileClient({ currentUser, enrollments, submissions, payments = [] }: ProfileClientProps) {
+export function ProfileClient({ currentUser, enrollments, submissions, payments = [], twoFactorEnabled = false }: ProfileClientProps) {
   const [name, setName] = useState(currentUser.name || "");
   const [phone, setPhone] = useState(currentUser.phone || "");
   const [faculty, setFaculty] = useState(currentUser.faculty || ACADEMIC_STRUCTURE[0].name);
@@ -572,6 +574,9 @@ export function ProfileClient({ currentUser, enrollments, submissions, payments 
             </button>
           </form>
         </div>
+
+        {/* TWO-STEP SIGN-IN (STAFF) */}
+        {["ADMIN", "SUPERADMIN", "TUTOR"].includes(currentUser.role) && <TwoFactorCard enabled={twoFactorEnabled} />}
       </main>
 
       {/* DROP COURSE CONFIRMATION MODAL */}

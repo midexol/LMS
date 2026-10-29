@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { signSessionToken, mustVerifyEmail, toPublicUser } from "@/lib/auth";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
+import { decryptSecret, useBackupCode, verifyTotp } from "@/lib/totp";
 
 export async function POST(req: Request) {
   try {
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { email, password } = await req.json();
+    const { email, password, code } = await req.json();
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
@@ -47,9 +48,35 @@ export async function POST(req: Request) {
       );
     }
 
+    // Two-step sign-in: the password alone is not enough for an account that has it switched on
+    const loginUpdate: Record<string, unknown> = { lastLoginAt: new Date() };
+    if (user.totpEnabled && user.totpSecret) {
+      const typed = typeof code === "string" ? code.trim() : "";
+      if (!typed) {
+        return NextResponse.json(
+          { error: "Enter the 6-digit code from your authenticator app.", code: "TOTP_REQUIRED" },
+          { status: 401 }
+        );
+      }
+      const codeLimit = await checkRateLimit(`2fa:${user.id}`, RATE_LIMIT_RULES.TWO_FACTOR);
+      if (!codeLimit.success) {
+        return rateLimitResponse(codeLimit, "Too many code attempts. Please wait a few minutes before trying again.");
+      }
+      const step = verifyTotp(decryptSecret(user.totpSecret), typed, user.totpLastStep);
+      if (step !== null) {
+        loginUpdate.totpLastStep = step;
+      } else {
+        const remaining = useBackupCode(user.totpBackupCodes, typed);
+        if (!remaining) {
+          return NextResponse.json({ error: "That code is not correct.", code: "TOTP_INVALID" }, { status: 401 });
+        }
+        loginUpdate.totpBackupCodes = JSON.stringify(remaining);
+      }
+    }
+
     await prisma.user.update({
       where: { id: user.id },
-      data: { lastLoginAt: new Date() },
+      data: loginUpdate,
     });
 
     const cookieStore = await cookies();
