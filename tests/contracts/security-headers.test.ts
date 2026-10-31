@@ -17,6 +17,13 @@ beforeAll(async () => {
 });
 
 describe("HTTP security headers", () => {
+  it("does not announce the framework (no X-Powered-By header)", async () => {
+    const config = (await import("../../next.config.mjs")).default;
+    expect(config.poweredByHeader).toBe(false);
+    expect(headers["X-Powered-By"]).toBeUndefined();
+    expect(headers["Server"]).toBeUndefined();
+  });
+
   it("blocks framing (clickjacking) in both the legacy and modern way", () => {
     expect(headers["X-Frame-Options"]).toBe("DENY");
     expect(csp["frame-ancestors"]).toEqual(["'none'"]);

@@ -35,6 +35,8 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
+  // Do not announce the framework: no "X-Powered-By: Next.js" header.
+  poweredByHeader: false,
   async headers() {
     return [
       {
