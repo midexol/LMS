@@ -3,7 +3,7 @@ import path from "path";
 import crypto from "crypto";
 import { getCurrentUser } from "@/lib/auth";
 import { checkRateLimit, rateLimitResponse, RATE_LIMIT_RULES } from "@/lib/rateLimit";
-import { getStorageAdmin, STORAGE_BUCKET, STORAGE_REF_PREFIX } from "@/lib/storage";
+import { createUploadUrl, STORAGE_REF_PREFIX } from "@/lib/storage";
 
 // Allowed MIME types and their extensions
 const ALLOWED: Record<string, string> = {
@@ -33,10 +33,10 @@ const MIME_ALIASES: Record<string, string> = {
 const MAX_SIZE = 100 * 1024 * 1024; // 100 MB
 
 /**
- * Issues a one-time signed upload URL. The browser uploads the file directly to Supabase Storage,
+ * Issues a one-time signed upload URL. The browser uploads the file directly to Cloudflare R2,
  * because serverless hosts cap request bodies (4.5 MB on Vercel) far below lesson video sizes.
- * The bucket's own size and MIME limits must mirror MAX_SIZE/ALLOWED, since the direct upload
- * bypasses this route. The bucket must be PRIVATE: paid lesson media is served only through
+ * The URL is signed for this exact content type and size, so MAX_SIZE/ALLOWED still hold even though the
+ * direct upload bypasses this route. The bucket must be PRIVATE (no public access): paid lesson media is served only through
  * short-lived signed links created for enrolled students (see resolveStorageUrl).
  */
 export async function POST(req: NextRequest) {
@@ -79,20 +79,15 @@ export async function POST(req: NextRequest) {
 
     const objectPath = `${currentUser.id}/${Date.now()}_${crypto.randomBytes(4).toString("hex")}_${safeBase}${ext}`;
 
-    const storage = getStorageAdmin().storage.from(STORAGE_BUCKET);
-    const { data, error } = await storage.createSignedUploadUrl(objectPath);
-    if (error || !data) {
-      throw error || new Error("Failed to create signed upload URL.");
-    }
+    const uploadUrl = await createUploadUrl(objectPath, canonicalType, fileSize);
 
     return NextResponse.json({
       success: true,
-      bucket: STORAGE_BUCKET,
-      path: data.path,
-      token: data.token,
+      uploadUrl,
+      path: objectPath,
       contentType: canonicalType,
       // Private reference stored on the lesson; students get a signed link when they open the course
-      url: `${STORAGE_REF_PREFIX}${data.path}`,
+      url: `${STORAGE_REF_PREFIX}${objectPath}`,
       name: fileName,
     });
   } catch (err: any) {

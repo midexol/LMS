@@ -13,15 +13,31 @@ vi.mock("nodemailer", () => ({
   },
 }));
 
-/* ───────── Storage: fake Supabase client ───────── */
-const supa = vi.hoisted(() => ({
-  signed: vi.fn(),
-  created: [] as any[],
+/* ───────── Storage: fake S3 client and URL signer (Cloudflare R2) ───────── */
+const r2 = vi.hoisted(() => ({
+  sign: vi.fn(),
+  clients: [] as any[],
+  commands: [] as { kind: string; input: any }[],
 }));
-vi.mock("@supabase/supabase-js", () => ({
-  createClient: (...args: any[]) => {
-    supa.created.push(args);
-    return { storage: { from: () => ({ createSignedUrl: supa.signed }) } };
+vi.mock("@aws-sdk/client-s3", () => ({
+  S3Client: class {
+    constructor(public config: any) {
+      r2.clients.push(config);
+    }
+  },
+  GetObjectCommand: class {
+    kind = "get";
+    constructor(public input: any) {}
+  },
+  PutObjectCommand: class {
+    kind = "put";
+    constructor(public input: any) {}
+  },
+}));
+vi.mock("@aws-sdk/s3-request-presigner", () => ({
+  getSignedUrl: (_client: any, command: any, options: any) => {
+    r2.commands.push({ kind: command.kind, input: command.input });
+    return r2.sign(command, options);
   },
 }));
 
@@ -39,8 +55,6 @@ async function realMail(withSmtp = true) {
 beforeEach(() => {
   smtp.sent = [];
   smtp.fail = false;
-  supa.signed.mockReset();
-  supa.created = [];
 });
 
 describe("email sending", () => {
@@ -181,15 +195,22 @@ describe("email sending", () => {
 describe("private lesson media (storage)", () => {
   async function storage() {
     vi.resetModules();
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://proj.supabase.co");
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-key");
+    vi.stubEnv("R2_ACCOUNT_ID", "acct123");
+    vi.stubEnv("R2_ACCESS_KEY_ID", "key-id");
+    vi.stubEnv("R2_SECRET_ACCESS_KEY", "secret-key");
     return import("@/lib/storage");
   }
+
+  beforeEach(() => {
+    r2.sign.mockReset();
+    r2.clients.length = 0;
+    r2.commands.length = 0;
+  });
 
   it("passes ordinary links (YouTube embeds) through unchanged", async () => {
     const { resolveStorageUrl } = await storage();
     expect(await resolveStorageUrl("https://www.youtube.com/embed/abc")).toBe("https://www.youtube.com/embed/abc");
-    expect(supa.signed).not.toHaveBeenCalled();
+    expect(r2.sign).not.toHaveBeenCalled();
   });
 
   it("returns an empty string for empty values", async () => {
@@ -201,29 +222,52 @@ describe("private lesson media (storage)", () => {
 
   it("turns a storage: reference into a short-lived signed URL (2 hours)", async () => {
     const { resolveStorageUrl } = await storage();
-    supa.signed.mockResolvedValue({ data: { signedUrl: "https://proj.supabase.co/signed/abc?token=t" }, error: null });
-    expect(await resolveStorageUrl("storage:tutor_1/123_video.mp4")).toBe("https://proj.supabase.co/signed/abc?token=t");
-    expect(supa.signed).toHaveBeenCalledWith("tutor_1/123_video.mp4", 7200);
+    r2.sign.mockResolvedValue("https://acct123.r2.cloudflarestorage.com/course-uploads/abc?X-Amz-Signature=s");
+    expect(await resolveStorageUrl("storage:tutor_1/123_video.mp4")).toBe("https://acct123.r2.cloudflarestorage.com/course-uploads/abc?X-Amz-Signature=s");
+    expect(r2.commands[0]).toEqual({ kind: "get", input: { Bucket: "course-uploads", Key: "tutor_1/123_video.mp4" } });
+    expect(r2.sign.mock.calls[0][1]).toEqual({ expiresIn: 7200 });
   });
 
   it("returns an empty string (never a broken or public link) when signing fails", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const { resolveStorageUrl } = await storage();
-    supa.signed.mockResolvedValue({ data: null, error: { message: "Object not found" } });
+    r2.sign.mockRejectedValue(new Error("Object not found"));
     expect(await resolveStorageUrl("storage:missing.mp4")).toBe("");
   });
 
-  it("uses the service-role key only on the server client", async () => {
-    const { getStorageAdmin } = await storage();
-    getStorageAdmin();
-    expect(supa.created[0][0]).toBe("https://proj.supabase.co");
-    expect(supa.created[0][1]).toBe("service-key");
+  it("returns an empty string for a stored file when storage is not configured", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.resetModules();
+    const { resolveStorageUrl } = await import("@/lib/storage");
+    expect(await resolveStorageUrl("storage:a.mp4")).toBe("");
+    expect(r2.sign).not.toHaveBeenCalled();
   });
 
-  it("errors clearly when Supabase is not configured", async () => {
+  it("signs an upload link for exactly one object, type and size, valid for 10 minutes", async () => {
+    const { createUploadUrl } = await storage();
+    r2.sign.mockResolvedValue("https://acct123.r2.cloudflarestorage.com/course-uploads/t/1.mp4?X-Amz-Signature=s");
+    expect(await createUploadUrl("t/1.mp4", "video/mp4", 2048)).toContain("X-Amz-Signature");
+    expect(r2.commands[0]).toEqual({ kind: "put", input: { Bucket: "course-uploads", Key: "t/1.mp4", ContentType: "video/mp4", ContentLength: 2048 } });
+    expect(r2.sign.mock.calls[0][1]).toEqual({ expiresIn: 600, signableHeaders: new Set(["content-type"]) });
+  });
+
+  it("connects to the account's R2 endpoint with the server keys and no extra checksum headers", async () => {
+    const { createUploadUrl } = await storage();
+    r2.sign.mockResolvedValue("https://x");
+    await createUploadUrl("t/1.pdf", "application/pdf", 10);
+    expect(r2.clients[0]).toMatchObject({
+      region: "auto",
+      endpoint: "https://acct123.r2.cloudflarestorage.com",
+      credentials: { accessKeyId: "key-id", secretAccessKey: "secret-key" },
+      requestChecksumCalculation: "WHEN_REQUIRED",
+      forcePathStyle: true,
+    });
+  });
+
+  it("errors clearly when file storage is not configured", async () => {
     vi.resetModules();
-    const { getStorageAdmin } = await import("@/lib/storage");
-    expect(() => getStorageAdmin()).toThrow(/not configured/i);
+    const { createUploadUrl } = await import("@/lib/storage");
+    await expect(createUploadUrl("t/1.pdf", "application/pdf", 10)).rejects.toThrow(/not configured/i);
   });
 });
 

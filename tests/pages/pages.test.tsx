@@ -19,8 +19,6 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("@/lib/storage", () => ({
   resolveStorageUrl: vi.fn(async (v: string | null | undefined) => (v?.startsWith("storage:") ? `https://signed.test/${v.slice(8)}?t=1` : v ?? "")),
-  getStorageAdmin: vi.fn(),
-  STORAGE_BUCKET: "course-uploads",
   STORAGE_REF_PREFIX: "storage:",
 }));
 

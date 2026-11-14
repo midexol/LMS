@@ -9,11 +9,6 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/instructor",
 }));
 
-const storage = vi.hoisted(() => ({ uploadToSignedUrl: vi.fn() }));
-vi.mock("@/lib/storageClient", () => ({
-  getBrowserStorage: () => ({ storage: { from: () => ({ uploadToSignedUrl: storage.uploadToSignedUrl }) } }),
-}));
-
 import { TutorSubmissionsReviewer } from "@/components/tutor/TutorSubmissionsReviewer";
 import { AnnouncementManager } from "@/components/tutor/AnnouncementManager";
 import { InstructorClient } from "@/app/instructor/InstructorClient";
@@ -37,7 +32,6 @@ const sent = (fn: { mock: { calls: any[][] } }, i = -1) => {
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  storage.uploadToSignedUrl.mockReset();
 });
 afterEach(() => cleanup());
 
@@ -402,9 +396,11 @@ describe("CourseBuilderWizard", () => {
       fireEvent.change(input, { target: { files: [file] } });
     };
 
+    const UPLOAD_URL = "https://acct.r2.cloudflarestorage.com/course-uploads/tut_1/123_lecture.mp4?X-Amz-Signature=sig";
+    const ticket = { success: true, uploadUrl: UPLOAD_URL, path: "tut_1/123_lecture.mp4", contentType: "video/mp4", url: "storage:tut_1/123_lecture.mp4", name: "lecture.mp4" };
+
     it("uploads a lesson video straight to storage and keeps only the private reference", async () => {
-      const fetchFn = mockFetch({ body: { success: true, bucket: "course-uploads", path: "tut_1/123_lecture.mp4", token: "tok", contentType: "video/mp4", url: "storage:tut_1/123_lecture.mp4", name: "lecture.mp4" } });
-      storage.uploadToSignedUrl.mockResolvedValue({ data: {}, error: null });
+      const fetchFn = mockFetch({ body: ticket }, { body: {} });
       render(<CourseBuilderWizard />);
       fillStep1();
       next();
@@ -413,32 +409,47 @@ describe("CourseBuilderWizard", () => {
       const videoInput = document.querySelector('input[type="file"][accept*="video"]') as HTMLInputElement;
       fireEvent.change(videoInput, { target: { files: [video] } });
 
-      await waitFor(() => expect(storage.uploadToSignedUrl).toHaveBeenCalled());
-      expect(sent(fetchFn)).toEqual({ url: "/api/tutor/upload", method: "POST", body: { fileName: "lecture.mp4", fileType: "video/mp4", fileSize: 1 } });
-      expect(storage.uploadToSignedUrl).toHaveBeenCalledWith("tut_1/123_lecture.mp4", "tok", video, { contentType: "video/mp4" });
+      await waitFor(() => expect(fetchFn).toHaveBeenCalledTimes(2));
+      expect(sent(fetchFn, 0)).toEqual({ url: "/api/tutor/upload", method: "POST", body: { fileName: "lecture.mp4", fileType: "video/mp4", fileSize: 1 } });
+      const [putUrl, putInit] = fetchFn.mock.calls[1] as [string, RequestInit];
+      expect(putUrl).toBe(UPLOAD_URL);
+      expect(putInit.method).toBe("PUT");
+      expect(putInit.headers).toEqual({ "Content-Type": "video/mp4" });
+      expect(putInit.body).toBe(video);
       await waitFor(() => expect(screen.getByDisplayValue("storage:tut_1/123_lecture.mp4")).toBeTruthy());
     });
 
     it("shows the server's reason when a file type is refused, and uploads nothing", async () => {
-      mockFetch({ ok: false, status: 415, body: { error: 'File type "application/x-msdownload" is not allowed.' } });
+      const fetchFn = mockFetch({ ok: false, status: 415, body: { error: 'File type "application/x-msdownload" is not allowed.' } });
       render(<CourseBuilderWizard />);
       fillStep1();
       next();
       const input = document.querySelector('input[type="file"][accept*="video"]') as HTMLInputElement;
       fireEvent.change(input, { target: { files: [new File(["x"], "virus.exe", { type: "application/x-msdownload" })] } });
       expect(await screen.findByText(/is not allowed/)).toBeTruthy();
-      expect(storage.uploadToSignedUrl).not.toHaveBeenCalled();
+      expect(fetchFn).toHaveBeenCalledTimes(1); // only the ticket request; nothing was sent to storage
     });
 
-    it("reports a failed upload to storage", async () => {
-      mockFetch({ body: { success: true, bucket: "b", path: "p", token: "t", contentType: "video/mp4", url: "storage:p", name: "v.mp4" } });
-      storage.uploadToSignedUrl.mockResolvedValue({ data: null, error: { message: "The object exceeded the maximum allowed size" } });
+    it("reports a refused upload to storage", async () => {
+      mockFetch({ body: ticket }, { ok: false, status: 403, body: {} });
       render(<CourseBuilderWizard />);
       fillStep1();
       next();
-      const input = document.querySelector('input[type="file"][accept*="video"]') as HTMLInputElement;
-      fireEvent.change(input, { target: { files: [new File(["x"], "v.mp4", { type: "video/mp4" })] } });
-      expect(await screen.findByText(/exceeded the maximum allowed size/)).toBeTruthy();
+      pick("video", new File(["x"], "v.mp4", { type: "video/mp4" }));
+      expect(await screen.findByText(/storage error 403/)).toBeTruthy();
+    });
+
+    it("explains a blocked storage request (missing CORS rule) instead of showing 'Failed to fetch'", async () => {
+      const fn = mockFetch({ body: ticket });
+      fn.mockImplementationOnce(async () => ({ ok: true, status: 200, json: async () => ticket }) as Response);
+      fn.mockImplementationOnce(async () => {
+        throw new TypeError("Failed to fetch");
+      });
+      render(<CourseBuilderWizard />);
+      fillStep1();
+      next();
+      pick("video", new File(["x"], "v.mp4", { type: "video/mp4" }));
+      expect(await screen.findByText(/CORS/)).toBeTruthy();
     });
   });
 });

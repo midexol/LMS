@@ -5,7 +5,6 @@ import React, { useState, useRef } from "react";
 import { PiSpinner, PiTrash, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
 import { formatNgn } from "@/lib/utils";
-import { getBrowserStorage } from "@/lib/storageClient";
 
 
 
@@ -65,12 +64,21 @@ function useFileUpload() {
         return null;
       }
 
-      // 2. Upload straight to Supabase Storage, bypassing the serverless body size limit
-      const { error: uploadError } = await getBrowserStorage()
-        .storage.from(data.bucket)
-        .uploadToSignedUrl(data.path, data.token, file, { contentType: data.contentType });
-      if (uploadError) {
-        setError(uploadError.message || "Upload failed.");
+      // 2. Send the file straight to storage, bypassing the serverless body size limit
+      let put: Response;
+      try {
+        put = await fetch(data.uploadUrl, {
+          method: "PUT",
+          headers: { "Content-Type": data.contentType },
+          body: file,
+        });
+      } catch {
+        // the browser blocked or could not reach storage (usually the bucket's CORS rule is missing)
+        setError("Could not reach file storage. Check your connection and the storage bucket's CORS settings.");
+        return null;
+      }
+      if (!put.ok) {
+        setError(`Upload failed (storage error ${put.status}).`);
         return null;
       }
 

@@ -84,14 +84,18 @@ describe("Content-Security-Policy", () => {
     expect(csp["style-src"]).toContain("https://accounts.google.com/gsi/style");
   });
 
-  it("no longer lists Privy, WalletConnect or Cloudflare hosts", () => {
+  it("no longer lists Privy or WalletConnect hosts", () => {
     const all = Object.values(csp).flat().join(" ");
-    expect(all).not.toMatch(/privy|walletconnect|cloudflare|walletlink/i);
+    expect(all).not.toMatch(/privy|walletconnect|walletlink/i);
   });
 
-  it("allows Supabase for direct uploads and lesson video playback", () => {
-    expect(csp["connect-src"]).toContain("https://*.supabase.co");
-    expect(csp["media-src"]).toContain("https://*.supabase.co");
+  it("allows Cloudflare R2 for direct uploads and lesson video playback", () => {
+    expect(csp["connect-src"]).toContain("https://*.r2.cloudflarestorage.com");
+    expect(csp["media-src"]).toContain("https://*.r2.cloudflarestorage.com");
+  });
+
+  it("no longer allows Supabase", () => {
+    expect(Object.values(csp).flat().join(" ")).not.toMatch(/supabase/i);
   });
 
   it("allows YouTube embeds for lesson videos", () => {

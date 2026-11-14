@@ -10,7 +10,7 @@ describe("test harness safety", () => {
   });
 
   it("has no real third-party keys loaded", () => {
-    for (const key of ["GEMINI_API_KEY", "OPENAI_API_KEY", "PAYSTACK_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY"]) {
+    for (const key of ["GEMINI_API_KEY", "OPENAI_API_KEY", "PAYSTACK_SECRET_KEY", "R2_SECRET_ACCESS_KEY"]) {
       expect(process.env[key], key).toBeUndefined();
     }
   });

@@ -7,18 +7,10 @@ vi.mock("@/lib/ai/assistant", () => ({
   generateAssignmentRubricAI: vi.fn(),
 }));
 
-const storage = vi.hoisted(() => ({ createSignedUploadUrl: vi.fn(), bucketUsed: "" }));
+const storage = vi.hoisted(() => ({ createUploadUrl: vi.fn() }));
 vi.mock("@/lib/storage", () => ({
-  STORAGE_BUCKET: "course-uploads",
   STORAGE_REF_PREFIX: "storage:",
-  getStorageAdmin: () => ({
-    storage: {
-      from: (bucket: string) => {
-        storage.bucketUsed = bucket;
-        return { createSignedUploadUrl: storage.createSignedUploadUrl };
-      },
-    },
-  }),
+  createUploadUrl: storage.createUploadUrl,
 }));
 
 import { generateCourseOutlineAI, generateAssignmentRubricAI } from "@/lib/ai/assistant";
@@ -516,8 +508,8 @@ describe("POST /api/tutor/upload (signed upload URLs)", () => {
   const ok = { fileName: "Lecture 1.mp4", fileType: "video/mp4", fileSize: 20 * MB };
 
   beforeEach(() => {
-    storage.createSignedUploadUrl.mockReset();
-    storage.createSignedUploadUrl.mockImplementation(async (path: string) => ({ data: { path, token: "tok_123" }, error: null }));
+    storage.createUploadUrl.mockReset();
+    storage.createUploadUrl.mockImplementation(async (path: string) => `https://acct.r2.cloudflarestorage.com/course-uploads/${path}?X-Amz-Signature=sig`);
   });
 
   it("is for tutors and admins only", async () => {
@@ -525,18 +517,19 @@ describe("POST /api/tutor/upload (signed upload URLs)", () => {
     expect((await req(ok)).status).toBe(403);
     loginAs("STUDENT");
     expect((await req(ok)).status).toBe(403);
-    expect(storage.createSignedUploadUrl).not.toHaveBeenCalled();
+    expect(storage.createUploadUrl).not.toHaveBeenCalled();
   });
 
   it("returns a one-time signed upload ticket and a PRIVATE storage reference (never a public URL)", async () => {
     const tutor = loginAs("TUTOR")!;
     const { status, body } = await req(ok);
     expect(status).toBe(200);
-    expect(body).toMatchObject({ success: true, bucket: "course-uploads", token: "tok_123", contentType: "video/mp4", name: "Lecture 1.mp4" });
+    expect(body).toMatchObject({ success: true, contentType: "video/mp4", name: "Lecture 1.mp4" });
+    expect(body.uploadUrl).toContain("r2.cloudflarestorage.com");
     expect(body.url).toBe(`storage:${body.path}`);
     expect(body.url).not.toMatch(/^https?:/);
     expect(body.path.startsWith(`${tutor.id}/`)).toBe(true);
-    expect(storage.bucketUsed).toBe("course-uploads");
+    expect(storage.createUploadUrl).toHaveBeenCalledWith(body.path, "video/mp4", 20 * MB);
   });
 
   it("rejects files over 100 MB and non-numeric sizes", async () => {
@@ -556,7 +549,7 @@ describe("POST /api/tutor/upload (signed upload URLs)", () => {
   ])("rejects dangerous or unknown file type %j", async (fileType) => {
     loginAs("TUTOR");
     expect((await req({ ...ok, fileType })).status).toBe(415);
-    expect(storage.createSignedUploadUrl).not.toHaveBeenCalled();
+    expect(storage.createUploadUrl).not.toHaveBeenCalled();
   });
 
   it("accepts the type Windows browsers report for .zip files and stores it as application/zip", async () => {
@@ -622,10 +615,10 @@ describe("POST /api/tutor/upload (signed upload URLs)", () => {
 
   it("returns a generic error when storage fails", async () => {
     loginAs("TUTOR");
-    storage.createSignedUploadUrl.mockResolvedValue({ data: null, error: new Error("bucket course-uploads missing at supabase.co") });
+    storage.createUploadUrl.mockRejectedValue(new Error("bucket course-uploads missing at r2.cloudflarestorage.com"));
     const { status, body } = await req(ok);
     expect(status).toBe(500);
-    expect(JSON.stringify(body)).not.toContain("supabase");
+    expect(JSON.stringify(body)).not.toContain("cloudflare");
   });
 
   it("limits ticket requests per user (30 per 10 minutes)", async () => {

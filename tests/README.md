@@ -16,7 +16,7 @@ Run `npm test` before every push.
 
 - The normal suite **never touches your database**. Prisma is replaced by an in-memory fake (`tests/helpers/mocks.ts`),
   and `DATABASE_URL` is set to an unusable address. `tests/lib/safety-and-utils.test.ts` fails if that ever changes.
-- No real API keys are loaded. Paystack, Google sign-in, Supabase, SMTP and AI calls are all faked.
+- No real API keys are loaded. Paystack, Google sign-in, Cloudflare R2, SMTP and AI calls are all faked.
 - Only `npm run test:live` uses real credentials, and it uses no database.
 
 ## What is covered
@@ -39,5 +39,5 @@ Run `npm test` before every push.
 ## Known limits
 
 - These tests use a fake database, so they cannot catch a wrong Prisma query shape or a missing column. Try new database-touching features once against a real database.
-- Real Paystack, Google sign-in, Supabase uploads and email delivery are not exercised.
+- Real Paystack, Google sign-in, Cloudflare R2 uploads and email delivery are not exercised.
 - The tests run in a simulated browser; they do not check how pages look, or real mobile behaviour.

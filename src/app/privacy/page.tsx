@@ -48,7 +48,8 @@ const sections: LegalSection[] = [
       "We do not sell your personal data and we do not use it for advertising. We share it only with the service providers that help us run Academia, and only for that purpose:",
     ],
     bullets: [
-      "Supabase: our database and private file storage.",
+      "Neon: our database.",
+      "Cloudflare: private storage for uploaded course files.",
       "Vercel: hosting of the website and its server functions.",
       "Paystack: payment processing.",
       "Google: \"Continue with Google\" sign-in.",
