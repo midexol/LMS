@@ -559,6 +559,14 @@ describe("POST /api/tutor/upload (signed upload URLs)", () => {
     expect(storage.createSignedUploadUrl).not.toHaveBeenCalled();
   });
 
+  it("accepts the type Windows browsers report for .zip files and stores it as application/zip", async () => {
+    loginAs("TUTOR");
+    const { status, body } = await req({ fileName: "notes.zip", fileType: "application/x-zip-compressed", fileSize: 5 * MB });
+    expect(status).toBe(200);
+    expect(body.contentType).toBe("application/zip");
+    expect(body.path.endsWith(".zip")).toBe(true);
+  });
+
   it.each([
     ["application/pdf", ".pdf"],
     ["video/mp4", ".mp4"],

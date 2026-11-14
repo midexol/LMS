@@ -22,6 +22,14 @@ const ALLOWED: Record<string, string> = {
   "text/plain":            ".txt",
 };
 
+// Some browsers report a different MIME type for the same file (Windows reports .zip files as
+// application/x-zip-compressed). Map those onto the allowed type so the upload is not refused,
+// and so the storage bucket's own MIME allow-list sees the canonical type.
+const MIME_ALIASES: Record<string, string> = {
+  "application/x-zip-compressed": "application/zip",
+  "application/x-zip": "application/zip",
+};
+
 const MAX_SIZE = 100 * 1024 * 1024; // 100 MB
 
 /**
@@ -53,7 +61,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File exceeds 100 MB limit." }, { status: 413 });
     }
 
-    const ext = ALLOWED[fileType];
+    const canonicalType = typeof fileType === "string" ? (MIME_ALIASES[fileType] ?? fileType) : "";
+    const ext = ALLOWED[canonicalType];
     if (!ext) {
       return NextResponse.json(
         { error: `File type "${fileType}" is not allowed.` },
@@ -81,7 +90,7 @@ export async function POST(req: NextRequest) {
       bucket: STORAGE_BUCKET,
       path: data.path,
       token: data.token,
-      contentType: fileType,
+      contentType: canonicalType,
       // Private reference stored on the lesson; students get a signed link when they open the course
       url: `${STORAGE_REF_PREFIX}${data.path}`,
       name: fileName,
