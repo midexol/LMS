@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { sendCourseUpdateEmail } from "@/lib/mail";
-import { lessonLinksAreSafe, LESSON_LINK_ERROR } from "@/lib/safeUrl";
+import { lessonLinksAreSafe, withEmbeddableVideos, LESSON_LINK_ERROR } from "@/lib/safeUrl";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +11,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Only tutors can create courses." }, { status: 403 });
     }
 
-    const { title, category, faculty, department, level, price, description, coverImage, modules } = await req.json();
+    const { title, category, faculty, department, level, price, description, coverImage, modules: rawModules } = await req.json();
+    // A pasted YouTube watch/share link becomes its embeddable form so the video actually plays in the lesson
+    const modules = withEmbeddableVideos(rawModules);
 
     if (!title?.trim() || !description?.trim()) {
       return NextResponse.json({ error: "Title and description are required." }, { status: 400 });
@@ -86,7 +88,9 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Unauthorized access." }, { status: 403 });
     }
 
-    const { courseId, title, category, faculty, department, level, price, description, coverImage, modules } = await req.json();
+    const { courseId, title, category, faculty, department, level, price, description, coverImage, modules: rawModules } = await req.json();
+    // A pasted YouTube watch/share link becomes its embeddable form so the video actually plays in the lesson
+    const modules = withEmbeddableVideos(rawModules);
 
     if (!courseId) {
       return NextResponse.json({ error: "Course ID is required." }, { status: 400 });

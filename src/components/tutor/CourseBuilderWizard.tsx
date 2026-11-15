@@ -1,6 +1,6 @@
 "use client";
 
-import { isSafeRenderUrl } from "@/lib/safeUrl";
+import { isSafeRenderUrl, toYouTubeEmbedUrl } from "@/lib/safeUrl";
 import React, { useState, useRef } from "react";
 import { PiSpinner, PiTrash, PiX } from "react-icons/pi";
 import { ACADEMIC_STRUCTURE, getDepartmentsForFaculty } from "@/lib/academicStructure";
@@ -48,7 +48,7 @@ function useFileUpload() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const upload = async (file: File): Promise<{ url: string; name: string } | null> => {
+  const upload = async (file: File, purpose?: "cover"): Promise<{ url: string; name: string } | null> => {
     setUploading(true);
     setError(null);
     try {
@@ -56,7 +56,7 @@ function useFileUpload() {
       const res = await fetch("/api/tutor/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, fileType: file.type, fileSize: file.size }),
+        body: JSON.stringify({ fileName: file.name, fileType: file.type, fileSize: file.size, ...(purpose ? { purpose } : {}) }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
@@ -506,7 +506,7 @@ export function CourseBuilderWizard({ initialCourse, onClose, onSuccess }: Cours
                     uploading={coverUpload.uploading}
                     label="Upload"
                     onPicked={async (file) => {
-                      const result = await coverUpload.upload(file);
+                      const result = await coverUpload.upload(file, "cover");
                       if (result) setCoverImage(result.url);
                     }}
                   />
@@ -836,14 +836,19 @@ function LessonRow({
       <div>
         <label className="block text-xs sm:text-[11px] font-bold text-neutral-600 mb-1 flex items-center gap-1">
           Video
-          <span className="text-neutral-400 font-normal normal-case">(YouTube embed, MP4 URL, or upload)</span>
+          <span className="text-neutral-400 font-normal normal-case">(paste a YouTube link, or upload a video file)</span>
         </label>
         <div className="flex items-center gap-2 min-w-0">
           <input
             type="url"
-            placeholder="https://www.youtube.com/embed/... or upload a video file"
+            placeholder="Paste a YouTube link, e.g. https://www.youtube.com/watch?v=..."
             value={lesson.videoUrl}
             onChange={(e) => onUpdate("videoUrl", e.target.value)}
+            // a normal YouTube link (watch, youtu.be, Shorts) is converted to the form that can play inside the lesson
+            onBlur={() => {
+              const embed = toYouTubeEmbedUrl(lesson.videoUrl);
+              if (embed !== lesson.videoUrl) onUpdate("videoUrl", embed);
+            }}
             className="w-full min-w-0 flex-1 px-3 py-2 rounded-lg bg-white border border-rule text-xs text-black outline-none focus:border-[#4A1A45] focus:ring-1 focus:ring-[#4A1A45] transition-all"
           />
           <div className="shrink-0">
@@ -859,6 +864,9 @@ function LessonRow({
           </div>
         </div>
         {videoUpload.error && <p className="text-xs sm:text-[11px] text-red-600 mt-1">{videoUpload.error}</p>}
+        {lesson.videoUrl.startsWith("storage:") && (
+          <p className="text-xs sm:text-[11px] text-neutral-500 mt-1">Video file uploaded. Clear the box above to use a YouTube link instead.</p>
+        )}
       </div>
 
       {/* Resource / file attachment */}
@@ -922,10 +930,15 @@ function LessonRow({
 
       {/* Assignment (optional) */}
       <div className="p-4 rounded-xl bg-[#F7F2F6] border border-rule space-y-3">
-        <span className="text-xs sm:text-[11px] font-bold text-[#4A1A45] flex items-center gap-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">
-          Assignment
-          <span className="text-neutral-400 font-normal normal-case ml-1">(optional)</span>
-        </span>
+        <div>
+          <span className="text-xs sm:text-[11px] font-bold text-[#4A1A45] flex items-center gap-1 normal-case sm:uppercase tracking-normal sm:tracking-wider">
+            Assignment question
+            <span className="text-neutral-400 font-normal normal-case ml-1">(optional)</span>
+          </span>
+          <p className="text-xs sm:text-[11px] text-neutral-500 mt-0.5">
+            The question or task students answer after this lesson. Leave it empty if this lesson has no assignment.
+          </p>
+        </div>
         <input
           type="text"
           placeholder="e.g. Explain the core concepts covered in this lesson..."
@@ -934,22 +947,27 @@ function LessonRow({
           className={smallInputCls}
         />
         <div>
-          <div className="flex justify-between items-center mb-1">
+          <div className="flex justify-between items-center mb-1 gap-2">
             <label className="text-xs sm:text-[11px] font-bold text-neutral-700 normal-case sm:uppercase tracking-normal sm:tracking-wider">
-              Model Answer / Grading Rubric
+              Correct answer and marking guide
             </label>
             <button
               type="button"
               onClick={onGenerateRubric}
               disabled={!lesson.assignmentPrompt.trim()}
+              title={lesson.assignmentPrompt.trim() ? "Let the AI draft the answer and marking guide for you" : "Type the assignment question first"}
               className="text-xs sm:text-[10px] px-2 py-0.5 rounded bg-[#4A1A45] text-white font-bold flex items-center gap-1 disabled:opacity-50"
             >
-              Auto-Generate
+              Write it for me
             </button>
           </div>
+          <p className="text-xs sm:text-[11px] text-neutral-500 mb-1.5">
+            Paste the answer you would expect from a top student, or list the points that earn marks. Each student&apos;s
+            submission is compared with this to give a score and feedback, so the more detail you add, the fairer the grading.
+          </p>
           <textarea
-            rows={2}
-            placeholder="Benchmark answers and grading criteria for automated assessment..."
+            rows={3}
+            placeholder="e.g. A full-mark answer defines the term, gives two examples and explains why it matters. 2 marks for the definition, 2 for each example, 4 for the explanation."
             value={lesson.assignmentReferenceAnswer}
             onChange={(e) => onUpdate("assignmentReferenceAnswer", e.target.value)}
             className={smallInputCls}

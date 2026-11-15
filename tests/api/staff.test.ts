@@ -257,6 +257,14 @@ describe("/api/tutor/courses", () => {
       expect(prismaMock.course.create).not.toHaveBeenCalled();
     });
 
+    it("turns a pasted YouTube watch or share link into the embed link before saving", async () => {
+      loginAs("TUTOR");
+      const pasted = [{ title: "M", lessons: [{ title: "A", videoUrl: "https://youtu.be/dQw4w9WgXcQ" }, { title: "B", videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }] }];
+      expect((await create({ ...valid, modules: pasted })).status).toBe(200);
+      const lessons = prismaMock.course.create.mock.calls[0][0].data.modules.create[0].lessons.create;
+      expect(lessons.map((l: any) => l.videoUrl)).toEqual(["https://www.youtube.com/embed/dQw4w9WgXcQ", "https://www.youtube.com/embed/dQw4w9WgXcQ"]);
+    });
+
     it("creates the course owned by the signed-in tutor, with ordered modules and lessons", async () => {
       const tutor = loginAs("TUTOR")!;
       const { status } = await create(valid);
@@ -550,6 +558,28 @@ describe("POST /api/tutor/upload (signed upload URLs)", () => {
     loginAs("TUTOR");
     expect((await req({ ...ok, fileType })).status).toBe(415);
     expect(storage.createUploadUrl).not.toHaveBeenCalled();
+  });
+
+  it("stores a cover image under covers/ and returns a public /api/cover link", async () => {
+    loginAs("TUTOR");
+    const { status, body } = await req({ fileName: "Cover Photo.png", fileType: "image/png", fileSize: 2 * MB, purpose: "cover" });
+    expect(status).toBe(200);
+    expect(body.path).toMatch(/^covers\/[^/]+\/\d+_[0-9a-f]{8}_Cover_Photo\.png$/);
+    expect(body.url).toBe(`/api/cover?key=${encodeURIComponent(body.path)}`);
+  });
+
+  it("refuses a cover that is not an image, or is over 5 MB", async () => {
+    loginAs("TUTOR");
+    expect((await req({ fileName: "a.pdf", fileType: "application/pdf", fileSize: 1000, purpose: "cover" })).status).toBe(415);
+    expect((await req({ fileName: "a.png", fileType: "image/png", fileSize: 6 * MB, purpose: "cover" })).status).toBe(413);
+    expect(storage.createUploadUrl).not.toHaveBeenCalled();
+  });
+
+  it("keeps ordinary uploads private even when they are images", async () => {
+    loginAs("TUTOR");
+    const { body } = await req({ fileName: "diagram.png", fileType: "image/png", fileSize: 1000 });
+    expect(body.url).toBe(`storage:${body.path}`);
+    expect(body.path.startsWith("covers/")).toBe(false);
   });
 
   it("accepts the type Windows browsers report for .zip files and stores it as application/zip", async () => {

@@ -277,7 +277,7 @@ export function InstructorClient({
                       onClick={() => setActiveTab("classes")}
                       className="px-5 py-2.5 rounded-md bg-white text-[#4A1A45] hover:bg-[#F7F2F6] font-bold text-xs transition-all flex items-center gap-1.5"
                     >
-                      Create assignment
+                      Create course
                     </button>
                     <button
                       onClick={() => setActiveTab("submissions")}

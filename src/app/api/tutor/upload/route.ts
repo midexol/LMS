@@ -31,6 +31,10 @@ const MIME_ALIASES: Record<string, string> = {
 };
 
 const MAX_SIZE = 100 * 1024 * 1024; // 100 MB
+// Course cover pictures are shown to everyone on the catalog, so they are images only, kept small, and stored
+// under covers/ (the only folder /api/cover will hand out).
+const COVER_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const MAX_COVER_SIZE = 5 * 1024 * 1024; // 5 MB
 
 /**
  * Issues a one-time signed upload URL. The browser uploads the file directly to Cloudflare R2,
@@ -51,7 +55,8 @@ export async function POST(req: NextRequest) {
       return rateLimitResponse(rateLimit);
     }
 
-    const { fileName, fileType, fileSize } = await req.json();
+    const { fileName, fileType, fileSize, purpose } = await req.json();
+    const isCover = purpose === "cover";
 
     if (typeof fileName !== "string" || !fileName) {
       return NextResponse.json({ error: "No file provided." }, { status: 400 });
@@ -59,6 +64,9 @@ export async function POST(req: NextRequest) {
 
     if (typeof fileSize !== "number" || fileSize > MAX_SIZE) {
       return NextResponse.json({ error: "File exceeds 100 MB limit." }, { status: 413 });
+    }
+    if (isCover && fileSize > MAX_COVER_SIZE) {
+      return NextResponse.json({ error: "Cover image exceeds the 5 MB limit." }, { status: 413 });
     }
 
     const canonicalType = typeof fileType === "string" ? (MIME_ALIASES[fileType] ?? fileType) : "";
@@ -70,6 +78,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (isCover && !COVER_TYPES.has(canonicalType)) {
+      return NextResponse.json({ error: "A cover image must be a JPG, PNG or WebP picture." }, { status: 415 });
+    }
+
     // Strip client extension and build a safe, unique object path ending in verified ext
     const parsed = path.parse(fileName);
     const safeBase = (parsed.name || "upload")
@@ -77,7 +89,7 @@ export async function POST(req: NextRequest) {
       .replace(/_{2,}/g, "_")
       .slice(0, 50);
 
-    const objectPath = `${currentUser.id}/${Date.now()}_${crypto.randomBytes(4).toString("hex")}_${safeBase}${ext}`;
+    const objectPath = `${isCover ? "covers/" : ""}${currentUser.id}/${Date.now()}_${crypto.randomBytes(4).toString("hex")}_${safeBase}${ext}`;
 
     const uploadUrl = await createUploadUrl(objectPath, canonicalType, fileSize);
 
@@ -87,7 +99,8 @@ export async function POST(req: NextRequest) {
       path: objectPath,
       contentType: canonicalType,
       // Private reference stored on the lesson; students get a signed link when they open the course
-      url: `${STORAGE_REF_PREFIX}${objectPath}`,
+      // Covers are public pictures served through /api/cover; everything else stays a private reference
+      url: isCover ? `/api/cover?key=${encodeURIComponent(objectPath)}` : `${STORAGE_REF_PREFIX}${objectPath}`,
       name: fileName,
     });
   } catch (err: any) {

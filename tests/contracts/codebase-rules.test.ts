@@ -36,6 +36,7 @@ const PUBLIC_ROUTES: Record<string, { why: string; protection: RegExp }> = {
   "health": { why: "uptime monitors check that the app and its database are up; it reveals nothing about the data", protection: /checkRateLimit/ },
   "auth/google": { why: "Sign in with Google, proven by a Google-verified ID token", protection: /verifyIdToken/ },
   "contact": { why: "public contact form", protection: /checkRateLimit/ },
+  "cover": { why: "public course cover pictures shown on the catalog and landing page; no rate limit because a whole campus can share one address", protection: /COVER_KEY\.test\(key\)/ },
   "payment/quote": { why: "public read-only price breakdown for the checkout screen", protection: /checkRateLimit/ },
   "payment/verify": { why: "Paystack redirects the browser here; confirmation is done server-to-server", protection: /checkRateLimit/ },
   "payment/webhook": { why: "called by Paystack, authenticated by HMAC signature", protection: /verifyPaystackWebhookSignature/ },

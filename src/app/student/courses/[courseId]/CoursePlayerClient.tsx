@@ -1,6 +1,6 @@
 "use client";
 
-import { isSafeRenderUrl } from "@/lib/safeUrl";
+import { isSafeRenderUrl, toYouTubeEmbedUrl } from "@/lib/safeUrl";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/lib/utils";
 import { PASS_MARK_PERCENT } from "@/lib/grading";
@@ -405,7 +405,7 @@ export function CoursePlayerClient({ course, enrollment, student }: CoursePlayer
                       </video>
                     ) : (
                       <iframe
-                        src={activeLesson.videoUrl}
+                        src={toYouTubeEmbedUrl(activeLesson.videoUrl)}
                         className="w-full h-full"
                         allowFullScreen
                         title={activeLesson.title}

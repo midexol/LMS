@@ -314,13 +314,36 @@ describe("CourseBuilderWizard", () => {
     expect(screen.getByDisplayValue("Structure of the atom")).toBeTruthy();
   });
 
+  it("turns a pasted YouTube link into the embeddable form when you leave the video box", () => {
+    render(<CourseBuilderWizard />);
+    fillStep1();
+    next();
+    const box = screen.getByPlaceholderText(/Paste a YouTube link/) as HTMLInputElement;
+    fireEvent.change(box, { target: { value: "https://youtu.be/dQw4w9WgXcQ?t=30" } });
+    fireEvent.blur(box);
+    expect(box.value).toBe("https://www.youtube.com/embed/dQw4w9WgXcQ?start=30");
+    fireEvent.change(box, { target: { value: "https://cdn.example.com/lecture.mp4" } });
+    fireEvent.blur(box);
+    expect(box.value).toBe("https://cdn.example.com/lecture.mp4");
+  });
+
+  it("explains in plain words what the assignment question and the marking guide are for", () => {
+    render(<CourseBuilderWizard />);
+    fillStep1();
+    next();
+    expect(screen.getByText("Assignment question")).toBeTruthy();
+    expect(screen.getByText("Correct answer and marking guide")).toBeTruthy();
+    expect(screen.getByText(/compared with this to give a score and feedback/)).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Write it for me" })).toBeTruthy();
+  });
+
   const walkToReview = () => {
     fillStep1();
     next();
     fireEvent.change(screen.getByPlaceholderText("Lesson 1 title"), { target: { value: "What is matter?" } });
     fireEvent.change(screen.getByPlaceholderText("Key reading points, summary, and context..."), { target: { value: "Matter is anything with mass." } });
     fireEvent.change(screen.getByPlaceholderText(/Explain the core concepts covered in this lesson/), { target: { value: "Define matter." } });
-    fireEvent.change(screen.getByPlaceholderText(/Benchmark answers and grading criteria/), { target: { value: "Matter has mass and takes up space." } });
+    fireEvent.change(screen.getByPlaceholderText(/A full-mark answer defines the term/), { target: { value: "Matter has mass and takes up space." } });
     // "Review & Publish" is both a step tab and the bottom button; the bottom one is last in the DOM
     fireEvent.click(screen.getAllByRole("button", { name: /Review & Publish/ }).at(-1)!);
   };
@@ -417,6 +440,17 @@ describe("CourseBuilderWizard", () => {
       expect(putInit.headers).toEqual({ "Content-Type": "video/mp4" });
       expect(putInit.body).toBe(video);
       await waitFor(() => expect(screen.getByDisplayValue("storage:tut_1/123_lecture.mp4")).toBeTruthy());
+    });
+
+    it("uploads a cover image as a cover and shows it in the preview", async () => {
+      const coverTicket = { success: true, uploadUrl: UPLOAD_URL, path: "covers/tut_1/1_ab_pic.png", contentType: "image/png", url: "/api/cover?key=covers%2Ftut_1%2F1_ab_pic.png", name: "pic.png" };
+      const fetchFn = mockFetch({ body: coverTicket }, { body: {} });
+      render(<CourseBuilderWizard />);
+      pick("image", new File(["x"], "pic.png", { type: "image/png" }));
+      await waitFor(() => expect(fetchFn).toHaveBeenCalledTimes(2));
+      expect(sent(fetchFn, 0).body).toEqual({ fileName: "pic.png", fileType: "image/png", fileSize: 1, purpose: "cover" });
+      const preview = (await screen.findByAltText("Cover preview")) as HTMLImageElement;
+      expect(preview.getAttribute("src")).toBe("/api/cover?key=covers%2Ftut_1%2F1_ab_pic.png");
     });
 
     it("shows the server's reason when a file type is refused, and uploads nothing", async () => {

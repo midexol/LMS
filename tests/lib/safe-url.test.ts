@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isSafeLessonUrl, lessonLinksAreSafe, isSafeRenderUrl } from "@/lib/safeUrl";
+import { isSafeLessonUrl, lessonLinksAreSafe, isSafeRenderUrl, toYouTubeEmbedUrl, withEmbeddableVideos } from "@/lib/safeUrl";
 
 const DANGEROUS = [
   "javascript:alert(1)",
@@ -74,5 +74,56 @@ describe("isSafeRenderUrl", () => {
     for (const bad of ["", undefined, null, "javascript:alert(1)", "data:text/html,x", "http://a.example", "//evil.example", 5]) {
       expect(isSafeRenderUrl(bad)).toBe(false);
     }
+  });
+});
+
+describe("toYouTubeEmbedUrl", () => {
+  const EMBED = "https://www.youtube.com/embed/dQw4w9WgXcQ";
+
+  it.each([
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://youtube.com/watch?v=dQw4w9WgXcQ&feature=share",
+    "https://m.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://youtu.be/dQw4w9WgXcQ",
+    "https://youtu.be/dQw4w9WgXcQ?si=abc123",
+    "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+    "https://www.youtube.com/live/dQw4w9WgXcQ",
+    "  https://www.youtube.com/watch?v=dQw4w9WgXcQ  ",
+    "youtu.be/dQw4w9WgXcQ",
+    "www.youtube.com/watch?v=dQw4w9WgXcQ",
+  ])("turns %s into the embed link", (link) => {
+    expect(toYouTubeEmbedUrl(link)).toBe(EMBED);
+  });
+
+  it("keeps the start time from a share link", () => {
+    expect(toYouTubeEmbedUrl("https://youtu.be/dQw4w9WgXcQ?t=90")).toBe(`${EMBED}?start=90`);
+    expect(toYouTubeEmbedUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1m30s")).toBe(`${EMBED}?start=90`);
+  });
+
+  it("leaves everything else unchanged", () => {
+    for (const v of [
+      "https://www.youtube.com/embed/abc123",
+      EMBED,
+      "https://example.com/watch?v=dQw4w9WgXcQ",
+      "https://www.youtube.com/playlist?list=PL123",
+      "https://www.youtube.com/watch?v=short",
+      "https://cdn.example.com/lecture.mp4",
+      "storage:tut_1/lecture.mp4",
+      "javascript:alert(1)",
+      "",
+    ]) {
+      expect(toYouTubeEmbedUrl(v)).toBe(v);
+    }
+  });
+
+  it("makes a pasted watch link pass the lesson link check", () => {
+    const modules = withEmbeddableVideos([{ lessons: [{ videoUrl: "https://youtu.be/dQw4w9WgXcQ" }, { videoUrl: "" }, {}] }]);
+    expect(modules[0].lessons[0].videoUrl).toBe(EMBED);
+    expect(lessonLinksAreSafe(modules)).toBe(true);
+  });
+
+  it("passes non-array input straight through", () => {
+    expect(withEmbeddableVideos(undefined)).toBeUndefined();
+    expect(withEmbeddableVideos("x" as any)).toBe("x");
   });
 });
